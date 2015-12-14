@@ -29,6 +29,7 @@ const (
 	tokenTag
 	tokenPointer
 	tokenLine
+	tokenEndLine
 	tokenDone
 )
 
@@ -141,7 +142,7 @@ func (t *tokeniser) tag() (token, stateFn) {
 			tag,
 		}, t.lineValue
 	}
-	next := t.level
+	next := t.endLine
 	if t.p.Peek() == -1 {
 		next = t.done
 	} else {
@@ -156,6 +157,13 @@ func (t *tokeniser) tag() (token, stateFn) {
 		tokenTag,
 		tag,
 	}, next
+}
+
+func (t *tokeniser) endLine() (token, stateFn) {
+	return token{
+		token: tokenEndLine,
+		"",
+	}, t.level
 }
 
 func (t *tokeniser) lineValue() (token, stateFn) {
