@@ -117,30 +117,31 @@ func (r *Reader) Record() (Record, error) {
 		lines = append(lines, r.line)
 		r.readLine()
 		if r.line.level == 0 {
+			plines := parseLines(lines)
 			switch lines[0].tag {
 			case "HEAD":
-				return parseHeader(lines)
+				return parseHeader(plines)
 			case "SUBM":
-				return parseSubmitter(lines)
+				return parseSubmitter(plines)
 			case "FAM":
-				return parseFamily(lines)
+				return parseFamily(plines)
 			case "INDI":
-				return parseIndividual(lines)
+				return parseIndividual(plines)
 			case "OBJE":
-				return parseObject(lines)
+				return parseObject(plines)
 			case "NOTE":
-				return parseNote(lines)
+				return parseNote(plines)
 			case "REPO":
-				return parseRepository(lines)
+				return parseRepository(plines)
 			case "SOUR":
-				return parseSource(lines)
+				return parseSource(plines)
 			case "SUBN":
-				return parseSubmission(lines)
+				return parseSubmission(plines)
 			default:
 				if lines[0][0] == "_" {
-					return parseUnknown(lines)
+					return plines, nil
 				}
-				return nil, ErrUnknownTag
+				return plines, ErrUnknownTag
 			}
 			return r, nil
 		}
