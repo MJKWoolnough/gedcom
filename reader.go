@@ -105,10 +105,15 @@ func (r *Reader) Record() (Record, error) {
 
 	lines := make([]line, 1, 32)
 	lines[0] = r.line
+	var lastlevel = 0
 	for {
 		if r.err != nil {
 			return nil, r.err
 		}
+		if r.line.level > lastlevel+1 {
+			return nil, ErrInvalidLevel
+		}
+		lastlevel = r.line.level
 		lines = append(lines, r.line)
 		r.readLine()
 		if r.line.level == 0 {
@@ -145,7 +150,8 @@ func (r *Reader) Record() (Record, error) {
 
 // Errors
 var (
-	ErrNoHeader   = errors.New("no header")
-	ErrNoRecords  = errors.New("no records")
-	ErrUnknownTag = errors.New("unknown tag name")
+	ErrNoHeader     = errors.New("no header")
+	ErrNoRecords    = errors.New("no records")
+	ErrUnknownTag   = errors.New("unknown tag name")
+	ErrInvalidLevel = errors.New("invalid level")
 )
