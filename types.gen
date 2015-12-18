@@ -29,7 +29,7 @@ DateFren:4:35
 DateGreg:4:35
 DateHebr:4:35
 DateJuln:4:35
-DateLSDOrd:4:35
+DateLDSOrd:4:35
 DatePeriod:7:35
 DatePhrase:1:35
 DateRange:8:35
@@ -67,7 +67,7 @@ NameOfFamilyFile:1:20
 NameOfProduct:1:90
 NameOfRepository:1:90
 NameOfSourceData:1:90
-NameOfPersonal:1:20
+NamePersonal:1:20
 NamePiece:1:90
 NamePieceGiven:1:120
 NamePieceNickname:1:30
@@ -81,7 +81,7 @@ NewTag:1:15
 NobilityTypeTitle:1:120
 Number:(uint)1:9
 Occupation:1:90
-OrginanceProcessFlag::yes:no
+OrdinanceProcessFlag::yes:no
 PedigreeLinkageType::adopted:birth:foster:sealing
 PermanentRecordFileNumber:1:90
 PhoneNumber:1:25
