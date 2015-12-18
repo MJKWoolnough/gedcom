@@ -291,9 +291,9 @@ MultimediaLinkFile
 	TITLE:DescriptiveTitle:Title:0:1
 	FILE:MultimediaFileReference:File:0:1
 	NOTE:NoteStructure:Notes:0:M
-NoteStructureID
+NoteID
 	@:ID
-NoteStructureText
+NoteText
 	#*:SubmitterText
 	SOUR:SourceCitation:Sources:0:M
 PersonalNameStructure
