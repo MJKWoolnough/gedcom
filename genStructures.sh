@@ -57,7 +57,7 @@ function processStructure {
 			elif [ "$pMax" == "1" ]; then
 				oneMost+=( "$pName" );
 			elif [ "$pMax" != "M" ]; then
-				maxes+=( "$pName" );
+				maxes+=( "$pType:$pName:$pMax" );
 			fi;
 			types+=("$pTag:$pType:$pName:$pMin:$pMax");
 		fi;
@@ -120,13 +120,22 @@ function processStructure {
 			echo -n "	var";
 			local c=false;
 			for m in "${maxes[@]}"; do
+				pName="$(echo "$m" | cut -d':' -f2)";
 				if $c; then
 					echo -n ","
 				fi;
-				echo -n " ${m}Count";
+				echo -n " ${pName}Count";
 				c=true;
 			done;
 			echo " int";
+			for m in "${maxes[@]}"; do
+				pType="$(echo "$m" | cut -d':' -f1)";
+				pName="$(echo "$m" | cut -d':' -f2)";
+				pMax="$(echo "$m" | cut -d':' -f3)";
+				if [ "$pMax" != "M" ]; then
+					echo "	s.$pName = make([]$pType, 0, $pMax)";
+				fi;
+			done;
 		fi;
 		echo "	for _, sl := range l.Sub {"
 		echo "		switch sl.tag {";
