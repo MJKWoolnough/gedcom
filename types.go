@@ -1,12 +1,13 @@
 package gedcom
 
-// File automatically generated with ./genMap.sh
+// File automatically generated with ./genTypes.sh
 
 import (
 	"strconv"
 	"strings"
 )
 
+// AddressCity is a GEDCOM base type
 type AddressCity string
 
 func (e *AddressCity) parse(l Line) error {
@@ -17,6 +18,7 @@ func (e *AddressCity) parse(l Line) error {
 	return nil
 }
 
+// AddressCountry is a GEDCOM base type
 type AddressCountry string
 
 func (e *AddressCountry) parse(l Line) error {
@@ -27,6 +29,7 @@ func (e *AddressCountry) parse(l Line) error {
 	return nil
 }
 
+// AddressLine is a GEDCOM base type
 type AddressLine string
 
 func (e *AddressLine) parse(l Line) error {
@@ -37,6 +40,7 @@ func (e *AddressLine) parse(l Line) error {
 	return nil
 }
 
+// AddressLine1 is a GEDCOM base type
 type AddressLine1 string
 
 func (e *AddressLine1) parse(l Line) error {
@@ -47,6 +51,7 @@ func (e *AddressLine1) parse(l Line) error {
 	return nil
 }
 
+// AddressLine2 is a GEDCOM base type
 type AddressLine2 string
 
 func (e *AddressLine2) parse(l Line) error {
@@ -57,6 +62,7 @@ func (e *AddressLine2) parse(l Line) error {
 	return nil
 }
 
+// AddressPostalCose is a GEDCOM base type
 type AddressPostalCose string
 
 func (e *AddressPostalCose) parse(l Line) error {
@@ -67,6 +73,7 @@ func (e *AddressPostalCose) parse(l Line) error {
 	return nil
 }
 
+// AddressState is a GEDCOM base type
 type AddressState string
 
 func (e *AddressState) parse(l Line) error {
@@ -77,6 +84,7 @@ func (e *AddressState) parse(l Line) error {
 	return nil
 }
 
+// AdoptedBy is a GEDCOM base type
 type AdoptedBy string
 
 func (e *AdoptedBy) parse(l Line) error {
@@ -93,6 +101,7 @@ func (e *AdoptedBy) parse(l Line) error {
 	return nil
 }
 
+// AgeAtEvent is a GEDCOM base type
 type AgeAtEvent string
 
 func (e *AgeAtEvent) parse(l Line) error {
@@ -103,6 +112,7 @@ func (e *AgeAtEvent) parse(l Line) error {
 	return nil
 }
 
+// AncestralFileNumber is a GEDCOM base type
 type AncestralFileNumber string
 
 func (e *AncestralFileNumber) parse(l Line) error {
@@ -113,6 +123,7 @@ func (e *AncestralFileNumber) parse(l Line) error {
 	return nil
 }
 
+// ApprovedSystemID is a GEDCOM base type
 type ApprovedSystemID string
 
 func (e *ApprovedSystemID) parse(l Line) error {
@@ -123,6 +134,7 @@ func (e *ApprovedSystemID) parse(l Line) error {
 	return nil
 }
 
+// AttributeType is a GEDCOM base type
 type AttributeType string
 
 func (e *AttributeType) parse(l Line) error {
@@ -149,6 +161,7 @@ func (e *AttributeType) parse(l Line) error {
 	return nil
 }
 
+// AutomatedRecordID is a GEDCOM base type
 type AutomatedRecordID string
 
 func (e *AutomatedRecordID) parse(l Line) error {
@@ -159,6 +172,7 @@ func (e *AutomatedRecordID) parse(l Line) error {
 	return nil
 }
 
+// CasteName is a GEDCOM base type
 type CasteName string
 
 func (e *CasteName) parse(l Line) error {
@@ -169,6 +183,7 @@ func (e *CasteName) parse(l Line) error {
 	return nil
 }
 
+// CauseOfEvent is a GEDCOM base type
 type CauseOfEvent string
 
 func (e *CauseOfEvent) parse(l Line) error {
@@ -179,10 +194,11 @@ func (e *CauseOfEvent) parse(l Line) error {
 	return nil
 }
 
+// CertaintyAssessment is a GEDCOM base type
 type CertaintyAssessment uint
 
 func (e *CertaintyAssessment) parse(l Line) error {
-	switch strings.ToUpper(l.value) {
+	switch strings.ToLower(l.value) {
 	case "0":
 		*e = 0
 	case "1":
@@ -197,6 +213,7 @@ func (e *CertaintyAssessment) parse(l Line) error {
 	return nil
 }
 
+// ChangeDate is a GEDCOM base type
 type ChangeDate string
 
 func (e *ChangeDate) parse(l Line) error {
@@ -207,6 +224,7 @@ func (e *ChangeDate) parse(l Line) error {
 	return nil
 }
 
+// CharacterSet is a GEDCOM base type
 type CharacterSet string
 
 func (e *CharacterSet) parse(l Line) error {
@@ -223,6 +241,7 @@ func (e *CharacterSet) parse(l Line) error {
 	return nil
 }
 
+// CopyrightGedcomFile is a GEDCOM base type
 type CopyrightGedcomFile string
 
 func (e *CopyrightGedcomFile) parse(l Line) error {
@@ -233,6 +252,7 @@ func (e *CopyrightGedcomFile) parse(l Line) error {
 	return nil
 }
 
+// CopyrightSourceData is a GEDCOM base type
 type CopyrightSourceData string
 
 func (e *CopyrightSourceData) parse(l Line) error {
@@ -243,6 +263,7 @@ func (e *CopyrightSourceData) parse(l Line) error {
 	return nil
 }
 
+// CountOfChildren is a GEDCOM base type
 type CountOfChildren uint8
 
 func (e *CountOfChildren) parse(l Line) error {
@@ -257,6 +278,7 @@ func (e *CountOfChildren) parse(l Line) error {
 	return nil
 }
 
+// CountOfMarriages is a GEDCOM base type
 type CountOfMarriages uint8
 
 func (e *CountOfMarriages) parse(l Line) error {
@@ -271,6 +293,7 @@ func (e *CountOfMarriages) parse(l Line) error {
 	return nil
 }
 
+// Date is a GEDCOM base type
 type Date string
 
 func (e *Date) parse(l Line) error {
@@ -281,6 +304,7 @@ func (e *Date) parse(l Line) error {
 	return nil
 }
 
+// DateApproximated is a GEDCOM base type
 type DateApproximated string
 
 func (e *DateApproximated) parse(l Line) error {
@@ -291,6 +315,7 @@ func (e *DateApproximated) parse(l Line) error {
 	return nil
 }
 
+// DateCalendar is a GEDCOM base type
 type DateCalendar string
 
 func (e *DateCalendar) parse(l Line) error {
@@ -301,6 +326,7 @@ func (e *DateCalendar) parse(l Line) error {
 	return nil
 }
 
+// DateCalendarEscape is a GEDCOM base type
 type DateCalendarEscape string
 
 func (e *DateCalendarEscape) parse(l Line) error {
@@ -311,6 +337,7 @@ func (e *DateCalendarEscape) parse(l Line) error {
 	return nil
 }
 
+// DateExact is a GEDCOM base type
 type DateExact string
 
 func (e *DateExact) parse(l Line) error {
@@ -321,6 +348,7 @@ func (e *DateExact) parse(l Line) error {
 	return nil
 }
 
+// DateFren is a GEDCOM base type
 type DateFren string
 
 func (e *DateFren) parse(l Line) error {
@@ -331,6 +359,7 @@ func (e *DateFren) parse(l Line) error {
 	return nil
 }
 
+// DateGreg is a GEDCOM base type
 type DateGreg string
 
 func (e *DateGreg) parse(l Line) error {
@@ -341,6 +370,7 @@ func (e *DateGreg) parse(l Line) error {
 	return nil
 }
 
+// DateHebr is a GEDCOM base type
 type DateHebr string
 
 func (e *DateHebr) parse(l Line) error {
@@ -351,6 +381,7 @@ func (e *DateHebr) parse(l Line) error {
 	return nil
 }
 
+// DateJuln is a GEDCOM base type
 type DateJuln string
 
 func (e *DateJuln) parse(l Line) error {
@@ -361,6 +392,7 @@ func (e *DateJuln) parse(l Line) error {
 	return nil
 }
 
+// DateLSDOrd is a GEDCOM base type
 type DateLSDOrd string
 
 func (e *DateLSDOrd) parse(l Line) error {
@@ -371,6 +403,7 @@ func (e *DateLSDOrd) parse(l Line) error {
 	return nil
 }
 
+// DatePeriod is a GEDCOM base type
 type DatePeriod string
 
 func (e *DatePeriod) parse(l Line) error {
@@ -381,6 +414,7 @@ func (e *DatePeriod) parse(l Line) error {
 	return nil
 }
 
+// DatePhrase is a GEDCOM base type
 type DatePhrase string
 
 func (e *DatePhrase) parse(l Line) error {
@@ -391,6 +425,7 @@ func (e *DatePhrase) parse(l Line) error {
 	return nil
 }
 
+// DateRange is a GEDCOM base type
 type DateRange string
 
 func (e *DateRange) parse(l Line) error {
@@ -401,6 +436,7 @@ func (e *DateRange) parse(l Line) error {
 	return nil
 }
 
+// DateValue is a GEDCOM base type
 type DateValue string
 
 func (e *DateValue) parse(l Line) error {
@@ -411,6 +447,7 @@ func (e *DateValue) parse(l Line) error {
 	return nil
 }
 
+// Day is a GEDCOM base type
 type Day uint8
 
 func (e *Day) parse(l Line) error {
@@ -425,6 +462,7 @@ func (e *Day) parse(l Line) error {
 	return nil
 }
 
+// DescriptiveTitle is a GEDCOM base type
 type DescriptiveTitle string
 
 func (e *DescriptiveTitle) parse(l Line) error {
@@ -435,6 +473,7 @@ func (e *DescriptiveTitle) parse(l Line) error {
 	return nil
 }
 
+// Digit is a GEDCOM base type
 type Digit uint8
 
 func (e *Digit) parse(l Line) error {
@@ -449,16 +488,18 @@ func (e *Digit) parse(l Line) error {
 	return nil
 }
 
+// EncodedMultimediaLine is a GEDCOM base type
 type EncodedMultimediaLine string
 
 func (e *EncodedMultimediaLine) parse(l Line) error {
-	if len(l.value) < 1 || len(l.value) > 87 {
-		return ErrInvalidLength{"EncodedMultimediaLine", l.value, 1, 87}
+	if len(l.value) < 0 || len(l.value) > 87 {
+		return ErrInvalidLength{"EncodedMultimediaLine", l.value, 0, 87}
 	}
 	*e = EncodedMultimediaLine(l.value)
 	return nil
 }
 
+// EntryRecordingDate is a GEDCOM base type
 type EntryRecordingDate string
 
 func (e *EntryRecordingDate) parse(l Line) error {
@@ -469,6 +510,7 @@ func (e *EntryRecordingDate) parse(l Line) error {
 	return nil
 }
 
+// EventAttributeType is a GEDCOM base type
 type EventAttributeType string
 
 func (e *EventAttributeType) parse(l Line) error {
@@ -479,6 +521,7 @@ func (e *EventAttributeType) parse(l Line) error {
 	return nil
 }
 
+// EventDescriptor is a GEDCOM base type
 type EventDescriptor string
 
 func (e *EventDescriptor) parse(l Line) error {
@@ -489,6 +532,7 @@ func (e *EventDescriptor) parse(l Line) error {
 	return nil
 }
 
+// EventTypeCitedFrom is a GEDCOM base type
 type EventTypeCitedFrom string
 
 func (e *EventTypeCitedFrom) parse(l Line) error {
@@ -499,6 +543,7 @@ func (e *EventTypeCitedFrom) parse(l Line) error {
 	return nil
 }
 
+// EventTypeFamile is a GEDCOM base type
 type EventTypeFamile string
 
 func (e *EventTypeFamile) parse(l Line) error {
@@ -531,6 +576,7 @@ func (e *EventTypeFamile) parse(l Line) error {
 	return nil
 }
 
+// EventTypeIndividual is a GEDCOM base type
 type EventTypeIndividual string
 
 func (e *EventTypeIndividual) parse(l Line) error {
@@ -587,6 +633,7 @@ func (e *EventTypeIndividual) parse(l Line) error {
 	return nil
 }
 
+// EventsRecorded is a GEDCOM base type
 type EventsRecorded string
 
 func (e *EventsRecorded) parse(l Line) error {
@@ -597,6 +644,7 @@ func (e *EventsRecorded) parse(l Line) error {
 	return nil
 }
 
+// FileName is a GEDCOM base type
 type FileName string
 
 func (e *FileName) parse(l Line) error {
@@ -607,6 +655,7 @@ func (e *FileName) parse(l Line) error {
 	return nil
 }
 
+// GedcomContentDescription is a GEDCOM base type
 type GedcomContentDescription string
 
 func (e *GedcomContentDescription) parse(l Line) error {
@@ -617,6 +666,7 @@ func (e *GedcomContentDescription) parse(l Line) error {
 	return nil
 }
 
+// GedcomForm is a GEDCOM base type
 type GedcomForm string
 
 func (e *GedcomForm) parse(l Line) error {
@@ -627,6 +677,7 @@ func (e *GedcomForm) parse(l Line) error {
 	return nil
 }
 
+// GenerationsOfAncestors is a GEDCOM base type
 type GenerationsOfAncestors uint16
 
 func (e *GenerationsOfAncestors) parse(l Line) error {
@@ -641,6 +692,7 @@ func (e *GenerationsOfAncestors) parse(l Line) error {
 	return nil
 }
 
+// GenerationsOfDescendants is a GEDCOM base type
 type GenerationsOfDescendants uint16
 
 func (e *GenerationsOfDescendants) parse(l Line) error {
@@ -655,6 +707,7 @@ func (e *GenerationsOfDescendants) parse(l Line) error {
 	return nil
 }
 
+// LanguageID is a GEDCOM base type
 type LanguageID string
 
 func (e *LanguageID) parse(l Line) error {
@@ -665,6 +718,7 @@ func (e *LanguageID) parse(l Line) error {
 	return nil
 }
 
+// LanguageOfText is a GEDCOM base type
 type LanguageOfText string
 
 func (e *LanguageOfText) parse(l Line) error {
@@ -675,6 +729,7 @@ func (e *LanguageOfText) parse(l Line) error {
 	return nil
 }
 
+// LanguagePreference is a GEDCOM base type
 type LanguagePreference string
 
 func (e *LanguagePreference) parse(l Line) error {
@@ -685,6 +740,7 @@ func (e *LanguagePreference) parse(l Line) error {
 	return nil
 }
 
+// LDSBaptismDateStatus is a GEDCOM base type
 type LDSBaptismDateStatus string
 
 func (e *LDSBaptismDateStatus) parse(l Line) error {
@@ -713,6 +769,7 @@ func (e *LDSBaptismDateStatus) parse(l Line) error {
 	return nil
 }
 
+// LDSChildSealingDateStatus is a GEDCOM base type
 type LDSChildSealingDateStatus string
 
 func (e *LDSChildSealingDateStatus) parse(l Line) error {
@@ -741,6 +798,7 @@ func (e *LDSChildSealingDateStatus) parse(l Line) error {
 	return nil
 }
 
+// LDSEndowmentDateStatus is a GEDCOM base type
 type LDSEndowmentDateStatus string
 
 func (e *LDSEndowmentDateStatus) parse(l Line) error {
@@ -769,6 +827,7 @@ func (e *LDSEndowmentDateStatus) parse(l Line) error {
 	return nil
 }
 
+// LDSSpouseSealingDateStatus is a GEDCOM base type
 type LDSSpouseSealingDateStatus string
 
 func (e *LDSSpouseSealingDateStatus) parse(l Line) error {
@@ -797,6 +856,7 @@ func (e *LDSSpouseSealingDateStatus) parse(l Line) error {
 	return nil
 }
 
+// Month is a GEDCOM base type
 type Month string
 
 func (e *Month) parse(l Line) error {
@@ -831,6 +891,7 @@ func (e *Month) parse(l Line) error {
 	return nil
 }
 
+// MonthFren is a GEDCOM base type
 type MonthFren string
 
 func (e *MonthFren) parse(l Line) error {
@@ -867,6 +928,7 @@ func (e *MonthFren) parse(l Line) error {
 	return nil
 }
 
+// MonthHebr is a GEDCOM base type
 type MonthHebr string
 
 func (e *MonthHebr) parse(l Line) error {
@@ -903,6 +965,7 @@ func (e *MonthHebr) parse(l Line) error {
 	return nil
 }
 
+// MultimediaFileReference is a GEDCOM base type
 type MultimediaFileReference string
 
 func (e *MultimediaFileReference) parse(l Line) error {
@@ -913,6 +976,7 @@ func (e *MultimediaFileReference) parse(l Line) error {
 	return nil
 }
 
+// MultimediaFormat is a GEDCOM base type
 type MultimediaFormat string
 
 func (e *MultimediaFormat) parse(l Line) error {
@@ -937,6 +1001,7 @@ func (e *MultimediaFormat) parse(l Line) error {
 	return nil
 }
 
+// NameOfBusiness is a GEDCOM base type
 type NameOfBusiness string
 
 func (e *NameOfBusiness) parse(l Line) error {
@@ -947,6 +1012,7 @@ func (e *NameOfBusiness) parse(l Line) error {
 	return nil
 }
 
+// NameOfFamilyFile is a GEDCOM base type
 type NameOfFamilyFile string
 
 func (e *NameOfFamilyFile) parse(l Line) error {
@@ -957,6 +1023,7 @@ func (e *NameOfFamilyFile) parse(l Line) error {
 	return nil
 }
 
+// NameOfProduct is a GEDCOM base type
 type NameOfProduct string
 
 func (e *NameOfProduct) parse(l Line) error {
@@ -967,6 +1034,7 @@ func (e *NameOfProduct) parse(l Line) error {
 	return nil
 }
 
+// NameOfRepository is a GEDCOM base type
 type NameOfRepository string
 
 func (e *NameOfRepository) parse(l Line) error {
@@ -977,6 +1045,7 @@ func (e *NameOfRepository) parse(l Line) error {
 	return nil
 }
 
+// NameOfSourceData is a GEDCOM base type
 type NameOfSourceData string
 
 func (e *NameOfSourceData) parse(l Line) error {
@@ -987,6 +1056,7 @@ func (e *NameOfSourceData) parse(l Line) error {
 	return nil
 }
 
+// NameOfPersonal is a GEDCOM base type
 type NameOfPersonal string
 
 func (e *NameOfPersonal) parse(l Line) error {
@@ -997,6 +1067,7 @@ func (e *NameOfPersonal) parse(l Line) error {
 	return nil
 }
 
+// NamePiece is a GEDCOM base type
 type NamePiece string
 
 func (e *NamePiece) parse(l Line) error {
@@ -1007,6 +1078,7 @@ func (e *NamePiece) parse(l Line) error {
 	return nil
 }
 
+// NamePieceGiven is a GEDCOM base type
 type NamePieceGiven string
 
 func (e *NamePieceGiven) parse(l Line) error {
@@ -1017,6 +1089,7 @@ func (e *NamePieceGiven) parse(l Line) error {
 	return nil
 }
 
+// NamePieceNickname is a GEDCOM base type
 type NamePieceNickname string
 
 func (e *NamePieceNickname) parse(l Line) error {
@@ -1027,6 +1100,7 @@ func (e *NamePieceNickname) parse(l Line) error {
 	return nil
 }
 
+// NamePiecePrefix is a GEDCOM base type
 type NamePiecePrefix string
 
 func (e *NamePiecePrefix) parse(l Line) error {
@@ -1037,6 +1111,7 @@ func (e *NamePiecePrefix) parse(l Line) error {
 	return nil
 }
 
+// NamePieceSuffix is a GEDCOM base type
 type NamePieceSuffix string
 
 func (e *NamePieceSuffix) parse(l Line) error {
@@ -1047,6 +1122,7 @@ func (e *NamePieceSuffix) parse(l Line) error {
 	return nil
 }
 
+// NamePieceSurname is a GEDCOM base type
 type NamePieceSurname string
 
 func (e *NamePieceSurname) parse(l Line) error {
@@ -1057,6 +1133,7 @@ func (e *NamePieceSurname) parse(l Line) error {
 	return nil
 }
 
+// NamePieceSurnamePrefix is a GEDCOM base type
 type NamePieceSurnamePrefix string
 
 func (e *NamePieceSurnamePrefix) parse(l Line) error {
@@ -1067,6 +1144,7 @@ func (e *NamePieceSurnamePrefix) parse(l Line) error {
 	return nil
 }
 
+// NationalIDNumber is a GEDCOM base type
 type NationalIDNumber string
 
 func (e *NationalIDNumber) parse(l Line) error {
@@ -1077,6 +1155,7 @@ func (e *NationalIDNumber) parse(l Line) error {
 	return nil
 }
 
+// NationalOrTribalOrigin is a GEDCOM base type
 type NationalOrTribalOrigin string
 
 func (e *NationalOrTribalOrigin) parse(l Line) error {
@@ -1087,6 +1166,7 @@ func (e *NationalOrTribalOrigin) parse(l Line) error {
 	return nil
 }
 
+// NewTag is a GEDCOM base type
 type NewTag string
 
 func (e *NewTag) parse(l Line) error {
@@ -1097,6 +1177,7 @@ func (e *NewTag) parse(l Line) error {
 	return nil
 }
 
+// NobilityTypeTitle is a GEDCOM base type
 type NobilityTypeTitle string
 
 func (e *NobilityTypeTitle) parse(l Line) error {
@@ -1107,6 +1188,7 @@ func (e *NobilityTypeTitle) parse(l Line) error {
 	return nil
 }
 
+// Number is a GEDCOM base type
 type Number uint
 
 func (e *Number) parse(l Line) error {
@@ -1121,6 +1203,7 @@ func (e *Number) parse(l Line) error {
 	return nil
 }
 
+// Occupation is a GEDCOM base type
 type Occupation string
 
 func (e *Occupation) parse(l Line) error {
@@ -1131,6 +1214,7 @@ func (e *Occupation) parse(l Line) error {
 	return nil
 }
 
+// OrginanceProcessFlag is a GEDCOM base type
 type OrginanceProcessFlag string
 
 func (e *OrginanceProcessFlag) parse(l Line) error {
@@ -1145,6 +1229,7 @@ func (e *OrginanceProcessFlag) parse(l Line) error {
 	return nil
 }
 
+// PedigreeLinkageType is a GEDCOM base type
 type PedigreeLinkageType string
 
 func (e *PedigreeLinkageType) parse(l Line) error {
@@ -1163,6 +1248,7 @@ func (e *PedigreeLinkageType) parse(l Line) error {
 	return nil
 }
 
+// PermanentRecordFileNumber is a GEDCOM base type
 type PermanentRecordFileNumber string
 
 func (e *PermanentRecordFileNumber) parse(l Line) error {
@@ -1173,6 +1259,7 @@ func (e *PermanentRecordFileNumber) parse(l Line) error {
 	return nil
 }
 
+// PhoneNumber is a GEDCOM base type
 type PhoneNumber string
 
 func (e *PhoneNumber) parse(l Line) error {
@@ -1183,6 +1270,7 @@ func (e *PhoneNumber) parse(l Line) error {
 	return nil
 }
 
+// PhysicalDescription is a GEDCOM base type
 type PhysicalDescription string
 
 func (e *PhysicalDescription) parse(l Line) error {
@@ -1193,6 +1281,7 @@ func (e *PhysicalDescription) parse(l Line) error {
 	return nil
 }
 
+// PlaceHierachy is a GEDCOM base type
 type PlaceHierachy string
 
 func (e *PlaceHierachy) parse(l Line) error {
@@ -1203,6 +1292,7 @@ func (e *PlaceHierachy) parse(l Line) error {
 	return nil
 }
 
+// PlaceLivingOrdinance is a GEDCOM base type
 type PlaceLivingOrdinance string
 
 func (e *PlaceLivingOrdinance) parse(l Line) error {
@@ -1213,6 +1303,7 @@ func (e *PlaceLivingOrdinance) parse(l Line) error {
 	return nil
 }
 
+// PlaceValue is a GEDCOM base type
 type PlaceValue string
 
 func (e *PlaceValue) parse(l Line) error {
@@ -1223,6 +1314,7 @@ func (e *PlaceValue) parse(l Line) error {
 	return nil
 }
 
+// Possessions is a GEDCOM base type
 type Possessions string
 
 func (e *Possessions) parse(l Line) error {
@@ -1233,6 +1325,7 @@ func (e *Possessions) parse(l Line) error {
 	return nil
 }
 
+// PublicationDate is a GEDCOM base type
 type PublicationDate string
 
 func (e *PublicationDate) parse(l Line) error {
@@ -1243,6 +1336,7 @@ func (e *PublicationDate) parse(l Line) error {
 	return nil
 }
 
+// ReceivingSystemName is a GEDCOM base type
 type ReceivingSystemName string
 
 func (e *ReceivingSystemName) parse(l Line) error {
@@ -1253,6 +1347,7 @@ func (e *ReceivingSystemName) parse(l Line) error {
 	return nil
 }
 
+// RecordIdentifier is a GEDCOM base type
 type RecordIdentifier string
 
 func (e *RecordIdentifier) parse(l Line) error {
@@ -1263,6 +1358,7 @@ func (e *RecordIdentifier) parse(l Line) error {
 	return nil
 }
 
+// RecordType is a GEDCOM base type
 type RecordType string
 
 func (e *RecordType) parse(l Line) error {
@@ -1289,6 +1385,7 @@ func (e *RecordType) parse(l Line) error {
 	return nil
 }
 
+// RegisteredResourceIdentifier is a GEDCOM base type
 type RegisteredResourceIdentifier string
 
 func (e *RegisteredResourceIdentifier) parse(l Line) error {
@@ -1299,6 +1396,7 @@ func (e *RegisteredResourceIdentifier) parse(l Line) error {
 	return nil
 }
 
+// RelationIsDescriptor is a GEDCOM base type
 type RelationIsDescriptor string
 
 func (e *RelationIsDescriptor) parse(l Line) error {
@@ -1309,6 +1407,7 @@ func (e *RelationIsDescriptor) parse(l Line) error {
 	return nil
 }
 
+// ReligiousAffiliation is a GEDCOM base type
 type ReligiousAffiliation string
 
 func (e *ReligiousAffiliation) parse(l Line) error {
@@ -1319,6 +1418,7 @@ func (e *ReligiousAffiliation) parse(l Line) error {
 	return nil
 }
 
+// ResponsibleAgency is a GEDCOM base type
 type ResponsibleAgency string
 
 func (e *ResponsibleAgency) parse(l Line) error {
@@ -1329,6 +1429,7 @@ func (e *ResponsibleAgency) parse(l Line) error {
 	return nil
 }
 
+// RestrictionNotice is a GEDCOM base type
 type RestrictionNotice string
 
 func (e *RestrictionNotice) parse(l Line) error {
@@ -1343,6 +1444,7 @@ func (e *RestrictionNotice) parse(l Line) error {
 	return nil
 }
 
+// RoleDescriptor is a GEDCOM base type
 type RoleDescriptor string
 
 func (e *RoleDescriptor) parse(l Line) error {
@@ -1353,6 +1455,7 @@ func (e *RoleDescriptor) parse(l Line) error {
 	return nil
 }
 
+// RoleInEvent is a GEDCOM base type
 type RoleInEvent string
 
 func (e *RoleInEvent) parse(l Line) error {
@@ -1363,6 +1466,7 @@ func (e *RoleInEvent) parse(l Line) error {
 	return nil
 }
 
+// ScholasticAchievement is a GEDCOM base type
 type ScholasticAchievement string
 
 func (e *ScholasticAchievement) parse(l Line) error {
@@ -1373,6 +1477,7 @@ func (e *ScholasticAchievement) parse(l Line) error {
 	return nil
 }
 
+// SexValue is a GEDCOM base type
 type SexValue string
 
 func (e *SexValue) parse(l Line) error {
@@ -1383,6 +1488,7 @@ func (e *SexValue) parse(l Line) error {
 	return nil
 }
 
+// SocialSecurityNumber is a GEDCOM base type
 type SocialSecurityNumber string
 
 func (e *SocialSecurityNumber) parse(l Line) error {
@@ -1393,6 +1499,7 @@ func (e *SocialSecurityNumber) parse(l Line) error {
 	return nil
 }
 
+// SourceCallNumber is a GEDCOM base type
 type SourceCallNumber string
 
 func (e *SourceCallNumber) parse(l Line) error {
@@ -1403,6 +1510,7 @@ func (e *SourceCallNumber) parse(l Line) error {
 	return nil
 }
 
+// SourceDescription is a GEDCOM base type
 type SourceDescription string
 
 func (e *SourceDescription) parse(l Line) error {
@@ -1413,6 +1521,7 @@ func (e *SourceDescription) parse(l Line) error {
 	return nil
 }
 
+// SourceDescriptiveTitle is a GEDCOM base type
 type SourceDescriptiveTitle string
 
 func (e *SourceDescriptiveTitle) parse(l Line) error {
@@ -1423,6 +1532,7 @@ func (e *SourceDescriptiveTitle) parse(l Line) error {
 	return nil
 }
 
+// SourceFiledByEntry is a GEDCOM base type
 type SourceFiledByEntry string
 
 func (e *SourceFiledByEntry) parse(l Line) error {
@@ -1433,6 +1543,7 @@ func (e *SourceFiledByEntry) parse(l Line) error {
 	return nil
 }
 
+// SourceJurisdictionPlace is a GEDCOM base type
 type SourceJurisdictionPlace string
 
 func (e *SourceJurisdictionPlace) parse(l Line) error {
@@ -1443,6 +1554,7 @@ func (e *SourceJurisdictionPlace) parse(l Line) error {
 	return nil
 }
 
+// SourceMediaType is a GEDCOM base type
 type SourceMediaType string
 
 func (e *SourceMediaType) parse(l Line) error {
@@ -1479,6 +1591,7 @@ func (e *SourceMediaType) parse(l Line) error {
 	return nil
 }
 
+// SourceOriginator is a GEDCOM base type
 type SourceOriginator string
 
 func (e *SourceOriginator) parse(l Line) error {
@@ -1489,6 +1602,7 @@ func (e *SourceOriginator) parse(l Line) error {
 	return nil
 }
 
+// SourcePublicationFacts is a GEDCOM base type
 type SourcePublicationFacts string
 
 func (e *SourcePublicationFacts) parse(l Line) error {
@@ -1499,6 +1613,7 @@ func (e *SourcePublicationFacts) parse(l Line) error {
 	return nil
 }
 
+// SubmitterName is a GEDCOM base type
 type SubmitterName string
 
 func (e *SubmitterName) parse(l Line) error {
@@ -1509,6 +1624,7 @@ func (e *SubmitterName) parse(l Line) error {
 	return nil
 }
 
+// SubmitterRegisteredRFN is a GEDCOM base type
 type SubmitterRegisteredRFN string
 
 func (e *SubmitterRegisteredRFN) parse(l Line) error {
@@ -1519,6 +1635,7 @@ func (e *SubmitterRegisteredRFN) parse(l Line) error {
 	return nil
 }
 
+// SubmitterText is a GEDCOM base type
 type SubmitterText string
 
 func (e *SubmitterText) parse(l Line) error {
@@ -1529,6 +1646,7 @@ func (e *SubmitterText) parse(l Line) error {
 	return nil
 }
 
+// TempleCode is a GEDCOM base type
 type TempleCode string
 
 func (e *TempleCode) parse(l Line) error {
@@ -1539,6 +1657,7 @@ func (e *TempleCode) parse(l Line) error {
 	return nil
 }
 
+// Text is a GEDCOM base type
 type Text string
 
 func (e *Text) parse(l Line) error {
@@ -1549,6 +1668,7 @@ func (e *Text) parse(l Line) error {
 	return nil
 }
 
+// TextFromSource is a GEDCOM base type
 type TextFromSource string
 
 func (e *TextFromSource) parse(l Line) error {
@@ -1559,6 +1679,7 @@ func (e *TextFromSource) parse(l Line) error {
 	return nil
 }
 
+// TimeValue is a GEDCOM base type
 type TimeValue string
 
 func (e *TimeValue) parse(l Line) error {
@@ -1569,6 +1690,7 @@ func (e *TimeValue) parse(l Line) error {
 	return nil
 }
 
+// TransmissionDate is a GEDCOM base type
 type TransmissionDate string
 
 func (e *TransmissionDate) parse(l Line) error {
@@ -1579,6 +1701,7 @@ func (e *TransmissionDate) parse(l Line) error {
 	return nil
 }
 
+// UserReferenceNumber is a GEDCOM base type
 type UserReferenceNumber string
 
 func (e *UserReferenceNumber) parse(l Line) error {
@@ -1589,6 +1712,7 @@ func (e *UserReferenceNumber) parse(l Line) error {
 	return nil
 }
 
+// UserReferenceType is a GEDCOM base type
 type UserReferenceType string
 
 func (e *UserReferenceType) parse(l Line) error {
@@ -1599,6 +1723,22 @@ func (e *UserReferenceType) parse(l Line) error {
 	return nil
 }
 
+// Verified is a GEDCOM base type
+type Verified string
+
+func (e *Verified) parse(l Line) error {
+	switch strings.ToUpper(l.value) {
+	case "":
+		*e = ""
+	case "Y":
+		*e = "Y"
+	default:
+		return ErrInvalidValue{"Verified", l.value}
+	}
+	return nil
+}
+
+// VersionNumber is a GEDCOM base type
 type VersionNumber string
 
 func (e *VersionNumber) parse(l Line) error {
@@ -1609,6 +1749,7 @@ func (e *VersionNumber) parse(l Line) error {
 	return nil
 }
 
+// WhereWithinSource is a GEDCOM base type
 type WhereWithinSource string
 
 func (e *WhereWithinSource) parse(l Line) error {
@@ -1619,6 +1760,7 @@ func (e *WhereWithinSource) parse(l Line) error {
 	return nil
 }
 
+// Xref is a GEDCOM base type
 type Xref string
 
 func (e *Xref) parse(l Line) error {
@@ -1629,6 +1771,7 @@ func (e *Xref) parse(l Line) error {
 	return nil
 }
 
+// Year is a GEDCOM base type
 type Year string
 
 func (e *Year) parse(l Line) error {
@@ -1639,6 +1782,7 @@ func (e *Year) parse(l Line) error {
 	return nil
 }
 
+// YearGreg is a GEDCOM base type
 type YearGreg string
 
 func (e *YearGreg) parse(l Line) error {
@@ -1649,19 +1793,25 @@ func (e *YearGreg) parse(l Line) error {
 	return nil
 }
 
+// ErrInvalidValue is an error that is generated when a type is not one of the
+// specified values
 type ErrInvalidValue struct {
 	Type, Value string
 }
 
+// Error is an implementation of the error interface
 func (e ErrInvalidValue) Error() string {
 	return "Value for " + e.Type + " is invalid"
 }
 
+// ErrInvalidLength is an error that is generated when a type is given more or
+// less data than is required
 type ErrInvalidLength struct {
 	Type, Value string
 	Min, Max    uint
 }
 
+// Error is an implementation of the error interface
 func (e ErrInvalidLength) Error() string {
 	return "Value for " + e.Type + " has an invalid length"
 }
