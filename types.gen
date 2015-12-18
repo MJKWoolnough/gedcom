@@ -3,7 +3,7 @@ AddressCountry:1:60
 AddressLine:1:60
 AddressLine1:1:60
 AddressLine2:1:60
-AddressPostalCose:1:10
+AddressPostalCode:1:10
 AddressState:1:60
 AdoptedBy::HUSB:WIFE:BOTH
 AgeAtEvent:1:12
@@ -37,7 +37,7 @@ DateValue:1:35
 Day:(uint8)1:2
 DescriptiveTitle:1:248
 Digit:(uint8)1:1
-EncodedMultimediaLine:1:87
+EncodedMultimediaLine:0:87
 EntryRecordingDate:1:90
 EventAttributeType:1:15
 EventDescriptor:1:90
