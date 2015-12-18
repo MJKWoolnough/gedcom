@@ -1,0 +1,328 @@
+Header
+	SOUR:HeaderSource:Source:1:1
+	DEST:ReceivingSystemName::0:1
+	DATE:TransmissionDateTime:TransmissionLDate:0:1
+	SUBM:Xref:Submitter:1:1
+	SUMB:Xref:Submission:0:1
+	FILE:FileName::0:1
+	COPR:CopyrightGedcomFile:Copyright:0:1
+	GEDC:Version::1:1
+	CHAR:CharacterSetStructure:CharacterSet:1:1
+	LANG:LanguageOfText:Language:0:1
+	PLAC:HeaderPlace:Place:0:1
+	NOTE*:GedcomContentDescription::0:1
+HeaderSource
+	#:ApprovedSystemID:SystemID
+	VERS:VersionNumber::0:1
+	NAME:NameOfProduct:Name:0:1
+	CORP:HeaderBusiness:Business:0:1
+	DATA:HeaderDataSource:Data:0:1
+TransmissionDateTime
+	#:TransmissionDate
+	TIME:TimeValue:Time:0:1
+HeaderBusiness
+	#:NameOfBusiness
+	ADDR:AddressStructure:Address:0:1
+	PHON:PhoneNumber:PhoneNumber:0:3
+HeaderDataSource
+	#:NameOfSourceData:SourceName
+	DATE:PublicationDate::0:1
+	COPR:CopyrightSourceData::0:1
+Version
+	VERS:VersionNumber::1:1
+	FORM:GedcomForm::1:1
+CharacterSetStructure
+	#:CharacterSet
+	VERS:VersionNumber::0:1
+HeaderPlace
+	FORM:PlaceHierarchy::1:1
+Family
+	@:ID
+	ANUL:VerifiedFamilyEventDetail:Annulment:0:1
+	CENS:VerifiedFamilyEventDetail:Census:0:1
+	DIV:VerifiedFamilyEventDetail:Divorce:0:1
+	DIVF:VerifiedFamilyEventDetail:DivorceFiled:0:1
+	ENGA:VerifiedFamilyEventDetail:Engagement:0:1
+	MARR:VerifiedFamilyEventDetail:Marriage:0:1
+	MARB:VerifiedFamilyEventDetail:MarriageBann:0:1
+	MARC:VerifiedFamilyEventDetail:MarriageContract:0:1
+	MARL:VerifiedFamilyEventDetail:MarriageLicense:0:1
+	MARS:VerifiedFamilyEventDetail:MarriageSettlement:0:1
+	EVEN:FamilyEventDetail:Events:0:M
+	HUSB:Xref:Husband:0:1
+	WIFE:Xref:Wife:0:1
+	CHIL:Xref:Children:0:M
+	NCHI:CountOfChildren:NumChildren:0:1
+	SUBM:Xref:Submitters:0:M
+	SLGS:LGSSpouseSealing::0:M
+	SOUR:SourceCitation:Sources:0:M
+	OBJE:MultimediaLink:Multimedia:0:M
+	NOTE:NoteStructure:Notes:0:M
+VerifiedFamilyEventDetail
+	#:Verified
+	:FamilyEventDetail
+FamilyEventDetail
+	HUSB:AgeStructure:Age:0:1
+	WIFE:AgeStructure:Age:0:1
+	EVEN:EventDetail:Event:0:1
+Individual
+	@:ID
+	RESN:RestrictionNotice::0:1
+	NAME:PersonalNameStructure::0:M
+	SEX:SexValue:Gender:0:1
+	BIRT:VerifiedIndividualFamEventDetail:Birth:0:1
+	CHR:VerifiedIndividualFamEventDetail:Christening:0:1
+	DEAT:VerifiedIndividualEventDetail:Death:0:1
+	BURI:VerifiedIndividualEventDetail:Buried:0:1
+	CREM:VerifiedIndividualEventDetail:Cremation:0:1
+	ADOP:AdoptionEvent:Adoption:0:1
+	BAPM:VerifiedIndividualEventDetail:Maptism:0:1
+	BARM:VerifiedIndividualEventDetail:BarMitzvah:0:1
+	BASM:VerifiedIndividualEventDetail:BasMitzvah:0:1
+	BLES:VerifiedIndividualEventDetail:Blessing:0:1
+	CHRA:VerifiedIndividualEventDetail:AdultChristening:0:1
+	CONF:VerifiedIndividualEventDetail:Confirmation:0:1
+	FCOM:VerifiedIndividualEventDetail:FirstCommunion:0:1
+	ORDN:VerifiedIndividualEventDetail:Ordination:0:1
+	NATU:VerifiedIndividualEventDetail:Naturalization:0:1
+	EMIG:VerifiedIndividualEventDetail:Emmigrated:0:1
+	IMMI:VerifiedIndividualEventDetail:Immigrated:0:1
+	CENS:VerifiedIndividualEventDetail:Census:0:1
+	PROB:VerifiedIndividualEventDetail:Probate:0:1
+	WILL:VerifiedIndividualEventDetail:Will:0:1
+	GRAD:VerifiedIndividualEventDetail:Graduated:0:1
+	RETI:VerifiedIndividualEventDetail:Retired:0:1
+	EVEN:IndividualEventDetail:Events:0:M
+	CAST:CasteEvent:Caste:0:M
+	DSCR:DescriptionEvent:Description:0:M
+	EDUC:ScholasticEvent:ScholasticAchievement:0:M
+	IDNO:NationalIDEvent:NationalID:0:M
+	NATI:NationalOriginEvent:NationalTribalOrigin:0:M
+	NCHI:ChildrenEvent:CountOfChildren:0:M
+	NMR:MarriagesEvent:CountOfMarriages:0:M
+	OCCU:OccupationEvent:Occupation:0:M
+	PROP:PossessionEvent:Possessions:0:M
+	RELI:ReligiousEvent:ReligiousAffiliation:0:M
+	RESI:ResidenceEvent:Residences:0:M
+	SSN:SSNEvent:SocialSecurity:0:M
+	TITL:NobilityEvent:NobilityTypeTitle:0:M
+	FAMC:ChildToFamilyLink:ChildOf:0:M
+	FAMS:SpouseToFamilyLink:SpouseOf:0:M
+	SUBM:Xref:Submitters:0:M
+	ASSO:AssociationStructure:Associations:0:M
+	ALIA:Xref:Aliases:0:M
+	ANCI:Xref:AncestorInterest:0:M
+	DESI:Xref:DescendentInterest:0:M
+	SOUR:SourceCitation:Sources:0:M
+	OBJE:MultimediaLink:Multimedia:0:M
+	NOTE:NoteStructure:Notes:0:M
+	RFN:PermanentRecordFileNumber:PermanentRecord:0:1
+	AFN:AncestralFileNumber::0:1
+	REFN:UserReferenceStructure:UserReferences:0:M
+	RIN:AutomatedRecordID::0:1
+	CHAN:ChangeDateStructure:ChangeDate:0:1
+VerifiedIndividualFamEventDetail
+	FAMC:Xref:Famc:0:1
+	:VerifiedIndividualEventDetail
+VerifiedEventDetail
+	#:Verified::0:1
+	EVEN:EventDetail:Event:0:1
+AdoptionEvent
+	FAMC:AdoptionReference:Family:0:1
+	EVEN:EventDetail:Event:0:1
+AdoptionReference
+	@:ID
+	ADOP:AdoptedByWhichParent:AdoptedBy:0:1
+CasteEvent
+	#:CasteName
+	EVEN:EventDetail:Event:0:1
+DescriptionEvent
+	#:PhysicalDescription
+	EVEN:EventDetail:Event:0:1
+ScholasticEvent
+	#:ScholasticAchievement
+	EVEN:EventDetail:Event:0:1
+NationalIDEvent
+	#:NationalIDNumber
+	EVEN:EventDetail:Event:0:1
+NationalOriginEvent
+	#:NationalOrTribalOrigin
+	EVEN:EventDetail:Event:0:1
+ChildrenEvent
+	#:CountOfChildren
+	EVEN:EventDetail:Event:0:1
+MarriagesEvent
+	#:CountOfMarriages
+	EVEN:EventDetail:Event:0:1
+OccupationEvent
+	#:Occupation
+	EVEN:EventDetail:Event:0:1
+PossessionEvent
+	#:Possessions
+	EVEN:EventDetail:Event:0:1
+ReligiousEvent
+	#:ReligiousAffiliation
+	EVEN:EventDetail:Event:0:1
+ResidenceEvent
+	EVEN:EventDetail:Event:0:1
+SSNEvent
+	#:SocialSecurityNumber
+	EVEN:EventDetail:Event:0:1
+NobilityEvent
+	#:NobilityTypeTitle
+	EVEN:EventDetail:Event:0:1
+UserReferenceStructure
+	#:UserReferenceNumber
+	TYPE:UserReferenceType:Type:0:1
+MultimediaRecord
+	@:ID
+	FORM:MultimediaFormat:Format:1:1
+	TITLE:DescriptiveTitle:Title:0:1
+	NOTE:NoteStructure:Notes:0:M
+	BLOB*:MultimediaBlob:Blob:1:1
+	OBJE:Xref:ContinuedObject:0:1
+	REFN:UserReferenceStructure:UserReferences:0:M
+	RIN:AutomatedRecordID::0:1
+	CHAN:ChangeDateStructure:ChangeDate:0:1
+NoteRecord
+	@:ID
+	#*:SubmitterText
+	SOUR:SourceCitation:Sources:0:M
+	REFN:UserReferenceStructure:UserReferences:0:M
+	RIN:AutomatedRecordID::0:1
+	CHAN:ChangeDateStructure:ChangeDate:0:1
+RepositoryRecord
+	@:ID
+	Name:NameOfRepository::0:1
+	ADDR:AddressStructure:Address:0:1
+	PHON:PhoneNumber:PhoneNumber:0:3
+	NOTE:NoteStructure:Notes:0:M
+	REFN:UserReferenceStructure:UserReferences:0:M
+	RIN:AutomatedRecordID::0:1
+	CHAN:ChangeDateStructure:ChangeDate:0:1
+SourceRecord
+	@:ID
+	DATA:SourceRecordDataStructure:Data:0:1
+	AUTH*:SourceOriginator:Originator:0:1
+	TITL*:SourceDescriptiveTitle:Title:0:1
+	ABBR:SourceFiledByEntry:FiledBy:0:1
+	PUBL:SourcePublicationFacts:PublicationFacts:0:1
+	TEXT*:TextFromSource::0:1
+	REPO:SourceRepositoryCitation
+	OBJE:Xref:ContinuedObject:0:1
+	NOTE:NoteStructure:Notes:0:M
+	REFN:UserReferenceStructure:UserReferences:0:M
+	RIN:AutomatedRecordID::0:1
+	CHAN:ChangeDateStructure:ChangeDate:0:1
+SourceRecordDateStructure
+	EVEN:EventsRecordedStructure:EventsRecorded:0:M
+	AGNC:ResponsibleAgency::0:1
+	NOTE:NoteStructure:Notes:0:M
+EventsRecordedStructure
+	DATE:DatePeriod::0:1
+	PLACE:SourceJurisdictionPlace::0:1
+SubmissionRecord
+	@:ID
+	FAMF:NameOfFamilyFile::0:1
+	TEMP:TempleCode::0:1
+	ANCE:GenerationsOfAncestors::0:1
+	DESC:GenerationsOfDescendatns::0:1
+	ORDI:OrdinanceProcessFlag::0:1
+	RIN:AutomatedRecordID::0:1
+SubmitterRecord
+	@:ID
+	NAME:SubmitterName::1:1
+	ADDR:AddressStructure:Address:0:1
+	PHON:PhoneNumber:PhoneNumber:0:3
+	OBJE:MultimediaLink:Multimedia:0:M
+	LANG:LanguagePreference::0:3
+	RFN:SubmitterRegisteredRFN::0:1
+	RIN:AutomatedRecordID::0:1
+	CHAN:ChangeDateStructure:ChangeDate:0:1
+AddressStructure
+	#*:AddressLine
+	ADR1:AddressLine1::0:1
+	ADR2:AddressLine2::0:1
+	CITY:AddressCity:City:0:1
+	STAE:AddressState:State:0:1
+	POST:AddressPostalCode:PostalCode:0:1
+	CTRY:AddressCountry:Country:0:1
+AssociationStructure
+	@:ID
+	TYPE:RecordType::1:1
+	RELA:RelationIsDescription:Relation:1:1
+	NOTE:NoteStructure:Notes:0:M
+	SOUR:SourceCitation:Sources:0:M
+ChangeDateStructure
+	DATE:ChangeDateTime:Date:1:1
+	NOTE:NoteStructure:Notes:0:M
+ChangeDateTime
+	#:ChangeDate
+	TIME:TimeValue:Time:0:1
+ChildToFamilyLink
+	@:ID
+	PEDI:PedigreeLinkageType::0:M
+	NOTE:NoteStructure:Notes:0:M
+EventDetail
+	TYPE:EventDescriptor:Type:0:1
+	DATE:DateValue:Date:0:1
+	PLAC:PlaceStructure:Place:0:1
+	ADDR:AddressStructure:Address:0:1
+	PHON:PhoneNumber:PhoneNumber:0:3
+	AGE:AgeAtEvent:Age:0:1
+	AGNC:ResponsibleAgency::0:1
+	CAUS:CauseOfEvent::0:1
+	SOUR:SourceCitation:Sources:0:M
+	OBJE:MultimediaLink:Multimedia:0:M
+	NOTE:NoteStructure:Notes:0:M
+LDSSpouseSealing
+	STAT:LDSSpouseSealingDateStatus::0:1
+	DATE:DateLDSOrd:Date:0:1
+	TEMP:TempleCode::0:1
+	PLAC:PlaceLivingOrdinance:Place:0:1
+	SOUR:SourceCitation:Sources:0:M
+	NOTE:NoteStructure:Notes:0:M
+MultimediaLinkID
+	@:ID
+MultimediaLinkFile
+	FORM:MultimediaFormat:Format:1:1
+	TITLE:DescriptiveTitle:Title:0:1
+	FILE:MultimediaFileReference:File:0:1
+	NOTE:NoteStructure:Notes:0:M
+NoteStructureID
+	@:ID
+NoteStructureText
+	#*:SubmitterText
+	SOUR:SourceCitation:Sources:0:M
+PersonalNameStructure
+	#:NamePersonal
+	NPFX:NamePiecePrefix:Prefix:0:1
+	GIVN:NamePieceGiven:Given:0:1
+	NICK:NamePieceNickname:Nickname:0:1
+	SPFX:NamePieceSurnamePrefix:SurnamePrefix:0:1
+	SURN:NamePieceSurname:Surname:0:1
+	NSFX:NamePieceSuffix:Suffix:0:1
+	SOUR:SourceCitation:Sources:0:M
+	NOTE:NoteStructure:Notes:0:M
+PlaceStructure
+	#:PlaceValue:Place
+	FORM:PlaceHierarchy::0:1
+	SOUR:SourceStructure:Sources:0:M
+	NOTE:NoteStructure:Notes:0:M
+SourceID
+	@:ID
+	PAGE:WhereWithinSource::0:1
+	EVEN:SourceCitationEvent
+SourceText
+	#*:SourceDescription:Description
+	TEXT*:TextFromSource:Texts:0:M
+	NOTE:NoteStructure:Notes:0:M
+SourceRepositoryCitation
+	@:ID
+	CALN:SourceCallStructure:Numbers:0:M
+SourceCallStructure
+	#:SourceCallNumber
+	MEDI:SourceMediaType:Type:0:1
+SpouseToFamilyLink
+	@:ID
+	NOTE:NoteStructure:Notes:0:M
