@@ -1940,13 +1940,13 @@ func (s *RepositoryRecord) parse(l Line) error {
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "Name":
+		case "NAME":
 			if NameOfRepositorySet {
-				return ErrContext{"RepositoryRecord", "Name", ErrSingleMultiple}
+				return ErrContext{"RepositoryRecord", "NAME", ErrSingleMultiple}
 			}
 			NameOfRepositorySet = true
 			if err := s.NameOfRepository.parse(sl); err != nil {
-				return ErrContext{"RepositoryRecord", "Name", err}
+				return ErrContext{"RepositoryRecord", "NAME", err}
 			}
 		case "ADDR":
 			if AddressSet {
@@ -3388,6 +3388,19 @@ type ErrContext struct {
 // Error implements the error interface
 func (e ErrContext) Error() string {
 	return e.Tag + ":" + e.Err.Error()
+}
+
+// Underlying goes through the error list to retrieve the underlying
+// (non-ErrContext) error
+func (e ErrContext) Underlying() error {
+	err := e.Err
+	for {
+		if er, ok := err.(ErrContext); ok {
+			err = er.Err
+			continue
+		}
+		return err
+	}
 }
 
 // ErrTooMany is an error returned when too many of a particular tag exist

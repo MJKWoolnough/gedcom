@@ -309,6 +309,19 @@ func (e ErrContext) Error() string {
 	return e.Tag + ":" + e.Err.Error()
 }
 
+// Underlying goes through the error list to retrieve the underlying
+// (non-ErrContext) error
+func (e ErrContext) Underlying() error {
+	err := e.Err
+	for {
+		if er, ok := err.(ErrContext); ok {
+			err = er.Err
+			continue
+		}
+		return err
+	}
+}
+
 // ErrTooMany is an error returned when too many of a particular tag exist
 type ErrTooMany int
 
