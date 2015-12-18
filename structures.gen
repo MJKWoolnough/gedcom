@@ -62,9 +62,11 @@ VerifiedFamilyEventDetail
 	#:Verified
 	:FamilyEventDetail
 FamilyEventDetail
-	HUSB:AgeStructure:Age:0:1
-	WIFE:AgeStructure:Age:0:1
+	HUSB:AgeStructure:HusbandAge:0:1
+	WIFE:AgeStructure:WifeAge:0:1
 	EVEN:EventDetail:Event:0:1
+AgeStructure
+	AGE:AgeAtEvent:Age:1:1
 Individual
 	@:ID
 	RESN:RestrictionNotice::0:1
