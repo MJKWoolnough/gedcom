@@ -2,10 +2,7 @@ package gedcom
 
 // File automatically generated with ./genStructures.sh
 
-import (
-	"errors"
-	"strconv"
-)
+import "errors"
 
 // Header is a GEDCOM structure type
 type Header struct {
@@ -439,7 +436,7 @@ type Family struct {
 	Children           []Xref
 	NumChildren        CountOfChildren
 	Submitters         []Xref
-	LGSSpouseSealing   []LGSSpouseSealing
+	LDSSpouseSealing   []LDSSpouseSealing
 	Sources            []SourceCitation
 	Multimedia         []MultimediaLink
 	Notes              []NoteStructure
@@ -575,11 +572,11 @@ func (s *Family) parse(l Line) error {
 			}
 			s.Submitters = append(s.Submitters, t)
 		case "SLGS":
-			var t LGSSpouseSealing
+			var t LDSSpouseSealing
 			if err != t.parse(sl); err != nil {
 				return ErrContext{"Family", "SLGS", err}
 			}
-			s.LGSSpouseSealing = append(s.LGSSpouseSealing, t)
+			s.LDSSpouseSealing = append(s.LDSSpouseSealing, t)
 		case "SOUR":
 			var t SourceCitation
 			if err != t.parse(sl); err != nil {
@@ -644,29 +641,29 @@ func (s *VerifiedFamilyEventDetail) parse(l Line) error {
 
 // FamilyEventDetail is a GEDCOM structure type
 type FamilyEventDetail struct {
-	Age   AgeStructure
-	Age   AgeStructure
-	Event EventDetail
+	HusbandAge AgeStructure
+	WifeAge    AgeStructure
+	Event      EventDetail
 }
 
 func (s *FamilyEventDetail) parse(l Line) error {
-	var AgeSet, AgeSet, EventSet bool
+	var HusbandAgeSet, WifeAgeSet, EventSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "HUSB":
-			if AgeSet {
+			if HusbandAgeSet {
 				return ErrContext{"FamilyEventDetail", "HUSB", ErrSingleMultiple}
 			}
-			AgeSet = true
-			if err := s.Age.parse(sl); err != nil {
+			HusbandAgeSet = true
+			if err := s.HusbandAge.parse(sl); err != nil {
 				return ErrContext{"FamilyEventDetail", "HUSB", err}
 			}
 		case "WIFE":
-			if AgeSet {
+			if WifeAgeSet {
 				return ErrContext{"FamilyEventDetail", "WIFE", ErrSingleMultiple}
 			}
-			AgeSet = true
-			if err := s.Age.parse(sl); err != nil {
+			WifeAgeSet = true
+			if err := s.WifeAge.parse(sl); err != nil {
 				return ErrContext{"FamilyEventDetail", "WIFE", err}
 			}
 		case "EVEN":
@@ -687,6 +684,36 @@ func (s *FamilyEventDetail) parse(l Line) error {
 	return nil
 }
 
+// AgeStructure is a GEDCOM structure type
+type AgeStructure struct {
+	Age AgeAtEvent
+}
+
+func (s *AgeStructure) parse(l Line) error {
+	var AgeSet bool
+	for _, sl := range l.Sub {
+		switch sl.tag {
+		case "AGE":
+			if AgeSet {
+				return ErrContext{"AgeStructure", "AGE", ErrSingleMultiple}
+			}
+			AgeSet = true
+			if err := s.Age.parse(sl); err != nil {
+				return ErrContext{"AgeStructure", "AGE", err}
+			}
+		default:
+			if len(sl.tag) < 1 || sl.tag[0] != '_' {
+				return ErrContext{"AgeStructure", sl.tag, ErrUnknownTag}
+			}
+			// possibly store in a Other field
+		}
+	}
+	if !AgeSet {
+		return ErrContext{"AgeStructure", "Age", ErrRequiredMissing}
+	}
+	return nil
+}
+
 // Individual is a GEDCOM structure type
 type Individual struct {
 	ID                    Xref
@@ -695,26 +722,26 @@ type Individual struct {
 	Gender                SexValue
 	Birth                 VerifiedIndividualFamEventDetail
 	Christening           VerifiedIndividualFamEventDetail
-	Death                 VerifiedIndividualEventDetail
-	Buried                VerifiedIndividualEventDetail
-	Cremation             VerifiedIndividualEventDetail
+	Death                 VerifiedEventDetail
+	Buried                VerifiedEventDetail
+	Cremation             VerifiedEventDetail
 	Adoption              AdoptionEvent
-	Maptism               VerifiedIndividualEventDetail
-	BarMitzvah            VerifiedIndividualEventDetail
-	BasMitzvah            VerifiedIndividualEventDetail
-	Blessing              VerifiedIndividualEventDetail
-	AdultChristening      VerifiedIndividualEventDetail
-	Confirmation          VerifiedIndividualEventDetail
-	FirstCommunion        VerifiedIndividualEventDetail
-	Ordination            VerifiedIndividualEventDetail
-	Naturalization        VerifiedIndividualEventDetail
-	Emmigrated            VerifiedIndividualEventDetail
-	Immigrated            VerifiedIndividualEventDetail
-	Census                VerifiedIndividualEventDetail
-	Probate               VerifiedIndividualEventDetail
-	Will                  VerifiedIndividualEventDetail
-	Graduated             VerifiedIndividualEventDetail
-	Retired               VerifiedIndividualEventDetail
+	Maptism               VerifiedEventDetail
+	BarMitzvah            VerifiedEventDetail
+	BasMitzvah            VerifiedEventDetail
+	Blessing              VerifiedEventDetail
+	AdultChristening      VerifiedEventDetail
+	Confirmation          VerifiedEventDetail
+	FirstCommunion        VerifiedEventDetail
+	Ordination            VerifiedEventDetail
+	Naturalization        VerifiedEventDetail
+	Emmigrated            VerifiedEventDetail
+	Immigrated            VerifiedEventDetail
+	Census                VerifiedEventDetail
+	Probate               VerifiedEventDetail
+	Will                  VerifiedEventDetail
+	Graduated             VerifiedEventDetail
+	Retired               VerifiedEventDetail
 	Events                []IndividualEventDetail
 	Caste                 []CasteEvent
 	Description           []DescriptionEvent
@@ -1145,12 +1172,12 @@ func (s *Individual) parse(l Line) error {
 
 // VerifiedIndividualFamEventDetail is a GEDCOM structure type
 type VerifiedIndividualFamEventDetail struct {
-	Famc                          Xref
-	VerifiedIndividualEventDetail VerifiedIndividualEventDetail
+	Famc                Xref
+	VerifiedEventDetail VerifiedEventDetail
 }
 
 func (s *VerifiedIndividualFamEventDetail) parse(l Line) error {
-	var VerifiedIndividualEventDetailSet, FamcSet bool
+	var VerifiedEventDetailSet, FamcSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "FAMC":
@@ -1162,11 +1189,11 @@ func (s *VerifiedIndividualFamEventDetail) parse(l Line) error {
 				return ErrContext{"VerifiedIndividualFamEventDetail", "FAMC", err}
 			}
 		case "":
-			if VerifiedIndividualEventDetailSet {
+			if VerifiedEventDetailSet {
 				return ErrContext{"VerifiedIndividualFamEventDetail", "", ErrSingleMultiple}
 			}
-			VerifiedIndividualEventDetailSet = true
-			if err := s.VerifiedIndividualEventDetail.parse(sl); err != nil {
+			VerifiedEventDetailSet = true
+			if err := s.VerifiedEventDetail.parse(sl); err != nil {
 				return ErrContext{"VerifiedIndividualFamEventDetail", "", err}
 			}
 		default:
@@ -1176,8 +1203,8 @@ func (s *VerifiedIndividualFamEventDetail) parse(l Line) error {
 			// possibly store in a Other field
 		}
 	}
-	if !VerifiedIndividualEventDetailSet {
-		return ErrContext{"VerifiedIndividualFamEventDetail", "VerifiedIndividualEventDetail", ErrRequiredMissing}
+	if !VerifiedEventDetailSet {
+		return ErrContext{"VerifiedIndividualFamEventDetail", "VerifiedEventDetail", ErrRequiredMissing}
 	}
 	return nil
 }
@@ -1206,6 +1233,33 @@ func (s *VerifiedEventDetail) parse(l Line) error {
 		default:
 			if len(sl.tag) < 1 || sl.tag[0] != '_' {
 				return ErrContext{"VerifiedEventDetail", sl.tag, ErrUnknownTag}
+			}
+			// possibly store in a Other field
+		}
+	}
+	return nil
+}
+
+// IndividualEventDetail is a GEDCOM structure type
+type IndividualEventDetail struct {
+	Event EventDetail
+}
+
+func (s *IndividualEventDetail) parse(l Line) error {
+	var EventSet bool
+	for _, sl := range l.Sub {
+		switch sl.tag {
+		case "EVEN":
+			if EventSet {
+				return ErrContext{"IndividualEventDetail", "EVEN", ErrSingleMultiple}
+			}
+			EventSet = true
+			if err := s.Event.parse(sl); err != nil {
+				return ErrContext{"IndividualEventDetail", "EVEN", err}
+			}
+		default:
+			if len(sl.tag) < 1 || sl.tag[0] != '_' {
+				return ErrContext{"IndividualEventDetail", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
 		}
@@ -1252,7 +1306,7 @@ func (s *AdoptionEvent) parse(l Line) error {
 // AdoptionReference is a GEDCOM structure type
 type AdoptionReference struct {
 	ID        Xref
-	AdoptedBy AdoptedByWhichParent
+	AdoptedBy AdoptedBy
 }
 
 func (s *AdoptionReference) parse(l Line) error {
@@ -1716,7 +1770,7 @@ type MultimediaRecord struct {
 	Format            MultimediaFormat
 	Title             DescriptiveTitle
 	Notes             []NoteStructure
-	Blob              MultimediaBlob
+	Blob              EncodedMultimediaLine
 	ContinuedObject   Xref
 	UserReferences    []UserReferenceStructure
 	AutomatedRecordID AutomatedRecordID
@@ -2077,40 +2131,40 @@ func (s *SourceRecord) parse(l Line) error {
 	return nil
 }
 
-// SourceRecordDateStructure is a GEDCOM structure type
-type SourceRecordDateStructure struct {
+// SourceRecordDataStructure is a GEDCOM structure type
+type SourceRecordDataStructure struct {
 	EventsRecorded    []EventsRecordedStructure
 	ResponsibleAgency ResponsibleAgency
 	Notes             []NoteStructure
 }
 
-func (s *SourceRecordDateStructure) parse(l Line) error {
+func (s *SourceRecordDataStructure) parse(l Line) error {
 	var ResponsibleAgencySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "EVEN":
 			var t EventsRecordedStructure
 			if err != t.parse(sl); err != nil {
-				return ErrContext{"SourceRecordDateStructure", "EVEN", err}
+				return ErrContext{"SourceRecordDataStructure", "EVEN", err}
 			}
 			s.EventsRecorded = append(s.EventsRecorded, t)
 		case "AGNC":
 			if ResponsibleAgencySet {
-				return ErrContext{"SourceRecordDateStructure", "AGNC", ErrSingleMultiple}
+				return ErrContext{"SourceRecordDataStructure", "AGNC", ErrSingleMultiple}
 			}
 			ResponsibleAgencySet = true
 			if err := s.ResponsibleAgency.parse(sl); err != nil {
-				return ErrContext{"SourceRecordDateStructure", "AGNC", err}
+				return ErrContext{"SourceRecordDataStructure", "AGNC", err}
 			}
 		case "NOTE":
 			var t NoteStructure
 			if err != t.parse(sl); err != nil {
-				return ErrContext{"SourceRecordDateStructure", "NOTE", err}
+				return ErrContext{"SourceRecordDataStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
 		default:
 			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"SourceRecordDateStructure", sl.tag, ErrUnknownTag}
+				return ErrContext{"SourceRecordDataStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
 		}
@@ -2160,7 +2214,7 @@ type SubmissionRecord struct {
 	NameOfFamilyFile         NameOfFamilyFile
 	TempleCode               TempleCode
 	GenerationsOfAncestors   GenerationsOfAncestors
-	GenerationsOfDescendatns GenerationsOfDescendatns
+	GenerationsOfDescendants GenerationsOfDescendants
 	OrdinanceProcessFlag     OrdinanceProcessFlag
 	AutomatedRecordID        AutomatedRecordID
 }
@@ -2169,7 +2223,7 @@ func (s *SubmissionRecord) parse(l Line) error {
 	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
 		return ErrContext{"SubmissionRecord", "xrefID", err}
 	}
-	var NameOfFamilyFileSet, TempleCodeSet, GenerationsOfAncestorsSet, GenerationsOfDescendatnsSet, OrdinanceProcessFlagSet, AutomatedRecordIDSet bool
+	var NameOfFamilyFileSet, TempleCodeSet, GenerationsOfAncestorsSet, GenerationsOfDescendantsSet, OrdinanceProcessFlagSet, AutomatedRecordIDSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "FAMF":
@@ -2197,11 +2251,11 @@ func (s *SubmissionRecord) parse(l Line) error {
 				return ErrContext{"SubmissionRecord", "ANCE", err}
 			}
 		case "DESC":
-			if GenerationsOfDescendatnsSet {
+			if GenerationsOfDescendantsSet {
 				return ErrContext{"SubmissionRecord", "DESC", ErrSingleMultiple}
 			}
-			GenerationsOfDescendatnsSet = true
-			if err := s.GenerationsOfDescendatns.parse(sl); err != nil {
+			GenerationsOfDescendantsSet = true
+			if err := s.GenerationsOfDescendants.parse(sl); err != nil {
 				return ErrContext{"SubmissionRecord", "DESC", err}
 			}
 		case "ORDI":
@@ -2410,7 +2464,7 @@ func (s *AddressStructure) parse(l Line) error {
 type AssociationStructure struct {
 	ID         Xref
 	RecordType RecordType
-	Relation   RelationIsDescription
+	Relation   RelationIsDescriptor
 	Notes      []NoteStructure
 	Sources    []SourceCitation
 }
@@ -2824,45 +2878,45 @@ func (s *MultimediaLinkFile) parse(l Line) error {
 	return nil
 }
 
-// NoteStructureID is a GEDCOM structure type
-type NoteStructureID struct {
+// NoteID is a GEDCOM structure type
+type NoteID struct {
 	ID Xref
 }
 
-func (s *NoteStructureID) parse(l Line) error {
+func (s *NoteID) parse(l Line) error {
 	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
-		return ErrContext{"NoteStructureID", "xrefID", err}
+		return ErrContext{"NoteID", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
 		if len(sl.tag) < 1 || sl.tag[0] != '_' {
-			return ErrContext{"NoteStructureID", sl.tag, ErrUnknownTag}
+			return ErrContext{"NoteID", sl.tag, ErrUnknownTag}
 		}
 		// possibly store in a Other field
 	}
 	return nil
 }
 
-// NoteStructureText is a GEDCOM structure type
-type NoteStructureText struct {
+// NoteText is a GEDCOM structure type
+type NoteText struct {
 	SubmitterText SubmitterText
 	Sources       []SourceCitation
 }
 
-func (s *NoteStructureText) parse(l Line) error {
+func (s *NoteText) parse(l Line) error {
 	if err := s.SubmitterText.parse(l); err != nil {
-		return ErrContext{"NoteStructureText", "line_value", err}
+		return ErrContext{"NoteText", "line_value", err}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "SOUR":
 			var t SourceCitation
 			if err != t.parse(sl); err != nil {
-				return ErrContext{"NoteStructureText", "SOUR", err}
+				return ErrContext{"NoteText", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		default:
 			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"NoteStructureText", sl.tag, ErrUnknownTag}
+				return ErrContext{"NoteText", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
 		}
@@ -2964,7 +3018,7 @@ func (s *PersonalNameStructure) parse(l Line) error {
 type PlaceStructure struct {
 	Place          PlaceValue
 	PlaceHierarchy PlaceHierarchy
-	Sources        []SourceStructure
+	Sources        []SourceCitation
 	Notes          []NoteStructure
 }
 
@@ -2984,7 +3038,7 @@ func (s *PlaceStructure) parse(l Line) error {
 				return ErrContext{"PlaceStructure", "FORM", err}
 			}
 		case "SOUR":
-			var t SourceStructure
+			var t SourceCitation
 			if err != t.parse(sl); err != nil {
 				return ErrContext{"PlaceStructure", "SOUR", err}
 			}
@@ -3010,13 +3064,17 @@ type SourceID struct {
 	ID                  Xref
 	WhereWithinSource   WhereWithinSource
 	SourceCitationEvent SourceCitationEvent
+	Data                SourceData
+	Certainty           CertaintyAssessment
+	Multimedia          []MultimediaLink
+	Notes               []NoteStructure
 }
 
 func (s *SourceID) parse(l Line) error {
 	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
 		return ErrContext{"SourceID", "xrefID", err}
 	}
-	var SourceCitationEventSet, WhereWithinSourceSet bool
+	var WhereWithinSourceSet, SourceCitationEventSet, DataSet, CertaintySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "PAGE":
@@ -3035,6 +3093,34 @@ func (s *SourceID) parse(l Line) error {
 			if err := s.SourceCitationEvent.parse(sl); err != nil {
 				return ErrContext{"SourceID", "EVEN", err}
 			}
+		case "DATA":
+			if DataSet {
+				return ErrContext{"SourceID", "DATA", ErrSingleMultiple}
+			}
+			DataSet = true
+			if err := s.Data.parse(sl); err != nil {
+				return ErrContext{"SourceID", "DATA", err}
+			}
+		case "QUAY":
+			if CertaintySet {
+				return ErrContext{"SourceID", "QUAY", ErrSingleMultiple}
+			}
+			CertaintySet = true
+			if err := s.Certainty.parse(sl); err != nil {
+				return ErrContext{"SourceID", "QUAY", err}
+			}
+		case "OBJE":
+			var t MultimediaLink
+			if err != t.parse(sl); err != nil {
+				return ErrContext{"SourceID", "OBJE", err}
+			}
+			s.Multimedia = append(s.Multimedia, t)
+		case "NOTE":
+			var t NoteStructure
+			if err != t.parse(sl); err != nil {
+				return ErrContext{"SourceID", "NOTE", err}
+			}
+			s.Notes = append(s.Notes, t)
 		default:
 			if len(sl.tag) < 1 || sl.tag[0] != '_' {
 				return ErrContext{"SourceID", sl.tag, ErrUnknownTag}
@@ -3042,8 +3128,70 @@ func (s *SourceID) parse(l Line) error {
 			// possibly store in a Other field
 		}
 	}
-	if !SourceCitationEventSet {
-		return ErrContext{"SourceID", "SourceCitationEvent", ErrRequiredMissing}
+	return nil
+}
+
+// SourceCitationEvent is a GEDCOM structure type
+type SourceCitationEvent struct {
+	EventTypeCitedFrom EventTypeCitedFrom
+	Role               RoleInEvent
+}
+
+func (s *SourceCitationEvent) parse(l Line) error {
+	if err := s.EventTypeCitedFrom.parse(l); err != nil {
+		return ErrContext{"SourceCitationEvent", "line_value", err}
+	}
+	var RoleSet bool
+	for _, sl := range l.Sub {
+		switch sl.tag {
+		case "ROLE":
+			if RoleSet {
+				return ErrContext{"SourceCitationEvent", "ROLE", ErrSingleMultiple}
+			}
+			RoleSet = true
+			if err := s.Role.parse(sl); err != nil {
+				return ErrContext{"SourceCitationEvent", "ROLE", err}
+			}
+		default:
+			if len(sl.tag) < 1 || sl.tag[0] != '_' {
+				return ErrContext{"SourceCitationEvent", sl.tag, ErrUnknownTag}
+			}
+			// possibly store in a Other field
+		}
+	}
+	return nil
+}
+
+// SourceData is a GEDCOM structure type
+type SourceData struct {
+	Date EntryRecordingDate
+	Text []TextFromSource
+}
+
+func (s *SourceData) parse(l Line) error {
+	var DateSet bool
+	for _, sl := range l.Sub {
+		switch sl.tag {
+		case "DATE":
+			if DateSet {
+				return ErrContext{"SourceData", "DATE", ErrSingleMultiple}
+			}
+			DateSet = true
+			if err := s.Date.parse(sl); err != nil {
+				return ErrContext{"SourceData", "DATE", err}
+			}
+		case "TEXT":
+			var t TextFromSource
+			if err != t.parse(sl); err != nil {
+				return ErrContext{"SourceData", "TEXT", err}
+			}
+			s.Text = append(s.Text, t)
+		default:
+			if len(sl.tag) < 1 || sl.tag[0] != '_' {
+				return ErrContext{"SourceData", sl.tag, ErrUnknownTag}
+			}
+			// possibly store in a Other field
+		}
 	}
 	return nil
 }
@@ -3168,6 +3316,48 @@ func (s *SpouseToFamilyLink) parse(l Line) error {
 		}
 	}
 	return nil
+}
+
+// MultimediaLink splite between MultimediaLinkID and MultimediaLinkFile
+type MultimediaLink struct {
+	Data Record
+}
+
+func (s *MultimediaLink) parse(l Line) error {
+	if l.xrefID != "" {
+		s.Data = MultimediaLinkID{}
+	} else {
+		s.Data = MultimediaLinkFile{}
+	}
+	return s.Data.parse(l)
+}
+
+// NoteStructure splits between NoteID and NoteText
+type NoteStructure struct {
+	Data Record
+}
+
+func (s *NoteStructure) parse(l Line) error {
+	if l.xrefID != "" {
+		s.Data = NoteID{}
+	} else {
+		s.Data = NoteText{}
+	}
+	return s.Data.parse(l)
+}
+
+// SourceCitation splits between SourceID and SourceText
+type SourceCitation struct {
+	Data Record
+}
+
+func (s *SourceCitation) parse(l Line) error {
+	if l.xrefID != "" {
+		s.Data = SourceID{}
+	} else {
+		s.Data = SourceText{}
+	}
+	return s.Data.parse(l)
 }
 
 // Errors

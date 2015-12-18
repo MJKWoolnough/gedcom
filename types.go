@@ -62,14 +62,14 @@ func (e *AddressLine2) parse(l Line) error {
 	return nil
 }
 
-// AddressPostalCose is a GEDCOM base type
-type AddressPostalCose string
+// AddressPostalCode is a GEDCOM base type
+type AddressPostalCode string
 
-func (e *AddressPostalCose) parse(l Line) error {
+func (e *AddressPostalCode) parse(l Line) error {
 	if len(l.value) < 1 || len(l.value) > 10 {
-		return ErrInvalidLength{"AddressPostalCose", l.value, 1, 10}
+		return ErrInvalidLength{"AddressPostalCode", l.value, 1, 10}
 	}
-	*e = AddressPostalCose(l.value)
+	*e = AddressPostalCode(l.value)
 	return nil
 }
 
@@ -392,14 +392,14 @@ func (e *DateJuln) parse(l Line) error {
 	return nil
 }
 
-// DateLSDOrd is a GEDCOM base type
-type DateLSDOrd string
+// DateLDSOrd is a GEDCOM base type
+type DateLDSOrd string
 
-func (e *DateLSDOrd) parse(l Line) error {
+func (e *DateLDSOrd) parse(l Line) error {
 	if len(l.value) < 4 || len(l.value) > 35 {
-		return ErrInvalidLength{"DateLSDOrd", l.value, 4, 35}
+		return ErrInvalidLength{"DateLDSOrd", l.value, 4, 35}
 	}
-	*e = DateLSDOrd(l.value)
+	*e = DateLDSOrd(l.value)
 	return nil
 }
 
@@ -1056,14 +1056,14 @@ func (e *NameOfSourceData) parse(l Line) error {
 	return nil
 }
 
-// NameOfPersonal is a GEDCOM base type
-type NameOfPersonal string
+// NamePersonal is a GEDCOM base type
+type NamePersonal string
 
-func (e *NameOfPersonal) parse(l Line) error {
+func (e *NamePersonal) parse(l Line) error {
 	if len(l.value) < 1 || len(l.value) > 20 {
-		return ErrInvalidLength{"NameOfPersonal", l.value, 1, 20}
+		return ErrInvalidLength{"NamePersonal", l.value, 1, 20}
 	}
-	*e = NameOfPersonal(l.value)
+	*e = NamePersonal(l.value)
 	return nil
 }
 
@@ -1214,17 +1214,17 @@ func (e *Occupation) parse(l Line) error {
 	return nil
 }
 
-// OrginanceProcessFlag is a GEDCOM base type
-type OrginanceProcessFlag string
+// OrdinanceProcessFlag is a GEDCOM base type
+type OrdinanceProcessFlag string
 
-func (e *OrginanceProcessFlag) parse(l Line) error {
+func (e *OrdinanceProcessFlag) parse(l Line) error {
 	switch strings.ToLower(l.value) {
 	case "yes":
 		*e = "yes"
 	case "no":
 		*e = "no"
 	default:
-		return ErrInvalidValue{"OrginanceProcessFlag", l.value}
+		return ErrInvalidValue{"OrdinanceProcessFlag", l.value}
 	}
 	return nil
 }
@@ -1281,14 +1281,14 @@ func (e *PhysicalDescription) parse(l Line) error {
 	return nil
 }
 
-// PlaceHierachy is a GEDCOM base type
-type PlaceHierachy string
+// PlaceHierarchy is a GEDCOM base type
+type PlaceHierarchy string
 
-func (e *PlaceHierachy) parse(l Line) error {
+func (e *PlaceHierarchy) parse(l Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
-		return ErrInvalidLength{"PlaceHierachy", l.value, 1, 120}
+		return ErrInvalidLength{"PlaceHierarchy", l.value, 1, 120}
 	}
-	*e = PlaceHierachy(l.value)
+	*e = PlaceHierarchy(l.value)
 	return nil
 }
 
