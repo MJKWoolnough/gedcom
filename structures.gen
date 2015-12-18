@@ -54,7 +54,7 @@ Family
 	CHIL:Xref:Children:0:M
 	NCHI:CountOfChildren:NumChildren:0:1
 	SUBM:Xref:Submitters:0:M
-	SLGS:LGSSpouseSealing::0:M
+	SLGS:LDSSpouseSealing::0:M
 	SOUR:SourceCitation:Sources:0:M
 	OBJE:MultimediaLink:Multimedia:0:M
 	NOTE:NoteStructure:Notes:0:M
@@ -74,26 +74,26 @@ Individual
 	SEX:SexValue:Gender:0:1
 	BIRT:VerifiedIndividualFamEventDetail:Birth:0:1
 	CHR:VerifiedIndividualFamEventDetail:Christening:0:1
-	DEAT:VerifiedIndividualEventDetail:Death:0:1
-	BURI:VerifiedIndividualEventDetail:Buried:0:1
-	CREM:VerifiedIndividualEventDetail:Cremation:0:1
+	DEAT:VerifiedEventDetail:Death:0:1
+	BURI:VerifiedEventDetail:Buried:0:1
+	CREM:VerifiedEventDetail:Cremation:0:1
 	ADOP:AdoptionEvent:Adoption:0:1
-	BAPM:VerifiedIndividualEventDetail:Maptism:0:1
-	BARM:VerifiedIndividualEventDetail:BarMitzvah:0:1
-	BASM:VerifiedIndividualEventDetail:BasMitzvah:0:1
-	BLES:VerifiedIndividualEventDetail:Blessing:0:1
-	CHRA:VerifiedIndividualEventDetail:AdultChristening:0:1
-	CONF:VerifiedIndividualEventDetail:Confirmation:0:1
-	FCOM:VerifiedIndividualEventDetail:FirstCommunion:0:1
-	ORDN:VerifiedIndividualEventDetail:Ordination:0:1
-	NATU:VerifiedIndividualEventDetail:Naturalization:0:1
-	EMIG:VerifiedIndividualEventDetail:Emmigrated:0:1
-	IMMI:VerifiedIndividualEventDetail:Immigrated:0:1
-	CENS:VerifiedIndividualEventDetail:Census:0:1
-	PROB:VerifiedIndividualEventDetail:Probate:0:1
-	WILL:VerifiedIndividualEventDetail:Will:0:1
-	GRAD:VerifiedIndividualEventDetail:Graduated:0:1
-	RETI:VerifiedIndividualEventDetail:Retired:0:1
+	BAPM:VerifiedEventDetail:Maptism:0:1
+	BARM:VerifiedEventDetail:BarMitzvah:0:1
+	BASM:VerifiedEventDetail:BasMitzvah:0:1
+	BLES:VerifiedEventDetail:Blessing:0:1
+	CHRA:VerifiedEventDetail:AdultChristening:0:1
+	CONF:VerifiedEventDetail:Confirmation:0:1
+	FCOM:VerifiedEventDetail:FirstCommunion:0:1
+	ORDN:VerifiedEventDetail:Ordination:0:1
+	NATU:VerifiedEventDetail:Naturalization:0:1
+	EMIG:VerifiedEventDetail:Emmigrated:0:1
+	IMMI:VerifiedEventDetail:Immigrated:0:1
+	CENS:VerifiedEventDetail:Census:0:1
+	PROB:VerifiedEventDetail:Probate:0:1
+	WILL:VerifiedEventDetail:Will:0:1
+	GRAD:VerifiedEventDetail:Graduated:0:1
+	RETI:VerifiedEventDetail:Retired:0:1
 	EVEN:IndividualEventDetail:Events:0:M
 	CAST:CasteEvent:Caste:0:M
 	DSCR:DescriptionEvent:Description:0:M
@@ -125,16 +125,18 @@ Individual
 	CHAN:ChangeDateStructure:ChangeDate:0:1
 VerifiedIndividualFamEventDetail
 	FAMC:Xref:Famc:0:1
-	:VerifiedIndividualEventDetail
+	:VerifiedEventDetail
 VerifiedEventDetail
 	#:Verified::0:1
+	EVEN:EventDetail:Event:0:1
+IndividualEventDetail
 	EVEN:EventDetail:Event:0:1
 AdoptionEvent
 	FAMC:AdoptionReference:Family:0:1
 	EVEN:EventDetail:Event:0:1
 AdoptionReference
 	@:ID
-	ADOP:AdoptedByWhichParent:AdoptedBy:0:1
+	ADOP:AdoptedBy::0:1
 CasteEvent
 	#:CasteName
 	EVEN:EventDetail:Event:0:1
@@ -181,7 +183,7 @@ MultimediaRecord
 	FORM:MultimediaFormat:Format:1:1
 	TITLE:DescriptiveTitle:Title:0:1
 	NOTE:NoteStructure:Notes:0:M
-	BLOB*:MultimediaBlob:Blob:1:1
+	BLOB*:EncodedMultimediaLine:Blob:1:1
 	OBJE:Xref:ContinuedObject:0:1
 	REFN:UserReferenceStructure:UserReferences:0:M
 	RIN:AutomatedRecordID::0:1
@@ -216,7 +218,7 @@ SourceRecord
 	REFN:UserReferenceStructure:UserReferences:0:M
 	RIN:AutomatedRecordID::0:1
 	CHAN:ChangeDateStructure:ChangeDate:0:1
-SourceRecordDateStructure
+SourceRecordDataStructure
 	EVEN:EventsRecordedStructure:EventsRecorded:0:M
 	AGNC:ResponsibleAgency::0:1
 	NOTE:NoteStructure:Notes:0:M
@@ -228,7 +230,7 @@ SubmissionRecord
 	FAMF:NameOfFamilyFile::0:1
 	TEMP:TempleCode::0:1
 	ANCE:GenerationsOfAncestors::0:1
-	DESC:GenerationsOfDescendatns::0:1
+	DESC:GenerationsOfDescendants::0:1
 	ORDI:OrdinanceProcessFlag::0:1
 	RIN:AutomatedRecordID::0:1
 SubmitterRecord
@@ -252,7 +254,7 @@ AddressStructure
 AssociationStructure
 	@:ID
 	TYPE:RecordType::1:1
-	RELA:RelationIsDescription:Relation:1:1
+	RELA:RelationIsDescriptor:Relation:1:1
 	NOTE:NoteStructure:Notes:0:M
 	SOUR:SourceCitation:Sources:0:M
 ChangeDateStructure
@@ -314,7 +316,17 @@ PlaceStructure
 SourceID
 	@:ID
 	PAGE:WhereWithinSource::0:1
-	EVEN:SourceCitationEvent
+	EVEN:SourceCitationEvent::0:1
+	DATA:SourceData:Data:0:1
+	QUAY:CertaintyAssessment:Certainty:0:1
+	OBJE:MultimediaLink:Multimedia:0:M
+	NOTE:NoteStructure:Notes:0:M
+SourceCitationEvent
+	#:EventTypeCitedFrom
+	ROLE:RoleInEvent:Role:0:1
+SourceData
+	DATE:EntryRecordingDate:Date:0:1
+	TEXT*:TextFromSource:Text:0:M
 SourceText
 	#*:SourceDescription:Description
 	TEXT*:TextFromSource:Texts:0:M
