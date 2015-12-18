@@ -244,6 +244,7 @@ func (s *HeaderBusiness) parse(l Line) error {
 	}
 	var AddressSet bool
 	var PhoneNumberCount int
+	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "ADDR":
@@ -1936,6 +1937,7 @@ func (s *RepositoryRecord) parse(l Line) error {
 	}
 	var NameOfRepositorySet, AddressSet, AutomatedRecordIDSet, ChangeDateSet bool
 	var PhoneNumberCount int
+	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "Name":
@@ -2303,6 +2305,8 @@ func (s *SubmitterRecord) parse(l Line) error {
 	}
 	var SubmitterNameSet, AddressSet, SubmitterRegisteredRFNSet, AutomatedRecordIDSet, ChangeDateSet bool
 	var PhoneNumberCount, LanguagePreferenceCount int
+	s.PhoneNumber = make([]PhoneNumber, 0, 3)
+	s.LanguagePreference = make([]LanguagePreference, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "NAME":
@@ -2641,6 +2645,7 @@ type EventDetail struct {
 func (s *EventDetail) parse(l Line) error {
 	var TypeSet, DateSet, PlaceSet, AddressSet, AgeSet, ResponsibleAgencySet, CauseOfEventSet bool
 	var PhoneNumberCount int
+	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "TYPE":
