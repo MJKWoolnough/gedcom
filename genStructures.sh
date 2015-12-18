@@ -230,7 +230,52 @@ OFS="$IFS";
 		IFS="$OFS";
 		processStructure "$structureName" $longest "${types[@]}";
 	) < structures.gen
-	
+
+	cat <<HEREDOC
+
+// MultimediaLink splite between MultimediaLinkID and MultimediaLinkFile
+type MultimediaLink struct {
+	Data Record
+}
+
+func (s *MultimediaLink) parse(l Line) error {
+	if l.xrefID != "" {
+		s.Data = MultimediaLinkID{}
+	} else {
+		s.Data = MultimediaLinkFile{}
+	}
+	return s.Data.parse(l)
+}
+
+// NoteStructure splits between NoteID and NoteText
+type NoteStructure struct {
+	Data Record
+}
+
+func (s *NoteStructure) parse(l Line) error {
+	if l.xrefID != "" {
+		s.Data = NoteID{}
+	} else {
+		s.Data = NoteText{}
+	}
+	return s.Data.parse(l)
+}
+
+// SourceCitation splits between SourceID and SourceText
+type SourceCitation struct {
+	Data Record
+}
+
+func (s *SourceCitation) parse(l Line) error {
+	if l.xrefID != "" {
+		s.Data = SourceID{}
+	} else {
+		s.Data = SourceText{}
+	}
+	return s.Data.parse(l)
+}
+HEREDOC
+
 	echo;
 	echo "// Errors";
 	echo "var (";
