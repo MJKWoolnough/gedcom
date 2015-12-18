@@ -6,11 +6,6 @@ import (
 	"strconv"
 )
 
-type Record interface {
-	Type() RecordType
-	parse(Line) error
-}
-
 type line struct {
 	level  uint64
 	xrefID string
@@ -19,7 +14,7 @@ type line struct {
 }
 
 type Reader struct {
-	t tokeniser
+	t *tokeniser
 
 	peeked bool
 	line   line
@@ -30,7 +25,7 @@ type Reader struct {
 
 func NewReader(r io.Reader) *Reader {
 	return &Reader{
-		r: newTokeniser(r),
+		t: newTokeniser(r),
 	}
 }
 
@@ -56,17 +51,17 @@ func (r *Reader) readLine() {
 		return
 	}
 	if t.typ == tokenXref {
-		line.xrefID = t.data
+		r.line.xrefID = t.data
 		t, r.err = r.t.GetToken()
 		if r.err != nil {
 			return
 		}
 	}
-	if token.typ != tokenTag {
-		r.err = ErrNotType
+	if t.typ != tokenTag {
+		r.err = ErrNotTag
 		return
 	}
-	r.line.tag = token.data
+	r.line.tag = t.data
 	t, r.err = r.t.GetToken()
 	if r.err != nil {
 		return
@@ -87,7 +82,7 @@ func (r *Reader) Record() (Record, error) {
 		r.peeked = true
 	}
 	if r.err != nil {
-		return nil, err
+		return nil, r.err
 	}
 	if !r.hadHeader {
 		if r.line.tag != "HEAD" {
@@ -105,12 +100,12 @@ func (r *Reader) Record() (Record, error) {
 		}
 	} else if r.line.tag == "TRLR" {
 		r.peeked = false
-		return RecordTrailer{}, nil
+		return &Trailer{}, nil
 	}
 
 	lines := make([]line, 1, 32)
 	lines[0] = r.line
-	var lastlevel = 0
+	var lastlevel uint64
 	for {
 		if r.err != nil {
 			return nil, r.err
@@ -126,17 +121,25 @@ func (r *Reader) Record() (Record, error) {
 			var record Record
 			switch lines[0].tag {
 			case "HEAD":
-				record = Header{}
+				record = &Header{}
 			case "SUBM":
+				record = &SubmissionRecord{}
 			case "FAM":
+				record = &Family{}
 			case "INDI":
+				record = &Individual{}
 			case "OBJE":
+				record = &MultimediaRecord{}
 			case "NOTE":
+				record = &NoteRecord{}
 			case "REPO":
+				record = &RepositoryRecord{}
 			case "SOUR":
+				record = &SourceRecord{}
 			case "SUBN":
+				record = &SubmitterRecord{}
 			default:
-				if lines[0][0] == "_" {
+				if lines[0].tag[0] == '_' {
 					return plines, nil
 				}
 				return plines, ErrContext{"root", lines[0].tag, ErrUnknownTag}
@@ -145,7 +148,7 @@ func (r *Reader) Record() (Record, error) {
 			if err != nil {
 				return nil, err
 			}
-			return r, nil
+			return record, nil
 		}
 	}
 
@@ -155,4 +158,7 @@ func (r *Reader) Record() (Record, error) {
 var (
 	ErrNoHeader  = errors.New("no header")
 	ErrNoRecords = errors.New("no records")
+	ErrNotLevel  = errors.New("not level token")
+	ErrNotTag    = errors.New("not tag token")
+	ErrNotLine   = errors.New("not line_value token")
 )
