@@ -14,17 +14,13 @@ func parseLines(lines []line) Line {
 	for n := range lines {
 		if lines[n].level == level {
 			if last != 0 {
-				l.Sub = append(l.Sub, parseLines[last:n])
+				l.Sub = append(l.Sub, parseLines(lines[last:n]))
 			}
 			last = n
 		}
 	}
 	if last != 0 {
-		l.Sub = append(l.Sub, parseLines[last:n])
+		l.Sub = append(l.Sub, parseLines(lines[last:]))
 	}
 	return l
-}
-
-func (Line) Type() RecordType {
-	return RecordUnknown
 }
