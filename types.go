@@ -198,7 +198,7 @@ func (e *CauseOfEvent) parse(l Line) error {
 type CertaintyAssessment uint
 
 func (e *CertaintyAssessment) parse(l Line) error {
-	switch strings.ToLower(l.value) {
+	switch l.value {
 	case "0":
 		*e = 0
 	case "1":
@@ -229,8 +229,8 @@ type CharacterSet string
 
 func (e *CharacterSet) parse(l Line) error {
 	switch strings.ToUpper(l.value) {
-	case "ANSWL":
-		*e = "ANSWL"
+	case "ANSEL":
+		*e = "ANSEL"
 	case "UNICODE":
 		*e = "UNICODE"
 	case "ASCII":
