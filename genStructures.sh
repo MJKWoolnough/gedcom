@@ -200,10 +200,7 @@ OFS="$IFS";
 	echo;
 	echo "// File automatically generated with ./genStructures.sh";
 	echo;
-	echo "import (";
-	echo "	\"errors\"";
-	echo "	\"strconv\"";
-	echo ")";
+	echo "import \"errors\"";
 
 	(
 		read structureName;
