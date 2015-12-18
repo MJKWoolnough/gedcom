@@ -4,7 +4,7 @@
 
 	echo "package gedcom"
 	echo;
-	echo "// File automatically generated with ./genMap.sh";
+	echo "// File automatically generated with ./genTypes.sh";
 	echo;
 	echo "import (";
 	echo "	\"strconv\"";
