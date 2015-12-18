@@ -15,7 +15,7 @@ CasteName:1:90
 CauseOfEvent:1:90
 CertaintyAssessment::(uint)0:1:2:3
 ChangeDate:10:11
-CharacterSet::ANSWL:UNICODE:ASCII
+CharacterSet::ANSEL:UNICODE:ASCII
 CopyrightGedcomFile:1:90
 CopyrightSourceData:1:90
 CountOfChildren:(uint8)1:3
