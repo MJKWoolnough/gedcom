@@ -197,7 +197,7 @@ NoteRecord
 	CHAN:ChangeDateStructure:ChangeDate:0:1
 RepositoryRecord
 	@:ID
-	Name:NameOfRepository::0:1
+	NAME:NameOfRepository::0:1
 	ADDR:AddressStructure:Address:0:1
 	PHON:PhoneNumber:PhoneNumber:0:3
 	NOTE:NoteStructure:Notes:0:M
