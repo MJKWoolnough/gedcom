@@ -31,6 +31,7 @@
 			data[1]="$(echo "$first" | cut -d')' -f2)";
 		fi;
 		echo;
+		echo "// $eType is a GEDCOM base type";
 		echo "type $eType $vType";
 		echo;
 		echo "func (e *$eType) parse(l Line) error {";
@@ -75,19 +76,25 @@
 	done < types.gen
 
 	echo;
+	echo "// ErrInvalidValue is an error that is generated when a type is not one of the";
+	echo "// specified values";
 	echo "type ErrInvalidValue struct {";
 	echo "	Type, Value string";
 	echo "}";
 	echo;
+	echo "// Error is an implementation of the error interface";
 	echo "func (e ErrInvalidValue) Error() string {";
 	echo "	return \"Value for \" + e.Type + \" is invalid\"";
 	echo "}";
 	echo;
+	echo "// ErrInvalidLength is an error that is generated when a type is given more or";
+	echo "// less data than is required";
 	echo "type ErrInvalidLength struct {"
 	echo "	Type, Value string";
 	echo "	Min, Max    uint";
 	echo "}";
 	echo;
+	echo "// Error is an implementation of the error interface";
 	echo "func (e ErrInvalidLength) Error() string {";
 	echo "	return \"Value for \" + e.Type + \" has an invalid length\"";
 	echo "}";
