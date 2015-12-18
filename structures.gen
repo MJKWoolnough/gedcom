@@ -309,7 +309,7 @@ PersonalNameStructure
 PlaceStructure
 	#:PlaceValue:Place
 	FORM:PlaceHierarchy::0:1
-	SOUR:SourceStructure:Sources:0:M
+	SOUR:SourceCitation:Sources:0:M
 	NOTE:NoteStructure:Notes:0:M
 SourceID
 	@:ID
