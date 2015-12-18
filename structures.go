@@ -3360,7 +3360,7 @@ func (s *SourceCitation) parse(l Line) error {
 	return s.Data.parse(l)
 }
 
-// Trailer
+// Trailer type
 type Trailer struct{}
 
 func (s *Trailer) parse(Line) error {
