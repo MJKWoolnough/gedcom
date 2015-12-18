@@ -161,7 +161,7 @@ func (t *tokeniser) tag() (token, stateFn) {
 
 func (t *tokeniser) endLine() (token, stateFn) {
 	return token{
-		token: tokenEndLine,
+		tokenEndLine,
 		"",
 	}, t.level
 }
