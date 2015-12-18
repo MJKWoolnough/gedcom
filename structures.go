@@ -260,7 +260,7 @@ func (s *HeaderBusiness) parse(l Line) error {
 			}
 			PhoneNumberCount++
 			var t PhoneNumber
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"HeaderBusiness", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
@@ -443,7 +443,7 @@ type Family struct {
 }
 
 func (s *Family) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"Family", "xrefID", err}
 	}
 	var AnnulmentSet, CensusSet, DivorceSet, DivorceFiledSet, EngagementSet, MarriageSet, MarriageBannSet, MarriageContractSet, MarriageLicenseSet, MarriageSettlementSet, HusbandSet, WifeSet, NumChildrenSet bool
@@ -531,7 +531,7 @@ func (s *Family) parse(l Line) error {
 			}
 		case "EVEN":
 			var t FamilyEventDetail
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Family", "EVEN", err}
 			}
 			s.Events = append(s.Events, t)
@@ -553,7 +553,7 @@ func (s *Family) parse(l Line) error {
 			}
 		case "CHIL":
 			var t Xref
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Family", "CHIL", err}
 			}
 			s.Children = append(s.Children, t)
@@ -567,31 +567,31 @@ func (s *Family) parse(l Line) error {
 			}
 		case "SUBM":
 			var t Xref
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Family", "SUBM", err}
 			}
 			s.Submitters = append(s.Submitters, t)
 		case "SLGS":
 			var t LDSSpouseSealing
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Family", "SLGS", err}
 			}
 			s.LDSSpouseSealing = append(s.LDSSpouseSealing, t)
 		case "SOUR":
 			var t SourceCitation
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Family", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "OBJE":
 			var t MultimediaLink
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Family", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Family", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -774,7 +774,7 @@ type Individual struct {
 }
 
 func (s *Individual) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"Individual", "xrefID", err}
 	}
 	var RestrictionNoticeSet, GenderSet, BirthSet, ChristeningSet, DeathSet, BuriedSet, CremationSet, AdoptionSet, MaptismSet, BarMitzvahSet, BasMitzvahSet, BlessingSet, AdultChristeningSet, ConfirmationSet, FirstCommunionSet, OrdinationSet, NaturalizationSet, EmmigratedSet, ImmigratedSet, CensusSet, ProbateSet, WillSet, GraduatedSet, RetiredSet, PermanentRecordSet, AncestralFileNumberSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -790,7 +790,7 @@ func (s *Individual) parse(l Line) error {
 			}
 		case "NAME":
 			var t PersonalNameStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "NAME", err}
 			}
 			s.PersonalNameStructure = append(s.PersonalNameStructure, t)
@@ -980,145 +980,145 @@ func (s *Individual) parse(l Line) error {
 			}
 		case "EVEN":
 			var t IndividualEventDetail
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "EVEN", err}
 			}
 			s.Events = append(s.Events, t)
 		case "CAST":
 			var t CasteEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "CAST", err}
 			}
 			s.Caste = append(s.Caste, t)
 		case "DSCR":
 			var t DescriptionEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "DSCR", err}
 			}
 			s.Description = append(s.Description, t)
 		case "EDUC":
 			var t ScholasticEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "EDUC", err}
 			}
 			s.ScholasticAchievement = append(s.ScholasticAchievement, t)
 		case "IDNO":
 			var t NationalIDEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "IDNO", err}
 			}
 			s.NationalID = append(s.NationalID, t)
 		case "NATI":
 			var t NationalOriginEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "NATI", err}
 			}
 			s.NationalTribalOrigin = append(s.NationalTribalOrigin, t)
 		case "NCHI":
 			var t ChildrenEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "NCHI", err}
 			}
 			s.CountOfChildren = append(s.CountOfChildren, t)
 		case "NMR":
 			var t MarriagesEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "NMR", err}
 			}
 			s.CountOfMarriages = append(s.CountOfMarriages, t)
 		case "OCCU":
 			var t OccupationEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "OCCU", err}
 			}
 			s.Occupation = append(s.Occupation, t)
 		case "PROP":
 			var t PossessionEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "PROP", err}
 			}
 			s.Possessions = append(s.Possessions, t)
 		case "RELI":
 			var t ReligiousEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "RELI", err}
 			}
 			s.ReligiousAffiliation = append(s.ReligiousAffiliation, t)
 		case "RESI":
 			var t ResidenceEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "RESI", err}
 			}
 			s.Residences = append(s.Residences, t)
 		case "SSN":
 			var t SSNEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "SSN", err}
 			}
 			s.SocialSecurity = append(s.SocialSecurity, t)
 		case "TITL":
 			var t NobilityEvent
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "TITL", err}
 			}
 			s.NobilityTypeTitle = append(s.NobilityTypeTitle, t)
 		case "FAMC":
 			var t ChildToFamilyLink
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "FAMC", err}
 			}
 			s.ChildOf = append(s.ChildOf, t)
 		case "FAMS":
 			var t SpouseToFamilyLink
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "FAMS", err}
 			}
 			s.SpouseOf = append(s.SpouseOf, t)
 		case "SUBM":
 			var t Xref
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "SUBM", err}
 			}
 			s.Submitters = append(s.Submitters, t)
 		case "ASSO":
 			var t AssociationStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "ASSO", err}
 			}
 			s.Associations = append(s.Associations, t)
 		case "ALIA":
 			var t Xref
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "ALIA", err}
 			}
 			s.Aliases = append(s.Aliases, t)
 		case "ANCI":
 			var t Xref
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "ANCI", err}
 			}
 			s.AncestorInterest = append(s.AncestorInterest, t)
 		case "DESI":
 			var t Xref
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "DESI", err}
 			}
 			s.DescendentInterest = append(s.DescendentInterest, t)
 		case "SOUR":
 			var t SourceCitation
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "OBJE":
 			var t MultimediaLink
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -1140,7 +1140,7 @@ func (s *Individual) parse(l Line) error {
 			}
 		case "REFN":
 			var t UserReferenceStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"Individual", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -1310,7 +1310,7 @@ type AdoptionReference struct {
 }
 
 func (s *AdoptionReference) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"AdoptionReference", "xrefID", err}
 	}
 	var AdoptedBySet bool
@@ -1778,7 +1778,7 @@ type MultimediaRecord struct {
 }
 
 func (s *MultimediaRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"MultimediaRecord", "xrefID", err}
 	}
 	var FormatSet, BlobSet, TitleSet, ContinuedObjectSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -1802,7 +1802,7 @@ func (s *MultimediaRecord) parse(l Line) error {
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"MultimediaRecord", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -1824,7 +1824,7 @@ func (s *MultimediaRecord) parse(l Line) error {
 			}
 		case "REFN":
 			var t UserReferenceStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"MultimediaRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -1871,7 +1871,7 @@ type NoteRecord struct {
 }
 
 func (s *NoteRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"NoteRecord", "xrefID", err}
 	}
 	if err := s.SubmitterText.parse(l); err != nil {
@@ -1882,13 +1882,13 @@ func (s *NoteRecord) parse(l Line) error {
 		switch sl.tag {
 		case "SOUR":
 			var t SourceCitation
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"NoteRecord", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "REFN":
 			var t UserReferenceStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"NoteRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -1931,7 +1931,7 @@ type RepositoryRecord struct {
 }
 
 func (s *RepositoryRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"RepositoryRecord", "xrefID", err}
 	}
 	var NameOfRepositorySet, AddressSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -1960,19 +1960,19 @@ func (s *RepositoryRecord) parse(l Line) error {
 			}
 			PhoneNumberCount++
 			var t PhoneNumber
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"RepositoryRecord", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"RepositoryRecord", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
 		case "REFN":
 			var t UserReferenceStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"RepositoryRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -2020,7 +2020,7 @@ type SourceRecord struct {
 }
 
 func (s *SourceRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SourceRecord", "xrefID", err}
 	}
 	var SourceRepositoryCitationSet, DataSet, OriginatorSet, TitleSet, FiledBySet, PublicationFactsSet, TextFromSourceSet, ContinuedObjectSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -2092,13 +2092,13 @@ func (s *SourceRecord) parse(l Line) error {
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceRecord", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
 		case "REFN":
 			var t UserReferenceStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -2144,7 +2144,7 @@ func (s *SourceRecordDataStructure) parse(l Line) error {
 		switch sl.tag {
 		case "EVEN":
 			var t EventsRecordedStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceRecordDataStructure", "EVEN", err}
 			}
 			s.EventsRecorded = append(s.EventsRecorded, t)
@@ -2158,7 +2158,7 @@ func (s *SourceRecordDataStructure) parse(l Line) error {
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceRecordDataStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2220,7 +2220,7 @@ type SubmissionRecord struct {
 }
 
 func (s *SubmissionRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SubmissionRecord", "xrefID", err}
 	}
 	var NameOfFamilyFileSet, TempleCodeSet, GenerationsOfAncestorsSet, GenerationsOfDescendantsSet, OrdinanceProcessFlagSet, AutomatedRecordIDSet bool
@@ -2298,7 +2298,7 @@ type SubmitterRecord struct {
 }
 
 func (s *SubmitterRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SubmitterRecord", "xrefID", err}
 	}
 	var SubmitterNameSet, AddressSet, SubmitterRegisteredRFNSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -2327,13 +2327,13 @@ func (s *SubmitterRecord) parse(l Line) error {
 			}
 			PhoneNumberCount++
 			var t PhoneNumber
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SubmitterRecord", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
 		case "OBJE":
 			var t MultimediaLink
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SubmitterRecord", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
@@ -2343,7 +2343,7 @@ func (s *SubmitterRecord) parse(l Line) error {
 			}
 			LanguagePreferenceCount++
 			var t LanguagePreference
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SubmitterRecord", "LANG", err}
 			}
 			s.LanguagePreference = append(s.LanguagePreference, t)
@@ -2470,7 +2470,7 @@ type AssociationStructure struct {
 }
 
 func (s *AssociationStructure) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"AssociationStructure", "xrefID", err}
 	}
 	var RecordTypeSet, RelationSet bool
@@ -2494,13 +2494,13 @@ func (s *AssociationStructure) parse(l Line) error {
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"AssociationStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
 		case "SOUR":
 			var t SourceCitation
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"AssociationStructure", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
@@ -2540,7 +2540,7 @@ func (s *ChangeDateStructure) parse(l Line) error {
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"ChangeDateStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2596,20 +2596,20 @@ type ChildToFamilyLink struct {
 }
 
 func (s *ChildToFamilyLink) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"ChildToFamilyLink", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "PEDI":
 			var t PedigreeLinkageType
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"ChildToFamilyLink", "PEDI", err}
 			}
 			s.PedigreeLinkageType = append(s.PedigreeLinkageType, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"ChildToFamilyLink", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2681,7 +2681,7 @@ func (s *EventDetail) parse(l Line) error {
 			}
 			PhoneNumberCount++
 			var t PhoneNumber
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"EventDetail", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
@@ -2711,19 +2711,19 @@ func (s *EventDetail) parse(l Line) error {
 			}
 		case "SOUR":
 			var t SourceCitation
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"EventDetail", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "OBJE":
 			var t MultimediaLink
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"EventDetail", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"EventDetail", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2785,13 +2785,13 @@ func (s *LDSSpouseSealing) parse(l Line) error {
 			}
 		case "SOUR":
 			var t SourceCitation
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"LDSSpouseSealing", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"LDSSpouseSealing", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2811,7 +2811,7 @@ type MultimediaLinkID struct {
 }
 
 func (s *MultimediaLinkID) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"MultimediaLinkID", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
@@ -2861,7 +2861,7 @@ func (s *MultimediaLinkFile) parse(l Line) error {
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"MultimediaLinkFile", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2884,7 +2884,7 @@ type NoteID struct {
 }
 
 func (s *NoteID) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"NoteID", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
@@ -2910,7 +2910,7 @@ func (s *NoteText) parse(l Line) error {
 		switch sl.tag {
 		case "SOUR":
 			var t SourceCitation
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"NoteText", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
@@ -2994,13 +2994,13 @@ func (s *PersonalNameStructure) parse(l Line) error {
 			}
 		case "SOUR":
 			var t SourceCitation
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3039,13 +3039,13 @@ func (s *PlaceStructure) parse(l Line) error {
 			}
 		case "SOUR":
 			var t SourceCitation
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"PlaceStructure", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"PlaceStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3071,7 +3071,7 @@ type SourceID struct {
 }
 
 func (s *SourceID) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SourceID", "xrefID", err}
 	}
 	var WhereWithinSourceSet, SourceCitationEventSet, DataSet, CertaintySet bool
@@ -3111,13 +3111,13 @@ func (s *SourceID) parse(l Line) error {
 			}
 		case "OBJE":
 			var t MultimediaLink
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceID", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceID", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3182,7 +3182,7 @@ func (s *SourceData) parse(l Line) error {
 			}
 		case "TEXT":
 			var t TextFromSource
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceData", "TEXT", err}
 			}
 			s.Text = append(s.Text, t)
@@ -3211,13 +3211,13 @@ func (s *SourceText) parse(l Line) error {
 		switch sl.tag {
 		case "TEXT":
 			var t TextFromSource
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceText", "TEXT", err}
 			}
 			s.Texts = append(s.Texts, t)
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceText", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3238,14 +3238,14 @@ type SourceRepositoryCitation struct {
 }
 
 func (s *SourceRepositoryCitation) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SourceRepositoryCitation", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "CALN":
 			var t SourceCallStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SourceRepositoryCitation", "CALN", err}
 			}
 			s.Numbers = append(s.Numbers, t)
@@ -3297,14 +3297,14 @@ type SpouseToFamilyLink struct {
 }
 
 func (s *SpouseToFamilyLink) parse(l Line) error {
-	if err := s.ID.parse(Line{value: l.xrefID}); err != nil {
+	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SpouseToFamilyLink", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "NOTE":
 			var t NoteStructure
-			if err != t.parse(sl); err != nil {
+			if err := t.parse(sl); err != nil {
 				return ErrContext{"SpouseToFamilyLink", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3325,9 +3325,9 @@ type MultimediaLink struct {
 
 func (s *MultimediaLink) parse(l Line) error {
 	if l.xrefID != "" {
-		s.Data = MultimediaLinkID{}
+		s.Data = &MultimediaLinkID{}
 	} else {
-		s.Data = MultimediaLinkFile{}
+		s.Data = &MultimediaLinkFile{}
 	}
 	return s.Data.parse(l)
 }
@@ -3339,9 +3339,9 @@ type NoteStructure struct {
 
 func (s *NoteStructure) parse(l Line) error {
 	if l.xrefID != "" {
-		s.Data = NoteID{}
+		s.Data = &NoteID{}
 	} else {
-		s.Data = NoteText{}
+		s.Data = &NoteText{}
 	}
 	return s.Data.parse(l)
 }
@@ -3353,11 +3353,18 @@ type SourceCitation struct {
 
 func (s *SourceCitation) parse(l Line) error {
 	if l.xrefID != "" {
-		s.Data = SourceID{}
+		s.Data = &SourceID{}
 	} else {
-		s.Data = SourceText{}
+		s.Data = &SourceText{}
 	}
 	return s.Data.parse(l)
+}
+
+// Trailer
+type Trailer struct{}
+
+func (s *Trailer) parse(Line) error {
+	return nil
 }
 
 // Errors
@@ -3375,7 +3382,7 @@ type ErrContext struct {
 
 // Error implements the error interface
 func (e ErrContext) Error() string {
-	return e.Tag + ":" + t.Err.Error()
+	return e.Tag + ":" + e.Err.Error()
 }
 
 // ErrTooMany is an error returned when too many of a particular tag exist
