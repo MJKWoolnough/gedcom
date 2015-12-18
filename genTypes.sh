@@ -72,7 +72,7 @@
 			echo "	return nil";
 		fi;
 		echo "}";
-	done < map.gen
+	done < types.gen
 
 	echo;
 	echo "type ErrInvalidValue struct {";
