@@ -1,15 +1,16 @@
 #!/bin/bash
 
 (
+	cat <<HEREDOC
+package gedcom
 
-	echo "package gedcom"
-	echo;
-	echo "// File automatically generated with ./genTypes.sh";
-	echo;
-	echo "import (";
-	echo "	\"strconv\"";
-	echo "	\"strings\"";
-	echo ")";
+// File automatically generated with ./genTypes.sh
+
+import (
+	"strconv"
+	"strings"
+)
+HEREDOC
 
 
 	while read line; do
@@ -38,8 +39,10 @@
 		if [ -z "${data[1]}" ]; then
 			if [ -z "$(echo "${data[2]}" | tr -d "[:upper:]")" ]; then
 				echo "	switch strings.ToUpper(l.value) {"
-			else
+			elif [ -z "$(echo "${data[2]}" | tr -d "[:lower:]")" ]; then
 				echo "	switch strings.ToLower(l.value) {"
+			else
+				echo "	switch l.value {"
 			fi;
 			for i in $(seq 2 $(( ${#data[@]} - 1 ))); do
 				echo "	case \"${data[$i]}\":";
@@ -75,27 +78,29 @@
 		echo "}";
 	done < types.gen
 
-	echo;
-	echo "// ErrInvalidValue is an error that is generated when a type is not one of the";
-	echo "// specified values";
-	echo "type ErrInvalidValue struct {";
-	echo "	Type, Value string";
-	echo "}";
-	echo;
-	echo "// Error is an implementation of the error interface";
-	echo "func (e ErrInvalidValue) Error() string {";
-	echo "	return \"Value for \" + e.Type + \" is invalid\"";
-	echo "}";
-	echo;
-	echo "// ErrInvalidLength is an error that is generated when a type is given more or";
-	echo "// less data than is required";
-	echo "type ErrInvalidLength struct {"
-	echo "	Type, Value string";
-	echo "	Min, Max    uint";
-	echo "}";
-	echo;
-	echo "// Error is an implementation of the error interface";
-	echo "func (e ErrInvalidLength) Error() string {";
-	echo "	return \"Value for \" + e.Type + \" has an invalid length\"";
-	echo "}";
+	cat <<HEREDOC
+
+// ErrInvalidValue is an error that is generated when a type is not one of the
+// specified values
+type ErrInvalidValue struct {
+	Type, Value string
+}
+
+// Error is an implementation of the error interface
+func (e ErrInvalidValue) Error() string {
+	return "Value for " + e.Type + " is invalid"
+}
+
+// ErrInvalidLength is an error that is generated when a type is given more or
+// less data than is required
+type ErrInvalidLength struct {
+	Type, Value string
+	Min, Max    uint
+}
+
+// Error is an implementation of the error interface
+func (e ErrInvalidLength) Error() string {
+	return "Value for " + e.Type + " has an invalid length"
+}
+HEREDOC
 ) > types.go
