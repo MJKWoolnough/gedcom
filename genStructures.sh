@@ -66,7 +66,7 @@ function processStructure {
 	echo;
 	echo "func (s *$structureName) parse(l Line) error {";
 	if [ ! -z "$ID" ]; then
-		echo "	if err := s.${ID}.parse(Line{line:line{value: l.xrefID}}); err != nil {";
+		echo "	if err := s.${ID}.parse(Line{line: line{value: l.xrefID}}); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"xrefID\", err}";
 		echo "	}";
 	fi;
@@ -276,7 +276,7 @@ func (s *SourceCitation) parse(l Line) error {
 }
 
 // Trailer
-type Trailer struct {}
+type Trailer struct{}
 
 func (s *Trailer) parse(Line) error {
 	return nil
@@ -290,7 +290,7 @@ var (
 )
 
 // ErrContext adds context to a returned error
-type ErrContext struct  {
+type ErrContext struct {
 	Structure, Tag string
 	Err            error
 }
