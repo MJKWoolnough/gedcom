@@ -66,7 +66,7 @@ function processStructure {
 	echo;
 	echo "func (s *$structureName) parse(l Line) error {";
 	if [ ! -z "$ID" ]; then
-		echo "	if err := s.${ID}.parse(Line{value: l.xrefID}); err != nil {";
+		echo "	if err := s.${ID}.parse(Line{line:line{value: l.xrefID}}); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"xrefID\", err}";
 		echo "	}";
 	fi;
@@ -159,7 +159,7 @@ function processStructure {
 				echo "			if err := s.${pName}.parse(sl); err != nil {";
 			else
 				echo "			var t ${pType}";
-				echo "			if err != t.parse(sl); err != nil {";
+				echo "			if err := t.parse(sl); err != nil {";
 			fi;
 			echo "				return ErrContext{\"$structureName\", \"$pTag\", err}";
 			echo "			}";
@@ -240,9 +240,9 @@ type MultimediaLink struct {
 
 func (s *MultimediaLink) parse(l Line) error {
 	if l.xrefID != "" {
-		s.Data = MultimediaLinkID{}
+		s.Data = &MultimediaLinkID{}
 	} else {
-		s.Data = MultimediaLinkFile{}
+		s.Data = &MultimediaLinkFile{}
 	}
 	return s.Data.parse(l)
 }
@@ -254,9 +254,9 @@ type NoteStructure struct {
 
 func (s *NoteStructure) parse(l Line) error {
 	if l.xrefID != "" {
-		s.Data = NoteID{}
+		s.Data = &NoteID{}
 	} else {
-		s.Data = NoteText{}
+		s.Data = &NoteText{}
 	}
 	return s.Data.parse(l)
 }
@@ -268,39 +268,45 @@ type SourceCitation struct {
 
 func (s *SourceCitation) parse(l Line) error {
 	if l.xrefID != "" {
-		s.Data = SourceID{}
+		s.Data = &SourceID{}
 	} else {
-		s.Data = SourceText{}
+		s.Data = &SourceText{}
 	}
 	return s.Data.parse(l)
 }
-HEREDOC
 
-	echo;
-	echo "// Errors";
-	echo "var (";
-	echo "	ErrRequiredMissing = errors.New(\"required tag missing\")";
-	echo "	ErrSingleMultiple  = errors.New(\"tag was specified more than the one time allowed\")";
-	echo "	ErrUnknownTag      = errors.New(\"unknown tag\")";
-	echo ")";
-	echo;
-	echo "// ErrContext adds context to a returned error";
-	echo "type ErrContext struct {"
-	echo "	Structure, Tag string";
-	echo "	Err            error";
-	echo "}";
-	echo;
-	echo "// Error implements the error interface";
-	echo "func (e ErrContext) Error() string {";
-	echo "	return e.Tag + \":\" + t.Err.Error()";
-	echo "}";
-	echo;
-	echo "// ErrTooMany is an error returned when too many of a particular tag exist";
-	echo "type ErrTooMany int";
-	echo;
-	echo "// Error implements the error interface";
-	echo "func (ErrTooMany) Error() string {";
-	echo "	return \"too many tags\"";
-	echo "}";
+// Trailer
+type Trailer struct {}
+
+func (s *Trailer) parse(Line) error {
+	return nil
+}
+
+// Errors
+var (
+	ErrRequiredMissing = errors.New("required tag missing")
+	ErrSingleMultiple  = errors.New("tag was specified more than the one time allowed")
+	ErrUnknownTag      = errors.New("unknown tag")
+)
+
+// ErrContext adds context to a returned error
+type ErrContext struct  {
+	Structure, Tag string
+	Err            error
+}
+
+// Error implements the error interface
+func (e ErrContext) Error() string {
+	return e.Tag + ":" + e.Err.Error()
+}
+
+// ErrTooMany is an error returned when too many of a particular tag exist
+type ErrTooMany int
+
+// Error implements the error interface
+func (ErrTooMany) Error() string {
+	return "too many tags"
+}
+HEREDOC
 
 ) > structures.go
