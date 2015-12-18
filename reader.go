@@ -6,6 +6,11 @@ import (
 	"strconv"
 )
 
+type Record interface {
+	Type() RecordType
+	parse(Line) error
+}
+
 type line struct {
 	level  uint64
 	xrefID string
@@ -118,30 +123,27 @@ func (r *Reader) Record() (Record, error) {
 		r.readLine()
 		if r.line.level == 0 {
 			plines := parseLines(lines)
+			var record Record
 			switch lines[0].tag {
 			case "HEAD":
-				return parseHeader(plines)
+				record = Header{}
 			case "SUBM":
-				return parseSubmitter(plines)
 			case "FAM":
-				return parseFamily(plines)
 			case "INDI":
-				return parseIndividual(plines)
 			case "OBJE":
-				return parseObject(plines)
 			case "NOTE":
-				return parseNote(plines)
 			case "REPO":
-				return parseRepository(plines)
 			case "SOUR":
-				return parseSource(plines)
 			case "SUBN":
-				return parseSubmission(plines)
 			default:
 				if lines[0][0] == "_" {
 					return plines, nil
 				}
-				return plines, ErrUnknownTag
+				return plines, ErrContext{"root", lines[0].tag, ErrUnknownTag}
+			}
+			err := record.parse(plines)
+			if err != nil {
+				return nil, err
 			}
 			return r, nil
 		}
@@ -151,8 +153,6 @@ func (r *Reader) Record() (Record, error) {
 
 // Errors
 var (
-	ErrNoHeader     = errors.New("no header")
-	ErrNoRecords    = errors.New("no records")
-	ErrUnknownTag   = errors.New("unknown tag name")
-	ErrInvalidLevel = errors.New("invalid level")
+	ErrNoHeader  = errors.New("no header")
+	ErrNoRecords = errors.New("no records")
 )
