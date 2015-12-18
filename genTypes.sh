@@ -35,10 +35,10 @@
 		echo;
 		echo "func (e *$eType) parse(l Line) error {";
 		if [ -z "${data[1]}" ]; then
-			if [ -z "$(echo "${data[2]}" | tr -d "[:lower:]")" ]; then
-				echo "	switch strings.ToLower(l.value) {"
-			else
+			if [ -z "$(echo "${data[2]}" | tr -d "[:upper:]")" ]; then
 				echo "	switch strings.ToUpper(l.value) {"
+			else
+				echo "	switch strings.ToLower(l.value) {"
 			fi;
 			for i in $(seq 2 $(( ${#data[@]} - 1 ))); do
 				echo "	case \"${data[$i]}\":";
