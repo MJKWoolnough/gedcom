@@ -56,6 +56,8 @@ func (r *Reader) readLine() {
 		if r.err != nil {
 			return
 		}
+	} else {
+		r.line.xrefID = ""
 	}
 	if t.typ != tokenTag {
 		r.err = ErrNotTag
@@ -67,9 +69,10 @@ func (r *Reader) readLine() {
 		return
 	}
 	if t.typ == tokenEndLine {
+		r.line.value = ""
 		return
 	}
-	if t.typ != tokenLine {
+	if t.typ != tokenLine && t.typ != tokenPointer {
 		r.err = ErrNotLine
 		return
 	}
@@ -146,7 +149,7 @@ func (r *Reader) Record() (Record, error) {
 			}
 			err := record.parse(plines)
 			if err != nil {
-				return nil, err
+				return nil, ErrContext{"root", lines[0].tag, err}
 			}
 			return record, nil
 		}
