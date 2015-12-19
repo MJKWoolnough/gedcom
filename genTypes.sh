@@ -19,6 +19,11 @@ HEREDOC
 		data=($line)
 		IFS="$OFS";
 		eType="${data[0]}";
+		hasContConc=false;
+		if [ "${eType: -1}" = "*" ]; then
+			eType="${eType:0:-1}";
+			hasContConc=true
+		fi;
 		vType="string";
 		first="${data[1]}";
 		if [ -z "$first" ]; then
@@ -62,6 +67,22 @@ HEREDOC
 			echo "	}";
 			if [ "$vType" = "string" ]; then
 				echo "	*e = $eType(l.value)";
+				if $hasContConc; then
+					echo "	for i := 0; i < len(l.Sub); i++ {";
+					echo "		switch l.Sub[i].tag {";
+					echo "		case \"CONT\":";
+					echo "			*e  += \"\\n\"";
+					echo "			fallthrough";
+					echo "		case \"CONC\":";
+					echo "			if len(l.Sub[i].value) < ${data[1]} || len(l.Sub[i].value) > ${data[2]} {"
+					echo "				return ErrContext{\"$eType\", l.Sub[i].tag, ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}}";
+					echo "			}";
+					echo "			*e += $eType(t)";
+					echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
+					echo "			i--";
+					echo "		}";
+					echo "	}";
+				fi;
 			else
 				num="$(echo "$vType" | tr -d "[:alpha:]")";
 				if [ -z "$num" ]; then

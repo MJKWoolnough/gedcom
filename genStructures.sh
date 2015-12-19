@@ -46,11 +46,7 @@ function processStructure {
 		if [ "${pTag:0:1}" = "@" ]; then
 			ID="$pName";
 		elif [ "${pTag:0:1}" = "#" ]; then
-			extends="false"
-			if [ "${pTag:1:2}" = "*" ]; then
-				extends="true";
-			fi;
-			lineValue=( "$pType" "$pName" "$extends" );
+			lineValue=( "$pType" "$pName" );
 		else
 			if [ "$pMin" = "1" ]; then
 				required+=( "$pName" );
@@ -74,23 +70,6 @@ function processStructure {
 		echo "	if err := s.${lineValue[1]}.parse(l); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"line_value\", err}";
 		echo "	}";
-		if [ "${lineValue[2]}" = "true" ]; then
-			echo "	for i := 0; i < len(l.Sub); i++ {";
-			echo "		switch l.Sub[i].tag {";
-			echo "		case \"CONT\":";
-			echo "			s.${lineValue[1]} += \"\\n\"";
-			echo "			fallthrough";
-			echo "		case \"CONC\":";
-			echo "			var t ${lineValue[0]}";
-			echo "			if err := t.parse(l.Sub[i]); err != nil {";
-			echo "				return ErrContext{\"\$structureName\", \"line_value\", err}";
-			echo "			}";
-			echo "			s.${lineValue[1]} += t";
-			echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
-			echo "			i--";
-			echo "		}";
-			echo "	}";
-		fi;
 	fi;
 	if [ ${#types[@]} -gt 0 ]; then
 		if [ ${#required[@]} -gt 0 -o ${#oneMost[@]} -gt 0 ]; then

@@ -10,7 +10,7 @@ Header
 	CHAR:CharacterSetStructure:CharacterSet:1:1
 	LANG:LanguageOfText:Language:0:1
 	PLAC:HeaderPlace:Place:0:1
-	NOTE*:GedcomContentDescription::0:1
+	NOTE:GedcomContentDescription::0:1
 HeaderSource
 	#:ApprovedSystemID:SystemID
 	VERS:VersionNumber::0:1
@@ -64,7 +64,7 @@ VerifiedFamilyEventDetail
 FamilyEventDetail
 	HUSB:AgeStructure:HusbandAge:0:1
 	WIFE:AgeStructure:WifeAge:0:1
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 AgeStructure
 	AGE:AgeAtEvent:Age:1:1
 Individual
@@ -128,53 +128,53 @@ VerifiedIndividualFamEventDetail
 	:VerifiedEventDetail
 VerifiedEventDetail
 	#:Verified::0:1
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 IndividualEventDetail
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 AdoptionEvent
 	FAMC:AdoptionReference:Family:0:1
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 AdoptionReference
 	@:ID
 	ADOP:AdoptedBy::0:1
 CasteEvent
 	#:CasteName
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 DescriptionEvent
 	#:PhysicalDescription
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 ScholasticEvent
 	#:ScholasticAchievement
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 NationalIDEvent
 	#:NationalIDNumber
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 NationalOriginEvent
 	#:NationalOrTribalOrigin
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 ChildrenEvent
 	#:CountOfChildren
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 MarriagesEvent
 	#:CountOfMarriages
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 OccupationEvent
 	#:Occupation
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 PossessionEvent
 	#:Possessions
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 ReligiousEvent
 	#:ReligiousAffiliation
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 ResidenceEvent
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 SSNEvent
 	#:SocialSecurityNumber
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 NobilityEvent
 	#:NobilityTypeTitle
-	EVEN:EventDetail:Event:0:1
+	:EventDetail:Event:0:1
 UserReferenceStructure
 	#:UserReferenceNumber
 	TYPE:UserReferenceType:Type:0:1
@@ -183,14 +183,14 @@ MultimediaRecord
 	FORM:MultimediaFormat:Format:1:1
 	TITLE:DescriptiveTitle:Title:0:1
 	NOTE:NoteStructure:Notes:0:M
-	BLOB*:EncodedMultimediaLine:Blob:1:1
+	BLOB:EncodedMultimediaLine:Blob:1:1
 	OBJE:Xref:ContinuedObject:0:1
 	REFN:UserReferenceStructure:UserReferences:0:M
 	RIN:AutomatedRecordID::0:1
 	CHAN:ChangeDateStructure:ChangeDate:0:1
 NoteRecord
 	@:ID
-	#*:SubmitterText
+	#:SubmitterText
 	SOUR:SourceCitation:Sources:0:M
 	REFN:UserReferenceStructure:UserReferences:0:M
 	RIN:AutomatedRecordID::0:1
@@ -207,11 +207,11 @@ RepositoryRecord
 SourceRecord
 	@:ID
 	DATA:SourceRecordDataStructure:Data:0:1
-	AUTH*:SourceOriginator:Originator:0:1
-	TITL*:SourceDescriptiveTitle:Title:0:1
+	AUTH:SourceOriginator:Originator:0:1
+	TITL:SourceDescriptiveTitle:Title:0:1
 	ABBR:SourceFiledByEntry:FiledBy:0:1
 	PUBL:SourcePublicationFacts:PublicationFacts:0:1
-	TEXT*:TextFromSource::0:1
+	TEXT:TextFromSource::0:1
 	REPO:SourceRepositoryCitation
 	OBJE:Xref:ContinuedObject:0:1
 	NOTE:NoteStructure:Notes:0:M
@@ -244,7 +244,7 @@ SubmitterRecord
 	RIN:AutomatedRecordID::0:1
 	CHAN:ChangeDateStructure:ChangeDate:0:1
 AddressStructure
-	#*:AddressLine
+	#:AddressLine
 	ADR1:AddressLine1::0:1
 	ADR2:AddressLine2::0:1
 	CITY:AddressCity:City:0:1
@@ -296,7 +296,7 @@ MultimediaLinkFile
 NoteID
 	@:ID
 NoteText
-	#*:SubmitterText
+	#:SubmitterText
 	SOUR:SourceCitation:Sources:0:M
 PersonalNameStructure
 	#:NamePersonal
@@ -326,10 +326,10 @@ SourceCitationEvent
 	ROLE:RoleInEvent:Role:0:1
 SourceData
 	DATE:EntryRecordingDate:Date:0:1
-	TEXT*:TextFromSource:Text:0:M
+	TEXT:TextFromSource:Text:0:M
 SourceText
-	#*:SourceDescription:Description
-	TEXT*:TextFromSource:Texts:0:M
+	#:SourceDescription:Description
+	TEXT:TextFromSource:Texts:0:M
 	NOTE:NoteStructure:Notes:0:M
 SourceRepositoryCitation
 	@:ID
