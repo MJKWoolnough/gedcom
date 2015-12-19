@@ -11,6 +11,8 @@ function processStructure {
 	local required=();
 	local oneMost=();
 	local maxes=();
+	local namedTags=0;
+	local embedded="";
 	echo;
 	echo "// $structureName is a GEDCOM structure type";
 	echo "type $structureName struct {";
@@ -35,18 +37,24 @@ function processStructure {
 		if [ "${parts[0]:0:1}" = "@" ]; then
 			pType="Xref"
 		fi;
-		echo -n "	$pName ";
-		for i in $(seq $(( longest - ${#pName} ))); do
-			echo -n " ";
-		done;
-		if [ "$pMax" != "1" ]; then
-			echo -n "[]";
+		echo -n "	";
+		if [ ! -z "$pTag" ]; then
+			echo -n "$pName ";
+			for i in $(seq $(( longest - ${#pName} ))); do
+				echo -n " ";
+			done;
+			if [ "$pMax" != "1" ]; then
+				echo -n "[]";
+			fi;
 		fi;
 		echo "$pType";
 		if [ "${pTag:0:1}" = "@" ]; then
 			ID="$pName";
 		elif [ "${pTag:0:1}" = "#" ]; then
 			lineValue=( "$pType" "$pName" );
+		elif [ -z "$pTag" ]; then
+			embedded="$pType";
+			types+=("$pTag:$pType:$pName:$pMin:$pMax");
 		else
 			if [ "$pMin" = "1" ]; then
 				required+=( "$pName" );
@@ -55,6 +63,7 @@ function processStructure {
 			elif [ "$pMax" != "M" ]; then
 				maxes+=( "$pType:$pName:$pMax" );
 			fi;
+			let "namedTags++";
 			types+=("$pTag:$pType:$pName:$pMin:$pMax");
 		fi;
 	done;
@@ -95,79 +104,99 @@ function processStructure {
 			fi;
 			echo " bool";
 		fi;
-		if [ ${#maxes[@]} -gt 0 ]; then
-			echo -n "	var";
-			local c=false;
-			for m in "${maxes[@]}"; do
-				pName="$(echo "$m" | cut -d':' -f2)";
-				if $c; then
-					echo -n ","
-				fi;
-				echo -n " ${pName}Count";
-				c=true;
-			done;
-			echo " int";
-			for m in "${maxes[@]}"; do
-				pType="$(echo "$m" | cut -d':' -f1)";
-				pName="$(echo "$m" | cut -d':' -f2)";
-				pMax="$(echo "$m" | cut -d':' -f3)";
-				if [ "$pMax" != "M" ]; then
-					echo "	s.$pName = make([]$pType, 0, $pMax)";
-				fi;
-			done;
-		fi;
-		echo "	for _, sl := range l.Sub {"
-		echo "		switch sl.tag {";
-		for type in ${types[@]}; do
-			IFS=":";
-			parts=($type);
-			IFS="$OFS";
-			pTag="${parts[0]}";
-			pType="${parts[1]}";
-			pName="${parts[2]}";
-			pMax="${parts[4]}";
-			cont=false
-			if [ "${pTag: -1}" = "*" ]; then
-				pTag="${pTag:0:-1}";
-				cont=true;
+		if [ $namedTags -gt 0 ]; then
+			if [ ${#maxes[@]} -gt 0 ]; then
+				echo -n "	var";
+				local c=false;
+				for m in "${maxes[@]}"; do
+					pName="$(echo "$m" | cut -d':' -f2)";
+					if $c; then
+						echo -n ","
+					fi;
+					echo -n " ${pName}Count";
+					c=true;
+				done;
+				echo " int";
+				for m in "${maxes[@]}"; do
+					pType="$(echo "$m" | cut -d':' -f1)";
+					pName="$(echo "$m" | cut -d':' -f2)";
+					pMax="$(echo "$m" | cut -d':' -f3)";
+					if [ "$pMax" != "M" ]; then
+						echo "	s.$pName = make([]$pType, 0, $pMax)";
+					fi;
+				done;
 			fi;
-			echo "		case \"$pTag\":";
-			if [ "$pMax" = "1" ]; then
-				echo "			if ${pName}Set {";
-				echo "				return ErrContext{\"$structureName\", \"$pTag\", ErrSingleMultiple}";
-				echo "			}";
-				echo "			${pName}Set = true";
-			elif [ "$pMax" != "M" ]; then
-				echo "			if ${pName}Count == $pMax {";
-				echo "				return ErrContext{\"$structureName\", \"$pTag\", ErrTooMany($pMax)}";
-				echo "			}";
-				echo "			${pName}Count++";
-			fi;
-			if [ "$pMax" = "1" ]; then
-				echo "			if err := s.${pName}.parse(sl); err != nil {";
+			if [ -z "$embedded" ]; then
+				echo "	for _, sl := range l.Sub {"
 			else
-				echo "			var t ${pType}";
-				echo "			if err := t.parse(sl); err != nil {";
+				echo "	for i := 0; i < len(l.Sub); i++ {";
+				echo "		sl := l.Sub[i]";
 			fi;
-			echo "				return ErrContext{\"$structureName\", \"$pTag\", err}";
-			echo "			}";
-			if [ "$pMax" != "1" ]; then
-				echo "			s.${pName} = append(s.${pName}, t)";
-			fi;
-		done;
-		echo "		default:";
-		echo "			if len(sl.tag) < 1 || sl.tag[0] != '_' {";
-		echo "				return ErrContext{\"$structureName\", sl.tag, ErrUnknownTag}";
-		echo "			}";
-		echo "			// possibly store in a Other field";
-		echo "		}";
-		echo "	}";
-		if [ ${#required} -gt 0 ]; then
-			for r in "${required[@]}"; do
-				echo "	if !${r}Set {";
-				echo "		return ErrContext{\"$structureName\", \"$r\", ErrRequiredMissing}";
-				echo "	}";
+			echo "		switch sl.tag {";
+			for type in ${types[@]}; do
+				IFS=":";
+				local parts=($type);
+				IFS="$OFS";
+				pTag="${parts[0]}";
+				pType="${parts[1]}";
+				pName="${parts[2]}";
+				pMax="${parts[4]}";
+				if [ ! -z "$pTag" ]; then
+					cont=false
+					if [ "${pTag: -1}" = "*" ]; then
+						pTag="${pTag:0:-1}";
+						cont=true;
+					fi;
+					echo "		case \"$pTag\":";
+					if [ "$pMax" = "1" ]; then
+						echo "			if ${pName}Set {";
+						echo "				return ErrContext{\"$structureName\", \"$pTag\", ErrSingleMultiple}";
+						echo "			}";
+						echo "			${pName}Set = true";
+					elif [ "$pMax" != "M" ]; then
+						echo "			if ${pName}Count == $pMax {";
+						echo "				return ErrContext{\"$structureName\", \"$pTag\", ErrTooMany($pMax)}";
+						echo "			}";
+						echo "			${pName}Count++";
+					fi;
+					if [ "$pMax" = "1" ]; then
+						echo "			if err := s.${pName}.parse(sl); err != nil {";
+					else
+						echo "			var t ${pType}";
+						echo "			if err := t.parse(sl); err != nil {";
+					fi;
+					echo "				return ErrContext{\"$structureName\", \"$pTag\", err}";
+					echo "			}";
+					if [ "$pMax" != "1" ]; then
+						echo "			s.${pName} = append(s.${pName}, t)";
+					fi;
+					if [ ! -z "$embedded" ]; then
+						echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
+						echo "			i--";
+					fi;
+				fi;
 			done;
+			if [ -z "$embedded" ]; then
+				echo "		default:";
+				echo "			if len(sl.tag) < 1 || sl.tag[0] != '_' {";
+				echo "				return ErrContext{\"$structureName\", sl.tag, ErrUnknownTag}";
+				echo "			}";
+				echo "			// possibly store in a Other field";
+			fi;
+			echo "		}";
+			echo "	}";
+			if [ ${#required} -gt 0 ]; then
+				for r in "${required[@]}"; do
+					echo "	if !${r}Set {";
+					echo "		return ErrContext{\"$structureName\", \"$r\", ErrRequiredMissing}";
+					echo "	}";
+				done;
+			fi;
+		fi;
+		if [ ! -z "$embedded" ]; then
+			echo "	if err := s.${embedded}.parse(l); err != nil {";
+			echo "		return err";
+			echo "	}";
 		fi;
 	else
 		echo "	for _, sl := range l.Sub {"
@@ -197,12 +226,16 @@ OFS="$IFS";
 		IFS="$(echo)";
 		while read line;do 
 			if [ "${line:0:1}" = "	" ]; then
-				pType="$(echo "$line" | cut -d':' -f2)";
-				pName="$(echo "$line" | cut -d':' -f3)";
+				IFS=":";
+				parts=(${line:1});
+				IFS="$(echo)";
+				pTag="${parts[0]}";
+				pType="${parts[1]}";
+				pName="${parts[2]}";
 				if [ -z "$pName" ]; then
 					pName="$pType";
 				fi;
-				if [ ${#pName} -gt $longest ]; then
+				if [ ! -z "$pTag" -a ${#pName} -gt $longest ]; then
 					longest=${#pName};
 				fi;
 				types+=("${line:1}");
