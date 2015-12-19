@@ -50,7 +50,7 @@ function processStructure {
 			if [ "${pTag:1:2}" = "*" ]; then
 				extends="true";
 			fi;
-			lineValue=( "$pType" "$pName" extends );
+			lineValue=( "$pType" "$pName" "$extends" );
 		else
 			if [ "$pMin" = "1" ]; then
 				required+=( "$pName" );
@@ -74,11 +74,11 @@ function processStructure {
 		echo "	if err := s.${lineValue[1]}.parse(l); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"line_value\", err}";
 		echo "	}";
-		if [ ${lineValue[2]} = "true" ]; then
+		if [ "${lineValue[2]}" = "true" ]; then
 			echo "	for i := 0; i < len(l.Sub); i++ {";
 			echo "		switch l.Sub[i].tag {";
 			echo "		case \"CONT\":";
-			echo "			s.${lineValue[1]} += \"\n\"";
+			echo "			s.${lineValue[1]} += \"\\n\"";
 			echo "			fallthrough";
 			echo "		case \"CONC\":";
 			echo "			var t ${lineValue[0]}";
@@ -86,7 +86,7 @@ function processStructure {
 			echo "				return ErrContext{\"\$structureName\", \"line_value\", err}";
 			echo "			}";
 			echo "			s.${lineValue[1]} += t";
-			echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1]...)";
+			echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
 			echo "			i--";
 			echo "		}";
 			echo "	}";
