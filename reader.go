@@ -14,7 +14,8 @@ type line struct {
 }
 
 type Reader struct {
-	t *tokeniser
+	t       *tokeniser
+	options options
 
 	peeked bool
 	line   line
@@ -23,9 +24,14 @@ type Reader struct {
 	hadHeader, hadRecord bool
 }
 
-func NewReader(r io.Reader) *Reader {
+func NewReader(r io.Reader, opts ...Option) *Reader {
+	var o options
+	for _, opt := range opts {
+		opt(&o)
+	}
 	return &Reader{
-		t: newTokeniser(r),
+		t:       newTokeniser(r),
+		options: o,
 	}
 }
 
@@ -147,7 +153,7 @@ func (r *Reader) Record() (Record, error) {
 				}
 				return plines, ErrContext{"root", lines[0].tag, ErrUnknownTag}
 			}
-			err := record.parse(&plines)
+			err := record.parse(&plines, r.options)
 			if err != nil {
 				return nil, ErrContext{"root", lines[0].tag, err}
 			}

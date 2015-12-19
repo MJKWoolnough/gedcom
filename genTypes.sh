@@ -40,7 +40,7 @@ HEREDOC
 		echo "// $eType is a GEDCOM base type";
 		echo "type $eType $vType";
 		echo;
-		echo "func (e *$eType) parse(l *Line) error {";
+		echo "func (e *$eType) parse(l *Line, o options) error {";
 		if [ -z "${data[1]}" ]; then
 			if [ -z "$(echo "${data[2]}" | tr -d "[:upper:]")" ]; then
 				echo "	switch strings.ToUpper(l.value) {"
@@ -58,11 +58,13 @@ HEREDOC
 				fi;
 			done;
 			echo "	default:";
-			echo "		return ErrInvalidValue{\"$eType\", l.value}";
+			echo "		if !o.ignoreInvalidValue {";
+			echo "			return ErrInvalidValue{\"$eType\", l.value}";
+			echo "		}";
 			echo "	}";
 			echo "	return nil";
 		else
-			echo "	if len(l.value) < ${data[1]} || len(l.value) > ${data[2]} {"
+			echo "	if !o.allowWrongLength && (len(l.value) < ${data[1]} || len(l.value) > ${data[2]}) {"
 			echo "		return ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}";
 			echo "	}";
 			if [ "$vType" = "string" ]; then
@@ -74,7 +76,7 @@ HEREDOC
 					echo "			*e += \"\\n\"";
 					echo "			fallthrough";
 					echo "		case \"CONC\":";
-					echo "			if len(l.Sub[i].value) < ${data[1]} || len(l.Sub[i].value) > ${data[2]} {"
+					echo "			if !o.allowWrongLength && (len(l.Sub[i].value) < ${data[1]} || len(l.Sub[i].value) > ${data[2]}) {"
 					echo "				return ErrContext{\"$eType\", l.Sub[i].tag, ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}}";
 					echo "			}";
 					echo "			*e += $eType(l.Sub[i].value)";
@@ -89,7 +91,7 @@ HEREDOC
 					num="0"
 				fi;
 				echo "	n, err := strconv.ParseUint(l.value, 10, $num)";
-				echo "	if err != nil {";
+				echo "	if !o.ignoreInvalidValue && err != nil {";
 				echo "		return err";
 				echo "	}";
 				echo "	*e = $eType(n)";

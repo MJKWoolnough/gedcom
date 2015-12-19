@@ -69,14 +69,14 @@ function processStructure {
 	done;
 	echo "}";
 	echo;
-	echo "func (s *$structureName) parse(l *Line) error {";
+	echo "func (s *$structureName) parse(l *Line, o options) error {";
 	if [ ! -z "$ID" ]; then
-		echo "	if err := s.${ID}.parse(&Line{line: line{value: l.xrefID}}); err != nil {";
+		echo "	if err := s.${ID}.parse(&Line{line: line{value: l.xrefID}}, o); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"xrefID\", err}";
 		echo "	}";
 	fi;
 	if [ ${#lineValue[@]} -gt 0 ]; then
-		echo "	if err := s.${lineValue[1]}.parse(l); err != nil {";
+		echo "	if err := s.${lineValue[1]}.parse(l, o); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"line_value\", err}";
 		echo "	}";
 	fi;
@@ -150,20 +150,26 @@ function processStructure {
 					echo "		case \"$pTag\":";
 					if [ "$pMax" = "1" ]; then
 						echo "			if ${pName}Set {";
+						echo "				if !o.allowMoreThanAllowed {";
+						echo "					continue";
+						echo "				}";
 						echo "				return ErrContext{\"$structureName\", \"$pTag\", ErrSingleMultiple}";
 						echo "			}";
 						echo "			${pName}Set = true";
 					elif [ "$pMax" != "M" ]; then
 						echo "			if ${pName}Count == $pMax {";
+						echo "				if !o.allowMoreThanAllowed {";
+						echo "					continue";
+						echo "				}";
 						echo "				return ErrContext{\"$structureName\", \"$pTag\", ErrTooMany($pMax)}";
 						echo "			}";
 						echo "			${pName}Count++";
 					fi;
 					if [ "$pMax" = "1" ]; then
-						echo "			if err := s.${pName}.parse(&sl); err != nil {";
+						echo "			if err := s.${pName}.parse(&sl, o); err != nil {";
 					else
 						echo "			var t ${pType}";
-						echo "			if err := t.parse(&sl); err != nil {";
+						echo "			if err := t.parse(&sl, o); err != nil {";
 					fi;
 					echo "				return ErrContext{\"$structureName\", \"$pTag\", err}";
 					echo "			}";
@@ -178,7 +184,7 @@ function processStructure {
 			done;
 			if [ -z "$embedded" ]; then
 				echo "		default:";
-				echo "			if len(sl.tag) < 1 || sl.tag[0] != '_' {";
+				echo "			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {";
 				echo "				return ErrContext{\"$structureName\", sl.tag, ErrUnknownTag}";
 				echo "			}";
 				echo "			// possibly store in a Other field";
@@ -186,21 +192,23 @@ function processStructure {
 			echo "		}";
 			echo "	}";
 			if [ ${#required} -gt 0 ]; then
+				echo "	if !o.allowMissingRequired {";
 				for r in "${required[@]}"; do
-					echo "	if !${r}Set {";
-					echo "		return ErrContext{\"$structureName\", \"$r\", ErrRequiredMissing}";
-					echo "	}";
+					echo "		if !${r}Set {";
+					echo "			return ErrContext{\"$structureName\", \"$r\", ErrRequiredMissing}";
+					echo "		}";
 				done;
+				echo "	}";
 			fi;
 		fi;
 		if [ ! -z "$embedded" ]; then
-			echo "	if err := s.${embedded}.parse(l); err != nil {";
+			echo "	if err := s.${embedded}.parse(l, o); err != nil {";
 			echo "		return err";
 			echo "	}";
 		fi;
 	else
 		echo "	for _, sl := range l.Sub {"
-		echo "		if len(sl.tag) < 1 || sl.tag[0] != '_' {";
+		echo "		if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {";
 		echo "			return ErrContext{\"$structureName\", sl.tag, ErrUnknownTag}";
 		echo "		}";
 		echo "		// possibly store in a Other field";
@@ -259,15 +267,15 @@ type MultimediaLink struct {
 	Data Record
 }
 
-func (s *MultimediaLink) parse(l *Line) error {
+func (s *MultimediaLink) parse(l *Line, o options) error {
 	var err error
 	if l.xrefID != "" {
 		t := &MultimediaLinkID{}
-		err = t.parse(l)
+		err = t.parse(l, o)
 		s.Data = t
 	} else {
 		t := &MultimediaLinkFile{}
-		err = t.parse(l)
+		err = t.parse(l, o)
 		s.Data = t
 	}
 	return err
@@ -278,15 +286,15 @@ type NoteStructure struct {
 	Data Record
 }
 
-func (s *NoteStructure) parse(l *Line) error {
+func (s *NoteStructure) parse(l *Line, o options) error {
 	var err error
 	if l.xrefID != "" {
 		t := &NoteID{}
-		err = t.parse(l)
+		err = t.parse(l, o)
 		s.Data = t
 	} else {
 		t := &NoteText{}
-		err = t.parse(l)
+		err = t.parse(l, o)
 		s.Data = t
 	}
 	return err
@@ -297,15 +305,15 @@ type SourceCitation struct {
 	Data Record
 }
 
-func (s *SourceCitation) parse(l *Line) error {
+func (s *SourceCitation) parse(l *Line, o options) error {
 	var err error
 	if l.xrefID != "" {
 		t := &SourceID{}
-		err = t.parse(l)
+		err = t.parse(l, o)
 		s.Data = t
 	} else {
 		t := &SourceText{}
-		err = t.parse(l)
+		err = t.parse(l, o)
 		s.Data = t
 	}
 	return err
@@ -314,7 +322,7 @@ func (s *SourceCitation) parse(l *Line) error {
 // Trailer type
 type Trailer struct{}
 
-func (s *Trailer) parse(*Line) error {
+func (s *Trailer) parse(*Line, options) error {
 	return nil
 }
 
