@@ -20,7 +20,7 @@ type Header struct {
 	GedcomContentDescription GedcomContentDescription
 }
 
-func (s *Header) parse(l Line) error {
+func (s *Header) parse(l *Line) error {
 	var SourceSet, SubmitterSet, VersionSet, CharacterSetSet, ReceivingSystemNameSet, TransmissionLDateSet, SubmissionSet, FileNameSet, CopyrightSet, LanguageSet, PlaceSet, GedcomContentDescriptionSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -29,7 +29,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "SOUR", ErrSingleMultiple}
 			}
 			SourceSet = true
-			if err := s.Source.parse(sl); err != nil {
+			if err := s.Source.parse(&sl); err != nil {
 				return ErrContext{"Header", "SOUR", err}
 			}
 		case "DEST":
@@ -37,7 +37,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "DEST", ErrSingleMultiple}
 			}
 			ReceivingSystemNameSet = true
-			if err := s.ReceivingSystemName.parse(sl); err != nil {
+			if err := s.ReceivingSystemName.parse(&sl); err != nil {
 				return ErrContext{"Header", "DEST", err}
 			}
 		case "DATE":
@@ -45,7 +45,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "DATE", ErrSingleMultiple}
 			}
 			TransmissionLDateSet = true
-			if err := s.TransmissionLDate.parse(sl); err != nil {
+			if err := s.TransmissionLDate.parse(&sl); err != nil {
 				return ErrContext{"Header", "DATE", err}
 			}
 		case "SUBM":
@@ -53,7 +53,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "SUBM", ErrSingleMultiple}
 			}
 			SubmitterSet = true
-			if err := s.Submitter.parse(sl); err != nil {
+			if err := s.Submitter.parse(&sl); err != nil {
 				return ErrContext{"Header", "SUBM", err}
 			}
 		case "SUMB":
@@ -61,7 +61,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "SUMB", ErrSingleMultiple}
 			}
 			SubmissionSet = true
-			if err := s.Submission.parse(sl); err != nil {
+			if err := s.Submission.parse(&sl); err != nil {
 				return ErrContext{"Header", "SUMB", err}
 			}
 		case "FILE":
@@ -69,7 +69,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "FILE", ErrSingleMultiple}
 			}
 			FileNameSet = true
-			if err := s.FileName.parse(sl); err != nil {
+			if err := s.FileName.parse(&sl); err != nil {
 				return ErrContext{"Header", "FILE", err}
 			}
 		case "COPR":
@@ -77,7 +77,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "COPR", ErrSingleMultiple}
 			}
 			CopyrightSet = true
-			if err := s.Copyright.parse(sl); err != nil {
+			if err := s.Copyright.parse(&sl); err != nil {
 				return ErrContext{"Header", "COPR", err}
 			}
 		case "GEDC":
@@ -85,7 +85,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "GEDC", ErrSingleMultiple}
 			}
 			VersionSet = true
-			if err := s.Version.parse(sl); err != nil {
+			if err := s.Version.parse(&sl); err != nil {
 				return ErrContext{"Header", "GEDC", err}
 			}
 		case "CHAR":
@@ -93,7 +93,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "CHAR", ErrSingleMultiple}
 			}
 			CharacterSetSet = true
-			if err := s.CharacterSet.parse(sl); err != nil {
+			if err := s.CharacterSet.parse(&sl); err != nil {
 				return ErrContext{"Header", "CHAR", err}
 			}
 		case "LANG":
@@ -101,7 +101,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "LANG", ErrSingleMultiple}
 			}
 			LanguageSet = true
-			if err := s.Language.parse(sl); err != nil {
+			if err := s.Language.parse(&sl); err != nil {
 				return ErrContext{"Header", "LANG", err}
 			}
 		case "PLAC":
@@ -109,7 +109,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "PLAC", ErrSingleMultiple}
 			}
 			PlaceSet = true
-			if err := s.Place.parse(sl); err != nil {
+			if err := s.Place.parse(&sl); err != nil {
 				return ErrContext{"Header", "PLAC", err}
 			}
 		case "NOTE":
@@ -117,7 +117,7 @@ func (s *Header) parse(l Line) error {
 				return ErrContext{"Header", "NOTE", ErrSingleMultiple}
 			}
 			GedcomContentDescriptionSet = true
-			if err := s.GedcomContentDescription.parse(sl); err != nil {
+			if err := s.GedcomContentDescription.parse(&sl); err != nil {
 				return ErrContext{"Header", "NOTE", err}
 			}
 		default:
@@ -151,7 +151,7 @@ type HeaderSource struct {
 	Data          HeaderDataSource
 }
 
-func (s *HeaderSource) parse(l Line) error {
+func (s *HeaderSource) parse(l *Line) error {
 	if err := s.SystemID.parse(l); err != nil {
 		return ErrContext{"HeaderSource", "line_value", err}
 	}
@@ -163,7 +163,7 @@ func (s *HeaderSource) parse(l Line) error {
 				return ErrContext{"HeaderSource", "VERS", ErrSingleMultiple}
 			}
 			VersionNumberSet = true
-			if err := s.VersionNumber.parse(sl); err != nil {
+			if err := s.VersionNumber.parse(&sl); err != nil {
 				return ErrContext{"HeaderSource", "VERS", err}
 			}
 		case "NAME":
@@ -171,7 +171,7 @@ func (s *HeaderSource) parse(l Line) error {
 				return ErrContext{"HeaderSource", "NAME", ErrSingleMultiple}
 			}
 			NameSet = true
-			if err := s.Name.parse(sl); err != nil {
+			if err := s.Name.parse(&sl); err != nil {
 				return ErrContext{"HeaderSource", "NAME", err}
 			}
 		case "CORP":
@@ -179,7 +179,7 @@ func (s *HeaderSource) parse(l Line) error {
 				return ErrContext{"HeaderSource", "CORP", ErrSingleMultiple}
 			}
 			BusinessSet = true
-			if err := s.Business.parse(sl); err != nil {
+			if err := s.Business.parse(&sl); err != nil {
 				return ErrContext{"HeaderSource", "CORP", err}
 			}
 		case "DATA":
@@ -187,7 +187,7 @@ func (s *HeaderSource) parse(l Line) error {
 				return ErrContext{"HeaderSource", "DATA", ErrSingleMultiple}
 			}
 			DataSet = true
-			if err := s.Data.parse(sl); err != nil {
+			if err := s.Data.parse(&sl); err != nil {
 				return ErrContext{"HeaderSource", "DATA", err}
 			}
 		default:
@@ -206,7 +206,7 @@ type TransmissionDateTime struct {
 	Time             TimeValue
 }
 
-func (s *TransmissionDateTime) parse(l Line) error {
+func (s *TransmissionDateTime) parse(l *Line) error {
 	if err := s.TransmissionDate.parse(l); err != nil {
 		return ErrContext{"TransmissionDateTime", "line_value", err}
 	}
@@ -218,7 +218,7 @@ func (s *TransmissionDateTime) parse(l Line) error {
 				return ErrContext{"TransmissionDateTime", "TIME", ErrSingleMultiple}
 			}
 			TimeSet = true
-			if err := s.Time.parse(sl); err != nil {
+			if err := s.Time.parse(&sl); err != nil {
 				return ErrContext{"TransmissionDateTime", "TIME", err}
 			}
 		default:
@@ -238,7 +238,7 @@ type HeaderBusiness struct {
 	PhoneNumber    []PhoneNumber
 }
 
-func (s *HeaderBusiness) parse(l Line) error {
+func (s *HeaderBusiness) parse(l *Line) error {
 	if err := s.NameOfBusiness.parse(l); err != nil {
 		return ErrContext{"HeaderBusiness", "line_value", err}
 	}
@@ -252,7 +252,7 @@ func (s *HeaderBusiness) parse(l Line) error {
 				return ErrContext{"HeaderBusiness", "ADDR", ErrSingleMultiple}
 			}
 			AddressSet = true
-			if err := s.Address.parse(sl); err != nil {
+			if err := s.Address.parse(&sl); err != nil {
 				return ErrContext{"HeaderBusiness", "ADDR", err}
 			}
 		case "PHON":
@@ -261,7 +261,7 @@ func (s *HeaderBusiness) parse(l Line) error {
 			}
 			PhoneNumberCount++
 			var t PhoneNumber
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"HeaderBusiness", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
@@ -282,7 +282,7 @@ type HeaderDataSource struct {
 	CopyrightSourceData CopyrightSourceData
 }
 
-func (s *HeaderDataSource) parse(l Line) error {
+func (s *HeaderDataSource) parse(l *Line) error {
 	if err := s.SourceName.parse(l); err != nil {
 		return ErrContext{"HeaderDataSource", "line_value", err}
 	}
@@ -294,7 +294,7 @@ func (s *HeaderDataSource) parse(l Line) error {
 				return ErrContext{"HeaderDataSource", "DATE", ErrSingleMultiple}
 			}
 			PublicationDateSet = true
-			if err := s.PublicationDate.parse(sl); err != nil {
+			if err := s.PublicationDate.parse(&sl); err != nil {
 				return ErrContext{"HeaderDataSource", "DATE", err}
 			}
 		case "COPR":
@@ -302,7 +302,7 @@ func (s *HeaderDataSource) parse(l Line) error {
 				return ErrContext{"HeaderDataSource", "COPR", ErrSingleMultiple}
 			}
 			CopyrightSourceDataSet = true
-			if err := s.CopyrightSourceData.parse(sl); err != nil {
+			if err := s.CopyrightSourceData.parse(&sl); err != nil {
 				return ErrContext{"HeaderDataSource", "COPR", err}
 			}
 		default:
@@ -321,7 +321,7 @@ type Version struct {
 	GedcomForm    GedcomForm
 }
 
-func (s *Version) parse(l Line) error {
+func (s *Version) parse(l *Line) error {
 	var VersionNumberSet, GedcomFormSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -330,7 +330,7 @@ func (s *Version) parse(l Line) error {
 				return ErrContext{"Version", "VERS", ErrSingleMultiple}
 			}
 			VersionNumberSet = true
-			if err := s.VersionNumber.parse(sl); err != nil {
+			if err := s.VersionNumber.parse(&sl); err != nil {
 				return ErrContext{"Version", "VERS", err}
 			}
 		case "FORM":
@@ -338,7 +338,7 @@ func (s *Version) parse(l Line) error {
 				return ErrContext{"Version", "FORM", ErrSingleMultiple}
 			}
 			GedcomFormSet = true
-			if err := s.GedcomForm.parse(sl); err != nil {
+			if err := s.GedcomForm.parse(&sl); err != nil {
 				return ErrContext{"Version", "FORM", err}
 			}
 		default:
@@ -363,7 +363,7 @@ type CharacterSetStructure struct {
 	VersionNumber VersionNumber
 }
 
-func (s *CharacterSetStructure) parse(l Line) error {
+func (s *CharacterSetStructure) parse(l *Line) error {
 	if err := s.CharacterSet.parse(l); err != nil {
 		return ErrContext{"CharacterSetStructure", "line_value", err}
 	}
@@ -375,7 +375,7 @@ func (s *CharacterSetStructure) parse(l Line) error {
 				return ErrContext{"CharacterSetStructure", "VERS", ErrSingleMultiple}
 			}
 			VersionNumberSet = true
-			if err := s.VersionNumber.parse(sl); err != nil {
+			if err := s.VersionNumber.parse(&sl); err != nil {
 				return ErrContext{"CharacterSetStructure", "VERS", err}
 			}
 		default:
@@ -393,7 +393,7 @@ type HeaderPlace struct {
 	PlaceHierarchy PlaceHierarchy
 }
 
-func (s *HeaderPlace) parse(l Line) error {
+func (s *HeaderPlace) parse(l *Line) error {
 	var PlaceHierarchySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -402,7 +402,7 @@ func (s *HeaderPlace) parse(l Line) error {
 				return ErrContext{"HeaderPlace", "FORM", ErrSingleMultiple}
 			}
 			PlaceHierarchySet = true
-			if err := s.PlaceHierarchy.parse(sl); err != nil {
+			if err := s.PlaceHierarchy.parse(&sl); err != nil {
 				return ErrContext{"HeaderPlace", "FORM", err}
 			}
 		default:
@@ -443,8 +443,8 @@ type Family struct {
 	Notes              []NoteStructure
 }
 
-func (s *Family) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *Family) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"Family", "xrefID", err}
 	}
 	var AnnulmentSet, CensusSet, DivorceSet, DivorceFiledSet, EngagementSet, MarriageSet, MarriageBannSet, MarriageContractSet, MarriageLicenseSet, MarriageSettlementSet, HusbandSet, WifeSet, NumChildrenSet bool
@@ -455,7 +455,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "ANUL", ErrSingleMultiple}
 			}
 			AnnulmentSet = true
-			if err := s.Annulment.parse(sl); err != nil {
+			if err := s.Annulment.parse(&sl); err != nil {
 				return ErrContext{"Family", "ANUL", err}
 			}
 		case "CENS":
@@ -463,7 +463,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "CENS", ErrSingleMultiple}
 			}
 			CensusSet = true
-			if err := s.Census.parse(sl); err != nil {
+			if err := s.Census.parse(&sl); err != nil {
 				return ErrContext{"Family", "CENS", err}
 			}
 		case "DIV":
@@ -471,7 +471,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "DIV", ErrSingleMultiple}
 			}
 			DivorceSet = true
-			if err := s.Divorce.parse(sl); err != nil {
+			if err := s.Divorce.parse(&sl); err != nil {
 				return ErrContext{"Family", "DIV", err}
 			}
 		case "DIVF":
@@ -479,7 +479,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "DIVF", ErrSingleMultiple}
 			}
 			DivorceFiledSet = true
-			if err := s.DivorceFiled.parse(sl); err != nil {
+			if err := s.DivorceFiled.parse(&sl); err != nil {
 				return ErrContext{"Family", "DIVF", err}
 			}
 		case "ENGA":
@@ -487,7 +487,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "ENGA", ErrSingleMultiple}
 			}
 			EngagementSet = true
-			if err := s.Engagement.parse(sl); err != nil {
+			if err := s.Engagement.parse(&sl); err != nil {
 				return ErrContext{"Family", "ENGA", err}
 			}
 		case "MARR":
@@ -495,7 +495,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "MARR", ErrSingleMultiple}
 			}
 			MarriageSet = true
-			if err := s.Marriage.parse(sl); err != nil {
+			if err := s.Marriage.parse(&sl); err != nil {
 				return ErrContext{"Family", "MARR", err}
 			}
 		case "MARB":
@@ -503,7 +503,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "MARB", ErrSingleMultiple}
 			}
 			MarriageBannSet = true
-			if err := s.MarriageBann.parse(sl); err != nil {
+			if err := s.MarriageBann.parse(&sl); err != nil {
 				return ErrContext{"Family", "MARB", err}
 			}
 		case "MARC":
@@ -511,7 +511,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "MARC", ErrSingleMultiple}
 			}
 			MarriageContractSet = true
-			if err := s.MarriageContract.parse(sl); err != nil {
+			if err := s.MarriageContract.parse(&sl); err != nil {
 				return ErrContext{"Family", "MARC", err}
 			}
 		case "MARL":
@@ -519,7 +519,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "MARL", ErrSingleMultiple}
 			}
 			MarriageLicenseSet = true
-			if err := s.MarriageLicense.parse(sl); err != nil {
+			if err := s.MarriageLicense.parse(&sl); err != nil {
 				return ErrContext{"Family", "MARL", err}
 			}
 		case "MARS":
@@ -527,12 +527,12 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "MARS", ErrSingleMultiple}
 			}
 			MarriageSettlementSet = true
-			if err := s.MarriageSettlement.parse(sl); err != nil {
+			if err := s.MarriageSettlement.parse(&sl); err != nil {
 				return ErrContext{"Family", "MARS", err}
 			}
 		case "EVEN":
 			var t FamilyEventDetail
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Family", "EVEN", err}
 			}
 			s.Events = append(s.Events, t)
@@ -541,7 +541,7 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "HUSB", ErrSingleMultiple}
 			}
 			HusbandSet = true
-			if err := s.Husband.parse(sl); err != nil {
+			if err := s.Husband.parse(&sl); err != nil {
 				return ErrContext{"Family", "HUSB", err}
 			}
 		case "WIFE":
@@ -549,12 +549,12 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "WIFE", ErrSingleMultiple}
 			}
 			WifeSet = true
-			if err := s.Wife.parse(sl); err != nil {
+			if err := s.Wife.parse(&sl); err != nil {
 				return ErrContext{"Family", "WIFE", err}
 			}
 		case "CHIL":
 			var t Xref
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Family", "CHIL", err}
 			}
 			s.Children = append(s.Children, t)
@@ -563,36 +563,36 @@ func (s *Family) parse(l Line) error {
 				return ErrContext{"Family", "NCHI", ErrSingleMultiple}
 			}
 			NumChildrenSet = true
-			if err := s.NumChildren.parse(sl); err != nil {
+			if err := s.NumChildren.parse(&sl); err != nil {
 				return ErrContext{"Family", "NCHI", err}
 			}
 		case "SUBM":
 			var t Xref
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Family", "SUBM", err}
 			}
 			s.Submitters = append(s.Submitters, t)
 		case "SLGS":
 			var t LDSSpouseSealing
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Family", "SLGS", err}
 			}
 			s.LDSSpouseSealing = append(s.LDSSpouseSealing, t)
 		case "SOUR":
 			var t SourceCitation
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Family", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "OBJE":
 			var t MultimediaLink
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Family", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Family", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -608,34 +608,16 @@ func (s *Family) parse(l Line) error {
 
 // VerifiedFamilyEventDetail is a GEDCOM structure type
 type VerifiedFamilyEventDetail struct {
-	Verified          Verified
-	FamilyEventDetail FamilyEventDetail
+	Verified Verified
+	FamilyEventDetail
 }
 
-func (s *VerifiedFamilyEventDetail) parse(l Line) error {
+func (s *VerifiedFamilyEventDetail) parse(l *Line) error {
 	if err := s.Verified.parse(l); err != nil {
 		return ErrContext{"VerifiedFamilyEventDetail", "line_value", err}
 	}
-	var FamilyEventDetailSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "":
-			if FamilyEventDetailSet {
-				return ErrContext{"VerifiedFamilyEventDetail", "", ErrSingleMultiple}
-			}
-			FamilyEventDetailSet = true
-			if err := s.FamilyEventDetail.parse(sl); err != nil {
-				return ErrContext{"VerifiedFamilyEventDetail", "", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"VerifiedFamilyEventDetail", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
-	}
-	if !FamilyEventDetailSet {
-		return ErrContext{"VerifiedFamilyEventDetail", "FamilyEventDetail", ErrRequiredMissing}
+	if err := s.FamilyEventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -644,43 +626,38 @@ func (s *VerifiedFamilyEventDetail) parse(l Line) error {
 type FamilyEventDetail struct {
 	HusbandAge AgeStructure
 	WifeAge    AgeStructure
-	Event      EventDetail
+	EventDetail
 }
 
-func (s *FamilyEventDetail) parse(l Line) error {
-	var HusbandAgeSet, WifeAgeSet, EventSet bool
-	for _, sl := range l.Sub {
+func (s *FamilyEventDetail) parse(l *Line) error {
+	var HusbandAgeSet, WifeAgeSet bool
+	for i := 0; i < len(l.Sub); i++ {
+		sl := l.Sub[i]
 		switch sl.tag {
 		case "HUSB":
 			if HusbandAgeSet {
 				return ErrContext{"FamilyEventDetail", "HUSB", ErrSingleMultiple}
 			}
 			HusbandAgeSet = true
-			if err := s.HusbandAge.parse(sl); err != nil {
+			if err := s.HusbandAge.parse(&sl); err != nil {
 				return ErrContext{"FamilyEventDetail", "HUSB", err}
 			}
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
 		case "WIFE":
 			if WifeAgeSet {
 				return ErrContext{"FamilyEventDetail", "WIFE", ErrSingleMultiple}
 			}
 			WifeAgeSet = true
-			if err := s.WifeAge.parse(sl); err != nil {
+			if err := s.WifeAge.parse(&sl); err != nil {
 				return ErrContext{"FamilyEventDetail", "WIFE", err}
 			}
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"FamilyEventDetail", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"FamilyEventDetail", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"FamilyEventDetail", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
 		}
+	}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -690,7 +667,7 @@ type AgeStructure struct {
 	Age AgeAtEvent
 }
 
-func (s *AgeStructure) parse(l Line) error {
+func (s *AgeStructure) parse(l *Line) error {
 	var AgeSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -699,7 +676,7 @@ func (s *AgeStructure) parse(l Line) error {
 				return ErrContext{"AgeStructure", "AGE", ErrSingleMultiple}
 			}
 			AgeSet = true
-			if err := s.Age.parse(sl); err != nil {
+			if err := s.Age.parse(&sl); err != nil {
 				return ErrContext{"AgeStructure", "AGE", err}
 			}
 		default:
@@ -774,8 +751,8 @@ type Individual struct {
 	ChangeDate            ChangeDateStructure
 }
 
-func (s *Individual) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *Individual) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"Individual", "xrefID", err}
 	}
 	var RestrictionNoticeSet, GenderSet, BirthSet, ChristeningSet, DeathSet, BuriedSet, CremationSet, AdoptionSet, MaptismSet, BarMitzvahSet, BasMitzvahSet, BlessingSet, AdultChristeningSet, ConfirmationSet, FirstCommunionSet, OrdinationSet, NaturalizationSet, EmmigratedSet, ImmigratedSet, CensusSet, ProbateSet, WillSet, GraduatedSet, RetiredSet, PermanentRecordSet, AncestralFileNumberSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -786,12 +763,12 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "RESN", ErrSingleMultiple}
 			}
 			RestrictionNoticeSet = true
-			if err := s.RestrictionNotice.parse(sl); err != nil {
+			if err := s.RestrictionNotice.parse(&sl); err != nil {
 				return ErrContext{"Individual", "RESN", err}
 			}
 		case "NAME":
 			var t PersonalNameStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "NAME", err}
 			}
 			s.PersonalNameStructure = append(s.PersonalNameStructure, t)
@@ -800,7 +777,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "SEX", ErrSingleMultiple}
 			}
 			GenderSet = true
-			if err := s.Gender.parse(sl); err != nil {
+			if err := s.Gender.parse(&sl); err != nil {
 				return ErrContext{"Individual", "SEX", err}
 			}
 		case "BIRT":
@@ -808,7 +785,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "BIRT", ErrSingleMultiple}
 			}
 			BirthSet = true
-			if err := s.Birth.parse(sl); err != nil {
+			if err := s.Birth.parse(&sl); err != nil {
 				return ErrContext{"Individual", "BIRT", err}
 			}
 		case "CHR":
@@ -816,7 +793,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "CHR", ErrSingleMultiple}
 			}
 			ChristeningSet = true
-			if err := s.Christening.parse(sl); err != nil {
+			if err := s.Christening.parse(&sl); err != nil {
 				return ErrContext{"Individual", "CHR", err}
 			}
 		case "DEAT":
@@ -824,7 +801,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "DEAT", ErrSingleMultiple}
 			}
 			DeathSet = true
-			if err := s.Death.parse(sl); err != nil {
+			if err := s.Death.parse(&sl); err != nil {
 				return ErrContext{"Individual", "DEAT", err}
 			}
 		case "BURI":
@@ -832,7 +809,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "BURI", ErrSingleMultiple}
 			}
 			BuriedSet = true
-			if err := s.Buried.parse(sl); err != nil {
+			if err := s.Buried.parse(&sl); err != nil {
 				return ErrContext{"Individual", "BURI", err}
 			}
 		case "CREM":
@@ -840,7 +817,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "CREM", ErrSingleMultiple}
 			}
 			CremationSet = true
-			if err := s.Cremation.parse(sl); err != nil {
+			if err := s.Cremation.parse(&sl); err != nil {
 				return ErrContext{"Individual", "CREM", err}
 			}
 		case "ADOP":
@@ -848,7 +825,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "ADOP", ErrSingleMultiple}
 			}
 			AdoptionSet = true
-			if err := s.Adoption.parse(sl); err != nil {
+			if err := s.Adoption.parse(&sl); err != nil {
 				return ErrContext{"Individual", "ADOP", err}
 			}
 		case "BAPM":
@@ -856,7 +833,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "BAPM", ErrSingleMultiple}
 			}
 			MaptismSet = true
-			if err := s.Maptism.parse(sl); err != nil {
+			if err := s.Maptism.parse(&sl); err != nil {
 				return ErrContext{"Individual", "BAPM", err}
 			}
 		case "BARM":
@@ -864,7 +841,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "BARM", ErrSingleMultiple}
 			}
 			BarMitzvahSet = true
-			if err := s.BarMitzvah.parse(sl); err != nil {
+			if err := s.BarMitzvah.parse(&sl); err != nil {
 				return ErrContext{"Individual", "BARM", err}
 			}
 		case "BASM":
@@ -872,7 +849,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "BASM", ErrSingleMultiple}
 			}
 			BasMitzvahSet = true
-			if err := s.BasMitzvah.parse(sl); err != nil {
+			if err := s.BasMitzvah.parse(&sl); err != nil {
 				return ErrContext{"Individual", "BASM", err}
 			}
 		case "BLES":
@@ -880,7 +857,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "BLES", ErrSingleMultiple}
 			}
 			BlessingSet = true
-			if err := s.Blessing.parse(sl); err != nil {
+			if err := s.Blessing.parse(&sl); err != nil {
 				return ErrContext{"Individual", "BLES", err}
 			}
 		case "CHRA":
@@ -888,7 +865,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "CHRA", ErrSingleMultiple}
 			}
 			AdultChristeningSet = true
-			if err := s.AdultChristening.parse(sl); err != nil {
+			if err := s.AdultChristening.parse(&sl); err != nil {
 				return ErrContext{"Individual", "CHRA", err}
 			}
 		case "CONF":
@@ -896,7 +873,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "CONF", ErrSingleMultiple}
 			}
 			ConfirmationSet = true
-			if err := s.Confirmation.parse(sl); err != nil {
+			if err := s.Confirmation.parse(&sl); err != nil {
 				return ErrContext{"Individual", "CONF", err}
 			}
 		case "FCOM":
@@ -904,7 +881,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "FCOM", ErrSingleMultiple}
 			}
 			FirstCommunionSet = true
-			if err := s.FirstCommunion.parse(sl); err != nil {
+			if err := s.FirstCommunion.parse(&sl); err != nil {
 				return ErrContext{"Individual", "FCOM", err}
 			}
 		case "ORDN":
@@ -912,7 +889,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "ORDN", ErrSingleMultiple}
 			}
 			OrdinationSet = true
-			if err := s.Ordination.parse(sl); err != nil {
+			if err := s.Ordination.parse(&sl); err != nil {
 				return ErrContext{"Individual", "ORDN", err}
 			}
 		case "NATU":
@@ -920,7 +897,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "NATU", ErrSingleMultiple}
 			}
 			NaturalizationSet = true
-			if err := s.Naturalization.parse(sl); err != nil {
+			if err := s.Naturalization.parse(&sl); err != nil {
 				return ErrContext{"Individual", "NATU", err}
 			}
 		case "EMIG":
@@ -928,7 +905,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "EMIG", ErrSingleMultiple}
 			}
 			EmmigratedSet = true
-			if err := s.Emmigrated.parse(sl); err != nil {
+			if err := s.Emmigrated.parse(&sl); err != nil {
 				return ErrContext{"Individual", "EMIG", err}
 			}
 		case "IMMI":
@@ -936,7 +913,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "IMMI", ErrSingleMultiple}
 			}
 			ImmigratedSet = true
-			if err := s.Immigrated.parse(sl); err != nil {
+			if err := s.Immigrated.parse(&sl); err != nil {
 				return ErrContext{"Individual", "IMMI", err}
 			}
 		case "CENS":
@@ -944,7 +921,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "CENS", ErrSingleMultiple}
 			}
 			CensusSet = true
-			if err := s.Census.parse(sl); err != nil {
+			if err := s.Census.parse(&sl); err != nil {
 				return ErrContext{"Individual", "CENS", err}
 			}
 		case "PROB":
@@ -952,7 +929,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "PROB", ErrSingleMultiple}
 			}
 			ProbateSet = true
-			if err := s.Probate.parse(sl); err != nil {
+			if err := s.Probate.parse(&sl); err != nil {
 				return ErrContext{"Individual", "PROB", err}
 			}
 		case "WILL":
@@ -960,7 +937,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "WILL", ErrSingleMultiple}
 			}
 			WillSet = true
-			if err := s.Will.parse(sl); err != nil {
+			if err := s.Will.parse(&sl); err != nil {
 				return ErrContext{"Individual", "WILL", err}
 			}
 		case "GRAD":
@@ -968,7 +945,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "GRAD", ErrSingleMultiple}
 			}
 			GraduatedSet = true
-			if err := s.Graduated.parse(sl); err != nil {
+			if err := s.Graduated.parse(&sl); err != nil {
 				return ErrContext{"Individual", "GRAD", err}
 			}
 		case "RETI":
@@ -976,150 +953,150 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "RETI", ErrSingleMultiple}
 			}
 			RetiredSet = true
-			if err := s.Retired.parse(sl); err != nil {
+			if err := s.Retired.parse(&sl); err != nil {
 				return ErrContext{"Individual", "RETI", err}
 			}
 		case "EVEN":
 			var t IndividualEventDetail
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "EVEN", err}
 			}
 			s.Events = append(s.Events, t)
 		case "CAST":
 			var t CasteEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "CAST", err}
 			}
 			s.Caste = append(s.Caste, t)
 		case "DSCR":
 			var t DescriptionEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "DSCR", err}
 			}
 			s.Description = append(s.Description, t)
 		case "EDUC":
 			var t ScholasticEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "EDUC", err}
 			}
 			s.ScholasticAchievement = append(s.ScholasticAchievement, t)
 		case "IDNO":
 			var t NationalIDEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "IDNO", err}
 			}
 			s.NationalID = append(s.NationalID, t)
 		case "NATI":
 			var t NationalOriginEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "NATI", err}
 			}
 			s.NationalTribalOrigin = append(s.NationalTribalOrigin, t)
 		case "NCHI":
 			var t ChildrenEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "NCHI", err}
 			}
 			s.CountOfChildren = append(s.CountOfChildren, t)
 		case "NMR":
 			var t MarriagesEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "NMR", err}
 			}
 			s.CountOfMarriages = append(s.CountOfMarriages, t)
 		case "OCCU":
 			var t OccupationEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "OCCU", err}
 			}
 			s.Occupation = append(s.Occupation, t)
 		case "PROP":
 			var t PossessionEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "PROP", err}
 			}
 			s.Possessions = append(s.Possessions, t)
 		case "RELI":
 			var t ReligiousEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "RELI", err}
 			}
 			s.ReligiousAffiliation = append(s.ReligiousAffiliation, t)
 		case "RESI":
 			var t ResidenceEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "RESI", err}
 			}
 			s.Residences = append(s.Residences, t)
 		case "SSN":
 			var t SSNEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "SSN", err}
 			}
 			s.SocialSecurity = append(s.SocialSecurity, t)
 		case "TITL":
 			var t NobilityEvent
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "TITL", err}
 			}
 			s.NobilityTypeTitle = append(s.NobilityTypeTitle, t)
 		case "FAMC":
 			var t ChildToFamilyLink
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "FAMC", err}
 			}
 			s.ChildOf = append(s.ChildOf, t)
 		case "FAMS":
 			var t SpouseToFamilyLink
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "FAMS", err}
 			}
 			s.SpouseOf = append(s.SpouseOf, t)
 		case "SUBM":
 			var t Xref
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "SUBM", err}
 			}
 			s.Submitters = append(s.Submitters, t)
 		case "ASSO":
 			var t AssociationStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "ASSO", err}
 			}
 			s.Associations = append(s.Associations, t)
 		case "ALIA":
 			var t Xref
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "ALIA", err}
 			}
 			s.Aliases = append(s.Aliases, t)
 		case "ANCI":
 			var t Xref
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "ANCI", err}
 			}
 			s.AncestorInterest = append(s.AncestorInterest, t)
 		case "DESI":
 			var t Xref
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "DESI", err}
 			}
 			s.DescendentInterest = append(s.DescendentInterest, t)
 		case "SOUR":
 			var t SourceCitation
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "OBJE":
 			var t MultimediaLink
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -1128,7 +1105,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "RFN", ErrSingleMultiple}
 			}
 			PermanentRecordSet = true
-			if err := s.PermanentRecord.parse(sl); err != nil {
+			if err := s.PermanentRecord.parse(&sl); err != nil {
 				return ErrContext{"Individual", "RFN", err}
 			}
 		case "AFN":
@@ -1136,12 +1113,12 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "AFN", ErrSingleMultiple}
 			}
 			AncestralFileNumberSet = true
-			if err := s.AncestralFileNumber.parse(sl); err != nil {
+			if err := s.AncestralFileNumber.parse(&sl); err != nil {
 				return ErrContext{"Individual", "AFN", err}
 			}
 		case "REFN":
 			var t UserReferenceStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"Individual", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -1150,7 +1127,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "RIN", ErrSingleMultiple}
 			}
 			AutomatedRecordIDSet = true
-			if err := s.AutomatedRecordID.parse(sl); err != nil {
+			if err := s.AutomatedRecordID.parse(&sl); err != nil {
 				return ErrContext{"Individual", "RIN", err}
 			}
 		case "CHAN":
@@ -1158,7 +1135,7 @@ func (s *Individual) parse(l Line) error {
 				return ErrContext{"Individual", "CHAN", ErrSingleMultiple}
 			}
 			ChangeDateSet = true
-			if err := s.ChangeDate.parse(sl); err != nil {
+			if err := s.ChangeDate.parse(&sl); err != nil {
 				return ErrContext{"Individual", "CHAN", err}
 			}
 		default:
@@ -1173,39 +1150,29 @@ func (s *Individual) parse(l Line) error {
 
 // VerifiedIndividualFamEventDetail is a GEDCOM structure type
 type VerifiedIndividualFamEventDetail struct {
-	Famc                Xref
-	VerifiedEventDetail VerifiedEventDetail
+	Famc Xref
+	VerifiedEventDetail
 }
 
-func (s *VerifiedIndividualFamEventDetail) parse(l Line) error {
-	var VerifiedEventDetailSet, FamcSet bool
-	for _, sl := range l.Sub {
+func (s *VerifiedIndividualFamEventDetail) parse(l *Line) error {
+	var FamcSet bool
+	for i := 0; i < len(l.Sub); i++ {
+		sl := l.Sub[i]
 		switch sl.tag {
 		case "FAMC":
 			if FamcSet {
 				return ErrContext{"VerifiedIndividualFamEventDetail", "FAMC", ErrSingleMultiple}
 			}
 			FamcSet = true
-			if err := s.Famc.parse(sl); err != nil {
+			if err := s.Famc.parse(&sl); err != nil {
 				return ErrContext{"VerifiedIndividualFamEventDetail", "FAMC", err}
 			}
-		case "":
-			if VerifiedEventDetailSet {
-				return ErrContext{"VerifiedIndividualFamEventDetail", "", ErrSingleMultiple}
-			}
-			VerifiedEventDetailSet = true
-			if err := s.VerifiedEventDetail.parse(sl); err != nil {
-				return ErrContext{"VerifiedIndividualFamEventDetail", "", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"VerifiedIndividualFamEventDetail", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
 		}
 	}
-	if !VerifiedEventDetailSet {
-		return ErrContext{"VerifiedIndividualFamEventDetail", "VerifiedEventDetail", ErrRequiredMissing}
+	if err := s.VerifiedEventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1213,57 +1180,27 @@ func (s *VerifiedIndividualFamEventDetail) parse(l Line) error {
 // VerifiedEventDetail is a GEDCOM structure type
 type VerifiedEventDetail struct {
 	Verified Verified
-	Event    EventDetail
+	EventDetail
 }
 
-func (s *VerifiedEventDetail) parse(l Line) error {
+func (s *VerifiedEventDetail) parse(l *Line) error {
 	if err := s.Verified.parse(l); err != nil {
 		return ErrContext{"VerifiedEventDetail", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"VerifiedEventDetail", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"VerifiedEventDetail", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"VerifiedEventDetail", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
 
 // IndividualEventDetail is a GEDCOM structure type
 type IndividualEventDetail struct {
-	Event EventDetail
+	EventDetail
 }
 
-func (s *IndividualEventDetail) parse(l Line) error {
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"IndividualEventDetail", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"IndividualEventDetail", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"IndividualEventDetail", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+func (s *IndividualEventDetail) parse(l *Line) error {
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1271,35 +1208,28 @@ func (s *IndividualEventDetail) parse(l Line) error {
 // AdoptionEvent is a GEDCOM structure type
 type AdoptionEvent struct {
 	Family AdoptionReference
-	Event  EventDetail
+	EventDetail
 }
 
-func (s *AdoptionEvent) parse(l Line) error {
-	var FamilySet, EventSet bool
-	for _, sl := range l.Sub {
+func (s *AdoptionEvent) parse(l *Line) error {
+	var FamilySet bool
+	for i := 0; i < len(l.Sub); i++ {
+		sl := l.Sub[i]
 		switch sl.tag {
 		case "FAMC":
 			if FamilySet {
 				return ErrContext{"AdoptionEvent", "FAMC", ErrSingleMultiple}
 			}
 			FamilySet = true
-			if err := s.Family.parse(sl); err != nil {
+			if err := s.Family.parse(&sl); err != nil {
 				return ErrContext{"AdoptionEvent", "FAMC", err}
 			}
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"AdoptionEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"AdoptionEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"AdoptionEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
 		}
+	}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1310,8 +1240,8 @@ type AdoptionReference struct {
 	AdoptedBy AdoptedBy
 }
 
-func (s *AdoptionReference) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *AdoptionReference) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"AdoptionReference", "xrefID", err}
 	}
 	var AdoptedBySet bool
@@ -1322,7 +1252,7 @@ func (s *AdoptionReference) parse(l Line) error {
 				return ErrContext{"AdoptionReference", "ADOP", ErrSingleMultiple}
 			}
 			AdoptedBySet = true
-			if err := s.AdoptedBy.parse(sl); err != nil {
+			if err := s.AdoptedBy.parse(&sl); err != nil {
 				return ErrContext{"AdoptionReference", "ADOP", err}
 			}
 		default:
@@ -1338,30 +1268,15 @@ func (s *AdoptionReference) parse(l Line) error {
 // CasteEvent is a GEDCOM structure type
 type CasteEvent struct {
 	CasteName CasteName
-	Event     EventDetail
+	EventDetail
 }
 
-func (s *CasteEvent) parse(l Line) error {
+func (s *CasteEvent) parse(l *Line) error {
 	if err := s.CasteName.parse(l); err != nil {
 		return ErrContext{"CasteEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"CasteEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"CasteEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"CasteEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1369,30 +1284,15 @@ func (s *CasteEvent) parse(l Line) error {
 // DescriptionEvent is a GEDCOM structure type
 type DescriptionEvent struct {
 	PhysicalDescription PhysicalDescription
-	Event               EventDetail
+	EventDetail
 }
 
-func (s *DescriptionEvent) parse(l Line) error {
+func (s *DescriptionEvent) parse(l *Line) error {
 	if err := s.PhysicalDescription.parse(l); err != nil {
 		return ErrContext{"DescriptionEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"DescriptionEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"DescriptionEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"DescriptionEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1400,30 +1300,15 @@ func (s *DescriptionEvent) parse(l Line) error {
 // ScholasticEvent is a GEDCOM structure type
 type ScholasticEvent struct {
 	ScholasticAchievement ScholasticAchievement
-	Event                 EventDetail
+	EventDetail
 }
 
-func (s *ScholasticEvent) parse(l Line) error {
+func (s *ScholasticEvent) parse(l *Line) error {
 	if err := s.ScholasticAchievement.parse(l); err != nil {
 		return ErrContext{"ScholasticEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"ScholasticEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"ScholasticEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"ScholasticEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1431,30 +1316,15 @@ func (s *ScholasticEvent) parse(l Line) error {
 // NationalIDEvent is a GEDCOM structure type
 type NationalIDEvent struct {
 	NationalIDNumber NationalIDNumber
-	Event            EventDetail
+	EventDetail
 }
 
-func (s *NationalIDEvent) parse(l Line) error {
+func (s *NationalIDEvent) parse(l *Line) error {
 	if err := s.NationalIDNumber.parse(l); err != nil {
 		return ErrContext{"NationalIDEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"NationalIDEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"NationalIDEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"NationalIDEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1462,30 +1332,15 @@ func (s *NationalIDEvent) parse(l Line) error {
 // NationalOriginEvent is a GEDCOM structure type
 type NationalOriginEvent struct {
 	NationalOrTribalOrigin NationalOrTribalOrigin
-	Event                  EventDetail
+	EventDetail
 }
 
-func (s *NationalOriginEvent) parse(l Line) error {
+func (s *NationalOriginEvent) parse(l *Line) error {
 	if err := s.NationalOrTribalOrigin.parse(l); err != nil {
 		return ErrContext{"NationalOriginEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"NationalOriginEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"NationalOriginEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"NationalOriginEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1493,30 +1348,15 @@ func (s *NationalOriginEvent) parse(l Line) error {
 // ChildrenEvent is a GEDCOM structure type
 type ChildrenEvent struct {
 	CountOfChildren CountOfChildren
-	Event           EventDetail
+	EventDetail
 }
 
-func (s *ChildrenEvent) parse(l Line) error {
+func (s *ChildrenEvent) parse(l *Line) error {
 	if err := s.CountOfChildren.parse(l); err != nil {
 		return ErrContext{"ChildrenEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"ChildrenEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"ChildrenEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"ChildrenEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1524,30 +1364,15 @@ func (s *ChildrenEvent) parse(l Line) error {
 // MarriagesEvent is a GEDCOM structure type
 type MarriagesEvent struct {
 	CountOfMarriages CountOfMarriages
-	Event            EventDetail
+	EventDetail
 }
 
-func (s *MarriagesEvent) parse(l Line) error {
+func (s *MarriagesEvent) parse(l *Line) error {
 	if err := s.CountOfMarriages.parse(l); err != nil {
 		return ErrContext{"MarriagesEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"MarriagesEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"MarriagesEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"MarriagesEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1555,30 +1380,15 @@ func (s *MarriagesEvent) parse(l Line) error {
 // OccupationEvent is a GEDCOM structure type
 type OccupationEvent struct {
 	Occupation Occupation
-	Event      EventDetail
+	EventDetail
 }
 
-func (s *OccupationEvent) parse(l Line) error {
+func (s *OccupationEvent) parse(l *Line) error {
 	if err := s.Occupation.parse(l); err != nil {
 		return ErrContext{"OccupationEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"OccupationEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"OccupationEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"OccupationEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1586,30 +1396,15 @@ func (s *OccupationEvent) parse(l Line) error {
 // PossessionEvent is a GEDCOM structure type
 type PossessionEvent struct {
 	Possessions Possessions
-	Event       EventDetail
+	EventDetail
 }
 
-func (s *PossessionEvent) parse(l Line) error {
+func (s *PossessionEvent) parse(l *Line) error {
 	if err := s.Possessions.parse(l); err != nil {
 		return ErrContext{"PossessionEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"PossessionEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"PossessionEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"PossessionEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1617,57 +1412,27 @@ func (s *PossessionEvent) parse(l Line) error {
 // ReligiousEvent is a GEDCOM structure type
 type ReligiousEvent struct {
 	ReligiousAffiliation ReligiousAffiliation
-	Event                EventDetail
+	EventDetail
 }
 
-func (s *ReligiousEvent) parse(l Line) error {
+func (s *ReligiousEvent) parse(l *Line) error {
 	if err := s.ReligiousAffiliation.parse(l); err != nil {
 		return ErrContext{"ReligiousEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"ReligiousEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"ReligiousEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"ReligiousEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
 
 // ResidenceEvent is a GEDCOM structure type
 type ResidenceEvent struct {
-	Event EventDetail
+	EventDetail
 }
 
-func (s *ResidenceEvent) parse(l Line) error {
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"ResidenceEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"ResidenceEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"ResidenceEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+func (s *ResidenceEvent) parse(l *Line) error {
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1675,30 +1440,15 @@ func (s *ResidenceEvent) parse(l Line) error {
 // SSNEvent is a GEDCOM structure type
 type SSNEvent struct {
 	SocialSecurityNumber SocialSecurityNumber
-	Event                EventDetail
+	EventDetail
 }
 
-func (s *SSNEvent) parse(l Line) error {
+func (s *SSNEvent) parse(l *Line) error {
 	if err := s.SocialSecurityNumber.parse(l); err != nil {
 		return ErrContext{"SSNEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"SSNEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"SSNEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"SSNEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1706,30 +1456,15 @@ func (s *SSNEvent) parse(l Line) error {
 // NobilityEvent is a GEDCOM structure type
 type NobilityEvent struct {
 	NobilityTypeTitle NobilityTypeTitle
-	Event             EventDetail
+	EventDetail
 }
 
-func (s *NobilityEvent) parse(l Line) error {
+func (s *NobilityEvent) parse(l *Line) error {
 	if err := s.NobilityTypeTitle.parse(l); err != nil {
 		return ErrContext{"NobilityEvent", "line_value", err}
 	}
-	var EventSet bool
-	for _, sl := range l.Sub {
-		switch sl.tag {
-		case "EVEN":
-			if EventSet {
-				return ErrContext{"NobilityEvent", "EVEN", ErrSingleMultiple}
-			}
-			EventSet = true
-			if err := s.Event.parse(sl); err != nil {
-				return ErrContext{"NobilityEvent", "EVEN", err}
-			}
-		default:
-			if len(sl.tag) < 1 || sl.tag[0] != '_' {
-				return ErrContext{"NobilityEvent", sl.tag, ErrUnknownTag}
-			}
-			// possibly store in a Other field
-		}
+	if err := s.EventDetail.parse(l); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1740,7 +1475,7 @@ type UserReferenceStructure struct {
 	Type                UserReferenceType
 }
 
-func (s *UserReferenceStructure) parse(l Line) error {
+func (s *UserReferenceStructure) parse(l *Line) error {
 	if err := s.UserReferenceNumber.parse(l); err != nil {
 		return ErrContext{"UserReferenceStructure", "line_value", err}
 	}
@@ -1752,7 +1487,7 @@ func (s *UserReferenceStructure) parse(l Line) error {
 				return ErrContext{"UserReferenceStructure", "TYPE", ErrSingleMultiple}
 			}
 			TypeSet = true
-			if err := s.Type.parse(sl); err != nil {
+			if err := s.Type.parse(&sl); err != nil {
 				return ErrContext{"UserReferenceStructure", "TYPE", err}
 			}
 		default:
@@ -1778,8 +1513,8 @@ type MultimediaRecord struct {
 	ChangeDate        ChangeDateStructure
 }
 
-func (s *MultimediaRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *MultimediaRecord) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"MultimediaRecord", "xrefID", err}
 	}
 	var FormatSet, BlobSet, TitleSet, ContinuedObjectSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -1790,7 +1525,7 @@ func (s *MultimediaRecord) parse(l Line) error {
 				return ErrContext{"MultimediaRecord", "FORM", ErrSingleMultiple}
 			}
 			FormatSet = true
-			if err := s.Format.parse(sl); err != nil {
+			if err := s.Format.parse(&sl); err != nil {
 				return ErrContext{"MultimediaRecord", "FORM", err}
 			}
 		case "TITLE":
@@ -1798,12 +1533,12 @@ func (s *MultimediaRecord) parse(l Line) error {
 				return ErrContext{"MultimediaRecord", "TITLE", ErrSingleMultiple}
 			}
 			TitleSet = true
-			if err := s.Title.parse(sl); err != nil {
+			if err := s.Title.parse(&sl); err != nil {
 				return ErrContext{"MultimediaRecord", "TITLE", err}
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"MultimediaRecord", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -1812,7 +1547,7 @@ func (s *MultimediaRecord) parse(l Line) error {
 				return ErrContext{"MultimediaRecord", "BLOB", ErrSingleMultiple}
 			}
 			BlobSet = true
-			if err := s.Blob.parse(sl); err != nil {
+			if err := s.Blob.parse(&sl); err != nil {
 				return ErrContext{"MultimediaRecord", "BLOB", err}
 			}
 		case "OBJE":
@@ -1820,12 +1555,12 @@ func (s *MultimediaRecord) parse(l Line) error {
 				return ErrContext{"MultimediaRecord", "OBJE", ErrSingleMultiple}
 			}
 			ContinuedObjectSet = true
-			if err := s.ContinuedObject.parse(sl); err != nil {
+			if err := s.ContinuedObject.parse(&sl); err != nil {
 				return ErrContext{"MultimediaRecord", "OBJE", err}
 			}
 		case "REFN":
 			var t UserReferenceStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"MultimediaRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -1834,7 +1569,7 @@ func (s *MultimediaRecord) parse(l Line) error {
 				return ErrContext{"MultimediaRecord", "RIN", ErrSingleMultiple}
 			}
 			AutomatedRecordIDSet = true
-			if err := s.AutomatedRecordID.parse(sl); err != nil {
+			if err := s.AutomatedRecordID.parse(&sl); err != nil {
 				return ErrContext{"MultimediaRecord", "RIN", err}
 			}
 		case "CHAN":
@@ -1842,7 +1577,7 @@ func (s *MultimediaRecord) parse(l Line) error {
 				return ErrContext{"MultimediaRecord", "CHAN", ErrSingleMultiple}
 			}
 			ChangeDateSet = true
-			if err := s.ChangeDate.parse(sl); err != nil {
+			if err := s.ChangeDate.parse(&sl); err != nil {
 				return ErrContext{"MultimediaRecord", "CHAN", err}
 			}
 		default:
@@ -1871,40 +1606,25 @@ type NoteRecord struct {
 	ChangeDate        ChangeDateStructure
 }
 
-func (s *NoteRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *NoteRecord) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"NoteRecord", "xrefID", err}
 	}
 	if err := s.SubmitterText.parse(l); err != nil {
 		return ErrContext{"NoteRecord", "line_value", err}
-	}
-	for i := 0; i < len(l.Sub); i++ {
-		switch l.Sub[i].tag {
-		case "CONT":
-			s.SubmitterText += "\n"
-			fallthrough
-		case "CONC":
-			var t SubmitterText
-			if err := t.parse(l.Sub[i]); err != nil {
-				return ErrContext{"$structureName", "line_value", err}
-			}
-			s.SubmitterText += t
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
-			i--
-		}
 	}
 	var AutomatedRecordIDSet, ChangeDateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "SOUR":
 			var t SourceCitation
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"NoteRecord", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "REFN":
 			var t UserReferenceStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"NoteRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -1913,7 +1633,7 @@ func (s *NoteRecord) parse(l Line) error {
 				return ErrContext{"NoteRecord", "RIN", ErrSingleMultiple}
 			}
 			AutomatedRecordIDSet = true
-			if err := s.AutomatedRecordID.parse(sl); err != nil {
+			if err := s.AutomatedRecordID.parse(&sl); err != nil {
 				return ErrContext{"NoteRecord", "RIN", err}
 			}
 		case "CHAN":
@@ -1921,7 +1641,7 @@ func (s *NoteRecord) parse(l Line) error {
 				return ErrContext{"NoteRecord", "CHAN", ErrSingleMultiple}
 			}
 			ChangeDateSet = true
-			if err := s.ChangeDate.parse(sl); err != nil {
+			if err := s.ChangeDate.parse(&sl); err != nil {
 				return ErrContext{"NoteRecord", "CHAN", err}
 			}
 		default:
@@ -1946,8 +1666,8 @@ type RepositoryRecord struct {
 	ChangeDate        ChangeDateStructure
 }
 
-func (s *RepositoryRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *RepositoryRecord) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"RepositoryRecord", "xrefID", err}
 	}
 	var NameOfRepositorySet, AddressSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -1960,7 +1680,7 @@ func (s *RepositoryRecord) parse(l Line) error {
 				return ErrContext{"RepositoryRecord", "NAME", ErrSingleMultiple}
 			}
 			NameOfRepositorySet = true
-			if err := s.NameOfRepository.parse(sl); err != nil {
+			if err := s.NameOfRepository.parse(&sl); err != nil {
 				return ErrContext{"RepositoryRecord", "NAME", err}
 			}
 		case "ADDR":
@@ -1968,7 +1688,7 @@ func (s *RepositoryRecord) parse(l Line) error {
 				return ErrContext{"RepositoryRecord", "ADDR", ErrSingleMultiple}
 			}
 			AddressSet = true
-			if err := s.Address.parse(sl); err != nil {
+			if err := s.Address.parse(&sl); err != nil {
 				return ErrContext{"RepositoryRecord", "ADDR", err}
 			}
 		case "PHON":
@@ -1977,19 +1697,19 @@ func (s *RepositoryRecord) parse(l Line) error {
 			}
 			PhoneNumberCount++
 			var t PhoneNumber
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"RepositoryRecord", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"RepositoryRecord", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
 		case "REFN":
 			var t UserReferenceStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"RepositoryRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -1998,7 +1718,7 @@ func (s *RepositoryRecord) parse(l Line) error {
 				return ErrContext{"RepositoryRecord", "RIN", ErrSingleMultiple}
 			}
 			AutomatedRecordIDSet = true
-			if err := s.AutomatedRecordID.parse(sl); err != nil {
+			if err := s.AutomatedRecordID.parse(&sl); err != nil {
 				return ErrContext{"RepositoryRecord", "RIN", err}
 			}
 		case "CHAN":
@@ -2006,7 +1726,7 @@ func (s *RepositoryRecord) parse(l Line) error {
 				return ErrContext{"RepositoryRecord", "CHAN", ErrSingleMultiple}
 			}
 			ChangeDateSet = true
-			if err := s.ChangeDate.parse(sl); err != nil {
+			if err := s.ChangeDate.parse(&sl); err != nil {
 				return ErrContext{"RepositoryRecord", "CHAN", err}
 			}
 		default:
@@ -2036,8 +1756,8 @@ type SourceRecord struct {
 	ChangeDate               ChangeDateStructure
 }
 
-func (s *SourceRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *SourceRecord) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SourceRecord", "xrefID", err}
 	}
 	var SourceRepositoryCitationSet, DataSet, OriginatorSet, TitleSet, FiledBySet, PublicationFactsSet, TextFromSourceSet, ContinuedObjectSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -2048,7 +1768,7 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "DATA", ErrSingleMultiple}
 			}
 			DataSet = true
-			if err := s.Data.parse(sl); err != nil {
+			if err := s.Data.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "DATA", err}
 			}
 		case "AUTH":
@@ -2056,7 +1776,7 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "AUTH", ErrSingleMultiple}
 			}
 			OriginatorSet = true
-			if err := s.Originator.parse(sl); err != nil {
+			if err := s.Originator.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "AUTH", err}
 			}
 		case "TITL":
@@ -2064,7 +1784,7 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "TITL", ErrSingleMultiple}
 			}
 			TitleSet = true
-			if err := s.Title.parse(sl); err != nil {
+			if err := s.Title.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "TITL", err}
 			}
 		case "ABBR":
@@ -2072,7 +1792,7 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "ABBR", ErrSingleMultiple}
 			}
 			FiledBySet = true
-			if err := s.FiledBy.parse(sl); err != nil {
+			if err := s.FiledBy.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "ABBR", err}
 			}
 		case "PUBL":
@@ -2080,7 +1800,7 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "PUBL", ErrSingleMultiple}
 			}
 			PublicationFactsSet = true
-			if err := s.PublicationFacts.parse(sl); err != nil {
+			if err := s.PublicationFacts.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "PUBL", err}
 			}
 		case "TEXT":
@@ -2088,7 +1808,7 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "TEXT", ErrSingleMultiple}
 			}
 			TextFromSourceSet = true
-			if err := s.TextFromSource.parse(sl); err != nil {
+			if err := s.TextFromSource.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "TEXT", err}
 			}
 		case "REPO":
@@ -2096,7 +1816,7 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "REPO", ErrSingleMultiple}
 			}
 			SourceRepositoryCitationSet = true
-			if err := s.SourceRepositoryCitation.parse(sl); err != nil {
+			if err := s.SourceRepositoryCitation.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "REPO", err}
 			}
 		case "OBJE":
@@ -2104,18 +1824,18 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "OBJE", ErrSingleMultiple}
 			}
 			ContinuedObjectSet = true
-			if err := s.ContinuedObject.parse(sl); err != nil {
+			if err := s.ContinuedObject.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "OBJE", err}
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
 		case "REFN":
 			var t UserReferenceStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
@@ -2124,7 +1844,7 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "RIN", ErrSingleMultiple}
 			}
 			AutomatedRecordIDSet = true
-			if err := s.AutomatedRecordID.parse(sl); err != nil {
+			if err := s.AutomatedRecordID.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "RIN", err}
 			}
 		case "CHAN":
@@ -2132,7 +1852,7 @@ func (s *SourceRecord) parse(l Line) error {
 				return ErrContext{"SourceRecord", "CHAN", ErrSingleMultiple}
 			}
 			ChangeDateSet = true
-			if err := s.ChangeDate.parse(sl); err != nil {
+			if err := s.ChangeDate.parse(&sl); err != nil {
 				return ErrContext{"SourceRecord", "CHAN", err}
 			}
 		default:
@@ -2155,13 +1875,13 @@ type SourceRecordDataStructure struct {
 	Notes             []NoteStructure
 }
 
-func (s *SourceRecordDataStructure) parse(l Line) error {
+func (s *SourceRecordDataStructure) parse(l *Line) error {
 	var ResponsibleAgencySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "EVEN":
 			var t EventsRecordedStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceRecordDataStructure", "EVEN", err}
 			}
 			s.EventsRecorded = append(s.EventsRecorded, t)
@@ -2170,12 +1890,12 @@ func (s *SourceRecordDataStructure) parse(l Line) error {
 				return ErrContext{"SourceRecordDataStructure", "AGNC", ErrSingleMultiple}
 			}
 			ResponsibleAgencySet = true
-			if err := s.ResponsibleAgency.parse(sl); err != nil {
+			if err := s.ResponsibleAgency.parse(&sl); err != nil {
 				return ErrContext{"SourceRecordDataStructure", "AGNC", err}
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceRecordDataStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2195,7 +1915,7 @@ type EventsRecordedStructure struct {
 	SourceJurisdictionPlace SourceJurisdictionPlace
 }
 
-func (s *EventsRecordedStructure) parse(l Line) error {
+func (s *EventsRecordedStructure) parse(l *Line) error {
 	var DatePeriodSet, SourceJurisdictionPlaceSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -2204,7 +1924,7 @@ func (s *EventsRecordedStructure) parse(l Line) error {
 				return ErrContext{"EventsRecordedStructure", "DATE", ErrSingleMultiple}
 			}
 			DatePeriodSet = true
-			if err := s.DatePeriod.parse(sl); err != nil {
+			if err := s.DatePeriod.parse(&sl); err != nil {
 				return ErrContext{"EventsRecordedStructure", "DATE", err}
 			}
 		case "PLACE":
@@ -2212,7 +1932,7 @@ func (s *EventsRecordedStructure) parse(l Line) error {
 				return ErrContext{"EventsRecordedStructure", "PLACE", ErrSingleMultiple}
 			}
 			SourceJurisdictionPlaceSet = true
-			if err := s.SourceJurisdictionPlace.parse(sl); err != nil {
+			if err := s.SourceJurisdictionPlace.parse(&sl); err != nil {
 				return ErrContext{"EventsRecordedStructure", "PLACE", err}
 			}
 		default:
@@ -2236,8 +1956,8 @@ type SubmissionRecord struct {
 	AutomatedRecordID        AutomatedRecordID
 }
 
-func (s *SubmissionRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *SubmissionRecord) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SubmissionRecord", "xrefID", err}
 	}
 	var NameOfFamilyFileSet, TempleCodeSet, GenerationsOfAncestorsSet, GenerationsOfDescendantsSet, OrdinanceProcessFlagSet, AutomatedRecordIDSet bool
@@ -2248,7 +1968,7 @@ func (s *SubmissionRecord) parse(l Line) error {
 				return ErrContext{"SubmissionRecord", "FAMF", ErrSingleMultiple}
 			}
 			NameOfFamilyFileSet = true
-			if err := s.NameOfFamilyFile.parse(sl); err != nil {
+			if err := s.NameOfFamilyFile.parse(&sl); err != nil {
 				return ErrContext{"SubmissionRecord", "FAMF", err}
 			}
 		case "TEMP":
@@ -2256,7 +1976,7 @@ func (s *SubmissionRecord) parse(l Line) error {
 				return ErrContext{"SubmissionRecord", "TEMP", ErrSingleMultiple}
 			}
 			TempleCodeSet = true
-			if err := s.TempleCode.parse(sl); err != nil {
+			if err := s.TempleCode.parse(&sl); err != nil {
 				return ErrContext{"SubmissionRecord", "TEMP", err}
 			}
 		case "ANCE":
@@ -2264,7 +1984,7 @@ func (s *SubmissionRecord) parse(l Line) error {
 				return ErrContext{"SubmissionRecord", "ANCE", ErrSingleMultiple}
 			}
 			GenerationsOfAncestorsSet = true
-			if err := s.GenerationsOfAncestors.parse(sl); err != nil {
+			if err := s.GenerationsOfAncestors.parse(&sl); err != nil {
 				return ErrContext{"SubmissionRecord", "ANCE", err}
 			}
 		case "DESC":
@@ -2272,7 +1992,7 @@ func (s *SubmissionRecord) parse(l Line) error {
 				return ErrContext{"SubmissionRecord", "DESC", ErrSingleMultiple}
 			}
 			GenerationsOfDescendantsSet = true
-			if err := s.GenerationsOfDescendants.parse(sl); err != nil {
+			if err := s.GenerationsOfDescendants.parse(&sl); err != nil {
 				return ErrContext{"SubmissionRecord", "DESC", err}
 			}
 		case "ORDI":
@@ -2280,7 +2000,7 @@ func (s *SubmissionRecord) parse(l Line) error {
 				return ErrContext{"SubmissionRecord", "ORDI", ErrSingleMultiple}
 			}
 			OrdinanceProcessFlagSet = true
-			if err := s.OrdinanceProcessFlag.parse(sl); err != nil {
+			if err := s.OrdinanceProcessFlag.parse(&sl); err != nil {
 				return ErrContext{"SubmissionRecord", "ORDI", err}
 			}
 		case "RIN":
@@ -2288,7 +2008,7 @@ func (s *SubmissionRecord) parse(l Line) error {
 				return ErrContext{"SubmissionRecord", "RIN", ErrSingleMultiple}
 			}
 			AutomatedRecordIDSet = true
-			if err := s.AutomatedRecordID.parse(sl); err != nil {
+			if err := s.AutomatedRecordID.parse(&sl); err != nil {
 				return ErrContext{"SubmissionRecord", "RIN", err}
 			}
 		default:
@@ -2314,8 +2034,8 @@ type SubmitterRecord struct {
 	ChangeDate             ChangeDateStructure
 }
 
-func (s *SubmitterRecord) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *SubmitterRecord) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SubmitterRecord", "xrefID", err}
 	}
 	var SubmitterNameSet, AddressSet, SubmitterRegisteredRFNSet, AutomatedRecordIDSet, ChangeDateSet bool
@@ -2329,7 +2049,7 @@ func (s *SubmitterRecord) parse(l Line) error {
 				return ErrContext{"SubmitterRecord", "NAME", ErrSingleMultiple}
 			}
 			SubmitterNameSet = true
-			if err := s.SubmitterName.parse(sl); err != nil {
+			if err := s.SubmitterName.parse(&sl); err != nil {
 				return ErrContext{"SubmitterRecord", "NAME", err}
 			}
 		case "ADDR":
@@ -2337,7 +2057,7 @@ func (s *SubmitterRecord) parse(l Line) error {
 				return ErrContext{"SubmitterRecord", "ADDR", ErrSingleMultiple}
 			}
 			AddressSet = true
-			if err := s.Address.parse(sl); err != nil {
+			if err := s.Address.parse(&sl); err != nil {
 				return ErrContext{"SubmitterRecord", "ADDR", err}
 			}
 		case "PHON":
@@ -2346,13 +2066,13 @@ func (s *SubmitterRecord) parse(l Line) error {
 			}
 			PhoneNumberCount++
 			var t PhoneNumber
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SubmitterRecord", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
 		case "OBJE":
 			var t MultimediaLink
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SubmitterRecord", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
@@ -2362,7 +2082,7 @@ func (s *SubmitterRecord) parse(l Line) error {
 			}
 			LanguagePreferenceCount++
 			var t LanguagePreference
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SubmitterRecord", "LANG", err}
 			}
 			s.LanguagePreference = append(s.LanguagePreference, t)
@@ -2371,7 +2091,7 @@ func (s *SubmitterRecord) parse(l Line) error {
 				return ErrContext{"SubmitterRecord", "RFN", ErrSingleMultiple}
 			}
 			SubmitterRegisteredRFNSet = true
-			if err := s.SubmitterRegisteredRFN.parse(sl); err != nil {
+			if err := s.SubmitterRegisteredRFN.parse(&sl); err != nil {
 				return ErrContext{"SubmitterRecord", "RFN", err}
 			}
 		case "RIN":
@@ -2379,7 +2099,7 @@ func (s *SubmitterRecord) parse(l Line) error {
 				return ErrContext{"SubmitterRecord", "RIN", ErrSingleMultiple}
 			}
 			AutomatedRecordIDSet = true
-			if err := s.AutomatedRecordID.parse(sl); err != nil {
+			if err := s.AutomatedRecordID.parse(&sl); err != nil {
 				return ErrContext{"SubmitterRecord", "RIN", err}
 			}
 		case "CHAN":
@@ -2387,7 +2107,7 @@ func (s *SubmitterRecord) parse(l Line) error {
 				return ErrContext{"SubmitterRecord", "CHAN", ErrSingleMultiple}
 			}
 			ChangeDateSet = true
-			if err := s.ChangeDate.parse(sl); err != nil {
+			if err := s.ChangeDate.parse(&sl); err != nil {
 				return ErrContext{"SubmitterRecord", "CHAN", err}
 			}
 		default:
@@ -2414,24 +2134,9 @@ type AddressStructure struct {
 	Country      AddressCountry
 }
 
-func (s *AddressStructure) parse(l Line) error {
+func (s *AddressStructure) parse(l *Line) error {
 	if err := s.AddressLine.parse(l); err != nil {
 		return ErrContext{"AddressStructure", "line_value", err}
-	}
-	for i := 0; i < len(l.Sub); i++ {
-		switch l.Sub[i].tag {
-		case "CONT":
-			s.AddressLine += "\n"
-			fallthrough
-		case "CONC":
-			var t AddressLine
-			if err := t.parse(l.Sub[i]); err != nil {
-				return ErrContext{"$structureName", "line_value", err}
-			}
-			s.AddressLine += t
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
-			i--
-		}
 	}
 	var AddressLine1Set, AddressLine2Set, CitySet, StateSet, PostalCodeSet, CountrySet bool
 	for _, sl := range l.Sub {
@@ -2441,7 +2146,7 @@ func (s *AddressStructure) parse(l Line) error {
 				return ErrContext{"AddressStructure", "ADR1", ErrSingleMultiple}
 			}
 			AddressLine1Set = true
-			if err := s.AddressLine1.parse(sl); err != nil {
+			if err := s.AddressLine1.parse(&sl); err != nil {
 				return ErrContext{"AddressStructure", "ADR1", err}
 			}
 		case "ADR2":
@@ -2449,7 +2154,7 @@ func (s *AddressStructure) parse(l Line) error {
 				return ErrContext{"AddressStructure", "ADR2", ErrSingleMultiple}
 			}
 			AddressLine2Set = true
-			if err := s.AddressLine2.parse(sl); err != nil {
+			if err := s.AddressLine2.parse(&sl); err != nil {
 				return ErrContext{"AddressStructure", "ADR2", err}
 			}
 		case "CITY":
@@ -2457,7 +2162,7 @@ func (s *AddressStructure) parse(l Line) error {
 				return ErrContext{"AddressStructure", "CITY", ErrSingleMultiple}
 			}
 			CitySet = true
-			if err := s.City.parse(sl); err != nil {
+			if err := s.City.parse(&sl); err != nil {
 				return ErrContext{"AddressStructure", "CITY", err}
 			}
 		case "STAE":
@@ -2465,7 +2170,7 @@ func (s *AddressStructure) parse(l Line) error {
 				return ErrContext{"AddressStructure", "STAE", ErrSingleMultiple}
 			}
 			StateSet = true
-			if err := s.State.parse(sl); err != nil {
+			if err := s.State.parse(&sl); err != nil {
 				return ErrContext{"AddressStructure", "STAE", err}
 			}
 		case "POST":
@@ -2473,7 +2178,7 @@ func (s *AddressStructure) parse(l Line) error {
 				return ErrContext{"AddressStructure", "POST", ErrSingleMultiple}
 			}
 			PostalCodeSet = true
-			if err := s.PostalCode.parse(sl); err != nil {
+			if err := s.PostalCode.parse(&sl); err != nil {
 				return ErrContext{"AddressStructure", "POST", err}
 			}
 		case "CTRY":
@@ -2481,7 +2186,7 @@ func (s *AddressStructure) parse(l Line) error {
 				return ErrContext{"AddressStructure", "CTRY", ErrSingleMultiple}
 			}
 			CountrySet = true
-			if err := s.Country.parse(sl); err != nil {
+			if err := s.Country.parse(&sl); err != nil {
 				return ErrContext{"AddressStructure", "CTRY", err}
 			}
 		default:
@@ -2503,8 +2208,8 @@ type AssociationStructure struct {
 	Sources    []SourceCitation
 }
 
-func (s *AssociationStructure) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *AssociationStructure) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"AssociationStructure", "xrefID", err}
 	}
 	var RecordTypeSet, RelationSet bool
@@ -2515,7 +2220,7 @@ func (s *AssociationStructure) parse(l Line) error {
 				return ErrContext{"AssociationStructure", "TYPE", ErrSingleMultiple}
 			}
 			RecordTypeSet = true
-			if err := s.RecordType.parse(sl); err != nil {
+			if err := s.RecordType.parse(&sl); err != nil {
 				return ErrContext{"AssociationStructure", "TYPE", err}
 			}
 		case "RELA":
@@ -2523,18 +2228,18 @@ func (s *AssociationStructure) parse(l Line) error {
 				return ErrContext{"AssociationStructure", "RELA", ErrSingleMultiple}
 			}
 			RelationSet = true
-			if err := s.Relation.parse(sl); err != nil {
+			if err := s.Relation.parse(&sl); err != nil {
 				return ErrContext{"AssociationStructure", "RELA", err}
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"AssociationStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
 		case "SOUR":
 			var t SourceCitation
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"AssociationStructure", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
@@ -2560,7 +2265,7 @@ type ChangeDateStructure struct {
 	Notes []NoteStructure
 }
 
-func (s *ChangeDateStructure) parse(l Line) error {
+func (s *ChangeDateStructure) parse(l *Line) error {
 	var DateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -2569,12 +2274,12 @@ func (s *ChangeDateStructure) parse(l Line) error {
 				return ErrContext{"ChangeDateStructure", "DATE", ErrSingleMultiple}
 			}
 			DateSet = true
-			if err := s.Date.parse(sl); err != nil {
+			if err := s.Date.parse(&sl); err != nil {
 				return ErrContext{"ChangeDateStructure", "DATE", err}
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"ChangeDateStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2597,7 +2302,7 @@ type ChangeDateTime struct {
 	Time       TimeValue
 }
 
-func (s *ChangeDateTime) parse(l Line) error {
+func (s *ChangeDateTime) parse(l *Line) error {
 	if err := s.ChangeDate.parse(l); err != nil {
 		return ErrContext{"ChangeDateTime", "line_value", err}
 	}
@@ -2609,7 +2314,7 @@ func (s *ChangeDateTime) parse(l Line) error {
 				return ErrContext{"ChangeDateTime", "TIME", ErrSingleMultiple}
 			}
 			TimeSet = true
-			if err := s.Time.parse(sl); err != nil {
+			if err := s.Time.parse(&sl); err != nil {
 				return ErrContext{"ChangeDateTime", "TIME", err}
 			}
 		default:
@@ -2629,21 +2334,21 @@ type ChildToFamilyLink struct {
 	Notes               []NoteStructure
 }
 
-func (s *ChildToFamilyLink) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *ChildToFamilyLink) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"ChildToFamilyLink", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "PEDI":
 			var t PedigreeLinkageType
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"ChildToFamilyLink", "PEDI", err}
 			}
 			s.PedigreeLinkageType = append(s.PedigreeLinkageType, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"ChildToFamilyLink", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2672,7 +2377,7 @@ type EventDetail struct {
 	Notes             []NoteStructure
 }
 
-func (s *EventDetail) parse(l Line) error {
+func (s *EventDetail) parse(l *Line) error {
 	var TypeSet, DateSet, PlaceSet, AddressSet, AgeSet, ResponsibleAgencySet, CauseOfEventSet bool
 	var PhoneNumberCount int
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
@@ -2683,7 +2388,7 @@ func (s *EventDetail) parse(l Line) error {
 				return ErrContext{"EventDetail", "TYPE", ErrSingleMultiple}
 			}
 			TypeSet = true
-			if err := s.Type.parse(sl); err != nil {
+			if err := s.Type.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "TYPE", err}
 			}
 		case "DATE":
@@ -2691,7 +2396,7 @@ func (s *EventDetail) parse(l Line) error {
 				return ErrContext{"EventDetail", "DATE", ErrSingleMultiple}
 			}
 			DateSet = true
-			if err := s.Date.parse(sl); err != nil {
+			if err := s.Date.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "DATE", err}
 			}
 		case "PLAC":
@@ -2699,7 +2404,7 @@ func (s *EventDetail) parse(l Line) error {
 				return ErrContext{"EventDetail", "PLAC", ErrSingleMultiple}
 			}
 			PlaceSet = true
-			if err := s.Place.parse(sl); err != nil {
+			if err := s.Place.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "PLAC", err}
 			}
 		case "ADDR":
@@ -2707,7 +2412,7 @@ func (s *EventDetail) parse(l Line) error {
 				return ErrContext{"EventDetail", "ADDR", ErrSingleMultiple}
 			}
 			AddressSet = true
-			if err := s.Address.parse(sl); err != nil {
+			if err := s.Address.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "ADDR", err}
 			}
 		case "PHON":
@@ -2716,7 +2421,7 @@ func (s *EventDetail) parse(l Line) error {
 			}
 			PhoneNumberCount++
 			var t PhoneNumber
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
@@ -2725,7 +2430,7 @@ func (s *EventDetail) parse(l Line) error {
 				return ErrContext{"EventDetail", "AGE", ErrSingleMultiple}
 			}
 			AgeSet = true
-			if err := s.Age.parse(sl); err != nil {
+			if err := s.Age.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "AGE", err}
 			}
 		case "AGNC":
@@ -2733,7 +2438,7 @@ func (s *EventDetail) parse(l Line) error {
 				return ErrContext{"EventDetail", "AGNC", ErrSingleMultiple}
 			}
 			ResponsibleAgencySet = true
-			if err := s.ResponsibleAgency.parse(sl); err != nil {
+			if err := s.ResponsibleAgency.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "AGNC", err}
 			}
 		case "CAUS":
@@ -2741,24 +2446,24 @@ func (s *EventDetail) parse(l Line) error {
 				return ErrContext{"EventDetail", "CAUS", ErrSingleMultiple}
 			}
 			CauseOfEventSet = true
-			if err := s.CauseOfEvent.parse(sl); err != nil {
+			if err := s.CauseOfEvent.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "CAUS", err}
 			}
 		case "SOUR":
 			var t SourceCitation
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "OBJE":
 			var t MultimediaLink
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"EventDetail", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2782,7 +2487,7 @@ type LDSSpouseSealing struct {
 	Notes                      []NoteStructure
 }
 
-func (s *LDSSpouseSealing) parse(l Line) error {
+func (s *LDSSpouseSealing) parse(l *Line) error {
 	var LDSSpouseSealingDateStatusSet, DateSet, TempleCodeSet, PlaceSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -2791,7 +2496,7 @@ func (s *LDSSpouseSealing) parse(l Line) error {
 				return ErrContext{"LDSSpouseSealing", "STAT", ErrSingleMultiple}
 			}
 			LDSSpouseSealingDateStatusSet = true
-			if err := s.LDSSpouseSealingDateStatus.parse(sl); err != nil {
+			if err := s.LDSSpouseSealingDateStatus.parse(&sl); err != nil {
 				return ErrContext{"LDSSpouseSealing", "STAT", err}
 			}
 		case "DATE":
@@ -2799,7 +2504,7 @@ func (s *LDSSpouseSealing) parse(l Line) error {
 				return ErrContext{"LDSSpouseSealing", "DATE", ErrSingleMultiple}
 			}
 			DateSet = true
-			if err := s.Date.parse(sl); err != nil {
+			if err := s.Date.parse(&sl); err != nil {
 				return ErrContext{"LDSSpouseSealing", "DATE", err}
 			}
 		case "TEMP":
@@ -2807,7 +2512,7 @@ func (s *LDSSpouseSealing) parse(l Line) error {
 				return ErrContext{"LDSSpouseSealing", "TEMP", ErrSingleMultiple}
 			}
 			TempleCodeSet = true
-			if err := s.TempleCode.parse(sl); err != nil {
+			if err := s.TempleCode.parse(&sl); err != nil {
 				return ErrContext{"LDSSpouseSealing", "TEMP", err}
 			}
 		case "PLAC":
@@ -2815,18 +2520,18 @@ func (s *LDSSpouseSealing) parse(l Line) error {
 				return ErrContext{"LDSSpouseSealing", "PLAC", ErrSingleMultiple}
 			}
 			PlaceSet = true
-			if err := s.Place.parse(sl); err != nil {
+			if err := s.Place.parse(&sl); err != nil {
 				return ErrContext{"LDSSpouseSealing", "PLAC", err}
 			}
 		case "SOUR":
 			var t SourceCitation
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"LDSSpouseSealing", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"LDSSpouseSealing", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2845,8 +2550,8 @@ type MultimediaLinkID struct {
 	ID Xref
 }
 
-func (s *MultimediaLinkID) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *MultimediaLinkID) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"MultimediaLinkID", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
@@ -2866,7 +2571,7 @@ type MultimediaLinkFile struct {
 	Notes  []NoteStructure
 }
 
-func (s *MultimediaLinkFile) parse(l Line) error {
+func (s *MultimediaLinkFile) parse(l *Line) error {
 	var FormatSet, TitleSet, FileSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -2875,7 +2580,7 @@ func (s *MultimediaLinkFile) parse(l Line) error {
 				return ErrContext{"MultimediaLinkFile", "FORM", ErrSingleMultiple}
 			}
 			FormatSet = true
-			if err := s.Format.parse(sl); err != nil {
+			if err := s.Format.parse(&sl); err != nil {
 				return ErrContext{"MultimediaLinkFile", "FORM", err}
 			}
 		case "TITLE":
@@ -2883,7 +2588,7 @@ func (s *MultimediaLinkFile) parse(l Line) error {
 				return ErrContext{"MultimediaLinkFile", "TITLE", ErrSingleMultiple}
 			}
 			TitleSet = true
-			if err := s.Title.parse(sl); err != nil {
+			if err := s.Title.parse(&sl); err != nil {
 				return ErrContext{"MultimediaLinkFile", "TITLE", err}
 			}
 		case "FILE":
@@ -2891,12 +2596,12 @@ func (s *MultimediaLinkFile) parse(l Line) error {
 				return ErrContext{"MultimediaLinkFile", "FILE", ErrSingleMultiple}
 			}
 			FileSet = true
-			if err := s.File.parse(sl); err != nil {
+			if err := s.File.parse(&sl); err != nil {
 				return ErrContext{"MultimediaLinkFile", "FILE", err}
 			}
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"MultimediaLinkFile", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -2918,8 +2623,8 @@ type NoteID struct {
 	ID Xref
 }
 
-func (s *NoteID) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *NoteID) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"NoteID", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
@@ -2937,30 +2642,15 @@ type NoteText struct {
 	Sources       []SourceCitation
 }
 
-func (s *NoteText) parse(l Line) error {
+func (s *NoteText) parse(l *Line) error {
 	if err := s.SubmitterText.parse(l); err != nil {
 		return ErrContext{"NoteText", "line_value", err}
-	}
-	for i := 0; i < len(l.Sub); i++ {
-		switch l.Sub[i].tag {
-		case "CONT":
-			s.SubmitterText += "\n"
-			fallthrough
-		case "CONC":
-			var t SubmitterText
-			if err := t.parse(l.Sub[i]); err != nil {
-				return ErrContext{"$structureName", "line_value", err}
-			}
-			s.SubmitterText += t
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
-			i--
-		}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "SOUR":
 			var t SourceCitation
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"NoteText", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
@@ -2987,7 +2677,7 @@ type PersonalNameStructure struct {
 	Notes         []NoteStructure
 }
 
-func (s *PersonalNameStructure) parse(l Line) error {
+func (s *PersonalNameStructure) parse(l *Line) error {
 	if err := s.NamePersonal.parse(l); err != nil {
 		return ErrContext{"PersonalNameStructure", "line_value", err}
 	}
@@ -2999,7 +2689,7 @@ func (s *PersonalNameStructure) parse(l Line) error {
 				return ErrContext{"PersonalNameStructure", "NPFX", ErrSingleMultiple}
 			}
 			PrefixSet = true
-			if err := s.Prefix.parse(sl); err != nil {
+			if err := s.Prefix.parse(&sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "NPFX", err}
 			}
 		case "GIVN":
@@ -3007,7 +2697,7 @@ func (s *PersonalNameStructure) parse(l Line) error {
 				return ErrContext{"PersonalNameStructure", "GIVN", ErrSingleMultiple}
 			}
 			GivenSet = true
-			if err := s.Given.parse(sl); err != nil {
+			if err := s.Given.parse(&sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "GIVN", err}
 			}
 		case "NICK":
@@ -3015,7 +2705,7 @@ func (s *PersonalNameStructure) parse(l Line) error {
 				return ErrContext{"PersonalNameStructure", "NICK", ErrSingleMultiple}
 			}
 			NicknameSet = true
-			if err := s.Nickname.parse(sl); err != nil {
+			if err := s.Nickname.parse(&sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "NICK", err}
 			}
 		case "SPFX":
@@ -3023,7 +2713,7 @@ func (s *PersonalNameStructure) parse(l Line) error {
 				return ErrContext{"PersonalNameStructure", "SPFX", ErrSingleMultiple}
 			}
 			SurnamePrefixSet = true
-			if err := s.SurnamePrefix.parse(sl); err != nil {
+			if err := s.SurnamePrefix.parse(&sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "SPFX", err}
 			}
 		case "SURN":
@@ -3031,7 +2721,7 @@ func (s *PersonalNameStructure) parse(l Line) error {
 				return ErrContext{"PersonalNameStructure", "SURN", ErrSingleMultiple}
 			}
 			SurnameSet = true
-			if err := s.Surname.parse(sl); err != nil {
+			if err := s.Surname.parse(&sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "SURN", err}
 			}
 		case "NSFX":
@@ -3039,18 +2729,18 @@ func (s *PersonalNameStructure) parse(l Line) error {
 				return ErrContext{"PersonalNameStructure", "NSFX", ErrSingleMultiple}
 			}
 			SuffixSet = true
-			if err := s.Suffix.parse(sl); err != nil {
+			if err := s.Suffix.parse(&sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "NSFX", err}
 			}
 		case "SOUR":
 			var t SourceCitation
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"PersonalNameStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3072,7 +2762,7 @@ type PlaceStructure struct {
 	Notes          []NoteStructure
 }
 
-func (s *PlaceStructure) parse(l Line) error {
+func (s *PlaceStructure) parse(l *Line) error {
 	if err := s.Place.parse(l); err != nil {
 		return ErrContext{"PlaceStructure", "line_value", err}
 	}
@@ -3084,18 +2774,18 @@ func (s *PlaceStructure) parse(l Line) error {
 				return ErrContext{"PlaceStructure", "FORM", ErrSingleMultiple}
 			}
 			PlaceHierarchySet = true
-			if err := s.PlaceHierarchy.parse(sl); err != nil {
+			if err := s.PlaceHierarchy.parse(&sl); err != nil {
 				return ErrContext{"PlaceStructure", "FORM", err}
 			}
 		case "SOUR":
 			var t SourceCitation
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"PlaceStructure", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"PlaceStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3120,8 +2810,8 @@ type SourceID struct {
 	Notes               []NoteStructure
 }
 
-func (s *SourceID) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *SourceID) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SourceID", "xrefID", err}
 	}
 	var WhereWithinSourceSet, SourceCitationEventSet, DataSet, CertaintySet bool
@@ -3132,7 +2822,7 @@ func (s *SourceID) parse(l Line) error {
 				return ErrContext{"SourceID", "PAGE", ErrSingleMultiple}
 			}
 			WhereWithinSourceSet = true
-			if err := s.WhereWithinSource.parse(sl); err != nil {
+			if err := s.WhereWithinSource.parse(&sl); err != nil {
 				return ErrContext{"SourceID", "PAGE", err}
 			}
 		case "EVEN":
@@ -3140,7 +2830,7 @@ func (s *SourceID) parse(l Line) error {
 				return ErrContext{"SourceID", "EVEN", ErrSingleMultiple}
 			}
 			SourceCitationEventSet = true
-			if err := s.SourceCitationEvent.parse(sl); err != nil {
+			if err := s.SourceCitationEvent.parse(&sl); err != nil {
 				return ErrContext{"SourceID", "EVEN", err}
 			}
 		case "DATA":
@@ -3148,7 +2838,7 @@ func (s *SourceID) parse(l Line) error {
 				return ErrContext{"SourceID", "DATA", ErrSingleMultiple}
 			}
 			DataSet = true
-			if err := s.Data.parse(sl); err != nil {
+			if err := s.Data.parse(&sl); err != nil {
 				return ErrContext{"SourceID", "DATA", err}
 			}
 		case "QUAY":
@@ -3156,18 +2846,18 @@ func (s *SourceID) parse(l Line) error {
 				return ErrContext{"SourceID", "QUAY", ErrSingleMultiple}
 			}
 			CertaintySet = true
-			if err := s.Certainty.parse(sl); err != nil {
+			if err := s.Certainty.parse(&sl); err != nil {
 				return ErrContext{"SourceID", "QUAY", err}
 			}
 		case "OBJE":
 			var t MultimediaLink
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceID", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceID", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3187,7 +2877,7 @@ type SourceCitationEvent struct {
 	Role               RoleInEvent
 }
 
-func (s *SourceCitationEvent) parse(l Line) error {
+func (s *SourceCitationEvent) parse(l *Line) error {
 	if err := s.EventTypeCitedFrom.parse(l); err != nil {
 		return ErrContext{"SourceCitationEvent", "line_value", err}
 	}
@@ -3199,7 +2889,7 @@ func (s *SourceCitationEvent) parse(l Line) error {
 				return ErrContext{"SourceCitationEvent", "ROLE", ErrSingleMultiple}
 			}
 			RoleSet = true
-			if err := s.Role.parse(sl); err != nil {
+			if err := s.Role.parse(&sl); err != nil {
 				return ErrContext{"SourceCitationEvent", "ROLE", err}
 			}
 		default:
@@ -3218,7 +2908,7 @@ type SourceData struct {
 	Text []TextFromSource
 }
 
-func (s *SourceData) parse(l Line) error {
+func (s *SourceData) parse(l *Line) error {
 	var DateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -3227,12 +2917,12 @@ func (s *SourceData) parse(l Line) error {
 				return ErrContext{"SourceData", "DATE", ErrSingleMultiple}
 			}
 			DateSet = true
-			if err := s.Date.parse(sl); err != nil {
+			if err := s.Date.parse(&sl); err != nil {
 				return ErrContext{"SourceData", "DATE", err}
 			}
 		case "TEXT":
 			var t TextFromSource
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceData", "TEXT", err}
 			}
 			s.Text = append(s.Text, t)
@@ -3253,36 +2943,21 @@ type SourceText struct {
 	Notes       []NoteStructure
 }
 
-func (s *SourceText) parse(l Line) error {
+func (s *SourceText) parse(l *Line) error {
 	if err := s.Description.parse(l); err != nil {
 		return ErrContext{"SourceText", "line_value", err}
-	}
-	for i := 0; i < len(l.Sub); i++ {
-		switch l.Sub[i].tag {
-		case "CONT":
-			s.Description += "\n"
-			fallthrough
-		case "CONC":
-			var t SourceDescription
-			if err := t.parse(l.Sub[i]); err != nil {
-				return ErrContext{"$structureName", "line_value", err}
-			}
-			s.Description += t
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
-			i--
-		}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "TEXT":
 			var t TextFromSource
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceText", "TEXT", err}
 			}
 			s.Texts = append(s.Texts, t)
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceText", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3302,15 +2977,15 @@ type SourceRepositoryCitation struct {
 	Numbers []SourceCallStructure
 }
 
-func (s *SourceRepositoryCitation) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *SourceRepositoryCitation) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SourceRepositoryCitation", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "CALN":
 			var t SourceCallStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SourceRepositoryCitation", "CALN", err}
 			}
 			s.Numbers = append(s.Numbers, t)
@@ -3330,7 +3005,7 @@ type SourceCallStructure struct {
 	Type             SourceMediaType
 }
 
-func (s *SourceCallStructure) parse(l Line) error {
+func (s *SourceCallStructure) parse(l *Line) error {
 	if err := s.SourceCallNumber.parse(l); err != nil {
 		return ErrContext{"SourceCallStructure", "line_value", err}
 	}
@@ -3342,7 +3017,7 @@ func (s *SourceCallStructure) parse(l Line) error {
 				return ErrContext{"SourceCallStructure", "MEDI", ErrSingleMultiple}
 			}
 			TypeSet = true
-			if err := s.Type.parse(sl); err != nil {
+			if err := s.Type.parse(&sl); err != nil {
 				return ErrContext{"SourceCallStructure", "MEDI", err}
 			}
 		default:
@@ -3361,15 +3036,15 @@ type SpouseToFamilyLink struct {
 	Notes []NoteStructure
 }
 
-func (s *SpouseToFamilyLink) parse(l Line) error {
-	if err := s.ID.parse(Line{line: line{value: l.xrefID}}); err != nil {
+func (s *SpouseToFamilyLink) parse(l *Line) error {
+	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}); err != nil {
 		return ErrContext{"SpouseToFamilyLink", "xrefID", err}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "NOTE":
 			var t NoteStructure
-			if err := t.parse(sl); err != nil {
+			if err := t.parse(&sl); err != nil {
 				return ErrContext{"SpouseToFamilyLink", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
@@ -3388,7 +3063,7 @@ type MultimediaLink struct {
 	Data Record
 }
 
-func (s *MultimediaLink) parse(l Line) error {
+func (s *MultimediaLink) parse(l *Line) error {
 	if l.xrefID != "" {
 		s.Data = &MultimediaLinkID{}
 	} else {
@@ -3402,7 +3077,7 @@ type NoteStructure struct {
 	Data Record
 }
 
-func (s *NoteStructure) parse(l Line) error {
+func (s *NoteStructure) parse(l *Line) error {
 	if l.xrefID != "" {
 		s.Data = &NoteID{}
 	} else {
@@ -3416,7 +3091,7 @@ type SourceCitation struct {
 	Data Record
 }
 
-func (s *SourceCitation) parse(l Line) error {
+func (s *SourceCitation) parse(l *Line) error {
 	if l.xrefID != "" {
 		s.Data = &SourceID{}
 	} else {
@@ -3428,7 +3103,7 @@ func (s *SourceCitation) parse(l Line) error {
 // Trailer type
 type Trailer struct{}
 
-func (s *Trailer) parse(Line) error {
+func (s *Trailer) parse(*Line) error {
 	return nil
 }
 

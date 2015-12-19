@@ -10,7 +10,7 @@ import (
 // AddressCity is a GEDCOM base type
 type AddressCity string
 
-func (e *AddressCity) parse(l Line) error {
+func (e *AddressCity) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 60 {
 		return ErrInvalidLength{"AddressCity", l.value, 1, 60}
 	}
@@ -21,7 +21,7 @@ func (e *AddressCity) parse(l Line) error {
 // AddressCountry is a GEDCOM base type
 type AddressCountry string
 
-func (e *AddressCountry) parse(l Line) error {
+func (e *AddressCountry) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 60 {
 		return ErrInvalidLength{"AddressCountry", l.value, 1, 60}
 	}
@@ -32,18 +32,32 @@ func (e *AddressCountry) parse(l Line) error {
 // AddressLine is a GEDCOM base type
 type AddressLine string
 
-func (e *AddressLine) parse(l Line) error {
+func (e *AddressLine) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 60 {
 		return ErrInvalidLength{"AddressLine", l.value, 1, 60}
 	}
 	*e = AddressLine(l.value)
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			*e += "\n"
+			fallthrough
+		case "CONC":
+			if len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 60 {
+				return ErrContext{"AddressLine", l.Sub[i].tag, ErrInvalidLength{"AddressLine", l.value, 1, 60}}
+			}
+			*e += AddressLine(l.Sub[i].value)
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	return nil
 }
 
 // AddressLine1 is a GEDCOM base type
 type AddressLine1 string
 
-func (e *AddressLine1) parse(l Line) error {
+func (e *AddressLine1) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 60 {
 		return ErrInvalidLength{"AddressLine1", l.value, 1, 60}
 	}
@@ -54,7 +68,7 @@ func (e *AddressLine1) parse(l Line) error {
 // AddressLine2 is a GEDCOM base type
 type AddressLine2 string
 
-func (e *AddressLine2) parse(l Line) error {
+func (e *AddressLine2) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 60 {
 		return ErrInvalidLength{"AddressLine2", l.value, 1, 60}
 	}
@@ -65,7 +79,7 @@ func (e *AddressLine2) parse(l Line) error {
 // AddressPostalCode is a GEDCOM base type
 type AddressPostalCode string
 
-func (e *AddressPostalCode) parse(l Line) error {
+func (e *AddressPostalCode) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 10 {
 		return ErrInvalidLength{"AddressPostalCode", l.value, 1, 10}
 	}
@@ -76,7 +90,7 @@ func (e *AddressPostalCode) parse(l Line) error {
 // AddressState is a GEDCOM base type
 type AddressState string
 
-func (e *AddressState) parse(l Line) error {
+func (e *AddressState) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 60 {
 		return ErrInvalidLength{"AddressState", l.value, 1, 60}
 	}
@@ -87,7 +101,7 @@ func (e *AddressState) parse(l Line) error {
 // AdoptedBy is a GEDCOM base type
 type AdoptedBy string
 
-func (e *AdoptedBy) parse(l Line) error {
+func (e *AdoptedBy) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "HUSB":
 		*e = "HUSB"
@@ -104,7 +118,7 @@ func (e *AdoptedBy) parse(l Line) error {
 // AgeAtEvent is a GEDCOM base type
 type AgeAtEvent string
 
-func (e *AgeAtEvent) parse(l Line) error {
+func (e *AgeAtEvent) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 12 {
 		return ErrInvalidLength{"AgeAtEvent", l.value, 1, 12}
 	}
@@ -115,7 +129,7 @@ func (e *AgeAtEvent) parse(l Line) error {
 // AncestralFileNumber is a GEDCOM base type
 type AncestralFileNumber string
 
-func (e *AncestralFileNumber) parse(l Line) error {
+func (e *AncestralFileNumber) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 12 {
 		return ErrInvalidLength{"AncestralFileNumber", l.value, 1, 12}
 	}
@@ -126,7 +140,7 @@ func (e *AncestralFileNumber) parse(l Line) error {
 // ApprovedSystemID is a GEDCOM base type
 type ApprovedSystemID string
 
-func (e *ApprovedSystemID) parse(l Line) error {
+func (e *ApprovedSystemID) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 20 {
 		return ErrInvalidLength{"ApprovedSystemID", l.value, 1, 20}
 	}
@@ -137,7 +151,7 @@ func (e *ApprovedSystemID) parse(l Line) error {
 // AttributeType is a GEDCOM base type
 type AttributeType string
 
-func (e *AttributeType) parse(l Line) error {
+func (e *AttributeType) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "CAST":
 		*e = "CAST"
@@ -164,7 +178,7 @@ func (e *AttributeType) parse(l Line) error {
 // AutomatedRecordID is a GEDCOM base type
 type AutomatedRecordID string
 
-func (e *AutomatedRecordID) parse(l Line) error {
+func (e *AutomatedRecordID) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 12 {
 		return ErrInvalidLength{"AutomatedRecordID", l.value, 1, 12}
 	}
@@ -175,7 +189,7 @@ func (e *AutomatedRecordID) parse(l Line) error {
 // CasteName is a GEDCOM base type
 type CasteName string
 
-func (e *CasteName) parse(l Line) error {
+func (e *CasteName) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"CasteName", l.value, 1, 90}
 	}
@@ -186,7 +200,7 @@ func (e *CasteName) parse(l Line) error {
 // CauseOfEvent is a GEDCOM base type
 type CauseOfEvent string
 
-func (e *CauseOfEvent) parse(l Line) error {
+func (e *CauseOfEvent) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"CauseOfEvent", l.value, 1, 90}
 	}
@@ -197,7 +211,7 @@ func (e *CauseOfEvent) parse(l Line) error {
 // CertaintyAssessment is a GEDCOM base type
 type CertaintyAssessment uint
 
-func (e *CertaintyAssessment) parse(l Line) error {
+func (e *CertaintyAssessment) parse(l *Line) error {
 	switch l.value {
 	case "0":
 		*e = 0
@@ -216,7 +230,7 @@ func (e *CertaintyAssessment) parse(l Line) error {
 // ChangeDate is a GEDCOM base type
 type ChangeDate string
 
-func (e *ChangeDate) parse(l Line) error {
+func (e *ChangeDate) parse(l *Line) error {
 	if len(l.value) < 10 || len(l.value) > 11 {
 		return ErrInvalidLength{"ChangeDate", l.value, 10, 11}
 	}
@@ -227,7 +241,7 @@ func (e *ChangeDate) parse(l Line) error {
 // CharacterSet is a GEDCOM base type
 type CharacterSet string
 
-func (e *CharacterSet) parse(l Line) error {
+func (e *CharacterSet) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "ANSEL":
 		*e = "ANSEL"
@@ -244,7 +258,7 @@ func (e *CharacterSet) parse(l Line) error {
 // CopyrightGedcomFile is a GEDCOM base type
 type CopyrightGedcomFile string
 
-func (e *CopyrightGedcomFile) parse(l Line) error {
+func (e *CopyrightGedcomFile) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"CopyrightGedcomFile", l.value, 1, 90}
 	}
@@ -255,7 +269,7 @@ func (e *CopyrightGedcomFile) parse(l Line) error {
 // CopyrightSourceData is a GEDCOM base type
 type CopyrightSourceData string
 
-func (e *CopyrightSourceData) parse(l Line) error {
+func (e *CopyrightSourceData) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"CopyrightSourceData", l.value, 1, 90}
 	}
@@ -266,7 +280,7 @@ func (e *CopyrightSourceData) parse(l Line) error {
 // CountOfChildren is a GEDCOM base type
 type CountOfChildren uint8
 
-func (e *CountOfChildren) parse(l Line) error {
+func (e *CountOfChildren) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 3 {
 		return ErrInvalidLength{"CountOfChildren", l.value, 1, 3}
 	}
@@ -281,7 +295,7 @@ func (e *CountOfChildren) parse(l Line) error {
 // CountOfMarriages is a GEDCOM base type
 type CountOfMarriages uint8
 
-func (e *CountOfMarriages) parse(l Line) error {
+func (e *CountOfMarriages) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 3 {
 		return ErrInvalidLength{"CountOfMarriages", l.value, 1, 3}
 	}
@@ -296,7 +310,7 @@ func (e *CountOfMarriages) parse(l Line) error {
 // Date is a GEDCOM base type
 type Date string
 
-func (e *Date) parse(l Line) error {
+func (e *Date) parse(l *Line) error {
 	if len(l.value) < 3 || len(l.value) > 35 {
 		return ErrInvalidLength{"Date", l.value, 3, 35}
 	}
@@ -307,7 +321,7 @@ func (e *Date) parse(l Line) error {
 // DateApproximated is a GEDCOM base type
 type DateApproximated string
 
-func (e *DateApproximated) parse(l Line) error {
+func (e *DateApproximated) parse(l *Line) error {
 	if len(l.value) < 4 || len(l.value) > 35 {
 		return ErrInvalidLength{"DateApproximated", l.value, 4, 35}
 	}
@@ -318,7 +332,7 @@ func (e *DateApproximated) parse(l Line) error {
 // DateCalendar is a GEDCOM base type
 type DateCalendar string
 
-func (e *DateCalendar) parse(l Line) error {
+func (e *DateCalendar) parse(l *Line) error {
 	if len(l.value) < 4 || len(l.value) > 35 {
 		return ErrInvalidLength{"DateCalendar", l.value, 4, 35}
 	}
@@ -329,7 +343,7 @@ func (e *DateCalendar) parse(l Line) error {
 // DateCalendarEscape is a GEDCOM base type
 type DateCalendarEscape string
 
-func (e *DateCalendarEscape) parse(l Line) error {
+func (e *DateCalendarEscape) parse(l *Line) error {
 	if len(l.value) < 4 || len(l.value) > 15 {
 		return ErrInvalidLength{"DateCalendarEscape", l.value, 4, 15}
 	}
@@ -340,7 +354,7 @@ func (e *DateCalendarEscape) parse(l Line) error {
 // DateExact is a GEDCOM base type
 type DateExact string
 
-func (e *DateExact) parse(l Line) error {
+func (e *DateExact) parse(l *Line) error {
 	if len(l.value) < 10 || len(l.value) > 11 {
 		return ErrInvalidLength{"DateExact", l.value, 10, 11}
 	}
@@ -351,7 +365,7 @@ func (e *DateExact) parse(l Line) error {
 // DateFren is a GEDCOM base type
 type DateFren string
 
-func (e *DateFren) parse(l Line) error {
+func (e *DateFren) parse(l *Line) error {
 	if len(l.value) < 4 || len(l.value) > 35 {
 		return ErrInvalidLength{"DateFren", l.value, 4, 35}
 	}
@@ -362,7 +376,7 @@ func (e *DateFren) parse(l Line) error {
 // DateGreg is a GEDCOM base type
 type DateGreg string
 
-func (e *DateGreg) parse(l Line) error {
+func (e *DateGreg) parse(l *Line) error {
 	if len(l.value) < 4 || len(l.value) > 35 {
 		return ErrInvalidLength{"DateGreg", l.value, 4, 35}
 	}
@@ -373,7 +387,7 @@ func (e *DateGreg) parse(l Line) error {
 // DateHebr is a GEDCOM base type
 type DateHebr string
 
-func (e *DateHebr) parse(l Line) error {
+func (e *DateHebr) parse(l *Line) error {
 	if len(l.value) < 4 || len(l.value) > 35 {
 		return ErrInvalidLength{"DateHebr", l.value, 4, 35}
 	}
@@ -384,7 +398,7 @@ func (e *DateHebr) parse(l Line) error {
 // DateJuln is a GEDCOM base type
 type DateJuln string
 
-func (e *DateJuln) parse(l Line) error {
+func (e *DateJuln) parse(l *Line) error {
 	if len(l.value) < 4 || len(l.value) > 35 {
 		return ErrInvalidLength{"DateJuln", l.value, 4, 35}
 	}
@@ -395,7 +409,7 @@ func (e *DateJuln) parse(l Line) error {
 // DateLDSOrd is a GEDCOM base type
 type DateLDSOrd string
 
-func (e *DateLDSOrd) parse(l Line) error {
+func (e *DateLDSOrd) parse(l *Line) error {
 	if len(l.value) < 4 || len(l.value) > 35 {
 		return ErrInvalidLength{"DateLDSOrd", l.value, 4, 35}
 	}
@@ -406,7 +420,7 @@ func (e *DateLDSOrd) parse(l Line) error {
 // DatePeriod is a GEDCOM base type
 type DatePeriod string
 
-func (e *DatePeriod) parse(l Line) error {
+func (e *DatePeriod) parse(l *Line) error {
 	if len(l.value) < 7 || len(l.value) > 35 {
 		return ErrInvalidLength{"DatePeriod", l.value, 7, 35}
 	}
@@ -417,7 +431,7 @@ func (e *DatePeriod) parse(l Line) error {
 // DatePhrase is a GEDCOM base type
 type DatePhrase string
 
-func (e *DatePhrase) parse(l Line) error {
+func (e *DatePhrase) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 35 {
 		return ErrInvalidLength{"DatePhrase", l.value, 1, 35}
 	}
@@ -428,7 +442,7 @@ func (e *DatePhrase) parse(l Line) error {
 // DateRange is a GEDCOM base type
 type DateRange string
 
-func (e *DateRange) parse(l Line) error {
+func (e *DateRange) parse(l *Line) error {
 	if len(l.value) < 8 || len(l.value) > 35 {
 		return ErrInvalidLength{"DateRange", l.value, 8, 35}
 	}
@@ -439,7 +453,7 @@ func (e *DateRange) parse(l Line) error {
 // DateValue is a GEDCOM base type
 type DateValue string
 
-func (e *DateValue) parse(l Line) error {
+func (e *DateValue) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 35 {
 		return ErrInvalidLength{"DateValue", l.value, 1, 35}
 	}
@@ -450,7 +464,7 @@ func (e *DateValue) parse(l Line) error {
 // Day is a GEDCOM base type
 type Day uint8
 
-func (e *Day) parse(l Line) error {
+func (e *Day) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 2 {
 		return ErrInvalidLength{"Day", l.value, 1, 2}
 	}
@@ -465,7 +479,7 @@ func (e *Day) parse(l Line) error {
 // DescriptiveTitle is a GEDCOM base type
 type DescriptiveTitle string
 
-func (e *DescriptiveTitle) parse(l Line) error {
+func (e *DescriptiveTitle) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"DescriptiveTitle", l.value, 1, 248}
 	}
@@ -476,7 +490,7 @@ func (e *DescriptiveTitle) parse(l Line) error {
 // Digit is a GEDCOM base type
 type Digit uint8
 
-func (e *Digit) parse(l Line) error {
+func (e *Digit) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 1 {
 		return ErrInvalidLength{"Digit", l.value, 1, 1}
 	}
@@ -491,7 +505,7 @@ func (e *Digit) parse(l Line) error {
 // EncodedMultimediaLine is a GEDCOM base type
 type EncodedMultimediaLine string
 
-func (e *EncodedMultimediaLine) parse(l Line) error {
+func (e *EncodedMultimediaLine) parse(l *Line) error {
 	if len(l.value) < 0 || len(l.value) > 87 {
 		return ErrInvalidLength{"EncodedMultimediaLine", l.value, 0, 87}
 	}
@@ -502,7 +516,7 @@ func (e *EncodedMultimediaLine) parse(l Line) error {
 // EntryRecordingDate is a GEDCOM base type
 type EntryRecordingDate string
 
-func (e *EntryRecordingDate) parse(l Line) error {
+func (e *EntryRecordingDate) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"EntryRecordingDate", l.value, 1, 90}
 	}
@@ -513,7 +527,7 @@ func (e *EntryRecordingDate) parse(l Line) error {
 // EventAttributeType is a GEDCOM base type
 type EventAttributeType string
 
-func (e *EventAttributeType) parse(l Line) error {
+func (e *EventAttributeType) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 15 {
 		return ErrInvalidLength{"EventAttributeType", l.value, 1, 15}
 	}
@@ -524,7 +538,7 @@ func (e *EventAttributeType) parse(l Line) error {
 // EventDescriptor is a GEDCOM base type
 type EventDescriptor string
 
-func (e *EventDescriptor) parse(l Line) error {
+func (e *EventDescriptor) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"EventDescriptor", l.value, 1, 90}
 	}
@@ -535,7 +549,7 @@ func (e *EventDescriptor) parse(l Line) error {
 // EventTypeCitedFrom is a GEDCOM base type
 type EventTypeCitedFrom string
 
-func (e *EventTypeCitedFrom) parse(l Line) error {
+func (e *EventTypeCitedFrom) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 15 {
 		return ErrInvalidLength{"EventTypeCitedFrom", l.value, 1, 15}
 	}
@@ -546,7 +560,7 @@ func (e *EventTypeCitedFrom) parse(l Line) error {
 // EventTypeFamile is a GEDCOM base type
 type EventTypeFamile string
 
-func (e *EventTypeFamile) parse(l Line) error {
+func (e *EventTypeFamile) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "ANUL":
 		*e = "ANUL"
@@ -579,7 +593,7 @@ func (e *EventTypeFamile) parse(l Line) error {
 // EventTypeIndividual is a GEDCOM base type
 type EventTypeIndividual string
 
-func (e *EventTypeIndividual) parse(l Line) error {
+func (e *EventTypeIndividual) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "ADOP":
 		*e = "ADOP"
@@ -636,7 +650,7 @@ func (e *EventTypeIndividual) parse(l Line) error {
 // EventsRecorded is a GEDCOM base type
 type EventsRecorded string
 
-func (e *EventsRecorded) parse(l Line) error {
+func (e *EventsRecorded) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"EventsRecorded", l.value, 1, 90}
 	}
@@ -647,7 +661,7 @@ func (e *EventsRecorded) parse(l Line) error {
 // FileName is a GEDCOM base type
 type FileName string
 
-func (e *FileName) parse(l Line) error {
+func (e *FileName) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"FileName", l.value, 1, 90}
 	}
@@ -658,18 +672,32 @@ func (e *FileName) parse(l Line) error {
 // GedcomContentDescription is a GEDCOM base type
 type GedcomContentDescription string
 
-func (e *GedcomContentDescription) parse(l Line) error {
+func (e *GedcomContentDescription) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"GedcomContentDescription", l.value, 1, 248}
 	}
 	*e = GedcomContentDescription(l.value)
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			*e += "\n"
+			fallthrough
+		case "CONC":
+			if len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248 {
+				return ErrContext{"GedcomContentDescription", l.Sub[i].tag, ErrInvalidLength{"GedcomContentDescription", l.value, 1, 248}}
+			}
+			*e += GedcomContentDescription(l.Sub[i].value)
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	return nil
 }
 
 // GedcomForm is a GEDCOM base type
 type GedcomForm string
 
-func (e *GedcomForm) parse(l Line) error {
+func (e *GedcomForm) parse(l *Line) error {
 	if len(l.value) < 14 || len(l.value) > 20 {
 		return ErrInvalidLength{"GedcomForm", l.value, 14, 20}
 	}
@@ -680,7 +708,7 @@ func (e *GedcomForm) parse(l Line) error {
 // GenerationsOfAncestors is a GEDCOM base type
 type GenerationsOfAncestors uint16
 
-func (e *GenerationsOfAncestors) parse(l Line) error {
+func (e *GenerationsOfAncestors) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 4 {
 		return ErrInvalidLength{"GenerationsOfAncestors", l.value, 1, 4}
 	}
@@ -695,7 +723,7 @@ func (e *GenerationsOfAncestors) parse(l Line) error {
 // GenerationsOfDescendants is a GEDCOM base type
 type GenerationsOfDescendants uint16
 
-func (e *GenerationsOfDescendants) parse(l Line) error {
+func (e *GenerationsOfDescendants) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 4 {
 		return ErrInvalidLength{"GenerationsOfDescendants", l.value, 1, 4}
 	}
@@ -710,7 +738,7 @@ func (e *GenerationsOfDescendants) parse(l Line) error {
 // LanguageID is a GEDCOM base type
 type LanguageID string
 
-func (e *LanguageID) parse(l Line) error {
+func (e *LanguageID) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 15 {
 		return ErrInvalidLength{"LanguageID", l.value, 1, 15}
 	}
@@ -721,7 +749,7 @@ func (e *LanguageID) parse(l Line) error {
 // LanguageOfText is a GEDCOM base type
 type LanguageOfText string
 
-func (e *LanguageOfText) parse(l Line) error {
+func (e *LanguageOfText) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 15 {
 		return ErrInvalidLength{"LanguageOfText", l.value, 1, 15}
 	}
@@ -732,7 +760,7 @@ func (e *LanguageOfText) parse(l Line) error {
 // LanguagePreference is a GEDCOM base type
 type LanguagePreference string
 
-func (e *LanguagePreference) parse(l Line) error {
+func (e *LanguagePreference) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"LanguagePreference", l.value, 1, 90}
 	}
@@ -743,7 +771,7 @@ func (e *LanguagePreference) parse(l Line) error {
 // LDSBaptismDateStatus is a GEDCOM base type
 type LDSBaptismDateStatus string
 
-func (e *LDSBaptismDateStatus) parse(l Line) error {
+func (e *LDSBaptismDateStatus) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "CHILD":
 		*e = "CHILD"
@@ -772,7 +800,7 @@ func (e *LDSBaptismDateStatus) parse(l Line) error {
 // LDSChildSealingDateStatus is a GEDCOM base type
 type LDSChildSealingDateStatus string
 
-func (e *LDSChildSealingDateStatus) parse(l Line) error {
+func (e *LDSChildSealingDateStatus) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "BIC":
 		*e = "BIC"
@@ -801,7 +829,7 @@ func (e *LDSChildSealingDateStatus) parse(l Line) error {
 // LDSEndowmentDateStatus is a GEDCOM base type
 type LDSEndowmentDateStatus string
 
-func (e *LDSEndowmentDateStatus) parse(l Line) error {
+func (e *LDSEndowmentDateStatus) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "CHILD":
 		*e = "CHILD"
@@ -830,7 +858,7 @@ func (e *LDSEndowmentDateStatus) parse(l Line) error {
 // LDSSpouseSealingDateStatus is a GEDCOM base type
 type LDSSpouseSealingDateStatus string
 
-func (e *LDSSpouseSealingDateStatus) parse(l Line) error {
+func (e *LDSSpouseSealingDateStatus) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "CANCELED":
 		*e = "CANCELED"
@@ -859,7 +887,7 @@ func (e *LDSSpouseSealingDateStatus) parse(l Line) error {
 // Month is a GEDCOM base type
 type Month string
 
-func (e *Month) parse(l Line) error {
+func (e *Month) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "JAN":
 		*e = "JAN"
@@ -894,7 +922,7 @@ func (e *Month) parse(l Line) error {
 // MonthFren is a GEDCOM base type
 type MonthFren string
 
-func (e *MonthFren) parse(l Line) error {
+func (e *MonthFren) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "VEND":
 		*e = "VEND"
@@ -931,7 +959,7 @@ func (e *MonthFren) parse(l Line) error {
 // MonthHebr is a GEDCOM base type
 type MonthHebr string
 
-func (e *MonthHebr) parse(l Line) error {
+func (e *MonthHebr) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "TSH":
 		*e = "TSH"
@@ -968,7 +996,7 @@ func (e *MonthHebr) parse(l Line) error {
 // MultimediaFileReference is a GEDCOM base type
 type MultimediaFileReference string
 
-func (e *MultimediaFileReference) parse(l Line) error {
+func (e *MultimediaFileReference) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 30 {
 		return ErrInvalidLength{"MultimediaFileReference", l.value, 1, 30}
 	}
@@ -979,7 +1007,7 @@ func (e *MultimediaFileReference) parse(l Line) error {
 // MultimediaFormat is a GEDCOM base type
 type MultimediaFormat string
 
-func (e *MultimediaFormat) parse(l Line) error {
+func (e *MultimediaFormat) parse(l *Line) error {
 	switch strings.ToLower(l.value) {
 	case "bmp":
 		*e = "bmp"
@@ -1004,7 +1032,7 @@ func (e *MultimediaFormat) parse(l Line) error {
 // NameOfBusiness is a GEDCOM base type
 type NameOfBusiness string
 
-func (e *NameOfBusiness) parse(l Line) error {
+func (e *NameOfBusiness) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"NameOfBusiness", l.value, 1, 90}
 	}
@@ -1015,7 +1043,7 @@ func (e *NameOfBusiness) parse(l Line) error {
 // NameOfFamilyFile is a GEDCOM base type
 type NameOfFamilyFile string
 
-func (e *NameOfFamilyFile) parse(l Line) error {
+func (e *NameOfFamilyFile) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 20 {
 		return ErrInvalidLength{"NameOfFamilyFile", l.value, 1, 20}
 	}
@@ -1026,7 +1054,7 @@ func (e *NameOfFamilyFile) parse(l Line) error {
 // NameOfProduct is a GEDCOM base type
 type NameOfProduct string
 
-func (e *NameOfProduct) parse(l Line) error {
+func (e *NameOfProduct) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"NameOfProduct", l.value, 1, 90}
 	}
@@ -1037,7 +1065,7 @@ func (e *NameOfProduct) parse(l Line) error {
 // NameOfRepository is a GEDCOM base type
 type NameOfRepository string
 
-func (e *NameOfRepository) parse(l Line) error {
+func (e *NameOfRepository) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"NameOfRepository", l.value, 1, 90}
 	}
@@ -1048,7 +1076,7 @@ func (e *NameOfRepository) parse(l Line) error {
 // NameOfSourceData is a GEDCOM base type
 type NameOfSourceData string
 
-func (e *NameOfSourceData) parse(l Line) error {
+func (e *NameOfSourceData) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"NameOfSourceData", l.value, 1, 90}
 	}
@@ -1059,7 +1087,7 @@ func (e *NameOfSourceData) parse(l Line) error {
 // NamePersonal is a GEDCOM base type
 type NamePersonal string
 
-func (e *NamePersonal) parse(l Line) error {
+func (e *NamePersonal) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"NamePersonal", l.value, 1, 120}
 	}
@@ -1070,7 +1098,7 @@ func (e *NamePersonal) parse(l Line) error {
 // NamePiece is a GEDCOM base type
 type NamePiece string
 
-func (e *NamePiece) parse(l Line) error {
+func (e *NamePiece) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"NamePiece", l.value, 1, 90}
 	}
@@ -1081,7 +1109,7 @@ func (e *NamePiece) parse(l Line) error {
 // NamePieceGiven is a GEDCOM base type
 type NamePieceGiven string
 
-func (e *NamePieceGiven) parse(l Line) error {
+func (e *NamePieceGiven) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"NamePieceGiven", l.value, 1, 120}
 	}
@@ -1092,7 +1120,7 @@ func (e *NamePieceGiven) parse(l Line) error {
 // NamePieceNickname is a GEDCOM base type
 type NamePieceNickname string
 
-func (e *NamePieceNickname) parse(l Line) error {
+func (e *NamePieceNickname) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 30 {
 		return ErrInvalidLength{"NamePieceNickname", l.value, 1, 30}
 	}
@@ -1103,7 +1131,7 @@ func (e *NamePieceNickname) parse(l Line) error {
 // NamePiecePrefix is a GEDCOM base type
 type NamePiecePrefix string
 
-func (e *NamePiecePrefix) parse(l Line) error {
+func (e *NamePiecePrefix) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 30 {
 		return ErrInvalidLength{"NamePiecePrefix", l.value, 1, 30}
 	}
@@ -1114,7 +1142,7 @@ func (e *NamePiecePrefix) parse(l Line) error {
 // NamePieceSuffix is a GEDCOM base type
 type NamePieceSuffix string
 
-func (e *NamePieceSuffix) parse(l Line) error {
+func (e *NamePieceSuffix) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 30 {
 		return ErrInvalidLength{"NamePieceSuffix", l.value, 1, 30}
 	}
@@ -1125,7 +1153,7 @@ func (e *NamePieceSuffix) parse(l Line) error {
 // NamePieceSurname is a GEDCOM base type
 type NamePieceSurname string
 
-func (e *NamePieceSurname) parse(l Line) error {
+func (e *NamePieceSurname) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"NamePieceSurname", l.value, 1, 120}
 	}
@@ -1136,7 +1164,7 @@ func (e *NamePieceSurname) parse(l Line) error {
 // NamePieceSurnamePrefix is a GEDCOM base type
 type NamePieceSurnamePrefix string
 
-func (e *NamePieceSurnamePrefix) parse(l Line) error {
+func (e *NamePieceSurnamePrefix) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 30 {
 		return ErrInvalidLength{"NamePieceSurnamePrefix", l.value, 1, 30}
 	}
@@ -1147,7 +1175,7 @@ func (e *NamePieceSurnamePrefix) parse(l Line) error {
 // NationalIDNumber is a GEDCOM base type
 type NationalIDNumber string
 
-func (e *NationalIDNumber) parse(l Line) error {
+func (e *NationalIDNumber) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 30 {
 		return ErrInvalidLength{"NationalIDNumber", l.value, 1, 30}
 	}
@@ -1158,7 +1186,7 @@ func (e *NationalIDNumber) parse(l Line) error {
 // NationalOrTribalOrigin is a GEDCOM base type
 type NationalOrTribalOrigin string
 
-func (e *NationalOrTribalOrigin) parse(l Line) error {
+func (e *NationalOrTribalOrigin) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"NationalOrTribalOrigin", l.value, 1, 120}
 	}
@@ -1169,7 +1197,7 @@ func (e *NationalOrTribalOrigin) parse(l Line) error {
 // NewTag is a GEDCOM base type
 type NewTag string
 
-func (e *NewTag) parse(l Line) error {
+func (e *NewTag) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 15 {
 		return ErrInvalidLength{"NewTag", l.value, 1, 15}
 	}
@@ -1180,7 +1208,7 @@ func (e *NewTag) parse(l Line) error {
 // NobilityTypeTitle is a GEDCOM base type
 type NobilityTypeTitle string
 
-func (e *NobilityTypeTitle) parse(l Line) error {
+func (e *NobilityTypeTitle) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"NobilityTypeTitle", l.value, 1, 120}
 	}
@@ -1191,7 +1219,7 @@ func (e *NobilityTypeTitle) parse(l Line) error {
 // Number is a GEDCOM base type
 type Number uint
 
-func (e *Number) parse(l Line) error {
+func (e *Number) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 9 {
 		return ErrInvalidLength{"Number", l.value, 1, 9}
 	}
@@ -1206,7 +1234,7 @@ func (e *Number) parse(l Line) error {
 // Occupation is a GEDCOM base type
 type Occupation string
 
-func (e *Occupation) parse(l Line) error {
+func (e *Occupation) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"Occupation", l.value, 1, 90}
 	}
@@ -1217,7 +1245,7 @@ func (e *Occupation) parse(l Line) error {
 // OrdinanceProcessFlag is a GEDCOM base type
 type OrdinanceProcessFlag string
 
-func (e *OrdinanceProcessFlag) parse(l Line) error {
+func (e *OrdinanceProcessFlag) parse(l *Line) error {
 	switch strings.ToLower(l.value) {
 	case "yes":
 		*e = "yes"
@@ -1232,7 +1260,7 @@ func (e *OrdinanceProcessFlag) parse(l Line) error {
 // PedigreeLinkageType is a GEDCOM base type
 type PedigreeLinkageType string
 
-func (e *PedigreeLinkageType) parse(l Line) error {
+func (e *PedigreeLinkageType) parse(l *Line) error {
 	switch strings.ToLower(l.value) {
 	case "adopted":
 		*e = "adopted"
@@ -1251,7 +1279,7 @@ func (e *PedigreeLinkageType) parse(l Line) error {
 // PermanentRecordFileNumber is a GEDCOM base type
 type PermanentRecordFileNumber string
 
-func (e *PermanentRecordFileNumber) parse(l Line) error {
+func (e *PermanentRecordFileNumber) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"PermanentRecordFileNumber", l.value, 1, 90}
 	}
@@ -1262,7 +1290,7 @@ func (e *PermanentRecordFileNumber) parse(l Line) error {
 // PhoneNumber is a GEDCOM base type
 type PhoneNumber string
 
-func (e *PhoneNumber) parse(l Line) error {
+func (e *PhoneNumber) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 25 {
 		return ErrInvalidLength{"PhoneNumber", l.value, 1, 25}
 	}
@@ -1273,7 +1301,7 @@ func (e *PhoneNumber) parse(l Line) error {
 // PhysicalDescription is a GEDCOM base type
 type PhysicalDescription string
 
-func (e *PhysicalDescription) parse(l Line) error {
+func (e *PhysicalDescription) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"PhysicalDescription", l.value, 1, 248}
 	}
@@ -1284,7 +1312,7 @@ func (e *PhysicalDescription) parse(l Line) error {
 // PlaceHierarchy is a GEDCOM base type
 type PlaceHierarchy string
 
-func (e *PlaceHierarchy) parse(l Line) error {
+func (e *PlaceHierarchy) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"PlaceHierarchy", l.value, 1, 120}
 	}
@@ -1295,7 +1323,7 @@ func (e *PlaceHierarchy) parse(l Line) error {
 // PlaceLivingOrdinance is a GEDCOM base type
 type PlaceLivingOrdinance string
 
-func (e *PlaceLivingOrdinance) parse(l Line) error {
+func (e *PlaceLivingOrdinance) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"PlaceLivingOrdinance", l.value, 1, 120}
 	}
@@ -1306,7 +1334,7 @@ func (e *PlaceLivingOrdinance) parse(l Line) error {
 // PlaceValue is a GEDCOM base type
 type PlaceValue string
 
-func (e *PlaceValue) parse(l Line) error {
+func (e *PlaceValue) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"PlaceValue", l.value, 1, 120}
 	}
@@ -1317,7 +1345,7 @@ func (e *PlaceValue) parse(l Line) error {
 // Possessions is a GEDCOM base type
 type Possessions string
 
-func (e *Possessions) parse(l Line) error {
+func (e *Possessions) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"Possessions", l.value, 1, 248}
 	}
@@ -1328,7 +1356,7 @@ func (e *Possessions) parse(l Line) error {
 // PublicationDate is a GEDCOM base type
 type PublicationDate string
 
-func (e *PublicationDate) parse(l Line) error {
+func (e *PublicationDate) parse(l *Line) error {
 	if len(l.value) < 10 || len(l.value) > 11 {
 		return ErrInvalidLength{"PublicationDate", l.value, 10, 11}
 	}
@@ -1339,7 +1367,7 @@ func (e *PublicationDate) parse(l Line) error {
 // ReceivingSystemName is a GEDCOM base type
 type ReceivingSystemName string
 
-func (e *ReceivingSystemName) parse(l Line) error {
+func (e *ReceivingSystemName) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 20 {
 		return ErrInvalidLength{"ReceivingSystemName", l.value, 1, 20}
 	}
@@ -1350,7 +1378,7 @@ func (e *ReceivingSystemName) parse(l Line) error {
 // RecordIdentifier is a GEDCOM base type
 type RecordIdentifier string
 
-func (e *RecordIdentifier) parse(l Line) error {
+func (e *RecordIdentifier) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 18 {
 		return ErrInvalidLength{"RecordIdentifier", l.value, 1, 18}
 	}
@@ -1361,7 +1389,7 @@ func (e *RecordIdentifier) parse(l Line) error {
 // RecordType is a GEDCOM base type
 type RecordType string
 
-func (e *RecordType) parse(l Line) error {
+func (e *RecordType) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "FAM":
 		*e = "FAM"
@@ -1388,7 +1416,7 @@ func (e *RecordType) parse(l Line) error {
 // RegisteredResourceIdentifier is a GEDCOM base type
 type RegisteredResourceIdentifier string
 
-func (e *RegisteredResourceIdentifier) parse(l Line) error {
+func (e *RegisteredResourceIdentifier) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 25 {
 		return ErrInvalidLength{"RegisteredResourceIdentifier", l.value, 1, 25}
 	}
@@ -1399,7 +1427,7 @@ func (e *RegisteredResourceIdentifier) parse(l Line) error {
 // RelationIsDescriptor is a GEDCOM base type
 type RelationIsDescriptor string
 
-func (e *RelationIsDescriptor) parse(l Line) error {
+func (e *RelationIsDescriptor) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 25 {
 		return ErrInvalidLength{"RelationIsDescriptor", l.value, 1, 25}
 	}
@@ -1410,7 +1438,7 @@ func (e *RelationIsDescriptor) parse(l Line) error {
 // ReligiousAffiliation is a GEDCOM base type
 type ReligiousAffiliation string
 
-func (e *ReligiousAffiliation) parse(l Line) error {
+func (e *ReligiousAffiliation) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 90 {
 		return ErrInvalidLength{"ReligiousAffiliation", l.value, 1, 90}
 	}
@@ -1421,7 +1449,7 @@ func (e *ReligiousAffiliation) parse(l Line) error {
 // ResponsibleAgency is a GEDCOM base type
 type ResponsibleAgency string
 
-func (e *ResponsibleAgency) parse(l Line) error {
+func (e *ResponsibleAgency) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"ResponsibleAgency", l.value, 1, 120}
 	}
@@ -1432,7 +1460,7 @@ func (e *ResponsibleAgency) parse(l Line) error {
 // RestrictionNotice is a GEDCOM base type
 type RestrictionNotice string
 
-func (e *RestrictionNotice) parse(l Line) error {
+func (e *RestrictionNotice) parse(l *Line) error {
 	switch strings.ToLower(l.value) {
 	case "locked":
 		*e = "locked"
@@ -1447,7 +1475,7 @@ func (e *RestrictionNotice) parse(l Line) error {
 // RoleDescriptor is a GEDCOM base type
 type RoleDescriptor string
 
-func (e *RoleDescriptor) parse(l Line) error {
+func (e *RoleDescriptor) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 25 {
 		return ErrInvalidLength{"RoleDescriptor", l.value, 1, 25}
 	}
@@ -1458,7 +1486,7 @@ func (e *RoleDescriptor) parse(l Line) error {
 // RoleInEvent is a GEDCOM base type
 type RoleInEvent string
 
-func (e *RoleInEvent) parse(l Line) error {
+func (e *RoleInEvent) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 15 {
 		return ErrInvalidLength{"RoleInEvent", l.value, 1, 15}
 	}
@@ -1469,7 +1497,7 @@ func (e *RoleInEvent) parse(l Line) error {
 // ScholasticAchievement is a GEDCOM base type
 type ScholasticAchievement string
 
-func (e *ScholasticAchievement) parse(l Line) error {
+func (e *ScholasticAchievement) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"ScholasticAchievement", l.value, 1, 248}
 	}
@@ -1480,7 +1508,7 @@ func (e *ScholasticAchievement) parse(l Line) error {
 // SexValue is a GEDCOM base type
 type SexValue string
 
-func (e *SexValue) parse(l Line) error {
+func (e *SexValue) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 7 {
 		return ErrInvalidLength{"SexValue", l.value, 1, 7}
 	}
@@ -1491,7 +1519,7 @@ func (e *SexValue) parse(l Line) error {
 // SocialSecurityNumber is a GEDCOM base type
 type SocialSecurityNumber string
 
-func (e *SocialSecurityNumber) parse(l Line) error {
+func (e *SocialSecurityNumber) parse(l *Line) error {
 	if len(l.value) < 9 || len(l.value) > 11 {
 		return ErrInvalidLength{"SocialSecurityNumber", l.value, 9, 11}
 	}
@@ -1502,7 +1530,7 @@ func (e *SocialSecurityNumber) parse(l Line) error {
 // SourceCallNumber is a GEDCOM base type
 type SourceCallNumber string
 
-func (e *SourceCallNumber) parse(l Line) error {
+func (e *SourceCallNumber) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"SourceCallNumber", l.value, 1, 120}
 	}
@@ -1513,29 +1541,57 @@ func (e *SourceCallNumber) parse(l Line) error {
 // SourceDescription is a GEDCOM base type
 type SourceDescription string
 
-func (e *SourceDescription) parse(l Line) error {
+func (e *SourceDescription) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"SourceDescription", l.value, 1, 248}
 	}
 	*e = SourceDescription(l.value)
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			*e += "\n"
+			fallthrough
+		case "CONC":
+			if len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248 {
+				return ErrContext{"SourceDescription", l.Sub[i].tag, ErrInvalidLength{"SourceDescription", l.value, 1, 248}}
+			}
+			*e += SourceDescription(l.Sub[i].value)
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	return nil
 }
 
 // SourceDescriptiveTitle is a GEDCOM base type
 type SourceDescriptiveTitle string
 
-func (e *SourceDescriptiveTitle) parse(l Line) error {
+func (e *SourceDescriptiveTitle) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"SourceDescriptiveTitle", l.value, 1, 248}
 	}
 	*e = SourceDescriptiveTitle(l.value)
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			*e += "\n"
+			fallthrough
+		case "CONC":
+			if len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248 {
+				return ErrContext{"SourceDescriptiveTitle", l.Sub[i].tag, ErrInvalidLength{"SourceDescriptiveTitle", l.value, 1, 248}}
+			}
+			*e += SourceDescriptiveTitle(l.Sub[i].value)
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	return nil
 }
 
 // SourceFiledByEntry is a GEDCOM base type
 type SourceFiledByEntry string
 
-func (e *SourceFiledByEntry) parse(l Line) error {
+func (e *SourceFiledByEntry) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 60 {
 		return ErrInvalidLength{"SourceFiledByEntry", l.value, 1, 60}
 	}
@@ -1546,7 +1602,7 @@ func (e *SourceFiledByEntry) parse(l Line) error {
 // SourceJurisdictionPlace is a GEDCOM base type
 type SourceJurisdictionPlace string
 
-func (e *SourceJurisdictionPlace) parse(l Line) error {
+func (e *SourceJurisdictionPlace) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 120 {
 		return ErrInvalidLength{"SourceJurisdictionPlace", l.value, 1, 120}
 	}
@@ -1557,7 +1613,7 @@ func (e *SourceJurisdictionPlace) parse(l Line) error {
 // SourceMediaType is a GEDCOM base type
 type SourceMediaType string
 
-func (e *SourceMediaType) parse(l Line) error {
+func (e *SourceMediaType) parse(l *Line) error {
 	switch strings.ToLower(l.value) {
 	case "audio":
 		*e = "audio"
@@ -1594,18 +1650,32 @@ func (e *SourceMediaType) parse(l Line) error {
 // SourceOriginator is a GEDCOM base type
 type SourceOriginator string
 
-func (e *SourceOriginator) parse(l Line) error {
+func (e *SourceOriginator) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"SourceOriginator", l.value, 1, 248}
 	}
 	*e = SourceOriginator(l.value)
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			*e += "\n"
+			fallthrough
+		case "CONC":
+			if len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248 {
+				return ErrContext{"SourceOriginator", l.Sub[i].tag, ErrInvalidLength{"SourceOriginator", l.value, 1, 248}}
+			}
+			*e += SourceOriginator(l.Sub[i].value)
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	return nil
 }
 
 // SourcePublicationFacts is a GEDCOM base type
 type SourcePublicationFacts string
 
-func (e *SourcePublicationFacts) parse(l Line) error {
+func (e *SourcePublicationFacts) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"SourcePublicationFacts", l.value, 1, 248}
 	}
@@ -1616,7 +1686,7 @@ func (e *SourcePublicationFacts) parse(l Line) error {
 // SubmitterName is a GEDCOM base type
 type SubmitterName string
 
-func (e *SubmitterName) parse(l Line) error {
+func (e *SubmitterName) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 60 {
 		return ErrInvalidLength{"SubmitterName", l.value, 1, 60}
 	}
@@ -1627,7 +1697,7 @@ func (e *SubmitterName) parse(l Line) error {
 // SubmitterRegisteredRFN is a GEDCOM base type
 type SubmitterRegisteredRFN string
 
-func (e *SubmitterRegisteredRFN) parse(l Line) error {
+func (e *SubmitterRegisteredRFN) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 30 {
 		return ErrInvalidLength{"SubmitterRegisteredRFN", l.value, 1, 30}
 	}
@@ -1638,18 +1708,32 @@ func (e *SubmitterRegisteredRFN) parse(l Line) error {
 // SubmitterText is a GEDCOM base type
 type SubmitterText string
 
-func (e *SubmitterText) parse(l Line) error {
+func (e *SubmitterText) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"SubmitterText", l.value, 1, 248}
 	}
 	*e = SubmitterText(l.value)
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			*e += "\n"
+			fallthrough
+		case "CONC":
+			if len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248 {
+				return ErrContext{"SubmitterText", l.Sub[i].tag, ErrInvalidLength{"SubmitterText", l.value, 1, 248}}
+			}
+			*e += SubmitterText(l.Sub[i].value)
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	return nil
 }
 
 // TempleCode is a GEDCOM base type
 type TempleCode string
 
-func (e *TempleCode) parse(l Line) error {
+func (e *TempleCode) parse(l *Line) error {
 	if len(l.value) < 4 || len(l.value) > 5 {
 		return ErrInvalidLength{"TempleCode", l.value, 4, 5}
 	}
@@ -1660,7 +1744,7 @@ func (e *TempleCode) parse(l Line) error {
 // Text is a GEDCOM base type
 type Text string
 
-func (e *Text) parse(l Line) error {
+func (e *Text) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"Text", l.value, 1, 248}
 	}
@@ -1671,18 +1755,32 @@ func (e *Text) parse(l Line) error {
 // TextFromSource is a GEDCOM base type
 type TextFromSource string
 
-func (e *TextFromSource) parse(l Line) error {
+func (e *TextFromSource) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"TextFromSource", l.value, 1, 248}
 	}
 	*e = TextFromSource(l.value)
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			*e += "\n"
+			fallthrough
+		case "CONC":
+			if len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248 {
+				return ErrContext{"TextFromSource", l.Sub[i].tag, ErrInvalidLength{"TextFromSource", l.value, 1, 248}}
+			}
+			*e += TextFromSource(l.Sub[i].value)
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	return nil
 }
 
 // TimeValue is a GEDCOM base type
 type TimeValue string
 
-func (e *TimeValue) parse(l Line) error {
+func (e *TimeValue) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 12 {
 		return ErrInvalidLength{"TimeValue", l.value, 1, 12}
 	}
@@ -1693,7 +1791,7 @@ func (e *TimeValue) parse(l Line) error {
 // TransmissionDate is a GEDCOM base type
 type TransmissionDate string
 
-func (e *TransmissionDate) parse(l Line) error {
+func (e *TransmissionDate) parse(l *Line) error {
 	if len(l.value) < 10 || len(l.value) > 11 {
 		return ErrInvalidLength{"TransmissionDate", l.value, 10, 11}
 	}
@@ -1704,7 +1802,7 @@ func (e *TransmissionDate) parse(l Line) error {
 // UserReferenceNumber is a GEDCOM base type
 type UserReferenceNumber string
 
-func (e *UserReferenceNumber) parse(l Line) error {
+func (e *UserReferenceNumber) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 20 {
 		return ErrInvalidLength{"UserReferenceNumber", l.value, 1, 20}
 	}
@@ -1715,7 +1813,7 @@ func (e *UserReferenceNumber) parse(l Line) error {
 // UserReferenceType is a GEDCOM base type
 type UserReferenceType string
 
-func (e *UserReferenceType) parse(l Line) error {
+func (e *UserReferenceType) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 40 {
 		return ErrInvalidLength{"UserReferenceType", l.value, 1, 40}
 	}
@@ -1726,7 +1824,7 @@ func (e *UserReferenceType) parse(l Line) error {
 // Verified is a GEDCOM base type
 type Verified string
 
-func (e *Verified) parse(l Line) error {
+func (e *Verified) parse(l *Line) error {
 	switch strings.ToUpper(l.value) {
 	case "":
 		*e = ""
@@ -1741,7 +1839,7 @@ func (e *Verified) parse(l Line) error {
 // VersionNumber is a GEDCOM base type
 type VersionNumber string
 
-func (e *VersionNumber) parse(l Line) error {
+func (e *VersionNumber) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 15 {
 		return ErrInvalidLength{"VersionNumber", l.value, 1, 15}
 	}
@@ -1752,7 +1850,7 @@ func (e *VersionNumber) parse(l Line) error {
 // WhereWithinSource is a GEDCOM base type
 type WhereWithinSource string
 
-func (e *WhereWithinSource) parse(l Line) error {
+func (e *WhereWithinSource) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 248 {
 		return ErrInvalidLength{"WhereWithinSource", l.value, 1, 248}
 	}
@@ -1763,7 +1861,7 @@ func (e *WhereWithinSource) parse(l Line) error {
 // Xref is a GEDCOM base type
 type Xref string
 
-func (e *Xref) parse(l Line) error {
+func (e *Xref) parse(l *Line) error {
 	if len(l.value) < 1 || len(l.value) > 22 {
 		return ErrInvalidLength{"Xref", l.value, 1, 22}
 	}
@@ -1774,7 +1872,7 @@ func (e *Xref) parse(l Line) error {
 // Year is a GEDCOM base type
 type Year string
 
-func (e *Year) parse(l Line) error {
+func (e *Year) parse(l *Line) error {
 	if len(l.value) < 3 || len(l.value) > 4 {
 		return ErrInvalidLength{"Year", l.value, 3, 4}
 	}
@@ -1785,7 +1883,7 @@ func (e *Year) parse(l Line) error {
 // YearGreg is a GEDCOM base type
 type YearGreg string
 
-func (e *YearGreg) parse(l Line) error {
+func (e *YearGreg) parse(l *Line) error {
 	if len(l.value) < 3 || len(l.value) > 7 {
 		return ErrInvalidLength{"YearGreg", l.value, 3, 7}
 	}
