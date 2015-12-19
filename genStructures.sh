@@ -69,9 +69,9 @@ function processStructure {
 	done;
 	echo "}";
 	echo;
-	echo "func (s *$structureName) parse(l Line) error {";
+	echo "func (s *$structureName) parse(l *Line) error {";
 	if [ ! -z "$ID" ]; then
-		echo "	if err := s.${ID}.parse(Line{line: line{value: l.xrefID}}); err != nil {";
+		echo "	if err := s.${ID}.parse(&Line{line: line{value: l.xrefID}}); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"xrefID\", err}";
 		echo "	}";
 	fi;
@@ -160,10 +160,10 @@ function processStructure {
 						echo "			${pName}Count++";
 					fi;
 					if [ "$pMax" = "1" ]; then
-						echo "			if err := s.${pName}.parse(sl); err != nil {";
+						echo "			if err := s.${pName}.parse(&sl); err != nil {";
 					else
 						echo "			var t ${pType}";
-						echo "			if err := t.parse(sl); err != nil {";
+						echo "			if err := t.parse(&sl); err != nil {";
 					fi;
 					echo "				return ErrContext{\"$structureName\", \"$pTag\", err}";
 					echo "			}";
@@ -259,13 +259,18 @@ type MultimediaLink struct {
 	Data Record
 }
 
-func (s *MultimediaLink) parse(l Line) error {
+func (s *MultimediaLink) parse(l *Line) error {
+	var err error
 	if l.xrefID != "" {
-		s.Data = &MultimediaLinkID{}
+		t := &MultimediaLinkID{}
+		err = t.parse(l)
+		s.Data = t
 	} else {
-		s.Data = &MultimediaLinkFile{}
+		t := &MultimediaLinkFile{}
+		err = t.parse(l)
+		s.Data = t
 	}
-	return s.Data.parse(l)
+	return err
 }
 
 // NoteStructure splits between NoteID and NoteText
@@ -273,13 +278,18 @@ type NoteStructure struct {
 	Data Record
 }
 
-func (s *NoteStructure) parse(l Line) error {
+func (s *NoteStructure) parse(l *Line) error {
+	var err error
 	if l.xrefID != "" {
-		s.Data = &NoteID{}
+		t := &NoteID{}
+		err = t.parse(l)
+		s.Data = t
 	} else {
-		s.Data = &NoteText{}
+		t := &NoteText{}
+		err = t.parse(l)
+		s.Data = t
 	}
-	return s.Data.parse(l)
+	return err
 }
 
 // SourceCitation splits between SourceID and SourceText
@@ -287,19 +297,24 @@ type SourceCitation struct {
 	Data Record
 }
 
-func (s *SourceCitation) parse(l Line) error {
+func (s *SourceCitation) parse(l *Line) error {
+	var err error
 	if l.xrefID != "" {
-		s.Data = &SourceID{}
+		t := &SourceID{}
+		err = t.parse(l)
+		s.Data = t
 	} else {
-		s.Data = &SourceText{}
+		t := &SourceText{}
+		err = t.parse(l)
+		s.Data = t
 	}
-	return s.Data.parse(l)
+	return err
 }
 
 // Trailer type
 type Trailer struct{}
 
-func (s *Trailer) parse(Line) error {
+func (s *Trailer) parse(*Line) error {
 	return nil
 }
 

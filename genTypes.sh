@@ -40,7 +40,7 @@ HEREDOC
 		echo "// $eType is a GEDCOM base type";
 		echo "type $eType $vType";
 		echo;
-		echo "func (e *$eType) parse(l Line) error {";
+		echo "func (e *$eType) parse(l *Line) error {";
 		if [ -z "${data[1]}" ]; then
 			if [ -z "$(echo "${data[2]}" | tr -d "[:upper:]")" ]; then
 				echo "	switch strings.ToUpper(l.value) {"
@@ -71,13 +71,13 @@ HEREDOC
 					echo "	for i := 0; i < len(l.Sub); i++ {";
 					echo "		switch l.Sub[i].tag {";
 					echo "		case \"CONT\":";
-					echo "			*e  += \"\\n\"";
+					echo "			*e += \"\\n\"";
 					echo "			fallthrough";
 					echo "		case \"CONC\":";
 					echo "			if len(l.Sub[i].value) < ${data[1]} || len(l.Sub[i].value) > ${data[2]} {"
 					echo "				return ErrContext{\"$eType\", l.Sub[i].tag, ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}}";
 					echo "			}";
-					echo "			*e += $eType(t)";
+					echo "			*e += $eType(l.Sub[i].value)";
 					echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
 					echo "			i--";
 					echo "		}";

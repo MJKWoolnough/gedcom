@@ -147,7 +147,7 @@ func (r *Reader) Record() (Record, error) {
 				}
 				return plines, ErrContext{"root", lines[0].tag, ErrUnknownTag}
 			}
-			err := record.parse(plines)
+			err := record.parse(&plines)
 			if err != nil {
 				return nil, ErrContext{"root", lines[0].tag, err}
 			}

@@ -24,7 +24,7 @@ const (
 
 type Record interface {
 	Type() RecordID
-	parse(Line) error
+	parse(*Line) error
 }
 
 func (Header) Type() RecordID {
@@ -95,6 +95,6 @@ func (Line) Type() RecordID {
 	return RecordUnknown
 }
 
-func (Line) parse(Line) error {
+func (Line) parse(*Line) error {
 	return nil
 }
