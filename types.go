@@ -1060,8 +1060,8 @@ func (e *NameOfSourceData) parse(l Line) error {
 type NamePersonal string
 
 func (e *NamePersonal) parse(l Line) error {
-	if len(l.value) < 1 || len(l.value) > 20 {
-		return ErrInvalidLength{"NamePersonal", l.value, 1, 20}
+	if len(l.value) < 1 || len(l.value) > 120 {
+		return ErrInvalidLength{"NamePersonal", l.value, 1, 120}
 	}
 	*e = NamePersonal(l.value)
 	return nil

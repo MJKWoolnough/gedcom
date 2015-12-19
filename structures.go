@@ -1878,6 +1878,21 @@ func (s *NoteRecord) parse(l Line) error {
 	if err := s.SubmitterText.parse(l); err != nil {
 		return ErrContext{"NoteRecord", "line_value", err}
 	}
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			s.SubmitterText += "\n"
+			fallthrough
+		case "CONC":
+			var t SubmitterText
+			if err := t.parse(l.Sub[i]); err != nil {
+				return ErrContext{"$structureName", "line_value", err}
+			}
+			s.SubmitterText += t
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	var AutomatedRecordIDSet, ChangeDateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -2403,6 +2418,21 @@ func (s *AddressStructure) parse(l Line) error {
 	if err := s.AddressLine.parse(l); err != nil {
 		return ErrContext{"AddressStructure", "line_value", err}
 	}
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			s.AddressLine += "\n"
+			fallthrough
+		case "CONC":
+			var t AddressLine
+			if err := t.parse(l.Sub[i]); err != nil {
+				return ErrContext{"$structureName", "line_value", err}
+			}
+			s.AddressLine += t
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	var AddressLine1Set, AddressLine2Set, CitySet, StateSet, PostalCodeSet, CountrySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -2911,6 +2941,21 @@ func (s *NoteText) parse(l Line) error {
 	if err := s.SubmitterText.parse(l); err != nil {
 		return ErrContext{"NoteText", "line_value", err}
 	}
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			s.SubmitterText += "\n"
+			fallthrough
+		case "CONC":
+			var t SubmitterText
+			if err := t.parse(l.Sub[i]); err != nil {
+				return ErrContext{"$structureName", "line_value", err}
+			}
+			s.SubmitterText += t
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
+	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "SOUR":
@@ -3211,6 +3256,21 @@ type SourceText struct {
 func (s *SourceText) parse(l Line) error {
 	if err := s.Description.parse(l); err != nil {
 		return ErrContext{"SourceText", "line_value", err}
+	}
+	for i := 0; i < len(l.Sub); i++ {
+		switch l.Sub[i].tag {
+		case "CONT":
+			s.Description += "\n"
+			fallthrough
+		case "CONC":
+			var t SourceDescription
+			if err := t.parse(l.Sub[i]); err != nil {
+				return ErrContext{"$structureName", "line_value", err}
+			}
+			s.Description += t
+			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			i--
+		}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
