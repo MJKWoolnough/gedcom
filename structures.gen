@@ -264,7 +264,7 @@ ChangeDateTime
 	#:ChangeDate
 	TIME:TimeValue:Time:0:1
 ChildToFamilyLink
-	@:ID
+	#:Xref:ID
 	PEDI:PedigreeLinkageType::0:M
 	NOTE:NoteStructure:Notes:0:M
 EventDetail
@@ -338,5 +338,5 @@ SourceCallStructure
 	#:SourceCallNumber
 	MEDI:SourceMediaType:Type:0:1
 SpouseToFamilyLink
-	@:ID
+	#:Xref:ID
 	NOTE:NoteStructure:Notes:0:M

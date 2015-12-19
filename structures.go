@@ -2719,8 +2719,8 @@ type ChildToFamilyLink struct {
 }
 
 func (s *ChildToFamilyLink) parse(l *Line, o options) error {
-	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}, o); err != nil {
-		return ErrContext{"ChildToFamilyLink", "xrefID", err}
+	if err := s.ID.parse(l, o); err != nil {
+		return ErrContext{"ChildToFamilyLink", "line_value", err}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -3510,8 +3510,8 @@ type SpouseToFamilyLink struct {
 }
 
 func (s *SpouseToFamilyLink) parse(l *Line, o options) error {
-	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}, o); err != nil {
-		return ErrContext{"SpouseToFamilyLink", "xrefID", err}
+	if err := s.ID.parse(l, o); err != nil {
+		return ErrContext{"SpouseToFamilyLink", "line_value", err}
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
