@@ -214,7 +214,7 @@ func (t *tokeniser) lineValue() (token, stateFn) {
 				next = t.done
 				break
 			}
-			if strings.ContainsRune(digit[1:], p) {
+			if strings.ContainsRune(digit, p) {
 				break
 			}
 		}
