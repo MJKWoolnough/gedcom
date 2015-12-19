@@ -128,9 +128,9 @@ VerifiedIndividualFamEventDetail
 	:VerifiedEventDetail
 VerifiedEventDetail
 	#:Verified::0:1
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 IndividualEventDetail
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 AdoptionEvent
 	FAMC:AdoptionReference:Family:0:1
 	:EventDetail:Event:0:1
@@ -139,42 +139,42 @@ AdoptionReference
 	ADOP:AdoptedBy::0:1
 CasteEvent
 	#:CasteName
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 DescriptionEvent
 	#:PhysicalDescription
 	:EventDetail:Event:0:1
 ScholasticEvent
 	#:ScholasticAchievement
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 NationalIDEvent
 	#:NationalIDNumber
 	:EventDetail:Event:0:1
 NationalOriginEvent
 	#:NationalOrTribalOrigin
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 ChildrenEvent
 	#:CountOfChildren
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 MarriagesEvent
 	#:CountOfMarriages
 	:EventDetail:Event:0:1
 OccupationEvent
 	#:Occupation
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 PossessionEvent
 	#:Possessions
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 ReligiousEvent
 	#:ReligiousAffiliation
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 ResidenceEvent
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 SSNEvent
 	#:SocialSecurityNumber
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 NobilityEvent
 	#:NobilityTypeTitle
-	:EventDetail:Event:0:1
+	:EventDetail::0:1
 UserReferenceStructure
 	#:UserReferenceNumber
 	TYPE:UserReferenceType:Type:0:1
