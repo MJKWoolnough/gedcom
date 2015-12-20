@@ -80,7 +80,8 @@ HEREDOC
 					echo "				return ErrContext{\"$eType\", l.Sub[i].tag, ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}}";
 					echo "			}";
 					echo "			*e += $eType(l.Sub[i].value)";
-					echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
+					echo "			copy(l.Sub[i:], l.Sub[i+1:])";
+					echo "			l.Sub = l.Sub[:len(l.Sub)-1]";
 					echo "			i--";
 					echo "		}";
 					echo "	}";

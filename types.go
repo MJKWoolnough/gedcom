@@ -47,7 +47,8 @@ func (e *AddressLine) parse(l *Line, o options) error {
 				return ErrContext{"AddressLine", l.Sub[i].tag, ErrInvalidLength{"AddressLine", l.value, 1, 60}}
 			}
 			*e += AddressLine(l.Sub[i].value)
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			copy(l.Sub[i:], l.Sub[i+1:])
+			l.Sub = l.Sub[:len(l.Sub)-1]
 			i--
 		}
 	}
@@ -699,7 +700,8 @@ func (e *GedcomContentDescription) parse(l *Line, o options) error {
 				return ErrContext{"GedcomContentDescription", l.Sub[i].tag, ErrInvalidLength{"GedcomContentDescription", l.value, 1, 248}}
 			}
 			*e += GedcomContentDescription(l.Sub[i].value)
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			copy(l.Sub[i:], l.Sub[i+1:])
+			l.Sub = l.Sub[:len(l.Sub)-1]
 			i--
 		}
 	}
@@ -1592,7 +1594,8 @@ func (e *SourceDescription) parse(l *Line, o options) error {
 				return ErrContext{"SourceDescription", l.Sub[i].tag, ErrInvalidLength{"SourceDescription", l.value, 1, 248}}
 			}
 			*e += SourceDescription(l.Sub[i].value)
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			copy(l.Sub[i:], l.Sub[i+1:])
+			l.Sub = l.Sub[:len(l.Sub)-1]
 			i--
 		}
 	}
@@ -1617,7 +1620,8 @@ func (e *SourceDescriptiveTitle) parse(l *Line, o options) error {
 				return ErrContext{"SourceDescriptiveTitle", l.Sub[i].tag, ErrInvalidLength{"SourceDescriptiveTitle", l.value, 1, 248}}
 			}
 			*e += SourceDescriptiveTitle(l.Sub[i].value)
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			copy(l.Sub[i:], l.Sub[i+1:])
+			l.Sub = l.Sub[:len(l.Sub)-1]
 			i--
 		}
 	}
@@ -1703,7 +1707,8 @@ func (e *SourceOriginator) parse(l *Line, o options) error {
 				return ErrContext{"SourceOriginator", l.Sub[i].tag, ErrInvalidLength{"SourceOriginator", l.value, 1, 248}}
 			}
 			*e += SourceOriginator(l.Sub[i].value)
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			copy(l.Sub[i:], l.Sub[i+1:])
+			l.Sub = l.Sub[:len(l.Sub)-1]
 			i--
 		}
 	}
@@ -1761,7 +1766,8 @@ func (e *SubmitterText) parse(l *Line, o options) error {
 				return ErrContext{"SubmitterText", l.Sub[i].tag, ErrInvalidLength{"SubmitterText", l.value, 1, 248}}
 			}
 			*e += SubmitterText(l.Sub[i].value)
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			copy(l.Sub[i:], l.Sub[i+1:])
+			l.Sub = l.Sub[:len(l.Sub)-1]
 			i--
 		}
 	}
@@ -1808,7 +1814,8 @@ func (e *TextFromSource) parse(l *Line, o options) error {
 				return ErrContext{"TextFromSource", l.Sub[i].tag, ErrInvalidLength{"TextFromSource", l.value, 1, 248}}
 			}
 			*e += TextFromSource(l.Sub[i].value)
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+			copy(l.Sub[i:], l.Sub[i+1:])
+			l.Sub = l.Sub[:len(l.Sub)-1]
 			i--
 		}
 	}
