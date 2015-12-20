@@ -51,7 +51,7 @@ type tokeniser struct {
 func newTokeniser(r io.Reader, o options) *tokeniser {
 	t := &tokeniser{
 		p:       parser.NewReaderParser(r),
-		options: options,
+		options: o,
 	}
 	t.state = t.level
 	return t
@@ -187,7 +187,7 @@ func (t *tokeniser) lineValue() (token, stateFn) {
 	next := t.level
 	for {
 		for {
-			if t.allowUnknownCharset && p.Except(invalidchar) {
+			if t.allowUnknownCharset && t.p.Except(invalidchar) {
 				t.p.ExceptRun(invalidchar)
 			} else if t.p.Accept(non_at) {
 				t.p.AcceptRun(non_at)
