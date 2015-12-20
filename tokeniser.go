@@ -96,10 +96,7 @@ func (t *tokeniser) level() (token, stateFn) {
 
 func (t *tokeniser) optionalXrefID() (token, stateFn) {
 	if t.p.Peek() == '@' {
-		t.p.Accept("@")
-		if t.p.Peek() != '@' {
-			return t.xrefID()
-		}
+		return t.xrefID()
 	}
 	return t.tag()
 }
@@ -116,11 +113,9 @@ func (t *tokeniser) readPointer() (string, error) {
 }
 
 func (t *tokeniser) xrefID() (token, stateFn) {
+	t.p.Accept("@")
 	pointer, err := t.readPointer()
 	if err != nil {
-		if t.allowInvalidEscape {
-			return t.tag()
-		}
 		t.err = err
 		return t.errorfn()
 	}
@@ -175,17 +170,23 @@ func (t *tokeniser) endLine() (token, stateFn) {
 
 func (t *tokeniser) lineValue() (token, stateFn) {
 	if t.p.Peek() == '@' {
-		pointer, err := t.readPointer()
-		if err != nil {
-			t.err = err
-			return t.errorfn()
+		t.p.Accept("@")
+		if t.p.Peek() != '@' {
+			pointer, err := t.readPointer()
+			if err != nil {
+				if !t.allowInvalidEscape {
+					t.err = err
+					return t.errorfn()
+				}
+			} else {
+				t.p.AcceptRun(terminators)
+				t.p.Get()
+				return token{
+					tokenPointer,
+					pointer,
+				}, t.level
+			}
 		}
-		t.p.AcceptRun(terminators)
-		t.p.Get()
-		return token{
-			tokenPointer,
-			pointer,
-		}, t.level
 	}
 	next := t.level
 	for {
