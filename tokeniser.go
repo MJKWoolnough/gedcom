@@ -109,7 +109,8 @@ func (t *tokeniser) readPointer() (string, error) {
 	if !t.p.Accept("@") {
 		return "", ErrInvalidPointer
 	}
-	return t.p.Get(), nil
+	pointer := t.p.Get()
+	return pointer[1 : len(pointer)-1], nil
 }
 
 func (t *tokeniser) xrefID() (token, stateFn) {
