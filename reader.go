@@ -30,7 +30,7 @@ func NewReader(r io.Reader, opts ...Option) *Reader {
 		opt(&o)
 	}
 	return &Reader{
-		t:       newTokeniser(r),
+		t:       newTokeniser(r, o),
 		options: o,
 	}
 }
