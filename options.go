@@ -1,11 +1,13 @@
 package gedcom
 
 type options struct {
-	allowUnknownTags     bool
-	allowWrongLength     bool
-	allowMissingRequired bool
-	allowMoreThanAllowed bool
-	ignoreInvalidValue   bool
+	allowUnknownTags        bool
+	allowWrongLength        bool
+	allowMissingRequired    bool
+	allowMoreThanAllowed    bool
+	ignoreInvalidValue      bool
+	allowUnknownCharset     bool
+	allowTerminatorsInValue bool
 }
 
 type Option func(o *options)
@@ -28,4 +30,12 @@ func AllowMoreThanAllowed(o *options) {
 
 func IgnoreInvalidValue(o *options) {
 	o.ignoreInvalidValue = true
+}
+
+func AllowUnknownCharset(o *options) {
+	o.allowUnknownCharset = true
+}
+
+func AllowTerminatorsInValue(o *options) {
+	o.allowTerminatorsInValue = true
 }

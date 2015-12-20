@@ -18,6 +18,7 @@ const (
 	terminators = "\r\n"
 	any_char    = alpha + digit + otherchar + "# @"
 	levelIgnore = terminators + delim + "	"
+	invalidchar = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\xab\xac\xad\x1e\x1f\x7f" + terminators + "@"
 )
 
 type tokenType uint8
@@ -44,11 +45,13 @@ type tokeniser struct {
 	p     parser.Parser
 	state stateFn
 	err   error
+	options
 }
 
-func newTokeniser(r io.Reader) *tokeniser {
+func newTokeniser(r io.Reader, o options) *tokeniser {
 	t := &tokeniser{
-		p: parser.NewReaderParser(r),
+		p:       parser.NewReaderParser(r),
+		options: options,
 	}
 	t.state = t.level
 	return t
@@ -184,14 +187,20 @@ func (t *tokeniser) lineValue() (token, stateFn) {
 	next := t.level
 	for {
 		for {
-			if t.p.Accept(non_at) {
+			if t.allowUnknownCharset && p.Except(invalidchar) {
+				t.p.ExceptRun(invalidchar)
+			} else if t.p.Accept(non_at) {
 				t.p.AcceptRun(non_at)
 			} else if t.p.Accept("@") {
 				if !t.p.Accept("#") {
 					t.err = ErrBadEscape
 					return t.errorfn()
 				}
-				t.p.AcceptRun(non_at)
+				if t.allowUnknownCharset {
+					t.p.ExceptRun(invalidchar)
+				} else {
+					t.p.AcceptRun(non_at)
+				}
 				if !t.p.Accept("@") {
 					t.err = ErrBadEscape
 					return t.errorfn()
@@ -205,10 +214,11 @@ func (t *tokeniser) lineValue() (token, stateFn) {
 			next = t.done
 			break
 		}
-		// What follows is a hack for broken gedcom generators that insert newlines where they shouldn't go.
-		// CONT & CONC are there for a reason!
 		if strings.ContainsRune(terminators, p) {
 			t.p.AcceptRun(terminators)
+			if !t.allowTerminatorsInValue {
+				break
+			}
 			p = t.p.Peek()
 			if p == -1 {
 				next = t.done
@@ -217,6 +227,9 @@ func (t *tokeniser) lineValue() (token, stateFn) {
 			if strings.ContainsRune(digit, p) {
 				break
 			}
+		} else {
+			t.err = ErrBadChar
+			return t.errorfn()
 		}
 	}
 	return token{
@@ -247,4 +260,5 @@ var (
 	ErrInvalidPointer = errors.New("invalid pointer string")
 	ErrInvalidTag     = errors.New("invalid tag")
 	ErrBadEscape      = errors.New("bad escape sequence")
+	ErrBadChar        = errors.New("bad character")
 )
