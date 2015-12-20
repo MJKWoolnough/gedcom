@@ -192,6 +192,9 @@ func (t *tokeniser) lineValue() (token, stateFn) {
 			} else if t.p.Accept(non_at) {
 				t.p.AcceptRun(non_at)
 			} else if t.p.Accept("@") {
+				if t.p.Accept("@") {
+					continue
+				}
 				if !t.p.Accept("#") {
 					t.err = ErrBadEscape
 					return t.errorfn()
