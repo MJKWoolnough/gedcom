@@ -96,15 +96,15 @@ func (t *tokeniser) level() (token, stateFn) {
 
 func (t *tokeniser) optionalXrefID() (token, stateFn) {
 	if t.p.Peek() == '@' {
-		return t.xrefID()
+		t.p.Accept("@")
+		if t.p.Peek() != '@' {
+			return t.xrefID()
+		}
 	}
 	return t.tag()
 }
 
 func (t *tokeniser) readPointer() (string, error) {
-	if !t.p.Accept("@") {
-		return "", ErrInvalidPointer
-	}
 	if !t.p.Accept(alphanum) {
 		return "", ErrInvalidPointer
 	}
@@ -118,6 +118,9 @@ func (t *tokeniser) readPointer() (string, error) {
 func (t *tokeniser) xrefID() (token, stateFn) {
 	pointer, err := t.readPointer()
 	if err != nil {
+		if t.allowInvalidEscape {
+			return t.tag()
+		}
 		t.err = err
 		return t.errorfn()
 	}
@@ -231,8 +234,11 @@ func (t *tokeniser) lineValue() (token, stateFn) {
 				break
 			}
 		} else {
-			t.err = ErrBadChar
-			return t.errorfn()
+			if !t.allowInvalidChars {
+				t.err = ErrBadChar
+				return t.errorfn()
+			}
+			t.p.Except("")
 		}
 	}
 	return token{

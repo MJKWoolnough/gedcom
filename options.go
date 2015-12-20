@@ -9,6 +9,7 @@ type options struct {
 	allowUnknownCharset     bool
 	allowTerminatorsInValue bool
 	allowInvalidEscape      bool
+	allowInvalidChars       bool
 }
 
 type Option func(o *options)
@@ -43,4 +44,8 @@ func AllowTerminatorsInValue(o *options) {
 
 func AllowInvalidEscape(o *options) {
 	o.allowInvalidEscape = true
+}
+
+func AllowInvalidChars(o *options) {
+	o.allowInvalidChars = true
 }
