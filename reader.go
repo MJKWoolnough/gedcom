@@ -20,6 +20,7 @@ type Reader struct {
 	peeked bool
 	line   line
 	err    error
+	done   bool
 
 	hadHeader, hadRecord bool
 }
@@ -45,6 +46,10 @@ func (r *Reader) readLine() {
 		return
 	}
 	if t.typ != tokenLevel {
+		if t.typ == tokenDone {
+			r.done = true
+			return
+		}
 		r.err = ErrNotLevel
 		return
 	}
@@ -89,6 +94,9 @@ func (r *Reader) Record() (Record, error) {
 	if !r.peeked {
 		r.readLine()
 		r.peeked = true
+	}
+	if r.done {
+		return nil, io.EOF
 	}
 	if r.err != nil {
 		return nil, r.err
