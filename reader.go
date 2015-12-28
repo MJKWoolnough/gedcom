@@ -13,6 +13,7 @@ type line struct {
 	value  string
 }
 
+// Reader reads Records from the underlying GEDCOM file
 type Reader struct {
 	t       *tokeniser
 	options options
@@ -25,6 +26,7 @@ type Reader struct {
 	hadHeader, hadRecord bool
 }
 
+// NewReader creates a new Reader, setting the given options
 func NewReader(r io.Reader, opts ...Option) *Reader {
 	var o options
 	for _, opt := range opts {
@@ -90,6 +92,17 @@ func (r *Reader) readLine() {
 	r.line.value = t.data
 }
 
+// Record returns a GEDCOM Record.
+// Record types are: -
+// 	Header
+// 	Submission
+// 	Family
+// 	Invididual
+// 	MultimediaNote
+// 	Repository
+// 	Source
+// 	Submitter
+//	Trailer
 func (r *Reader) Record() (Record, error) {
 	if !r.peeked {
 		r.readLine()

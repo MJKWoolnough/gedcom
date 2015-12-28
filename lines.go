@@ -1,5 +1,6 @@
 package gedcom
 
+// Line represents an unknown GEDCOM record
 type Line struct {
 	line
 	Sub []Line
