@@ -4,6 +4,8 @@ import (
 	"errors"
 	"io"
 	"strconv"
+
+	"github.com/MJKWoolnough/parser"
 )
 
 type line struct {
@@ -42,20 +44,20 @@ func (r *Reader) readLine() {
 	if r.err != nil {
 		return
 	}
-	var t token
+	var t parser.Token
 	t, r.err = r.t.GetToken()
 	if r.err != nil {
 		return
 	}
-	if t.typ != tokenLevel {
-		if t.typ == tokenDone {
+	if t.Type != tokenLevel {
+		if t.Type == parser.TokenDone {
 			r.done = true
 			return
 		}
 		r.err = ErrNotLevel
 		return
 	}
-	r.line.level, r.err = strconv.ParseUint(t.data, 10, 64)
+	r.line.level, r.err = strconv.ParseUint(t.Data, 10, 64)
 	if r.err != nil {
 		return
 	}
@@ -63,8 +65,8 @@ func (r *Reader) readLine() {
 	if r.err != nil {
 		return
 	}
-	if t.typ == tokenXref {
-		r.line.xrefID = t.data
+	if t.Type == tokenXref {
+		r.line.xrefID = t.Data
 		t, r.err = r.t.GetToken()
 		if r.err != nil {
 			return
@@ -72,24 +74,24 @@ func (r *Reader) readLine() {
 	} else {
 		r.line.xrefID = ""
 	}
-	if t.typ != tokenTag {
+	if t.Type != tokenTag {
 		r.err = ErrNotTag
 		return
 	}
-	r.line.tag = t.data
+	r.line.tag = t.Data
 	t, r.err = r.t.GetToken()
 	if r.err != nil {
 		return
 	}
-	if t.typ == tokenEndLine {
+	if t.Type == tokenEndLine {
 		r.line.value = ""
 		return
 	}
-	if t.typ != tokenLine && t.typ != tokenPointer {
+	if t.Type != tokenLine && t.Type != tokenPointer {
 		r.err = ErrNotLine
 		return
 	}
-	r.line.value = t.data
+	r.line.value = t.Data
 }
 
 // Record returns a GEDCOM Record.

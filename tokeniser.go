@@ -21,168 +21,139 @@ const (
 	invalidchar = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\xab\xac\xad\x1e\x1f\x7f" + terminators + "@"
 )
 
-type tokenType uint8
-
 const (
-	tokenError tokenType = iota
-	tokenLevel
+	tokenLevel parser.TokenType = iota
 	tokenXref
 	tokenTag
 	tokenPointer
 	tokenLine
 	tokenEndLine
-	tokenDone
 )
 
-type token struct {
-	typ  tokenType
-	data string
-}
-
-type stateFn func() (token, stateFn)
-
 type tokeniser struct {
-	p     parser.Parser
-	state stateFn
-	err   error
+	parser.Parser
 	options
 }
 
 func newTokeniser(r io.Reader, o options) *tokeniser {
 	t := &tokeniser{
-		p:       parser.NewReaderParser(r),
+		Parser:  parser.NewReaderParser(r),
 		options: o,
 	}
-	t.state = t.level
+	t.State = t.level
 	return t
 }
 
-func (t *tokeniser) GetToken() (token, error) {
-	if t.err == io.EOF {
-		return token{tokenDone, ""}, io.EOF
+func (t *tokeniser) level() (parser.Token, parser.StateFn) {
+	t.AcceptRun(levelIgnore)
+	t.Get()
+	if t.Peek() == -1 {
+		return t.Done()
 	}
-	var tk token
-	tk, t.state = t.state()
-	if t.err == io.EOF {
-		if tk.typ == tokenError {
-			t.err = io.ErrUnexpectedEOF
-		} else {
-			return tk, nil
-		}
+	if !t.Accept(digit) {
+		t.Err = ErrInvalidLevel
+		return t.Error()
 	}
-	return tk, t.err
-}
-
-func (t *tokeniser) level() (token, stateFn) {
-	t.p.AcceptRun(levelIgnore)
-	t.p.Get()
-	if t.p.Peek() == -1 {
-		return t.done()
+	t.AcceptRun(digit)
+	if !t.Accept(delim) {
+		t.Err = ErrMissingDelim
+		return t.Error()
 	}
-	if !t.p.Accept(digit) {
-		t.err = ErrInvalidLevel
-		return t.errorfn()
-	}
-	t.p.AcceptRun(digit)
-	if !t.p.Accept(delim) {
-		t.err = ErrMissingDelim
-		return t.errorfn()
-	}
-	return token{
+	return parser.Token{
 		tokenLevel,
-		strings.TrimSpace(t.p.Get()),
+		strings.TrimSpace(t.Get()),
 	}, t.optionalXrefID
 }
 
-func (t *tokeniser) optionalXrefID() (token, stateFn) {
-	if t.p.Peek() == '@' {
+func (t *tokeniser) optionalXrefID() (parser.Token, parser.StateFn) {
+	if t.Peek() == '@' {
 		return t.xrefID()
 	}
 	return t.tag()
 }
 
 func (t *tokeniser) readPointer() (string, error) {
-	if !t.p.Accept(alphanum) {
+	if !t.Accept(alphanum) {
 		return "", ErrInvalidPointer
 	}
-	t.p.AcceptRun(nonAt)
-	if !t.p.Accept("@") {
+	t.AcceptRun(nonAt)
+	if !t.Accept("@") {
 		return "", ErrInvalidPointer
 	}
-	pointer := t.p.Get()
+	pointer := t.Get()
 	return pointer[1 : len(pointer)-1], nil
 }
 
-func (t *tokeniser) xrefID() (token, stateFn) {
-	t.p.Accept("@")
+func (t *tokeniser) xrefID() (parser.Token, parser.StateFn) {
+	t.Accept("@")
 	pointer, err := t.readPointer()
 	if err != nil {
-		t.err = err
-		return t.errorfn()
+		t.Err = err
+		return t.Error()
 	}
-	if !t.p.Accept(delim) {
-		t.err = ErrMissingDelim
-		return t.errorfn()
+	if !t.Accept(delim) {
+		t.Err = ErrMissingDelim
+		return t.Error()
 	}
-	t.p.Get()
-	return token{
+	t.Get()
+	return parser.Token{
 		tokenXref,
 		strings.Trim(pointer, "@"),
 	}, t.tag
 }
 
-func (t *tokeniser) tag() (token, stateFn) {
-	if !t.p.Accept(alphanum) {
-		t.err = ErrInvalidTag
-		return t.errorfn()
+func (t *tokeniser) tag() (parser.Token, parser.StateFn) {
+	if !t.Accept(alphanum) {
+		t.Err = ErrInvalidTag
+		return t.Error()
 	}
-	t.p.AcceptRun(alphanum)
-	tag := t.p.Get()
-	if t.p.Accept(delim) {
-		t.p.Get()
-		return token{
+	t.AcceptRun(alphanum)
+	tag := t.Get()
+	if t.Accept(delim) {
+		t.Get()
+		return parser.Token{
 			tokenTag,
 			tag,
 		}, t.lineValue
 	}
 	next := t.endLine
-	if t.p.Peek() == -1 {
-		next = t.done
+	if t.Peek() == -1 {
+		next = t.Done
 	} else {
-		if !t.p.Accept(terminators) {
-			t.err = ErrInvalidTag
-			return t.errorfn()
+		if !t.Accept(terminators) {
+			t.Err = ErrInvalidTag
+			return t.Error()
 		}
-		t.p.AcceptRun(terminators)
-		t.p.Get()
+		t.AcceptRun(terminators)
+		t.Get()
 	}
-	return token{
+	return parser.Token{
 		tokenTag,
 		tag,
 	}, next
 }
 
-func (t *tokeniser) endLine() (token, stateFn) {
-	return token{
+func (t *tokeniser) endLine() (parser.Token, parser.StateFn) {
+	return parser.Token{
 		tokenEndLine,
 		"",
 	}, t.level
 }
 
-func (t *tokeniser) lineValue() (token, stateFn) {
-	if t.p.Peek() == '@' {
-		t.p.Accept("@")
-		if t.p.Peek() != '@' {
+func (t *tokeniser) lineValue() (parser.Token, parser.StateFn) {
+	if t.Peek() == '@' {
+		t.Accept("@")
+		if t.Peek() != '@' {
 			pointer, err := t.readPointer()
 			if err != nil {
 				if !t.allowInvalidEscape {
-					t.err = err
-					return t.errorfn()
+					t.Err = err
+					return t.Error()
 				}
 			} else {
-				t.p.AcceptRun(terminators)
-				t.p.Get()
-				return token{
+				t.AcceptRun(terminators)
+				t.Get()
+				return parser.Token{
 					tokenPointer,
 					pointer,
 				}, t.level
@@ -192,44 +163,44 @@ func (t *tokeniser) lineValue() (token, stateFn) {
 	next := t.level
 	for {
 		for {
-			if t.allowUnknownCharset && t.p.Except(invalidchar) {
-				t.p.ExceptRun(invalidchar)
-			} else if t.p.Accept(nonAt) {
-				t.p.AcceptRun(nonAt)
-			} else if t.p.Accept("@") {
-				if t.allowInvalidEscape || t.p.Accept("@") {
+			if t.allowUnknownCharset && t.Except(invalidchar) {
+				t.ExceptRun(invalidchar)
+			} else if t.Accept(nonAt) {
+				t.AcceptRun(nonAt)
+			} else if t.Accept("@") {
+				if t.allowInvalidEscape || t.Accept("@") {
 					continue
 				}
-				if !t.p.Accept("#") {
-					t.err = ErrBadEscape
-					return t.errorfn()
+				if !t.Accept("#") {
+					t.Err = ErrBadEscape
+					return t.Error()
 				}
 				if t.allowUnknownCharset {
-					t.p.ExceptRun(invalidchar)
+					t.ExceptRun(invalidchar)
 				} else {
-					t.p.AcceptRun(nonAt)
+					t.AcceptRun(nonAt)
 				}
-				if !t.p.Accept("@") {
-					t.err = ErrBadEscape
-					return t.errorfn()
+				if !t.Accept("@") {
+					t.Err = ErrBadEscape
+					return t.Error()
 				}
 			} else {
 				break
 			}
 		}
-		p := t.p.Peek()
+		p := t.Peek()
 		if p == -1 {
-			next = t.done
+			next = t.Done
 			break
 		}
 		if strings.ContainsRune(terminators, p) {
-			t.p.AcceptRun(terminators)
+			t.AcceptRun(terminators)
 			if !t.allowTerminatorsInValue {
 				break
 			}
-			p = t.p.Peek()
+			p = t.Peek()
 			if p == -1 {
-				next = t.done
+				next = t.Done
 				break
 			}
 			if strings.ContainsRune(digit, p) {
@@ -237,31 +208,16 @@ func (t *tokeniser) lineValue() (token, stateFn) {
 			}
 		} else {
 			if !t.allowInvalidChars {
-				t.err = ErrBadChar
-				return t.errorfn()
+				t.Err = ErrBadChar
+				return t.Error()
 			}
-			t.p.Except("")
+			t.Except("")
 		}
 	}
-	return token{
+	return parser.Token{
 		tokenLine,
-		strings.TrimSpace(t.p.Get()),
+		strings.TrimSpace(t.Get()),
 	}, next
-}
-
-func (t *tokeniser) done() (token, stateFn) {
-	t.err = io.EOF
-	return token{
-		tokenDone,
-		"",
-	}, t.done
-}
-
-func (t *tokeniser) errorfn() (token, stateFn) {
-	return token{
-		tokenError,
-		t.err.Error(),
-	}, t.errorfn
 }
 
 // Errors
