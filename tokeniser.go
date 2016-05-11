@@ -40,92 +40,92 @@ func newTokeniser(r io.Reader, o options) *tokeniser {
 		Parser:  parser.NewReaderParser(r),
 		options: o,
 	}
-	t.State = t.level
+	t.TokeniserState(t.level)
 	return t
 }
 
-func (t *tokeniser) level() (parser.Token, parser.StateFn) {
-	t.AcceptRun(levelIgnore)
-	t.Get()
-	if t.Peek() == -1 {
-		return t.Done()
+func (t *tokeniser) level(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
+	p.AcceptRun(levelIgnore)
+	p.Lexeme()
+	if p.Peek() == -1 {
+		return p.Done()
 	}
-	if !t.Accept(digit) {
-		t.Err = ErrInvalidLevel
-		return t.Error()
+	if !p.Accept(digit) {
+		p.SetError(ErrInvalidLevel)
+		return p.Error()
 	}
-	t.AcceptRun(digit)
-	if !t.Accept(delim) {
-		t.Err = ErrMissingDelim
-		return t.Error()
+	p.AcceptRun(digit)
+	if !p.Accept(delim) {
+		p.SetError(ErrMissingDelim)
+		return p.Error()
 	}
 	return parser.Token{
 		tokenLevel,
-		strings.TrimSpace(t.Get()),
+		strings.TrimSpace(p.Lexeme()),
 	}, t.optionalXrefID
 }
 
-func (t *tokeniser) optionalXrefID() (parser.Token, parser.StateFn) {
-	if t.Peek() == '@' {
-		return t.xrefID()
+func (t *tokeniser) optionalXrefID(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
+	if p.Peek() == '@' {
+		return t.xrefID(p)
 	}
-	return t.tag()
+	return t.tag(p)
 }
 
-func (t *tokeniser) readPointer() (string, error) {
-	if !t.Accept(alphanum) {
+func (t *tokeniser) readPointer(p *parser.Tokeniser) (string, error) {
+	if !p.Accept(alphanum) {
 		return "", ErrInvalidPointer
 	}
-	t.AcceptRun(nonAt)
-	if !t.Accept("@") {
+	p.AcceptRun(nonAt)
+	if !p.Accept("@") {
 		return "", ErrInvalidPointer
 	}
-	pointer := t.Get()
+	pointer := p.Lexeme()
 	return pointer[1 : len(pointer)-1], nil
 }
 
-func (t *tokeniser) xrefID() (parser.Token, parser.StateFn) {
-	t.Accept("@")
-	pointer, err := t.readPointer()
+func (t *tokeniser) xrefID(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
+	p.Accept("@")
+	pointer, err := t.readPointer(p)
 	if err != nil {
-		t.Err = err
-		return t.Error()
+		p.SetError(err)
+		return p.Error()
 	}
-	if !t.Accept(delim) {
-		t.Err = ErrMissingDelim
-		return t.Error()
+	if !p.Accept(delim) {
+		p.SetError(ErrMissingDelim)
+		return p.Error()
 	}
-	t.Get()
+	p.Lexeme()
 	return parser.Token{
 		tokenXref,
 		strings.Trim(pointer, "@"),
 	}, t.tag
 }
 
-func (t *tokeniser) tag() (parser.Token, parser.StateFn) {
-	if !t.Accept(alphanum) {
-		t.Err = ErrInvalidTag
-		return t.Error()
+func (t *tokeniser) tag(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
+	if !p.Accept(alphanum) {
+		p.SetError(ErrInvalidTag)
+		return p.Error()
 	}
-	t.AcceptRun(alphanum)
-	tag := t.Get()
-	if t.Accept(delim) {
-		t.Get()
+	p.AcceptRun(alphanum)
+	tag := p.Lexeme()
+	if p.Accept(delim) {
+		p.Lexeme()
 		return parser.Token{
 			tokenTag,
 			tag,
 		}, t.lineValue
 	}
 	next := t.endLine
-	if t.Peek() == -1 {
-		next = t.Done
+	if p.Peek() == -1 {
+		next = (*parser.Tokeniser).Done
 	} else {
-		if !t.Accept(terminators) {
-			t.Err = ErrInvalidTag
-			return t.Error()
+		if !p.Accept(terminators) {
+			p.SetError(ErrInvalidTag)
+			return p.Error()
 		}
-		t.AcceptRun(terminators)
-		t.Get()
+		p.AcceptRun(terminators)
+		p.Lexeme()
 	}
 	return parser.Token{
 		tokenTag,
@@ -133,26 +133,26 @@ func (t *tokeniser) tag() (parser.Token, parser.StateFn) {
 	}, next
 }
 
-func (t *tokeniser) endLine() (parser.Token, parser.StateFn) {
+func (t *tokeniser) endLine(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 	return parser.Token{
 		tokenEndLine,
 		"",
 	}, t.level
 }
 
-func (t *tokeniser) lineValue() (parser.Token, parser.StateFn) {
-	if t.Peek() == '@' {
-		t.Accept("@")
-		if t.Peek() != '@' {
-			pointer, err := t.readPointer()
+func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
+	if p.Peek() == '@' {
+		p.Accept("@")
+		if p.Peek() != '@' {
+			pointer, err := t.readPointer(p)
 			if err != nil {
 				if !t.allowInvalidEscape {
-					t.Err = err
-					return t.Error()
+					p.SetError(err)
+					return p.Error()
 				}
 			} else {
-				t.AcceptRun(terminators)
-				t.Get()
+				p.AcceptRun(terminators)
+				p.Lexeme()
 				return parser.Token{
 					tokenPointer,
 					pointer,
@@ -163,60 +163,60 @@ func (t *tokeniser) lineValue() (parser.Token, parser.StateFn) {
 	next := t.level
 	for {
 		for {
-			if t.allowUnknownCharset && t.Except(invalidchar) {
-				t.ExceptRun(invalidchar)
-			} else if t.Accept(nonAt) {
-				t.AcceptRun(nonAt)
-			} else if t.Accept("@") {
-				if t.allowInvalidEscape || t.Accept("@") {
+			if t.allowUnknownCharset && p.Except(invalidchar) {
+				p.ExceptRun(invalidchar)
+			} else if p.Accept(nonAt) {
+				p.AcceptRun(nonAt)
+			} else if p.Accept("@") {
+				if t.allowInvalidEscape || p.Accept("@") {
 					continue
 				}
-				if !t.Accept("#") {
-					t.Err = ErrBadEscape
-					return t.Error()
+				if !p.Accept("#") {
+					p.SetError(ErrBadEscape)
+					return p.Error()
 				}
 				if t.allowUnknownCharset {
-					t.ExceptRun(invalidchar)
+					p.ExceptRun(invalidchar)
 				} else {
-					t.AcceptRun(nonAt)
+					p.AcceptRun(nonAt)
 				}
-				if !t.Accept("@") {
-					t.Err = ErrBadEscape
-					return t.Error()
+				if !p.Accept("@") {
+					p.SetError(ErrBadEscape)
+					return p.Error()
 				}
 			} else {
 				break
 			}
 		}
-		p := t.Peek()
-		if p == -1 {
-			next = t.Done
+		pe := p.Peek()
+		if pe == -1 {
+			next = (*parser.Tokeniser).Done
 			break
 		}
-		if strings.ContainsRune(terminators, p) {
-			t.AcceptRun(terminators)
+		if strings.ContainsRune(terminators, pe) {
+			p.AcceptRun(terminators)
 			if !t.allowTerminatorsInValue {
 				break
 			}
-			p = t.Peek()
-			if p == -1 {
-				next = t.Done
+			pe = p.Peek()
+			if pe == -1 {
+				next = (*parser.Tokeniser).Done
 				break
 			}
-			if strings.ContainsRune(digit, p) {
+			if strings.ContainsRune(digit, pe) {
 				break
 			}
 		} else {
 			if !t.allowInvalidChars {
-				t.Err = ErrBadChar
-				return t.Error()
+				p.SetError(ErrBadChar)
+				return p.Error()
 			}
-			t.Except("")
+			p.Except("")
 		}
 	}
 	return parser.Token{
 		tokenLine,
-		strings.TrimSpace(t.Get()),
+		strings.TrimSpace(p.Lexeme()),
 	}, next
 }
 
