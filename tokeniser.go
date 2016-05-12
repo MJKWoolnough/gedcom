@@ -51,12 +51,12 @@ func (t *tokeniser) level(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) 
 		return p.Done()
 	}
 	if !p.Accept(digit) {
-		p.SetError(ErrInvalidLevel)
+		p.Err = ErrInvalidLevel
 		return p.Error()
 	}
 	p.AcceptRun(digit)
 	if !p.Accept(delim) {
-		p.SetError(ErrMissingDelim)
+		p.Err = ErrMissingDelim
 		return p.Error()
 	}
 	return parser.Token{
@@ -88,11 +88,11 @@ func (t *tokeniser) xrefID(p *parser.Tokeniser) (parser.Token, parser.TokenFunc)
 	p.Accept("@")
 	pointer, err := t.readPointer(p)
 	if err != nil {
-		p.SetError(err)
+		p.Err = err
 		return p.Error()
 	}
 	if !p.Accept(delim) {
-		p.SetError(ErrMissingDelim)
+		p.Err = ErrMissingDelim
 		return p.Error()
 	}
 	p.Lexeme()
@@ -104,7 +104,7 @@ func (t *tokeniser) xrefID(p *parser.Tokeniser) (parser.Token, parser.TokenFunc)
 
 func (t *tokeniser) tag(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 	if !p.Accept(alphanum) {
-		p.SetError(ErrInvalidTag)
+		p.Err = ErrInvalidTag
 		return p.Error()
 	}
 	p.AcceptRun(alphanum)
@@ -121,7 +121,7 @@ func (t *tokeniser) tag(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 		next = (*parser.Tokeniser).Done
 	} else {
 		if !p.Accept(terminators) {
-			p.SetError(ErrInvalidTag)
+			p.Err = ErrInvalidTag
 			return p.Error()
 		}
 		p.AcceptRun(terminators)
@@ -147,7 +147,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 			pointer, err := t.readPointer(p)
 			if err != nil {
 				if !t.allowInvalidEscape {
-					p.SetError(err)
+					p.Err = err
 					return p.Error()
 				}
 			} else {
@@ -172,7 +172,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 					continue
 				}
 				if !p.Accept("#") {
-					p.SetError(ErrBadEscape)
+					p.Err = ErrBadEscape
 					return p.Error()
 				}
 				if t.allowUnknownCharset {
@@ -181,7 +181,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 					p.AcceptRun(nonAt)
 				}
 				if !p.Accept("@") {
-					p.SetError(ErrBadEscape)
+					p.Err = ErrBadEscape
 					return p.Error()
 				}
 			} else {
@@ -208,7 +208,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 			}
 		} else {
 			if !t.allowInvalidChars {
-				p.SetError(ErrBadChar)
+				p.Err = ErrBadChar
 				return p.Error()
 			}
 			p.Except("")
