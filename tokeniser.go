@@ -37,7 +37,7 @@ type tokeniser struct {
 
 func newTokeniser(r io.Reader, o options) *tokeniser {
 	t := &tokeniser{
-		Parser:  parser.NewReaderParser(r),
+		Parser:  parser.New(parser.NewReaderTokeniser(r)),
 		options: o,
 	}
 	t.TokeniserState(t.level)
