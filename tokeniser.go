@@ -46,7 +46,7 @@ func newTokeniser(r io.Reader, o options) *tokeniser {
 
 func (t *tokeniser) level(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 	p.AcceptRun(levelIgnore)
-	p.Lexeme()
+	p.Get()
 	if p.Peek() == -1 {
 		return p.Done()
 	}
@@ -61,7 +61,7 @@ func (t *tokeniser) level(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) 
 	}
 	return parser.Token{
 		tokenLevel,
-		strings.TrimSpace(p.Lexeme()),
+		strings.TrimSpace(p.Get()),
 	}, t.optionalXrefID
 }
 
@@ -80,7 +80,7 @@ func (t *tokeniser) readPointer(p *parser.Tokeniser) (string, error) {
 	if !p.Accept("@") {
 		return "", ErrInvalidPointer
 	}
-	pointer := p.Lexeme()
+	pointer := p.Get()
 	return pointer[1 : len(pointer)-1], nil
 }
 
@@ -95,7 +95,7 @@ func (t *tokeniser) xrefID(p *parser.Tokeniser) (parser.Token, parser.TokenFunc)
 		p.Err = ErrMissingDelim
 		return p.Error()
 	}
-	p.Lexeme()
+	p.Get()
 	return parser.Token{
 		tokenXref,
 		strings.Trim(pointer, "@"),
@@ -108,9 +108,9 @@ func (t *tokeniser) tag(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 		return p.Error()
 	}
 	p.AcceptRun(alphanum)
-	tag := p.Lexeme()
+	tag := p.Get()
 	if p.Accept(delim) {
-		p.Lexeme()
+		p.Get()
 		return parser.Token{
 			tokenTag,
 			tag,
@@ -125,7 +125,7 @@ func (t *tokeniser) tag(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 			return p.Error()
 		}
 		p.AcceptRun(terminators)
-		p.Lexeme()
+		p.Get()
 	}
 	return parser.Token{
 		tokenTag,
@@ -152,7 +152,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 				}
 			} else {
 				p.AcceptRun(terminators)
-				p.Lexeme()
+				p.Get()
 				return parser.Token{
 					tokenPointer,
 					pointer,
@@ -216,7 +216,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 	}
 	return parser.Token{
 		tokenLine,
-		strings.TrimSpace(p.Lexeme()),
+		strings.TrimSpace(p.Get()),
 	}, next
 }
 
