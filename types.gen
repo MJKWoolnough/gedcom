@@ -46,8 +46,8 @@ EventTypeFamile::ANUL:CENS:DIV:DIVF:ENGA:MARR:MARB:MARC:MARL:MARS:EVEN
 EventTypeIndividual::ADOP:BIRT:BAPM:BARM:BASM:BLES:BURI:CENS:CHR:CHRA:CONF:CREM:DEAT:EMIG:FCOM:GRAD:IMMI:NATU:ORDN:RETI:PROB:WILL:EVEN
 EventsRecorded:1:90
 FileName:1:90
-GedcomContentDescription*:1:248
-GedcomForm:14:20
+ContentDescription*:1:248
+Form:14:20
 GenerationsOfAncestors:(uint16)1:4
 GenerationsOfDescendants:(uint16)1:4
 LanguageID:1:15

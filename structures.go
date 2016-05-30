@@ -6,22 +6,22 @@ import "errors"
 
 // Header is a GEDCOM structure type
 type Header struct {
-	Source                   HeaderSource
-	ReceivingSystemName      ReceivingSystemName
-	TransmissionLDate        TransmissionDateTime
-	Submitter                Xref
-	Submission               Xref
-	FileName                 FileName
-	Copyright                CopyrightGedcomFile
-	Version                  Version
-	CharacterSet             CharacterSetStructure
-	Language                 LanguageOfText
-	Place                    HeaderPlace
-	GedcomContentDescription GedcomContentDescription
+	Source              HeaderSource
+	ReceivingSystemName ReceivingSystemName
+	TransmissionLDate   TransmissionDateTime
+	Submitter           Xref
+	Submission          Xref
+	FileName            FileName
+	Copyright           CopyrightGedcomFile
+	Version             Version
+	CharacterSet        CharacterSetStructure
+	Language            LanguageOfText
+	Place               HeaderPlace
+	ContentDescription  ContentDescription
 }
 
 func (s *Header) parse(l *Line, o options) error {
-	var SourceSet, SubmitterSet, VersionSet, CharacterSetSet, ReceivingSystemNameSet, TransmissionLDateSet, SubmissionSet, FileNameSet, CopyrightSet, LanguageSet, PlaceSet, GedcomContentDescriptionSet bool
+	var SourceSet, SubmitterSet, VersionSet, CharacterSetSet, ReceivingSystemNameSet, TransmissionLDateSet, SubmissionSet, FileNameSet, CopyrightSet, LanguageSet, PlaceSet, ContentDescriptionSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "SOUR":
@@ -146,14 +146,14 @@ func (s *Header) parse(l *Line, o options) error {
 				return ErrContext{"Header", "PLAC", err}
 			}
 		case "NOTE":
-			if GedcomContentDescriptionSet {
+			if ContentDescriptionSet {
 				if !o.allowMoreThanAllowed {
 					continue
 				}
 				return ErrContext{"Header", "NOTE", ErrSingleMultiple}
 			}
-			GedcomContentDescriptionSet = true
-			if err := s.GedcomContentDescription.parse(&sl, o); err != nil {
+			ContentDescriptionSet = true
+			if err := s.ContentDescription.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "NOTE", err}
 			}
 		default:
@@ -383,11 +383,11 @@ func (s *HeaderDataSource) parse(l *Line, o options) error {
 // Version is a GEDCOM structure type
 type Version struct {
 	VersionNumber VersionNumber
-	GedcomForm    GedcomForm
+	Form          Form
 }
 
 func (s *Version) parse(l *Line, o options) error {
-	var VersionNumberSet, GedcomFormSet bool
+	var VersionNumberSet, FormSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "VERS":
@@ -402,14 +402,14 @@ func (s *Version) parse(l *Line, o options) error {
 				return ErrContext{"Version", "VERS", err}
 			}
 		case "FORM":
-			if GedcomFormSet {
+			if FormSet {
 				if !o.allowMoreThanAllowed {
 					continue
 				}
 				return ErrContext{"Version", "FORM", ErrSingleMultiple}
 			}
-			GedcomFormSet = true
-			if err := s.GedcomForm.parse(&sl, o); err != nil {
+			FormSet = true
+			if err := s.Form.parse(&sl, o); err != nil {
 				return ErrContext{"Version", "FORM", err}
 			}
 		default:
@@ -423,8 +423,8 @@ func (s *Version) parse(l *Line, o options) error {
 		if !VersionNumberSet {
 			return ErrContext{"Version", "VersionNumber", ErrRequiredMissing}
 		}
-		if !GedcomFormSet {
-			return ErrContext{"Version", "GedcomForm", ErrRequiredMissing}
+		if !FormSet {
+			return ErrContext{"Version", "Form", ErrRequiredMissing}
 		}
 	}
 	return nil

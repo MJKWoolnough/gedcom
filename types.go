@@ -682,14 +682,14 @@ func (e *FileName) parse(l *Line, o options) error {
 	return nil
 }
 
-// GedcomContentDescription is a GEDCOM base type
-type GedcomContentDescription string
+// ContentDescription is a GEDCOM base type
+type ContentDescription string
 
-func (e *GedcomContentDescription) parse(l *Line, o options) error {
+func (e *ContentDescription) parse(l *Line, o options) error {
 	if !o.allowWrongLength && (len(l.value) < 1 || len(l.value) > 248) {
-		return ErrInvalidLength{"GedcomContentDescription", l.value, 1, 248}
+		return ErrInvalidLength{"ContentDescription", l.value, 1, 248}
 	}
-	*e = GedcomContentDescription(l.value)
+	*e = ContentDescription(l.value)
 	for i := 0; i < len(l.Sub); i++ {
 		switch l.Sub[i].tag {
 		case "CONT":
@@ -697,9 +697,9 @@ func (e *GedcomContentDescription) parse(l *Line, o options) error {
 			fallthrough
 		case "CONC":
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
-				return ErrContext{"GedcomContentDescription", l.Sub[i].tag, ErrInvalidLength{"GedcomContentDescription", l.value, 1, 248}}
+				return ErrContext{"ContentDescription", l.Sub[i].tag, ErrInvalidLength{"ContentDescription", l.value, 1, 248}}
 			}
-			*e += GedcomContentDescription(l.Sub[i].value)
+			*e += ContentDescription(l.Sub[i].value)
 			copy(l.Sub[i:], l.Sub[i+1:])
 			l.Sub = l.Sub[:len(l.Sub)-1]
 			i--
@@ -708,14 +708,14 @@ func (e *GedcomContentDescription) parse(l *Line, o options) error {
 	return nil
 }
 
-// GedcomForm is a GEDCOM base type
-type GedcomForm string
+// Form is a GEDCOM base type
+type Form string
 
-func (e *GedcomForm) parse(l *Line, o options) error {
+func (e *Form) parse(l *Line, o options) error {
 	if !o.allowWrongLength && (len(l.value) < 14 || len(l.value) > 20) {
-		return ErrInvalidLength{"GedcomForm", l.value, 14, 20}
+		return ErrInvalidLength{"Form", l.value, 14, 20}
 	}
-	*e = GedcomForm(l.value)
+	*e = Form(l.value)
 	return nil
 }
 

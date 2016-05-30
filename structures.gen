@@ -10,7 +10,7 @@ Header
 	CHAR:CharacterSetStructure:CharacterSet:1:1
 	LANG:LanguageOfText:Language:0:1
 	PLAC:HeaderPlace:Place:0:1
-	NOTE:GedcomContentDescription::0:1
+	NOTE:ContentDescription::0:1
 HeaderSource
 	#:ApprovedSystemID:SystemID
 	VERS:VersionNumber::0:1
@@ -30,7 +30,7 @@ HeaderDataSource
 	COPR:CopyrightSourceData::0:1
 Version
 	VERS:VersionNumber::1:1
-	FORM:GedcomForm::1:1
+	FORM:Form::1:1
 CharacterSetStructure
 	#:CharacterSet
 	VERS:VersionNumber::0:1
