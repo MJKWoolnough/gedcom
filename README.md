@@ -376,6 +376,14 @@ type ChildrenEvent struct {
 
 ChildrenEvent is a GEDCOM structure type
 
+#### type ContentDescription
+
+```go
+type ContentDescription string
+```
+
+ContentDescription is a GEDCOM base type
+
 #### type CopyrightGedcomFile
 
 ```go
@@ -785,21 +793,13 @@ type FileName string
 
 FileName is a GEDCOM base type
 
-#### type GedcomContentDescription
+#### type Form
 
 ```go
-type GedcomContentDescription string
+type Form string
 ```
 
-GedcomContentDescription is a GEDCOM base type
-
-#### type GedcomForm
-
-```go
-type GedcomForm string
-```
-
-GedcomForm is a GEDCOM base type
+Form is a GEDCOM base type
 
 #### type GenerationsOfAncestors
 
@@ -821,18 +821,18 @@ GenerationsOfDescendants is a GEDCOM base type
 
 ```go
 type Header struct {
-	Source                   HeaderSource
-	ReceivingSystemName      ReceivingSystemName
-	TransmissionLDate        TransmissionDateTime
-	Submitter                Xref
-	Submission               Xref
-	FileName                 FileName
-	Copyright                CopyrightGedcomFile
-	Version                  Version
-	CharacterSet             CharacterSetStructure
-	Language                 LanguageOfText
-	Place                    HeaderPlace
-	GedcomContentDescription GedcomContentDescription
+	Source              HeaderSource
+	ReceivingSystemName ReceivingSystemName
+	TransmissionLDate   TransmissionDateTime
+	Submitter           Xref
+	Submission          Xref
+	FileName            FileName
+	Copyright           CopyrightGedcomFile
+	Version             Version
+	CharacterSet        CharacterSetStructure
+	Language            LanguageOfText
+	Place               HeaderPlace
+	ContentDescription  ContentDescription
 }
 ```
 
@@ -2247,7 +2247,7 @@ VerifiedIndividualFamEventDetail is a GEDCOM structure type
 ```go
 type Version struct {
 	VersionNumber VersionNumber
-	GedcomForm    GedcomForm
+	Form          Form
 }
 ```
 
