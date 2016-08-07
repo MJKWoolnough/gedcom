@@ -225,7 +225,7 @@ OFS="$IFS";
 	echo;
 	echo "// File automatically generated with ./genStructures.sh";
 	echo;
-	echo "import \"errors\"";
+	echo "import \"github.com/MJKWoolnough/errors\"";
 
 	(
 		read structureName;
@@ -328,9 +328,9 @@ func (s *Trailer) parse(*Line, options) error {
 
 // Errors
 var (
-	ErrRequiredMissing = errors.New("required tag missing")
-	ErrSingleMultiple  = errors.New("tag was specified more than the one time allowed")
-	ErrUnknownTag      = errors.New("unknown tag")
+	ErrRequiredMissing errors.Error = "required tag missing"
+	ErrSingleMultiple  errors.Error = "tag was specified more than the one time allowed"
+	ErrUnknownTag      errors.Error = "unknown tag"
 )
 
 // ErrContext adds context to a returned error

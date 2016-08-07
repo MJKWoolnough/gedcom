@@ -1,10 +1,10 @@
 package gedcom
 
 import (
-	"errors"
 	"io"
 	"strings"
 
+	"github.com/MJKWoolnough/errors"
 	"github.com/MJKWoolnough/parser"
 )
 
@@ -222,10 +222,10 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 
 // Errors
 var (
-	ErrInvalidLevel   = errors.New("invalid level num")
-	ErrMissingDelim   = errors.New("missing delminitator")
-	ErrInvalidPointer = errors.New("invalid pointer string")
-	ErrInvalidTag     = errors.New("invalid tag")
-	ErrBadEscape      = errors.New("bad escape sequence")
-	ErrBadChar        = errors.New("bad character")
+	ErrInvalidLevel   errors.Error = "invalid level num"
+	ErrMissingDelim   errors.Error = "missing delminitator"
+	ErrInvalidPointer errors.Error = "invalid pointer string"
+	ErrInvalidTag     errors.Error = "invalid tag"
+	ErrBadEscape      errors.Error = "bad escape sequence"
+	ErrBadChar        errors.Error = "bad character"
 )

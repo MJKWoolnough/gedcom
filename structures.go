@@ -2,7 +2,7 @@ package gedcom
 
 // File automatically generated with ./genStructures.sh
 
-import "errors"
+import "github.com/MJKWoolnough/errors"
 
 // Header is a GEDCOM structure type
 type Header struct {
@@ -3597,9 +3597,9 @@ func (s *Trailer) parse(*Line, options) error {
 
 // Errors
 var (
-	ErrRequiredMissing = errors.New("required tag missing")
-	ErrSingleMultiple  = errors.New("tag was specified more than the one time allowed")
-	ErrUnknownTag      = errors.New("unknown tag")
+	ErrRequiredMissing errors.Error = "required tag missing"
+	ErrSingleMultiple  errors.Error = "tag was specified more than the one time allowed"
+	ErrUnknownTag      errors.Error = "unknown tag"
 )
 
 // ErrContext adds context to a returned error
