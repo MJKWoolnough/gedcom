@@ -844,7 +844,7 @@ type Individual struct {
 	FirstCommunion        VerifiedEventDetail
 	Ordination            VerifiedEventDetail
 	Naturalization        VerifiedEventDetail
-	Emmigrated            VerifiedEventDetail
+	Emigrated             VerifiedEventDetail
 	Immigrated            VerifiedEventDetail
 	Census                VerifiedEventDetail
 	Probate               VerifiedEventDetail
@@ -886,7 +886,7 @@ func (s *Individual) parse(l *Line, o options) error {
 	if err := s.ID.parse(&Line{line: line{value: l.xrefID}}, o); err != nil {
 		return ErrContext{"Individual", "xrefID", err}
 	}
-	var RestrictionNoticeSet, GenderSet, BirthSet, ChristeningSet, DeathSet, BuriedSet, CremationSet, AdoptionSet, MaptismSet, BarMitzvahSet, BasMitzvahSet, BlessingSet, AdultChristeningSet, ConfirmationSet, FirstCommunionSet, OrdinationSet, NaturalizationSet, EmmigratedSet, ImmigratedSet, CensusSet, ProbateSet, WillSet, GraduatedSet, RetiredSet, PermanentRecordSet, AncestralFileNumberSet, AutomatedRecordIDSet, ChangeDateSet bool
+	var RestrictionNoticeSet, GenderSet, BirthSet, ChristeningSet, DeathSet, BuriedSet, CremationSet, AdoptionSet, MaptismSet, BarMitzvahSet, BasMitzvahSet, BlessingSet, AdultChristeningSet, ConfirmationSet, FirstCommunionSet, OrdinationSet, NaturalizationSet, EmigratedSet, ImmigratedSet, CensusSet, ProbateSet, WillSet, GraduatedSet, RetiredSet, PermanentRecordSet, AncestralFileNumberSet, AutomatedRecordIDSet, ChangeDateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case "RESN":
@@ -1083,14 +1083,14 @@ func (s *Individual) parse(l *Line, o options) error {
 				return ErrContext{"Individual", "NATU", err}
 			}
 		case "EMIG":
-			if EmmigratedSet {
+			if EmigratedSet {
 				if !o.allowMoreThanAllowed {
 					continue
 				}
 				return ErrContext{"Individual", "EMIG", ErrSingleMultiple}
 			}
-			EmmigratedSet = true
-			if err := s.Emmigrated.parse(&sl, o); err != nil {
+			EmigratedSet = true
+			if err := s.Emigrated.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "EMIG", err}
 			}
 		case "IMMI":

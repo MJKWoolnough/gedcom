@@ -87,7 +87,7 @@ Individual
 	FCOM:VerifiedEventDetail:FirstCommunion:0:1
 	ORDN:VerifiedEventDetail:Ordination:0:1
 	NATU:VerifiedEventDetail:Naturalization:0:1
-	EMIG:VerifiedEventDetail:Emmigrated:0:1
+	EMIG:VerifiedEventDetail:Emigrated:0:1
 	IMMI:VerifiedEventDetail:Immigrated:0:1
 	CENS:VerifiedEventDetail:Census:0:1
 	PROB:VerifiedEventDetail:Probate:0:1
