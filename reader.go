@@ -1,3 +1,4 @@
+// Package gedcom implements a parser to read genealogical data in a standard format
 package gedcom
 
 import (

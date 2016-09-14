@@ -2,37 +2,39 @@
 --
     import "github.com/MJKWoolnough/gedcom"
 
+Package gedcom implements a parser to read genealogical data in a standard
+### format
 
 ## Usage
 
 ```go
 var (
-	ErrNoHeader  = errors.New("no header")
-	ErrNoRecords = errors.New("no records")
-	ErrNotLevel  = errors.New("not level token")
-	ErrNotTag    = errors.New("not tag token")
-	ErrNotLine   = errors.New("not line_value token")
+	ErrNoHeader  errors.Error = "no header"
+	ErrNoRecords errors.Error = "no records"
+	ErrNotLevel  errors.Error = "not level token"
+	ErrNotTag    errors.Error = "not tag token"
+	ErrNotLine   errors.Error = "not line_value token"
 )
 ```
 Errors
 
 ```go
 var (
-	ErrRequiredMissing = errors.New("required tag missing")
-	ErrSingleMultiple  = errors.New("tag was specified more than the one time allowed")
-	ErrUnknownTag      = errors.New("unknown tag")
+	ErrRequiredMissing errors.Error = "required tag missing"
+	ErrSingleMultiple  errors.Error = "tag was specified more than the one time allowed"
+	ErrUnknownTag      errors.Error = "unknown tag"
 )
 ```
 Errors
 
 ```go
 var (
-	ErrInvalidLevel   = errors.New("invalid level num")
-	ErrMissingDelim   = errors.New("missing delminitator")
-	ErrInvalidPointer = errors.New("invalid pointer string")
-	ErrInvalidTag     = errors.New("invalid tag")
-	ErrBadEscape      = errors.New("bad escape sequence")
-	ErrBadChar        = errors.New("bad character")
+	ErrInvalidLevel   errors.Error = "invalid level num"
+	ErrMissingDelim   errors.Error = "missing delminitator"
+	ErrInvalidPointer errors.Error = "invalid pointer string"
+	ErrInvalidTag     errors.Error = "invalid tag"
+	ErrBadEscape      errors.Error = "bad escape sequence"
+	ErrBadChar        errors.Error = "bad character"
 )
 ```
 Errors
@@ -916,7 +918,7 @@ type Individual struct {
 	FirstCommunion        VerifiedEventDetail
 	Ordination            VerifiedEventDetail
 	Naturalization        VerifiedEventDetail
-	Emmigrated            VerifiedEventDetail
+	Emigrated             VerifiedEventDetail
 	Immigrated            VerifiedEventDetail
 	Census                VerifiedEventDetail
 	Probate               VerifiedEventDetail
