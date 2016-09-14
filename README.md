@@ -2,8 +2,7 @@
 --
     import "github.com/MJKWoolnough/gedcom"
 
-Package gedcom implements a parser to read genealogical data in a standard
-### format
+Package gedcom implements a parser to read genealogical data in a standard format
 
 ## Usage
 
