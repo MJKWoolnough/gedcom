@@ -1602,15 +1602,15 @@ func (r *Reader) Record() (Record, error)
 ```
 Record returns a GEDCOM Record. Record types are: -
 
-    Header
-    Submission
-    Family
-    Invididual
-    MultimediaNote
-    Repository
-    Source
-    Submitter
-    Trailer
+    *Header
+    *Submission
+    *Family
+    *Invididual
+    *MultimediaNote
+    *Repository
+    *Source
+    *Submitter
+    *Trailer
 
 #### type ReceivingSystemName
 
