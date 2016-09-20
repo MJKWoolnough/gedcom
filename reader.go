@@ -97,15 +97,15 @@ func (r *Reader) readLine() {
 
 // Record returns a GEDCOM Record.
 // Record types are: -
-// 	Header
-// 	Submission
-// 	Family
-// 	Invididual
-// 	MultimediaNote
-// 	Repository
-// 	Source
-// 	Submitter
-//	Trailer
+// 	*Header
+// 	*Submission
+// 	*Family
+// 	*Invididual
+// 	*MultimediaNote
+// 	*Repository
+// 	*Source
+// 	*Submitter
+//	*Trailer
 func (r *Reader) Record() (Record, error) {
 	if !r.peeked {
 		r.readLine()
