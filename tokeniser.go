@@ -60,8 +60,8 @@ func (t *tokeniser) level(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) 
 		return p.Error()
 	}
 	return parser.Token{
-		tokenLevel,
-		strings.TrimSpace(p.Get()),
+		Type: tokenLevel,
+		Data: strings.TrimSpace(p.Get()),
 	}, t.optionalXrefID
 }
 
@@ -97,8 +97,8 @@ func (t *tokeniser) xrefID(p *parser.Tokeniser) (parser.Token, parser.TokenFunc)
 	}
 	p.Get()
 	return parser.Token{
-		tokenXref,
-		strings.Trim(pointer, "@"),
+		Type: tokenXref,
+		Data: strings.Trim(pointer, "@"),
 	}, t.tag
 }
 
@@ -112,8 +112,8 @@ func (t *tokeniser) tag(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 	if p.Accept(delim) {
 		p.Get()
 		return parser.Token{
-			tokenTag,
-			tag,
+			Type: tokenTag,
+			Data: tag,
 		}, t.lineValue
 	}
 	next := t.endLine
@@ -128,15 +128,15 @@ func (t *tokeniser) tag(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 		p.Get()
 	}
 	return parser.Token{
-		tokenTag,
-		tag,
+		Type: tokenTag,
+		Data: tag,
 	}, next
 }
 
 func (t *tokeniser) endLine(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 	return parser.Token{
-		tokenEndLine,
-		"",
+		Type: tokenEndLine,
+		Data: "",
 	}, t.level
 }
 
@@ -154,8 +154,8 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 				p.AcceptRun(terminators)
 				p.Get()
 				return parser.Token{
-					tokenPointer,
-					pointer,
+					Type: tokenPointer,
+					Data: pointer,
 				}, t.level
 			}
 		}
@@ -215,8 +215,8 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 		}
 	}
 	return parser.Token{
-		tokenLine,
-		strings.TrimSpace(p.Get()),
+		Type: tokenLine,
+		Data: strings.TrimSpace(p.Get()),
 	}, next
 }
 
