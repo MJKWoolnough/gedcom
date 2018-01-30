@@ -18,12 +18,14 @@ type line struct {
 
 // Reader reads Records from the underlying GEDCOM file
 type Reader struct {
-	t       *tokeniser
+	t *tokeniser
+
+	line line
+	err  error
+
 	options options
 
 	peeked bool
-	line   line
-	err    error
 	done   bool
 
 	hadHeader, hadRecord bool
