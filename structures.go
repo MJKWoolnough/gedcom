@@ -736,10 +736,7 @@ func (s *VerifiedFamilyEventDetail) parse(l *Line, o options) error {
 	if err := s.Verified.parse(l, o); err != nil {
 		return ErrContext{"VerifiedFamilyEventDetail", "line_value", err}
 	}
-	if err := s.FamilyEventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.FamilyEventDetail.parse(l, o)
 }
 
 // FamilyEventDetail is a GEDCOM structure type
@@ -782,10 +779,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 			i--
 		}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // AgeStructure is a GEDCOM structure type
@@ -1389,10 +1383,7 @@ func (s *VerifiedIndividualFamEventDetail) parse(l *Line, o options) error {
 			i--
 		}
 	}
-	if err := s.VerifiedEventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.VerifiedEventDetail.parse(l, o)
 }
 
 // VerifiedEventDetail is a GEDCOM structure type
@@ -1405,10 +1396,7 @@ func (s *VerifiedEventDetail) parse(l *Line, o options) error {
 	if err := s.Verified.parse(l, o); err != nil {
 		return ErrContext{"VerifiedEventDetail", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // IndividualEventDetail is a GEDCOM structure type
@@ -1417,10 +1405,7 @@ type IndividualEventDetail struct {
 }
 
 func (s *IndividualEventDetail) parse(l *Line, o options) error {
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // AdoptionEvent is a GEDCOM structure type
@@ -1449,10 +1434,7 @@ func (s *AdoptionEvent) parse(l *Line, o options) error {
 			i--
 		}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // AdoptionReference is a GEDCOM structure type
@@ -1499,10 +1481,7 @@ func (s *CasteEvent) parse(l *Line, o options) error {
 	if err := s.CasteName.parse(l, o); err != nil {
 		return ErrContext{"CasteEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // DescriptionEvent is a GEDCOM structure type
@@ -1515,10 +1494,7 @@ func (s *DescriptionEvent) parse(l *Line, o options) error {
 	if err := s.PhysicalDescription.parse(l, o); err != nil {
 		return ErrContext{"DescriptionEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // ScholasticEvent is a GEDCOM structure type
@@ -1531,10 +1507,7 @@ func (s *ScholasticEvent) parse(l *Line, o options) error {
 	if err := s.ScholasticAchievement.parse(l, o); err != nil {
 		return ErrContext{"ScholasticEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // NationalIDEvent is a GEDCOM structure type
@@ -1547,10 +1520,7 @@ func (s *NationalIDEvent) parse(l *Line, o options) error {
 	if err := s.NationalIDNumber.parse(l, o); err != nil {
 		return ErrContext{"NationalIDEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // NationalOriginEvent is a GEDCOM structure type
@@ -1563,10 +1533,7 @@ func (s *NationalOriginEvent) parse(l *Line, o options) error {
 	if err := s.NationalOrTribalOrigin.parse(l, o); err != nil {
 		return ErrContext{"NationalOriginEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // ChildrenEvent is a GEDCOM structure type
@@ -1579,10 +1546,7 @@ func (s *ChildrenEvent) parse(l *Line, o options) error {
 	if err := s.CountOfChildren.parse(l, o); err != nil {
 		return ErrContext{"ChildrenEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // MarriagesEvent is a GEDCOM structure type
@@ -1595,10 +1559,7 @@ func (s *MarriagesEvent) parse(l *Line, o options) error {
 	if err := s.CountOfMarriages.parse(l, o); err != nil {
 		return ErrContext{"MarriagesEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // OccupationEvent is a GEDCOM structure type
@@ -1611,10 +1572,7 @@ func (s *OccupationEvent) parse(l *Line, o options) error {
 	if err := s.Occupation.parse(l, o); err != nil {
 		return ErrContext{"OccupationEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // PossessionEvent is a GEDCOM structure type
@@ -1627,10 +1585,7 @@ func (s *PossessionEvent) parse(l *Line, o options) error {
 	if err := s.Possessions.parse(l, o); err != nil {
 		return ErrContext{"PossessionEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // ReligiousEvent is a GEDCOM structure type
@@ -1643,10 +1598,7 @@ func (s *ReligiousEvent) parse(l *Line, o options) error {
 	if err := s.ReligiousAffiliation.parse(l, o); err != nil {
 		return ErrContext{"ReligiousEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // ResidenceEvent is a GEDCOM structure type
@@ -1655,10 +1607,7 @@ type ResidenceEvent struct {
 }
 
 func (s *ResidenceEvent) parse(l *Line, o options) error {
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // SSNEvent is a GEDCOM structure type
@@ -1671,10 +1620,7 @@ func (s *SSNEvent) parse(l *Line, o options) error {
 	if err := s.SocialSecurityNumber.parse(l, o); err != nil {
 		return ErrContext{"SSNEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // NobilityEvent is a GEDCOM structure type
@@ -1687,10 +1633,7 @@ func (s *NobilityEvent) parse(l *Line, o options) error {
 	if err := s.NobilityTypeTitle.parse(l, o); err != nil {
 		return ErrContext{"NobilityEvent", "line_value", err}
 	}
-	if err := s.EventDetail.parse(l, o); err != nil {
-		return err
-	}
-	return nil
+	return s.EventDetail.parse(l, o)
 }
 
 // UserReferenceStructure is a GEDCOM structure type

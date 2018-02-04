@@ -202,9 +202,7 @@ function processStructure {
 			fi;
 		fi;
 		if [ ! -z "$embedded" ]; then
-			echo "	if err := s.${embedded}.parse(l, o); err != nil {";
-			echo "		return err";
-			echo "	}";
+			echo "	return s.${embedded}.parse(l, o)";
 		fi;
 	else
 		echo "	for _, sl := range l.Sub {"
@@ -214,7 +212,9 @@ function processStructure {
 		echo "		// possibly store in a Other field";
 		echo "	}";
 	fi;
-	echo "	return nil";
+	if [ -z "$embedded" ]; then
+		echo "	return nil";
+	fi;
 	echo "}";
 }
 
