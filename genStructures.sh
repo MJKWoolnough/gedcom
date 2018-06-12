@@ -147,7 +147,7 @@ function processStructure {
 						pTag="${pTag:0:-1}";
 						cont=true;
 					fi;
-					echo "		case \"$pTag\":";
+					echo "		case c$pTag:" | tr -d '/' | tr -d '-';
 					if [ "$pMax" = "1" ]; then
 						echo "			if ${pName}Set {";
 						echo "				if !o.allowMoreThanAllowed {";

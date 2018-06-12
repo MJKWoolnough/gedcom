@@ -50,9 +50,9 @@ HEREDOC
 				echo "	switch l.value {"
 			fi;
 			for i in $(seq 2 $(( ${#data[@]} - 1 ))); do
-				echo "	case \"${data[$i]}\":";
+				echo "	case c${data[$i]}:" | tr -d '/' | tr -d '-';
 				if [ "$vType" = "string" ]; then
-					echo "		*e = \"${data[$i]}\"";
+					echo "		*e = c${data[$i]}" | tr -d '/' | tr -d '-';
 				else
 					echo "		*e = ${data[$i]}";
 				fi;
@@ -72,10 +72,10 @@ HEREDOC
 				if $hasContConc; then
 					echo "	for i := 0; i < len(l.Sub); i++ {";
 					echo "		switch l.Sub[i].tag {";
-					echo "		case \"CONT\":";
+					echo "		case cCONT:";
 					echo "			*e += \"\\n\"";
 					echo "			fallthrough";
-					echo "		case \"CONC\":";
+					echo "		case cCONC:";
 					echo "			if !o.allowWrongLength && (len(l.Sub[i].value) < ${data[1]} || len(l.Sub[i].value) > ${data[2]}) {"
 					echo "				return ErrContext{\"$eType\", l.Sub[i].tag, ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}}";
 					echo "			}";
