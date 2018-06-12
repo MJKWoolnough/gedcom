@@ -225,7 +225,7 @@ OFS="$IFS";
 	echo;
 	echo "// File automatically generated with ./genStructures.sh";
 	echo;
-	echo "import \"github.com/MJKWoolnough/errors\"";
+	echo "import \"vimagination.zapto.org/errors\"";
 
 	(
 		read structureName;

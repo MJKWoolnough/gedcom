@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/MJKWoolnough/gedcom"
+	"vimagination.zapto.org/gedcom"
 )
 
 func ExampleNewReader() {

@@ -1,12 +1,12 @@
 // Package gedcom implements a parser to read genealogical data in a standard format
-package gedcom
+package gedcom // import "vimagination.zapto.org/gedcom"
 
 import (
 	"io"
 	"strconv"
 
-	"github.com/MJKWoolnough/errors"
-	"github.com/MJKWoolnough/parser"
+	"vimagination.zapto.org/errors"
+	"vimagination.zapto.org/parser"
 )
 
 type line struct {

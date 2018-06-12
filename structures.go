@@ -2,7 +2,7 @@ package gedcom
 
 // File automatically generated with ./genStructures.sh
 
-import "github.com/MJKWoolnough/errors"
+import "vimagination.zapto.org/errors"
 
 // Header is a GEDCOM structure type
 type Header struct {
