@@ -39,10 +39,10 @@ func (e *AddressLine) parse(l *Line, o options) error {
 	*e = AddressLine(l.value)
 	for i := 0; i < len(l.Sub); i++ {
 		switch l.Sub[i].tag {
-		case "CONT":
+		case cCONT:
 			*e += "\n"
 			fallthrough
-		case "CONC":
+		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 60) {
 				return ErrContext{"AddressLine", l.Sub[i].tag, ErrInvalidLength{"AddressLine", l.value, 1, 60}}
 			}
@@ -104,12 +104,12 @@ type AdoptedBy string
 
 func (e *AdoptedBy) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "HUSB":
-		*e = "HUSB"
-	case "WIFE":
-		*e = "WIFE"
-	case "BOTH":
-		*e = "BOTH"
+	case cHUSB:
+		*e = cHUSB
+	case cWIFE:
+		*e = cWIFE
+	case cBOTH:
+		*e = cBOTH
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"AdoptedBy", l.value}
@@ -156,22 +156,22 @@ type AttributeType string
 
 func (e *AttributeType) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "CAST":
-		*e = "CAST"
-	case "EDUC":
-		*e = "EDUC"
-	case "NATI":
-		*e = "NATI"
-	case "OCCU":
-		*e = "OCCU"
-	case "PROP":
-		*e = "PROP"
-	case "RELI":
-		*e = "RELI"
-	case "RESI":
-		*e = "RESI"
-	case "TITL":
-		*e = "TITL"
+	case cCAST:
+		*e = cCAST
+	case cEDUC:
+		*e = cEDUC
+	case cNATI:
+		*e = cNATI
+	case cOCCU:
+		*e = cOCCU
+	case cPROP:
+		*e = cPROP
+	case cRELI:
+		*e = cRELI
+	case cRESI:
+		*e = cRESI
+	case cTITL:
+		*e = cTITL
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"AttributeType", l.value}
@@ -218,13 +218,13 @@ type CertaintyAssessment uint
 
 func (e *CertaintyAssessment) parse(l *Line, o options) error {
 	switch l.value {
-	case "0":
+	case c0:
 		*e = 0
-	case "1":
+	case c1:
 		*e = 1
-	case "2":
+	case c2:
 		*e = 2
-	case "3":
+	case c3:
 		*e = 3
 	default:
 		if !o.ignoreInvalidValue {
@@ -250,12 +250,12 @@ type CharacterSet string
 
 func (e *CharacterSet) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "ANSEL":
-		*e = "ANSEL"
-	case "UNICODE":
-		*e = "UNICODE"
-	case "ASCII":
-		*e = "ASCII"
+	case cANSEL:
+		*e = cANSEL
+	case cUNICODE:
+		*e = cUNICODE
+	case cASCII:
+		*e = cASCII
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"CharacterSet", l.value}
@@ -571,28 +571,28 @@ type EventTypeFamile string
 
 func (e *EventTypeFamile) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "ANUL":
-		*e = "ANUL"
-	case "CENS":
-		*e = "CENS"
-	case "DIV":
-		*e = "DIV"
-	case "DIVF":
-		*e = "DIVF"
-	case "ENGA":
-		*e = "ENGA"
-	case "MARR":
-		*e = "MARR"
-	case "MARB":
-		*e = "MARB"
-	case "MARC":
-		*e = "MARC"
-	case "MARL":
-		*e = "MARL"
-	case "MARS":
-		*e = "MARS"
-	case "EVEN":
-		*e = "EVEN"
+	case cANUL:
+		*e = cANUL
+	case cCENS:
+		*e = cCENS
+	case cDIV:
+		*e = cDIV
+	case cDIVF:
+		*e = cDIVF
+	case cENGA:
+		*e = cENGA
+	case cMARR:
+		*e = cMARR
+	case cMARB:
+		*e = cMARB
+	case cMARC:
+		*e = cMARC
+	case cMARL:
+		*e = cMARL
+	case cMARS:
+		*e = cMARS
+	case cEVEN:
+		*e = cEVEN
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"EventTypeFamile", l.value}
@@ -606,52 +606,52 @@ type EventTypeIndividual string
 
 func (e *EventTypeIndividual) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "ADOP":
-		*e = "ADOP"
-	case "BIRT":
-		*e = "BIRT"
-	case "BAPM":
-		*e = "BAPM"
-	case "BARM":
-		*e = "BARM"
-	case "BASM":
-		*e = "BASM"
-	case "BLES":
-		*e = "BLES"
-	case "BURI":
-		*e = "BURI"
-	case "CENS":
-		*e = "CENS"
-	case "CHR":
-		*e = "CHR"
-	case "CHRA":
-		*e = "CHRA"
-	case "CONF":
-		*e = "CONF"
-	case "CREM":
-		*e = "CREM"
-	case "DEAT":
-		*e = "DEAT"
-	case "EMIG":
-		*e = "EMIG"
-	case "FCOM":
-		*e = "FCOM"
-	case "GRAD":
-		*e = "GRAD"
-	case "IMMI":
-		*e = "IMMI"
-	case "NATU":
-		*e = "NATU"
-	case "ORDN":
-		*e = "ORDN"
-	case "RETI":
-		*e = "RETI"
-	case "PROB":
-		*e = "PROB"
-	case "WILL":
-		*e = "WILL"
-	case "EVEN":
-		*e = "EVEN"
+	case cADOP:
+		*e = cADOP
+	case cBIRT:
+		*e = cBIRT
+	case cBAPM:
+		*e = cBAPM
+	case cBARM:
+		*e = cBARM
+	case cBASM:
+		*e = cBASM
+	case cBLES:
+		*e = cBLES
+	case cBURI:
+		*e = cBURI
+	case cCENS:
+		*e = cCENS
+	case cCHR:
+		*e = cCHR
+	case cCHRA:
+		*e = cCHRA
+	case cCONF:
+		*e = cCONF
+	case cCREM:
+		*e = cCREM
+	case cDEAT:
+		*e = cDEAT
+	case cEMIG:
+		*e = cEMIG
+	case cFCOM:
+		*e = cFCOM
+	case cGRAD:
+		*e = cGRAD
+	case cIMMI:
+		*e = cIMMI
+	case cNATU:
+		*e = cNATU
+	case cORDN:
+		*e = cORDN
+	case cRETI:
+		*e = cRETI
+	case cPROB:
+		*e = cPROB
+	case cWILL:
+		*e = cWILL
+	case cEVEN:
+		*e = cEVEN
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"EventTypeIndividual", l.value}
@@ -692,10 +692,10 @@ func (e *ContentDescription) parse(l *Line, o options) error {
 	*e = ContentDescription(l.value)
 	for i := 0; i < len(l.Sub); i++ {
 		switch l.Sub[i].tag {
-		case "CONT":
+		case cCONT:
 			*e += "\n"
 			fallthrough
-		case "CONC":
+		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
 				return ErrContext{"ContentDescription", l.Sub[i].tag, ErrInvalidLength{"ContentDescription", l.value, 1, 248}}
 			}
@@ -787,24 +787,24 @@ type LDSBaptismDateStatus string
 
 func (e *LDSBaptismDateStatus) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "CHILD":
-		*e = "CHILD"
-	case "CLEARED":
-		*e = "CLEARED"
-	case "COMPLETED":
-		*e = "COMPLETED"
-	case "INFANT":
-		*e = "INFANT"
-	case "PRE-1970":
-		*e = "PRE-1970"
-	case "QUALIFIED":
-		*e = "QUALIFIED"
-	case "STILLBORN":
-		*e = "STILLBORN"
-	case "SUBMITTED":
-		*e = "SUBMITTED"
-	case "UNCLEARED":
-		*e = "UNCLEARED"
+	case cCHILD:
+		*e = cCHILD
+	case cCLEARED:
+		*e = cCLEARED
+	case cCOMPLETED:
+		*e = cCOMPLETED
+	case cINFANT:
+		*e = cINFANT
+	case cPRE1970:
+		*e = cPRE1970
+	case cQUALIFIED:
+		*e = cQUALIFIED
+	case cSTILLBORN:
+		*e = cSTILLBORN
+	case cSUBMITTED:
+		*e = cSUBMITTED
+	case cUNCLEARED:
+		*e = cUNCLEARED
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"LDSBaptismDateStatus", l.value}
@@ -818,24 +818,24 @@ type LDSChildSealingDateStatus string
 
 func (e *LDSChildSealingDateStatus) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "BIC":
-		*e = "BIC"
-	case "CLEARED":
-		*e = "CLEARED"
-	case "COMPLETED":
-		*e = "COMPLETED"
-	case "DNS":
-		*e = "DNS"
-	case "PRE-1970":
-		*e = "PRE-1970"
-	case "QUALIFIED":
-		*e = "QUALIFIED"
-	case "STILLBORN":
-		*e = "STILLBORN"
-	case "SUBMITTES":
-		*e = "SUBMITTES"
-	case "UNCLEARED":
-		*e = "UNCLEARED"
+	case cBIC:
+		*e = cBIC
+	case cCLEARED:
+		*e = cCLEARED
+	case cCOMPLETED:
+		*e = cCOMPLETED
+	case cDNS:
+		*e = cDNS
+	case cPRE1970:
+		*e = cPRE1970
+	case cQUALIFIED:
+		*e = cQUALIFIED
+	case cSTILLBORN:
+		*e = cSTILLBORN
+	case cSUBMITTES:
+		*e = cSUBMITTES
+	case cUNCLEARED:
+		*e = cUNCLEARED
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"LDSChildSealingDateStatus", l.value}
@@ -849,24 +849,24 @@ type LDSEndowmentDateStatus string
 
 func (e *LDSEndowmentDateStatus) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "CHILD":
-		*e = "CHILD"
-	case "CLEARED":
-		*e = "CLEARED"
-	case "COMPLETED":
-		*e = "COMPLETED"
-	case "INFANT":
-		*e = "INFANT"
-	case "PRE-1970":
-		*e = "PRE-1970"
-	case "QUALIFIED":
-		*e = "QUALIFIED"
-	case "STILLBORN":
-		*e = "STILLBORN"
-	case "SUBMITTED":
-		*e = "SUBMITTED"
-	case "UNCLEARED":
-		*e = "UNCLEARED"
+	case cCHILD:
+		*e = cCHILD
+	case cCLEARED:
+		*e = cCLEARED
+	case cCOMPLETED:
+		*e = cCOMPLETED
+	case cINFANT:
+		*e = cINFANT
+	case cPRE1970:
+		*e = cPRE1970
+	case cQUALIFIED:
+		*e = cQUALIFIED
+	case cSTILLBORN:
+		*e = cSTILLBORN
+	case cSUBMITTED:
+		*e = cSUBMITTED
+	case cUNCLEARED:
+		*e = cUNCLEARED
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"LDSEndowmentDateStatus", l.value}
@@ -880,24 +880,24 @@ type LDSSpouseSealingDateStatus string
 
 func (e *LDSSpouseSealingDateStatus) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "CANCELED":
-		*e = "CANCELED"
-	case "CLEARED":
-		*e = "CLEARED"
-	case "COMPLETED":
-		*e = "COMPLETED"
-	case "DNS":
-		*e = "DNS"
-	case "DNS/CAN":
-		*e = "DNS/CAN"
-	case "PRE-1970":
-		*e = "PRE-1970"
-	case "QUALIFIED":
-		*e = "QUALIFIED"
-	case "SUBMITTED":
-		*e = "SUBMITTED"
-	case "UNCLEARED":
-		*e = "UNCLEARED"
+	case cCANCELED:
+		*e = cCANCELED
+	case cCLEARED:
+		*e = cCLEARED
+	case cCOMPLETED:
+		*e = cCOMPLETED
+	case cDNS:
+		*e = cDNS
+	case cDNSCAN:
+		*e = cDNSCAN
+	case cPRE1970:
+		*e = cPRE1970
+	case cQUALIFIED:
+		*e = cQUALIFIED
+	case cSUBMITTED:
+		*e = cSUBMITTED
+	case cUNCLEARED:
+		*e = cUNCLEARED
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"LDSSpouseSealingDateStatus", l.value}
@@ -911,30 +911,30 @@ type Month string
 
 func (e *Month) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "JAN":
-		*e = "JAN"
-	case "FEB":
-		*e = "FEB"
-	case "MAR":
-		*e = "MAR"
-	case "APR":
-		*e = "APR"
-	case "MAY":
-		*e = "MAY"
-	case "JUN":
-		*e = "JUN"
-	case "JUL":
-		*e = "JUL"
-	case "AUG":
-		*e = "AUG"
-	case "SEP":
-		*e = "SEP"
-	case "OCT":
-		*e = "OCT"
-	case "NOV":
-		*e = "NOV"
-	case "DEC":
-		*e = "DEC"
+	case cJAN:
+		*e = cJAN
+	case cFEB:
+		*e = cFEB
+	case cMAR:
+		*e = cMAR
+	case cAPR:
+		*e = cAPR
+	case cMAY:
+		*e = cMAY
+	case cJUN:
+		*e = cJUN
+	case cJUL:
+		*e = cJUL
+	case cAUG:
+		*e = cAUG
+	case cSEP:
+		*e = cSEP
+	case cOCT:
+		*e = cOCT
+	case cNOV:
+		*e = cNOV
+	case cDEC:
+		*e = cDEC
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"Month", l.value}
@@ -948,32 +948,32 @@ type MonthFren string
 
 func (e *MonthFren) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "VEND":
-		*e = "VEND"
-	case "BRUM":
-		*e = "BRUM"
-	case "FRIM":
-		*e = "FRIM"
-	case "NIVO":
-		*e = "NIVO"
-	case "PLUV":
-		*e = "PLUV"
-	case "VENT":
-		*e = "VENT"
-	case "GERM":
-		*e = "GERM"
-	case "FLOR":
-		*e = "FLOR"
-	case "PRAI":
-		*e = "PRAI"
-	case "MESS":
-		*e = "MESS"
-	case "THER":
-		*e = "THER"
-	case "FRUC":
-		*e = "FRUC"
-	case "COMP":
-		*e = "COMP"
+	case cVEND:
+		*e = cVEND
+	case cBRUM:
+		*e = cBRUM
+	case cFRIM:
+		*e = cFRIM
+	case cNIVO:
+		*e = cNIVO
+	case cPLUV:
+		*e = cPLUV
+	case cVENT:
+		*e = cVENT
+	case cGERM:
+		*e = cGERM
+	case cFLOR:
+		*e = cFLOR
+	case cPRAI:
+		*e = cPRAI
+	case cMESS:
+		*e = cMESS
+	case cTHER:
+		*e = cTHER
+	case cFRUC:
+		*e = cFRUC
+	case cCOMP:
+		*e = cCOMP
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"MonthFren", l.value}
@@ -987,32 +987,32 @@ type MonthHebr string
 
 func (e *MonthHebr) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "TSH":
-		*e = "TSH"
-	case "CSH":
-		*e = "CSH"
-	case "KSL":
-		*e = "KSL"
-	case "TVT":
-		*e = "TVT"
-	case "SHV":
-		*e = "SHV"
-	case "ADR":
-		*e = "ADR"
-	case "ADS":
-		*e = "ADS"
-	case "NSN":
-		*e = "NSN"
-	case "IYR":
-		*e = "IYR"
-	case "SVN":
-		*e = "SVN"
-	case "TMZ":
-		*e = "TMZ"
-	case "AAV":
-		*e = "AAV"
-	case "ELL":
-		*e = "ELL"
+	case cTSH:
+		*e = cTSH
+	case cCSH:
+		*e = cCSH
+	case cKSL:
+		*e = cKSL
+	case cTVT:
+		*e = cTVT
+	case cSHV:
+		*e = cSHV
+	case cADR:
+		*e = cADR
+	case cADS:
+		*e = cADS
+	case cNSN:
+		*e = cNSN
+	case cIYR:
+		*e = cIYR
+	case cSVN:
+		*e = cSVN
+	case cTMZ:
+		*e = cTMZ
+	case cAAV:
+		*e = cAAV
+	case cELL:
+		*e = cELL
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"MonthHebr", l.value}
@@ -1037,20 +1037,20 @@ type MultimediaFormat string
 
 func (e *MultimediaFormat) parse(l *Line, o options) error {
 	switch strings.ToLower(l.value) {
-	case "bmp":
-		*e = "bmp"
-	case "gif":
-		*e = "gif"
-	case "jpeg":
-		*e = "jpeg"
-	case "ole":
-		*e = "ole"
-	case "pcx":
-		*e = "pcx"
-	case "tiff":
-		*e = "tiff"
-	case "wav":
-		*e = "wav"
+	case cbmp:
+		*e = cbmp
+	case cgif:
+		*e = cgif
+	case cjpeg:
+		*e = cjpeg
+	case cole:
+		*e = cole
+	case cpcx:
+		*e = cpcx
+	case ctiff:
+		*e = ctiff
+	case cwav:
+		*e = cwav
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"MultimediaFormat", l.value}
@@ -1277,10 +1277,10 @@ type OrdinanceProcessFlag string
 
 func (e *OrdinanceProcessFlag) parse(l *Line, o options) error {
 	switch strings.ToLower(l.value) {
-	case "yes":
-		*e = "yes"
-	case "no":
-		*e = "no"
+	case cyes:
+		*e = cyes
+	case cno:
+		*e = cno
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"OrdinanceProcessFlag", l.value}
@@ -1294,14 +1294,14 @@ type PedigreeLinkageType string
 
 func (e *PedigreeLinkageType) parse(l *Line, o options) error {
 	switch strings.ToLower(l.value) {
-	case "adopted":
-		*e = "adopted"
-	case "birth":
-		*e = "birth"
-	case "foster":
-		*e = "foster"
-	case "sealing":
-		*e = "sealing"
+	case cadopted:
+		*e = cadopted
+	case cbirth:
+		*e = cbirth
+	case cfoster:
+		*e = cfoster
+	case csealing:
+		*e = csealing
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"PedigreeLinkageType", l.value}
@@ -1425,22 +1425,22 @@ type RecordType string
 
 func (e *RecordType) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "FAM":
-		*e = "FAM"
-	case "INDI":
-		*e = "INDI"
-	case "NOTE":
-		*e = "NOTE"
-	case "OBJE":
-		*e = "OBJE"
-	case "REPO":
-		*e = "REPO"
-	case "SOUR":
-		*e = "SOUR"
-	case "SUBM":
-		*e = "SUBM"
-	case "SUBN":
-		*e = "SUBN"
+	case cFAM:
+		*e = cFAM
+	case cINDI:
+		*e = cINDI
+	case cNOTE:
+		*e = cNOTE
+	case cOBJE:
+		*e = cOBJE
+	case cREPO:
+		*e = cREPO
+	case cSOUR:
+		*e = cSOUR
+	case cSUBM:
+		*e = cSUBM
+	case cSUBN:
+		*e = cSUBN
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"RecordType", l.value}
@@ -1498,10 +1498,10 @@ type RestrictionNotice string
 
 func (e *RestrictionNotice) parse(l *Line, o options) error {
 	switch strings.ToLower(l.value) {
-	case "locked":
-		*e = "locked"
-	case "privacy":
-		*e = "privacy"
+	case clocked:
+		*e = clocked
+	case cprivacy:
+		*e = cprivacy
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"RestrictionNotice", l.value}
@@ -1586,10 +1586,10 @@ func (e *SourceDescription) parse(l *Line, o options) error {
 	*e = SourceDescription(l.value)
 	for i := 0; i < len(l.Sub); i++ {
 		switch l.Sub[i].tag {
-		case "CONT":
+		case cCONT:
 			*e += "\n"
 			fallthrough
-		case "CONC":
+		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
 				return ErrContext{"SourceDescription", l.Sub[i].tag, ErrInvalidLength{"SourceDescription", l.value, 1, 248}}
 			}
@@ -1612,10 +1612,10 @@ func (e *SourceDescriptiveTitle) parse(l *Line, o options) error {
 	*e = SourceDescriptiveTitle(l.value)
 	for i := 0; i < len(l.Sub); i++ {
 		switch l.Sub[i].tag {
-		case "CONT":
+		case cCONT:
 			*e += "\n"
 			fallthrough
-		case "CONC":
+		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
 				return ErrContext{"SourceDescriptiveTitle", l.Sub[i].tag, ErrInvalidLength{"SourceDescriptiveTitle", l.value, 1, 248}}
 			}
@@ -1655,32 +1655,32 @@ type SourceMediaType string
 
 func (e *SourceMediaType) parse(l *Line, o options) error {
 	switch strings.ToLower(l.value) {
-	case "audio":
-		*e = "audio"
-	case "book":
-		*e = "book"
-	case "card":
-		*e = "card"
-	case "electronic":
-		*e = "electronic"
-	case "fiche":
-		*e = "fiche"
-	case "film":
-		*e = "film"
-	case "magazine":
-		*e = "magazine"
-	case "manuscript":
-		*e = "manuscript"
-	case "map":
-		*e = "map"
-	case "newspaper":
-		*e = "newspaper"
-	case "photo":
-		*e = "photo"
-	case "tombstone":
-		*e = "tombstone"
-	case "video":
-		*e = "video"
+	case caudio:
+		*e = caudio
+	case cbook:
+		*e = cbook
+	case ccard:
+		*e = ccard
+	case celectronic:
+		*e = celectronic
+	case cfiche:
+		*e = cfiche
+	case cfilm:
+		*e = cfilm
+	case cmagazine:
+		*e = cmagazine
+	case cmanuscript:
+		*e = cmanuscript
+	case cmap:
+		*e = cmap
+	case cnewspaper:
+		*e = cnewspaper
+	case cphoto:
+		*e = cphoto
+	case ctombstone:
+		*e = ctombstone
+	case cvideo:
+		*e = cvideo
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"SourceMediaType", l.value}
@@ -1699,10 +1699,10 @@ func (e *SourceOriginator) parse(l *Line, o options) error {
 	*e = SourceOriginator(l.value)
 	for i := 0; i < len(l.Sub); i++ {
 		switch l.Sub[i].tag {
-		case "CONT":
+		case cCONT:
 			*e += "\n"
 			fallthrough
-		case "CONC":
+		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
 				return ErrContext{"SourceOriginator", l.Sub[i].tag, ErrInvalidLength{"SourceOriginator", l.value, 1, 248}}
 			}
@@ -1758,10 +1758,10 @@ func (e *SubmitterText) parse(l *Line, o options) error {
 	*e = SubmitterText(l.value)
 	for i := 0; i < len(l.Sub); i++ {
 		switch l.Sub[i].tag {
-		case "CONT":
+		case cCONT:
 			*e += "\n"
 			fallthrough
-		case "CONC":
+		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
 				return ErrContext{"SubmitterText", l.Sub[i].tag, ErrInvalidLength{"SubmitterText", l.value, 1, 248}}
 			}
@@ -1806,10 +1806,10 @@ func (e *TextFromSource) parse(l *Line, o options) error {
 	*e = TextFromSource(l.value)
 	for i := 0; i < len(l.Sub); i++ {
 		switch l.Sub[i].tag {
-		case "CONT":
+		case cCONT:
 			*e += "\n"
 			fallthrough
-		case "CONC":
+		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
 				return ErrContext{"TextFromSource", l.Sub[i].tag, ErrInvalidLength{"TextFromSource", l.value, 1, 248}}
 			}
@@ -1871,10 +1871,10 @@ type Verified string
 
 func (e *Verified) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
-	case "":
-		*e = ""
-	case "Y":
-		*e = "Y"
+	case c:
+		*e = c
+	case cY:
+		*e = cY
 	default:
 		if !o.ignoreInvalidValue {
 			return ErrInvalidValue{"Verified", l.value}

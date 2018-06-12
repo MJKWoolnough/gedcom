@@ -24,7 +24,7 @@ func (s *Header) parse(l *Line, o options) error {
 	var SourceSet, SubmitterSet, VersionSet, CharacterSetSet, ReceivingSystemNameSet, TransmissionLDateSet, SubmissionSet, FileNameSet, CopyrightSet, LanguageSet, PlaceSet, ContentDescriptionSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "SOUR":
+		case cSOUR:
 			if SourceSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -35,7 +35,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.Source.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "SOUR", err}
 			}
-		case "DEST":
+		case cDEST:
 			if ReceivingSystemNameSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -46,7 +46,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.ReceivingSystemName.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "DEST", err}
 			}
-		case "DATE":
+		case cDATE:
 			if TransmissionLDateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -57,7 +57,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.TransmissionLDate.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "DATE", err}
 			}
-		case "SUBM":
+		case cSUBM:
 			if SubmitterSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -68,7 +68,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.Submitter.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "SUBM", err}
 			}
-		case "SUMB":
+		case cSUMB:
 			if SubmissionSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -79,7 +79,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.Submission.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "SUMB", err}
 			}
-		case "FILE":
+		case cFILE:
 			if FileNameSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -90,7 +90,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.FileName.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "FILE", err}
 			}
-		case "COPR":
+		case cCOPR:
 			if CopyrightSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -101,7 +101,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.Copyright.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "COPR", err}
 			}
-		case "GEDC":
+		case cGEDC:
 			if VersionSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -112,7 +112,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.Version.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "GEDC", err}
 			}
-		case "CHAR":
+		case cCHAR:
 			if CharacterSetSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -123,7 +123,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.CharacterSet.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "CHAR", err}
 			}
-		case "LANG":
+		case cLANG:
 			if LanguageSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -134,7 +134,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.Language.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "LANG", err}
 			}
-		case "PLAC":
+		case cPLAC:
 			if PlaceSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -145,7 +145,7 @@ func (s *Header) parse(l *Line, o options) error {
 			if err := s.Place.parse(&sl, o); err != nil {
 				return ErrContext{"Header", "PLAC", err}
 			}
-		case "NOTE":
+		case cNOTE:
 			if ContentDescriptionSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -196,7 +196,7 @@ func (s *HeaderSource) parse(l *Line, o options) error {
 	var VersionNumberSet, NameSet, BusinessSet, DataSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "VERS":
+		case cVERS:
 			if VersionNumberSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -207,7 +207,7 @@ func (s *HeaderSource) parse(l *Line, o options) error {
 			if err := s.VersionNumber.parse(&sl, o); err != nil {
 				return ErrContext{"HeaderSource", "VERS", err}
 			}
-		case "NAME":
+		case cNAME:
 			if NameSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -218,7 +218,7 @@ func (s *HeaderSource) parse(l *Line, o options) error {
 			if err := s.Name.parse(&sl, o); err != nil {
 				return ErrContext{"HeaderSource", "NAME", err}
 			}
-		case "CORP":
+		case cCORP:
 			if BusinessSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -229,7 +229,7 @@ func (s *HeaderSource) parse(l *Line, o options) error {
 			if err := s.Business.parse(&sl, o); err != nil {
 				return ErrContext{"HeaderSource", "CORP", err}
 			}
-		case "DATA":
+		case cDATA:
 			if DataSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -263,7 +263,7 @@ func (s *TransmissionDateTime) parse(l *Line, o options) error {
 	var TimeSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "TIME":
+		case cTIME:
 			if TimeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -300,7 +300,7 @@ func (s *HeaderBusiness) parse(l *Line, o options) error {
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "ADDR":
+		case cADDR:
 			if AddressSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -311,7 +311,7 @@ func (s *HeaderBusiness) parse(l *Line, o options) error {
 			if err := s.Address.parse(&sl, o); err != nil {
 				return ErrContext{"HeaderBusiness", "ADDR", err}
 			}
-		case "PHON":
+		case cPHON:
 			if PhoneNumberCount == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -348,7 +348,7 @@ func (s *HeaderDataSource) parse(l *Line, o options) error {
 	var PublicationDateSet, CopyrightSourceDataSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "DATE":
+		case cDATE:
 			if PublicationDateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -359,7 +359,7 @@ func (s *HeaderDataSource) parse(l *Line, o options) error {
 			if err := s.PublicationDate.parse(&sl, o); err != nil {
 				return ErrContext{"HeaderDataSource", "DATE", err}
 			}
-		case "COPR":
+		case cCOPR:
 			if CopyrightSourceDataSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -390,7 +390,7 @@ func (s *Version) parse(l *Line, o options) error {
 	var VersionNumberSet, FormSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "VERS":
+		case cVERS:
 			if VersionNumberSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -401,7 +401,7 @@ func (s *Version) parse(l *Line, o options) error {
 			if err := s.VersionNumber.parse(&sl, o); err != nil {
 				return ErrContext{"Version", "VERS", err}
 			}
-		case "FORM":
+		case cFORM:
 			if FormSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -443,7 +443,7 @@ func (s *CharacterSetStructure) parse(l *Line, o options) error {
 	var VersionNumberSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "VERS":
+		case cVERS:
 			if VersionNumberSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -473,7 +473,7 @@ func (s *HeaderPlace) parse(l *Line, o options) error {
 	var PlaceHierarchySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "FORM":
+		case cFORM:
 			if PlaceHierarchySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -531,7 +531,7 @@ func (s *Family) parse(l *Line, o options) error {
 	var AnnulmentSet, CensusSet, DivorceSet, DivorceFiledSet, EngagementSet, MarriageSet, MarriageBannSet, MarriageContractSet, MarriageLicenseSet, MarriageSettlementSet, HusbandSet, WifeSet, NumChildrenSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "ANUL":
+		case cANUL:
 			if AnnulmentSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -542,7 +542,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.Annulment.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "ANUL", err}
 			}
-		case "CENS":
+		case cCENS:
 			if CensusSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -553,7 +553,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.Census.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "CENS", err}
 			}
-		case "DIV":
+		case cDIV:
 			if DivorceSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -564,7 +564,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.Divorce.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "DIV", err}
 			}
-		case "DIVF":
+		case cDIVF:
 			if DivorceFiledSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -575,7 +575,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.DivorceFiled.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "DIVF", err}
 			}
-		case "ENGA":
+		case cENGA:
 			if EngagementSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -586,7 +586,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.Engagement.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "ENGA", err}
 			}
-		case "MARR":
+		case cMARR:
 			if MarriageSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -597,7 +597,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.Marriage.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "MARR", err}
 			}
-		case "MARB":
+		case cMARB:
 			if MarriageBannSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -608,7 +608,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.MarriageBann.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "MARB", err}
 			}
-		case "MARC":
+		case cMARC:
 			if MarriageContractSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -619,7 +619,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.MarriageContract.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "MARC", err}
 			}
-		case "MARL":
+		case cMARL:
 			if MarriageLicenseSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -630,7 +630,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.MarriageLicense.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "MARL", err}
 			}
-		case "MARS":
+		case cMARS:
 			if MarriageSettlementSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -641,13 +641,13 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.MarriageSettlement.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "MARS", err}
 			}
-		case "EVEN":
+		case cEVEN:
 			var t FamilyEventDetail
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "EVEN", err}
 			}
 			s.Events = append(s.Events, t)
-		case "HUSB":
+		case cHUSB:
 			if HusbandSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -658,7 +658,7 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.Husband.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "HUSB", err}
 			}
-		case "WIFE":
+		case cWIFE:
 			if WifeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -669,13 +669,13 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.Wife.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "WIFE", err}
 			}
-		case "CHIL":
+		case cCHIL:
 			var t Xref
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "CHIL", err}
 			}
 			s.Children = append(s.Children, t)
-		case "NCHI":
+		case cNCHI:
 			if NumChildrenSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -686,31 +686,31 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := s.NumChildren.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "NCHI", err}
 			}
-		case "SUBM":
+		case cSUBM:
 			var t Xref
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "SUBM", err}
 			}
 			s.Submitters = append(s.Submitters, t)
-		case "SLGS":
+		case cSLGS:
 			var t LDSSpouseSealing
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "SLGS", err}
 			}
 			s.LDSSpouseSealing = append(s.LDSSpouseSealing, t)
-		case "SOUR":
+		case cSOUR:
 			var t SourceCitation
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
-		case "OBJE":
+		case cOBJE:
 			var t MultimediaLink
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", "NOTE", err}
@@ -751,7 +751,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 	for i := 0; i < len(l.Sub); i++ {
 		sl := l.Sub[i]
 		switch sl.tag {
-		case "HUSB":
+		case cHUSB:
 			if HusbandAgeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -764,7 +764,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 			}
 			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
 			i--
-		case "WIFE":
+		case cWIFE:
 			if WifeAgeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -791,7 +791,7 @@ func (s *AgeStructure) parse(l *Line, o options) error {
 	var AgeSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "AGE":
+		case cAGE:
 			if AgeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -883,7 +883,7 @@ func (s *Individual) parse(l *Line, o options) error {
 	var RestrictionNoticeSet, GenderSet, BirthSet, ChristeningSet, DeathSet, BuriedSet, CremationSet, AdoptionSet, MaptismSet, BarMitzvahSet, BasMitzvahSet, BlessingSet, AdultChristeningSet, ConfirmationSet, FirstCommunionSet, OrdinationSet, NaturalizationSet, EmigratedSet, ImmigratedSet, CensusSet, ProbateSet, WillSet, GraduatedSet, RetiredSet, PermanentRecordSet, AncestralFileNumberSet, AutomatedRecordIDSet, ChangeDateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "RESN":
+		case cRESN:
 			if RestrictionNoticeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -894,13 +894,13 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.RestrictionNotice.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "RESN", err}
 			}
-		case "NAME":
+		case cNAME:
 			var t PersonalNameStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "NAME", err}
 			}
 			s.PersonalNameStructure = append(s.PersonalNameStructure, t)
-		case "SEX":
+		case cSEX:
 			if GenderSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -911,7 +911,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Gender.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "SEX", err}
 			}
-		case "BIRT":
+		case cBIRT:
 			if BirthSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -922,7 +922,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Birth.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "BIRT", err}
 			}
-		case "CHR":
+		case cCHR:
 			if ChristeningSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -933,7 +933,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Christening.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "CHR", err}
 			}
-		case "DEAT":
+		case cDEAT:
 			if DeathSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -944,7 +944,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Death.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "DEAT", err}
 			}
-		case "BURI":
+		case cBURI:
 			if BuriedSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -955,7 +955,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Buried.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "BURI", err}
 			}
-		case "CREM":
+		case cCREM:
 			if CremationSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -966,7 +966,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Cremation.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "CREM", err}
 			}
-		case "ADOP":
+		case cADOP:
 			if AdoptionSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -977,7 +977,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Adoption.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "ADOP", err}
 			}
-		case "BAPM":
+		case cBAPM:
 			if MaptismSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -988,7 +988,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Maptism.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "BAPM", err}
 			}
-		case "BARM":
+		case cBARM:
 			if BarMitzvahSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -999,7 +999,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.BarMitzvah.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "BARM", err}
 			}
-		case "BASM":
+		case cBASM:
 			if BasMitzvahSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1010,7 +1010,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.BasMitzvah.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "BASM", err}
 			}
-		case "BLES":
+		case cBLES:
 			if BlessingSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1021,7 +1021,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Blessing.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "BLES", err}
 			}
-		case "CHRA":
+		case cCHRA:
 			if AdultChristeningSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1032,7 +1032,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.AdultChristening.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "CHRA", err}
 			}
-		case "CONF":
+		case cCONF:
 			if ConfirmationSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1043,7 +1043,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Confirmation.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "CONF", err}
 			}
-		case "FCOM":
+		case cFCOM:
 			if FirstCommunionSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1054,7 +1054,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.FirstCommunion.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "FCOM", err}
 			}
-		case "ORDN":
+		case cORDN:
 			if OrdinationSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1065,7 +1065,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Ordination.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "ORDN", err}
 			}
-		case "NATU":
+		case cNATU:
 			if NaturalizationSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1076,7 +1076,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Naturalization.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "NATU", err}
 			}
-		case "EMIG":
+		case cEMIG:
 			if EmigratedSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1087,7 +1087,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Emigrated.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "EMIG", err}
 			}
-		case "IMMI":
+		case cIMMI:
 			if ImmigratedSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1098,7 +1098,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Immigrated.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "IMMI", err}
 			}
-		case "CENS":
+		case cCENS:
 			if CensusSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1109,7 +1109,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Census.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "CENS", err}
 			}
-		case "PROB":
+		case cPROB:
 			if ProbateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1120,7 +1120,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Probate.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "PROB", err}
 			}
-		case "WILL":
+		case cWILL:
 			if WillSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1131,7 +1131,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Will.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "WILL", err}
 			}
-		case "GRAD":
+		case cGRAD:
 			if GraduatedSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1142,7 +1142,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Graduated.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "GRAD", err}
 			}
-		case "RETI":
+		case cRETI:
 			if RetiredSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1153,151 +1153,151 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.Retired.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "RETI", err}
 			}
-		case "EVEN":
+		case cEVEN:
 			var t IndividualEventDetail
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "EVEN", err}
 			}
 			s.Events = append(s.Events, t)
-		case "CAST":
+		case cCAST:
 			var t CasteEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "CAST", err}
 			}
 			s.Caste = append(s.Caste, t)
-		case "DSCR":
+		case cDSCR:
 			var t DescriptionEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "DSCR", err}
 			}
 			s.Description = append(s.Description, t)
-		case "EDUC":
+		case cEDUC:
 			var t ScholasticEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "EDUC", err}
 			}
 			s.ScholasticAchievement = append(s.ScholasticAchievement, t)
-		case "IDNO":
+		case cIDNO:
 			var t NationalIDEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "IDNO", err}
 			}
 			s.NationalID = append(s.NationalID, t)
-		case "NATI":
+		case cNATI:
 			var t NationalOriginEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "NATI", err}
 			}
 			s.NationalTribalOrigin = append(s.NationalTribalOrigin, t)
-		case "NCHI":
+		case cNCHI:
 			var t ChildrenEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "NCHI", err}
 			}
 			s.CountOfChildren = append(s.CountOfChildren, t)
-		case "NMR":
+		case cNMR:
 			var t MarriagesEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "NMR", err}
 			}
 			s.CountOfMarriages = append(s.CountOfMarriages, t)
-		case "OCCU":
+		case cOCCU:
 			var t OccupationEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "OCCU", err}
 			}
 			s.Occupation = append(s.Occupation, t)
-		case "PROP":
+		case cPROP:
 			var t PossessionEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "PROP", err}
 			}
 			s.Possessions = append(s.Possessions, t)
-		case "RELI":
+		case cRELI:
 			var t ReligiousEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "RELI", err}
 			}
 			s.ReligiousAffiliation = append(s.ReligiousAffiliation, t)
-		case "RESI":
+		case cRESI:
 			var t ResidenceEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "RESI", err}
 			}
 			s.Residences = append(s.Residences, t)
-		case "SSN":
+		case cSSN:
 			var t SSNEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "SSN", err}
 			}
 			s.SocialSecurity = append(s.SocialSecurity, t)
-		case "TITL":
+		case cTITL:
 			var t NobilityEvent
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "TITL", err}
 			}
 			s.NobilityTypeTitle = append(s.NobilityTypeTitle, t)
-		case "FAMC":
+		case cFAMC:
 			var t ChildToFamilyLink
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "FAMC", err}
 			}
 			s.ChildOf = append(s.ChildOf, t)
-		case "FAMS":
+		case cFAMS:
 			var t SpouseToFamilyLink
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "FAMS", err}
 			}
 			s.SpouseOf = append(s.SpouseOf, t)
-		case "SUBM":
+		case cSUBM:
 			var t Xref
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "SUBM", err}
 			}
 			s.Submitters = append(s.Submitters, t)
-		case "ASSO":
+		case cASSO:
 			var t AssociationStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "ASSO", err}
 			}
 			s.Associations = append(s.Associations, t)
-		case "ALIA":
+		case cALIA:
 			var t Xref
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "ALIA", err}
 			}
 			s.Aliases = append(s.Aliases, t)
-		case "ANCI":
+		case cANCI:
 			var t Xref
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "ANCI", err}
 			}
 			s.AncestorInterest = append(s.AncestorInterest, t)
-		case "DESI":
+		case cDESI:
 			var t Xref
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "DESI", err}
 			}
 			s.DescendentInterest = append(s.DescendentInterest, t)
-		case "SOUR":
+		case cSOUR:
 			var t SourceCitation
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
-		case "OBJE":
+		case cOBJE:
 			var t MultimediaLink
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
-		case "RFN":
+		case cRFN:
 			if PermanentRecordSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1308,7 +1308,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.PermanentRecord.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "RFN", err}
 			}
-		case "AFN":
+		case cAFN:
 			if AncestralFileNumberSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1319,13 +1319,13 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.AncestralFileNumber.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "AFN", err}
 			}
-		case "REFN":
+		case cREFN:
 			var t UserReferenceStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
-		case "RIN":
+		case cRIN:
 			if AutomatedRecordIDSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1336,7 +1336,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := s.AutomatedRecordID.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", "RIN", err}
 			}
-		case "CHAN":
+		case cCHAN:
 			if ChangeDateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1368,7 +1368,7 @@ func (s *VerifiedIndividualFamEventDetail) parse(l *Line, o options) error {
 	for i := 0; i < len(l.Sub); i++ {
 		sl := l.Sub[i]
 		switch sl.tag {
-		case "FAMC":
+		case cFAMC:
 			if FamcSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1419,7 +1419,7 @@ func (s *AdoptionEvent) parse(l *Line, o options) error {
 	for i := 0; i < len(l.Sub); i++ {
 		sl := l.Sub[i]
 		switch sl.tag {
-		case "FAMC":
+		case cFAMC:
 			if FamilySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1450,7 +1450,7 @@ func (s *AdoptionReference) parse(l *Line, o options) error {
 	var AdoptedBySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "ADOP":
+		case cADOP:
 			if AdoptedBySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1649,7 +1649,7 @@ func (s *UserReferenceStructure) parse(l *Line, o options) error {
 	var TypeSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "TYPE":
+		case cTYPE:
 			if TypeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1690,7 +1690,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 	var FormatSet, BlobSet, TitleSet, ContinuedObjectSet, AutomatedRecordIDSet, ChangeDateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "FORM":
+		case cFORM:
 			if FormatSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1701,7 +1701,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			if err := s.Format.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", "FORM", err}
 			}
-		case "TITLE":
+		case cTITLE:
 			if TitleSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1712,13 +1712,13 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			if err := s.Title.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", "TITLE", err}
 			}
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
-		case "BLOB":
+		case cBLOB:
 			if BlobSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1729,7 +1729,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			if err := s.Blob.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", "BLOB", err}
 			}
-		case "OBJE":
+		case cOBJE:
 			if ContinuedObjectSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1740,13 +1740,13 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			if err := s.ContinuedObject.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", "OBJE", err}
 			}
-		case "REFN":
+		case cREFN:
 			var t UserReferenceStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
-		case "RIN":
+		case cRIN:
 			if AutomatedRecordIDSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1757,7 +1757,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			if err := s.AutomatedRecordID.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", "RIN", err}
 			}
-		case "CHAN":
+		case cCHAN:
 			if ChangeDateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1806,19 +1806,19 @@ func (s *NoteRecord) parse(l *Line, o options) error {
 	var AutomatedRecordIDSet, ChangeDateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "SOUR":
+		case cSOUR:
 			var t SourceCitation
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"NoteRecord", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
-		case "REFN":
+		case cREFN:
 			var t UserReferenceStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"NoteRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
-		case "RIN":
+		case cRIN:
 			if AutomatedRecordIDSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1829,7 +1829,7 @@ func (s *NoteRecord) parse(l *Line, o options) error {
 			if err := s.AutomatedRecordID.parse(&sl, o); err != nil {
 				return ErrContext{"NoteRecord", "RIN", err}
 			}
-		case "CHAN":
+		case cCHAN:
 			if ChangeDateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1871,7 +1871,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "NAME":
+		case cNAME:
 			if NameOfRepositorySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1882,7 +1882,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 			if err := s.NameOfRepository.parse(&sl, o); err != nil {
 				return ErrContext{"RepositoryRecord", "NAME", err}
 			}
-		case "ADDR":
+		case cADDR:
 			if AddressSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1893,7 +1893,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 			if err := s.Address.parse(&sl, o); err != nil {
 				return ErrContext{"RepositoryRecord", "ADDR", err}
 			}
-		case "PHON":
+		case cPHON:
 			if PhoneNumberCount == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1906,19 +1906,19 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 				return ErrContext{"RepositoryRecord", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"RepositoryRecord", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
-		case "REFN":
+		case cREFN:
 			var t UserReferenceStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"RepositoryRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
-		case "RIN":
+		case cRIN:
 			if AutomatedRecordIDSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1929,7 +1929,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 			if err := s.AutomatedRecordID.parse(&sl, o); err != nil {
 				return ErrContext{"RepositoryRecord", "RIN", err}
 			}
-		case "CHAN":
+		case cCHAN:
 			if ChangeDateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1974,7 +1974,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 	var SourceRepositoryCitationSet, DataSet, OriginatorSet, TitleSet, FiledBySet, PublicationFactsSet, TextFromSourceSet, ContinuedObjectSet, AutomatedRecordIDSet, ChangeDateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "DATA":
+		case cDATA:
 			if DataSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1985,7 +1985,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := s.Data.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "DATA", err}
 			}
-		case "AUTH":
+		case cAUTH:
 			if OriginatorSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -1996,7 +1996,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := s.Originator.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "AUTH", err}
 			}
-		case "TITL":
+		case cTITL:
 			if TitleSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2007,7 +2007,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := s.Title.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "TITL", err}
 			}
-		case "ABBR":
+		case cABBR:
 			if FiledBySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2018,7 +2018,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := s.FiledBy.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "ABBR", err}
 			}
-		case "PUBL":
+		case cPUBL:
 			if PublicationFactsSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2029,7 +2029,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := s.PublicationFacts.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "PUBL", err}
 			}
-		case "TEXT":
+		case cTEXT:
 			if TextFromSourceSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2040,7 +2040,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := s.TextFromSource.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "TEXT", err}
 			}
-		case "REPO":
+		case cREPO:
 			if SourceRepositoryCitationSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2051,7 +2051,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := s.SourceRepositoryCitation.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "REPO", err}
 			}
-		case "OBJE":
+		case cOBJE:
 			if ContinuedObjectSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2062,19 +2062,19 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := s.ContinuedObject.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "OBJE", err}
 			}
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
-		case "REFN":
+		case cREFN:
 			var t UserReferenceStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "REFN", err}
 			}
 			s.UserReferences = append(s.UserReferences, t)
-		case "RIN":
+		case cRIN:
 			if AutomatedRecordIDSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2085,7 +2085,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := s.AutomatedRecordID.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", "RIN", err}
 			}
-		case "CHAN":
+		case cCHAN:
 			if ChangeDateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2122,13 +2122,13 @@ func (s *SourceRecordDataStructure) parse(l *Line, o options) error {
 	var ResponsibleAgencySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "EVEN":
+		case cEVEN:
 			var t EventsRecordedStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecordDataStructure", "EVEN", err}
 			}
 			s.EventsRecorded = append(s.EventsRecorded, t)
-		case "AGNC":
+		case cAGNC:
 			if ResponsibleAgencySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2139,7 +2139,7 @@ func (s *SourceRecordDataStructure) parse(l *Line, o options) error {
 			if err := s.ResponsibleAgency.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecordDataStructure", "AGNC", err}
 			}
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecordDataStructure", "NOTE", err}
@@ -2165,7 +2165,7 @@ func (s *EventsRecordedStructure) parse(l *Line, o options) error {
 	var DatePeriodSet, SourceJurisdictionPlaceSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "DATE":
+		case cDATE:
 			if DatePeriodSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2176,7 +2176,7 @@ func (s *EventsRecordedStructure) parse(l *Line, o options) error {
 			if err := s.DatePeriod.parse(&sl, o); err != nil {
 				return ErrContext{"EventsRecordedStructure", "DATE", err}
 			}
-		case "PLACE":
+		case cPLACE:
 			if SourceJurisdictionPlaceSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2215,7 +2215,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 	var NameOfFamilyFileSet, TempleCodeSet, GenerationsOfAncestorsSet, GenerationsOfDescendantsSet, OrdinanceProcessFlagSet, AutomatedRecordIDSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "FAMF":
+		case cFAMF:
 			if NameOfFamilyFileSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2226,7 +2226,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			if err := s.NameOfFamilyFile.parse(&sl, o); err != nil {
 				return ErrContext{"SubmissionRecord", "FAMF", err}
 			}
-		case "TEMP":
+		case cTEMP:
 			if TempleCodeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2237,7 +2237,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			if err := s.TempleCode.parse(&sl, o); err != nil {
 				return ErrContext{"SubmissionRecord", "TEMP", err}
 			}
-		case "ANCE":
+		case cANCE:
 			if GenerationsOfAncestorsSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2248,7 +2248,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			if err := s.GenerationsOfAncestors.parse(&sl, o); err != nil {
 				return ErrContext{"SubmissionRecord", "ANCE", err}
 			}
-		case "DESC":
+		case cDESC:
 			if GenerationsOfDescendantsSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2259,7 +2259,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			if err := s.GenerationsOfDescendants.parse(&sl, o); err != nil {
 				return ErrContext{"SubmissionRecord", "DESC", err}
 			}
-		case "ORDI":
+		case cORDI:
 			if OrdinanceProcessFlagSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2270,7 +2270,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			if err := s.OrdinanceProcessFlag.parse(&sl, o); err != nil {
 				return ErrContext{"SubmissionRecord", "ORDI", err}
 			}
-		case "RIN":
+		case cRIN:
 			if AutomatedRecordIDSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2314,7 +2314,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 	s.LanguagePreference = make([]LanguagePreference, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "NAME":
+		case cNAME:
 			if SubmitterNameSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2325,7 +2325,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			if err := s.SubmitterName.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", "NAME", err}
 			}
-		case "ADDR":
+		case cADDR:
 			if AddressSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2336,7 +2336,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			if err := s.Address.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", "ADDR", err}
 			}
-		case "PHON":
+		case cPHON:
 			if PhoneNumberCount == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2349,13 +2349,13 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 				return ErrContext{"SubmitterRecord", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
-		case "OBJE":
+		case cOBJE:
 			var t MultimediaLink
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
-		case "LANG":
+		case cLANG:
 			if LanguagePreferenceCount == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2368,7 +2368,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 				return ErrContext{"SubmitterRecord", "LANG", err}
 			}
 			s.LanguagePreference = append(s.LanguagePreference, t)
-		case "RFN":
+		case cRFN:
 			if SubmitterRegisteredRFNSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2379,7 +2379,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			if err := s.SubmitterRegisteredRFN.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", "RFN", err}
 			}
-		case "RIN":
+		case cRIN:
 			if AutomatedRecordIDSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2390,7 +2390,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			if err := s.AutomatedRecordID.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", "RIN", err}
 			}
-		case "CHAN":
+		case cCHAN:
 			if ChangeDateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2434,7 +2434,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 	var AddressLine1Set, AddressLine2Set, CitySet, StateSet, PostalCodeSet, CountrySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "ADR1":
+		case cADR1:
 			if AddressLine1Set {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2445,7 +2445,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			if err := s.AddressLine1.parse(&sl, o); err != nil {
 				return ErrContext{"AddressStructure", "ADR1", err}
 			}
-		case "ADR2":
+		case cADR2:
 			if AddressLine2Set {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2456,7 +2456,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			if err := s.AddressLine2.parse(&sl, o); err != nil {
 				return ErrContext{"AddressStructure", "ADR2", err}
 			}
-		case "CITY":
+		case cCITY:
 			if CitySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2467,7 +2467,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			if err := s.City.parse(&sl, o); err != nil {
 				return ErrContext{"AddressStructure", "CITY", err}
 			}
-		case "STAE":
+		case cSTAE:
 			if StateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2478,7 +2478,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			if err := s.State.parse(&sl, o); err != nil {
 				return ErrContext{"AddressStructure", "STAE", err}
 			}
-		case "POST":
+		case cPOST:
 			if PostalCodeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2489,7 +2489,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			if err := s.PostalCode.parse(&sl, o); err != nil {
 				return ErrContext{"AddressStructure", "POST", err}
 			}
-		case "CTRY":
+		case cCTRY:
 			if CountrySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2526,7 +2526,7 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 	var RecordTypeSet, RelationSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "TYPE":
+		case cTYPE:
 			if RecordTypeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2537,7 +2537,7 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 			if err := s.RecordType.parse(&sl, o); err != nil {
 				return ErrContext{"AssociationStructure", "TYPE", err}
 			}
-		case "RELA":
+		case cRELA:
 			if RelationSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2548,13 +2548,13 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 			if err := s.Relation.parse(&sl, o); err != nil {
 				return ErrContext{"AssociationStructure", "RELA", err}
 			}
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"AssociationStructure", "NOTE", err}
 			}
 			s.Notes = append(s.Notes, t)
-		case "SOUR":
+		case cSOUR:
 			var t SourceCitation
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"AssociationStructure", "SOUR", err}
@@ -2588,7 +2588,7 @@ func (s *ChangeDateStructure) parse(l *Line, o options) error {
 	var DateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "DATE":
+		case cDATE:
 			if DateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2599,7 +2599,7 @@ func (s *ChangeDateStructure) parse(l *Line, o options) error {
 			if err := s.Date.parse(&sl, o); err != nil {
 				return ErrContext{"ChangeDateStructure", "DATE", err}
 			}
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"ChangeDateStructure", "NOTE", err}
@@ -2633,7 +2633,7 @@ func (s *ChangeDateTime) parse(l *Line, o options) error {
 	var TimeSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "TIME":
+		case cTIME:
 			if TimeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2667,13 +2667,13 @@ func (s *ChildToFamilyLink) parse(l *Line, o options) error {
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "PEDI":
+		case cPEDI:
 			var t PedigreeLinkageType
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"ChildToFamilyLink", "PEDI", err}
 			}
 			s.PedigreeLinkageType = append(s.PedigreeLinkageType, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"ChildToFamilyLink", "NOTE", err}
@@ -2710,7 +2710,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "TYPE":
+		case cTYPE:
 			if TypeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2721,7 +2721,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			if err := s.Type.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "TYPE", err}
 			}
-		case "DATE":
+		case cDATE:
 			if DateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2732,7 +2732,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			if err := s.Date.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "DATE", err}
 			}
-		case "PLAC":
+		case cPLAC:
 			if PlaceSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2743,7 +2743,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			if err := s.Place.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "PLAC", err}
 			}
-		case "ADDR":
+		case cADDR:
 			if AddressSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2754,7 +2754,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			if err := s.Address.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "ADDR", err}
 			}
-		case "PHON":
+		case cPHON:
 			if PhoneNumberCount == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2767,7 +2767,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 				return ErrContext{"EventDetail", "PHON", err}
 			}
 			s.PhoneNumber = append(s.PhoneNumber, t)
-		case "AGE":
+		case cAGE:
 			if AgeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2778,7 +2778,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			if err := s.Age.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "AGE", err}
 			}
-		case "AGNC":
+		case cAGNC:
 			if ResponsibleAgencySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2789,7 +2789,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			if err := s.ResponsibleAgency.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "AGNC", err}
 			}
-		case "CAUS":
+		case cCAUS:
 			if CauseOfEventSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2800,19 +2800,19 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			if err := s.CauseOfEvent.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "CAUS", err}
 			}
-		case "SOUR":
+		case cSOUR:
 			var t SourceCitation
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
-		case "OBJE":
+		case cOBJE:
 			var t MultimediaLink
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "NOTE", err}
@@ -2842,7 +2842,7 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 	var LDSSpouseSealingDateStatusSet, DateSet, TempleCodeSet, PlaceSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "STAT":
+		case cSTAT:
 			if LDSSpouseSealingDateStatusSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2853,7 +2853,7 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			if err := s.LDSSpouseSealingDateStatus.parse(&sl, o); err != nil {
 				return ErrContext{"LDSSpouseSealing", "STAT", err}
 			}
-		case "DATE":
+		case cDATE:
 			if DateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2864,7 +2864,7 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			if err := s.Date.parse(&sl, o); err != nil {
 				return ErrContext{"LDSSpouseSealing", "DATE", err}
 			}
-		case "TEMP":
+		case cTEMP:
 			if TempleCodeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2875,7 +2875,7 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			if err := s.TempleCode.parse(&sl, o); err != nil {
 				return ErrContext{"LDSSpouseSealing", "TEMP", err}
 			}
-		case "PLAC":
+		case cPLAC:
 			if PlaceSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2886,13 +2886,13 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			if err := s.Place.parse(&sl, o); err != nil {
 				return ErrContext{"LDSSpouseSealing", "PLAC", err}
 			}
-		case "SOUR":
+		case cSOUR:
 			var t SourceCitation
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"LDSSpouseSealing", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"LDSSpouseSealing", "NOTE", err}
@@ -2938,7 +2938,7 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 	var FormatSet, TitleSet, FileSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "FORM":
+		case cFORM:
 			if FormatSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2949,7 +2949,7 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 			if err := s.Format.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaLinkFile", "FORM", err}
 			}
-		case "TITLE":
+		case cTITLE:
 			if TitleSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2960,7 +2960,7 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 			if err := s.Title.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaLinkFile", "TITLE", err}
 			}
-		case "FILE":
+		case cFILE:
 			if FileSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -2971,7 +2971,7 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 			if err := s.File.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaLinkFile", "FILE", err}
 			}
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaLinkFile", "NOTE", err}
@@ -3022,7 +3022,7 @@ func (s *NoteText) parse(l *Line, o options) error {
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "SOUR":
+		case cSOUR:
 			var t SourceCitation
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"NoteText", "SOUR", err}
@@ -3058,7 +3058,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 	var PrefixSet, GivenSet, NicknameSet, SurnamePrefixSet, SurnameSet, SuffixSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "NPFX":
+		case cNPFX:
 			if PrefixSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3069,7 +3069,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			if err := s.Prefix.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", "NPFX", err}
 			}
-		case "GIVN":
+		case cGIVN:
 			if GivenSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3080,7 +3080,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			if err := s.Given.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", "GIVN", err}
 			}
-		case "NICK":
+		case cNICK:
 			if NicknameSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3091,7 +3091,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			if err := s.Nickname.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", "NICK", err}
 			}
-		case "SPFX":
+		case cSPFX:
 			if SurnamePrefixSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3102,7 +3102,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			if err := s.SurnamePrefix.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", "SPFX", err}
 			}
-		case "SURN":
+		case cSURN:
 			if SurnameSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3113,7 +3113,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			if err := s.Surname.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", "SURN", err}
 			}
-		case "NSFX":
+		case cNSFX:
 			if SuffixSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3124,13 +3124,13 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			if err := s.Suffix.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", "NSFX", err}
 			}
-		case "SOUR":
+		case cSOUR:
 			var t SourceCitation
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", "NOTE", err}
@@ -3161,7 +3161,7 @@ func (s *PlaceStructure) parse(l *Line, o options) error {
 	var PlaceHierarchySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "FORM":
+		case cFORM:
 			if PlaceHierarchySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3172,13 +3172,13 @@ func (s *PlaceStructure) parse(l *Line, o options) error {
 			if err := s.PlaceHierarchy.parse(&sl, o); err != nil {
 				return ErrContext{"PlaceStructure", "FORM", err}
 			}
-		case "SOUR":
+		case cSOUR:
 			var t SourceCitation
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"PlaceStructure", "SOUR", err}
 			}
 			s.Sources = append(s.Sources, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"PlaceStructure", "NOTE", err}
@@ -3212,7 +3212,7 @@ func (s *SourceID) parse(l *Line, o options) error {
 	var WhereWithinSourceSet, SourceCitationEventSet, DataSet, CertaintySet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "PAGE":
+		case cPAGE:
 			if WhereWithinSourceSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3223,7 +3223,7 @@ func (s *SourceID) parse(l *Line, o options) error {
 			if err := s.WhereWithinSource.parse(&sl, o); err != nil {
 				return ErrContext{"SourceID", "PAGE", err}
 			}
-		case "EVEN":
+		case cEVEN:
 			if SourceCitationEventSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3234,7 +3234,7 @@ func (s *SourceID) parse(l *Line, o options) error {
 			if err := s.SourceCitationEvent.parse(&sl, o); err != nil {
 				return ErrContext{"SourceID", "EVEN", err}
 			}
-		case "DATA":
+		case cDATA:
 			if DataSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3245,7 +3245,7 @@ func (s *SourceID) parse(l *Line, o options) error {
 			if err := s.Data.parse(&sl, o); err != nil {
 				return ErrContext{"SourceID", "DATA", err}
 			}
-		case "QUAY":
+		case cQUAY:
 			if CertaintySet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3256,13 +3256,13 @@ func (s *SourceID) parse(l *Line, o options) error {
 			if err := s.Certainty.parse(&sl, o); err != nil {
 				return ErrContext{"SourceID", "QUAY", err}
 			}
-		case "OBJE":
+		case cOBJE:
 			var t MultimediaLink
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceID", "OBJE", err}
 			}
 			s.Multimedia = append(s.Multimedia, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceID", "NOTE", err}
@@ -3291,7 +3291,7 @@ func (s *SourceCitationEvent) parse(l *Line, o options) error {
 	var RoleSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "ROLE":
+		case cROLE:
 			if RoleSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3322,7 +3322,7 @@ func (s *SourceData) parse(l *Line, o options) error {
 	var DateSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "DATE":
+		case cDATE:
 			if DateSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3333,7 +3333,7 @@ func (s *SourceData) parse(l *Line, o options) error {
 			if err := s.Date.parse(&sl, o); err != nil {
 				return ErrContext{"SourceData", "DATE", err}
 			}
-		case "TEXT":
+		case cTEXT:
 			var t TextFromSource
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceData", "TEXT", err}
@@ -3362,13 +3362,13 @@ func (s *SourceText) parse(l *Line, o options) error {
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "TEXT":
+		case cTEXT:
 			var t TextFromSource
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceText", "TEXT", err}
 			}
 			s.Texts = append(s.Texts, t)
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceText", "NOTE", err}
@@ -3396,7 +3396,7 @@ func (s *SourceRepositoryCitation) parse(l *Line, o options) error {
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "CALN":
+		case cCALN:
 			var t SourceCallStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRepositoryCitation", "CALN", err}
@@ -3425,7 +3425,7 @@ func (s *SourceCallStructure) parse(l *Line, o options) error {
 	var TypeSet bool
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "MEDI":
+		case cMEDI:
 			if TypeSet {
 				if !o.allowMoreThanAllowed {
 					continue
@@ -3458,7 +3458,7 @@ func (s *SpouseToFamilyLink) parse(l *Line, o options) error {
 	}
 	for _, sl := range l.Sub {
 		switch sl.tag {
-		case "NOTE":
+		case cNOTE:
 			var t NoteStructure
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SpouseToFamilyLink", "NOTE", err}
