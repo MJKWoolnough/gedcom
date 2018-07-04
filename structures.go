@@ -296,7 +296,6 @@ func (s *HeaderBusiness) parse(l *Line, o options) error {
 		return ErrContext{"HeaderBusiness", "line_value", err}
 	}
 	var AddressSet bool
-	var PhoneNumberCount int
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -312,13 +311,12 @@ func (s *HeaderBusiness) parse(l *Line, o options) error {
 				return ErrContext{"HeaderBusiness", "ADDR", err}
 			}
 		case cPHON:
-			if PhoneNumberCount == 3 {
+			if len(s.PhoneNumber) == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
 				}
 				return ErrContext{"HeaderBusiness", "PHON", ErrTooMany(3)}
 			}
-			PhoneNumberCount++
 			var t PhoneNumber
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"HeaderBusiness", "PHON", err}
@@ -1867,7 +1865,6 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 		return ErrContext{"RepositoryRecord", "xrefID", err}
 	}
 	var NameOfRepositorySet, AddressSet, AutomatedRecordIDSet, ChangeDateSet bool
-	var PhoneNumberCount int
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -1894,13 +1891,12 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 				return ErrContext{"RepositoryRecord", "ADDR", err}
 			}
 		case cPHON:
-			if PhoneNumberCount == 3 {
+			if len(s.PhoneNumber) == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
 				}
 				return ErrContext{"RepositoryRecord", "PHON", ErrTooMany(3)}
 			}
-			PhoneNumberCount++
 			var t PhoneNumber
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"RepositoryRecord", "PHON", err}
@@ -2309,7 +2305,6 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 		return ErrContext{"SubmitterRecord", "xrefID", err}
 	}
 	var SubmitterNameSet, AddressSet, SubmitterRegisteredRFNSet, AutomatedRecordIDSet, ChangeDateSet bool
-	var PhoneNumberCount, LanguagePreferenceCount int
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	s.LanguagePreference = make([]LanguagePreference, 0, 3)
 	for _, sl := range l.Sub {
@@ -2337,13 +2332,12 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 				return ErrContext{"SubmitterRecord", "ADDR", err}
 			}
 		case cPHON:
-			if PhoneNumberCount == 3 {
+			if len(s.PhoneNumber) == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
 				}
 				return ErrContext{"SubmitterRecord", "PHON", ErrTooMany(3)}
 			}
-			PhoneNumberCount++
 			var t PhoneNumber
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", "PHON", err}
@@ -2356,13 +2350,12 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			}
 			s.Multimedia = append(s.Multimedia, t)
 		case cLANG:
-			if LanguagePreferenceCount == 3 {
+			if len(s.LanguagePreference) == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
 				}
 				return ErrContext{"SubmitterRecord", "LANG", ErrTooMany(3)}
 			}
-			LanguagePreferenceCount++
 			var t LanguagePreference
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", "LANG", err}
@@ -2706,7 +2699,6 @@ type EventDetail struct {
 
 func (s *EventDetail) parse(l *Line, o options) error {
 	var TypeSet, DateSet, PlaceSet, AddressSet, AgeSet, ResponsibleAgencySet, CauseOfEventSet bool
-	var PhoneNumberCount int
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -2755,13 +2747,12 @@ func (s *EventDetail) parse(l *Line, o options) error {
 				return ErrContext{"EventDetail", "ADDR", err}
 			}
 		case cPHON:
-			if PhoneNumberCount == 3 {
+			if len(s.PhoneNumber) == 3 {
 				if !o.allowMoreThanAllowed {
 					continue
 				}
 				return ErrContext{"EventDetail", "PHON", ErrTooMany(3)}
 			}
-			PhoneNumberCount++
 			var t PhoneNumber
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", "PHON", err}

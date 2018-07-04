@@ -106,17 +106,6 @@ function processStructure {
 		fi;
 		if [ $namedTags -gt 0 ]; then
 			if [ ${#maxes[@]} -gt 0 ]; then
-				echo -n "	var";
-				local c=false;
-				for m in "${maxes[@]}"; do
-					pName="$(echo "$m" | cut -d':' -f2)";
-					if $c; then
-						echo -n ","
-					fi;
-					echo -n " ${pName}Count";
-					c=true;
-				done;
-				echo " int";
 				for m in "${maxes[@]}"; do
 					pType="$(echo "$m" | cut -d':' -f1)";
 					pName="$(echo "$m" | cut -d':' -f2)";
@@ -157,13 +146,13 @@ function processStructure {
 						echo "			}";
 						echo "			${pName}Set = true";
 					elif [ "$pMax" != "M" ]; then
-						echo "			if ${pName}Count == $pMax {";
+						echo "			if len(s.$pName) == $pMax {";
 						echo "				if !o.allowMoreThanAllowed {";
 						echo "					continue";
 						echo "				}";
 						echo "				return ErrContext{\"$structureName\", \"$pTag\", ErrTooMany($pMax)}";
 						echo "			}";
-						echo "			${pName}Count++";
+						#echo "			${pName}Count++";
 					fi;
 					if [ "$pMax" = "1" ]; then
 						echo "			if err := s.${pName}.parse(&sl, o); err != nil {";
