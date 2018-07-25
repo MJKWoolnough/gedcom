@@ -142,7 +142,7 @@ function processStructure {
 						echo "				if !o.allowMoreThanAllowed {";
 						echo "					continue";
 						echo "				}";
-						echo "				return ErrContext{\"$structureName\", \"$pTag\", ErrSingleMultiple}";
+						echo "				return ErrContext{\"$structureName\", c$pTag, ErrSingleMultiple}";
 						echo "			}";
 						echo "			${pName}Set = true";
 					elif [ "$pMax" != "M" ]; then
@@ -150,7 +150,7 @@ function processStructure {
 						echo "				if !o.allowMoreThanAllowed {";
 						echo "					continue";
 						echo "				}";
-						echo "				return ErrContext{\"$structureName\", \"$pTag\", ErrTooMany($pMax)}";
+						echo "				return ErrContext{\"$structureName\", c$pTag, ErrTooMany($pMax)}";
 						echo "			}";
 						#echo "			${pName}Count++";
 					fi;
@@ -160,7 +160,7 @@ function processStructure {
 						echo "			var t ${pType}";
 						echo "			if err := t.parse(&sl, o); err != nil {";
 					fi;
-					echo "				return ErrContext{\"$structureName\", \"$pTag\", err}";
+					echo "				return ErrContext{\"$structureName\", c$pTag, err}";
 					echo "			}";
 					if [ "$pMax" != "1" ]; then
 						echo "			s.${pName} = append(s.${pName}, t)";
