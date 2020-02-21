@@ -2,10 +2,10 @@
 package gedcom // import "vimagination.zapto.org/gedcom"
 
 import (
+	"errors"
 	"io"
 	"strconv"
 
-	"vimagination.zapto.org/errors"
 	"vimagination.zapto.org/parser"
 )
 
@@ -191,9 +191,9 @@ func (r *Reader) Record() (Record, error) {
 
 // Errors
 var (
-	ErrNoHeader  errors.Error = "no header"
-	ErrNoRecords errors.Error = "no records"
-	ErrNotLevel  errors.Error = "not level token"
-	ErrNotTag    errors.Error = "not tag token"
-	ErrNotLine   errors.Error = "not line_value token"
+	ErrNoHeader  = errors.New("no header")
+	ErrNoRecords = errors.New("no records")
+	ErrNotLevel  = errors.New("not level token")
+	ErrNotTag    = errors.New("not tag token")
+	ErrNotLine   = errors.New("not line_value token")
 )
