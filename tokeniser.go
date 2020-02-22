@@ -1,10 +1,10 @@
 package gedcom
 
 import (
+	"errors"
 	"io"
 	"strings"
 
-	"vimagination.zapto.org/errors"
 	"vimagination.zapto.org/parser"
 )
 

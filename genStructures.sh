@@ -214,7 +214,7 @@ OFS="$IFS";
 	echo;
 	echo "// File automatically generated with ./genStructures.sh";
 	echo;
-	echo "import \"vimagination.zapto.org/errors\"";
+	echo "import \"errors\"";
 
 	(
 		read structureName;
@@ -317,9 +317,9 @@ func (s *Trailer) parse(*Line, options) error {
 
 // Errors
 var (
-	ErrRequiredMissing errors.Error = "required tag missing"
-	ErrSingleMultiple  errors.Error = "tag was specified more than the one time allowed"
-	ErrUnknownTag      errors.Error = "unknown tag"
+	ErrRequiredMissing = errors.New("required tag missing")
+	ErrSingleMultiple  = errors.New("tag was specified more than the one time allowed")
+	ErrUnknownTag      = errors.New("unknown tag")
 )
 
 // ErrContext adds context to a returned error
@@ -333,9 +333,9 @@ func (e ErrContext) Error() string {
 	return e.Tag + ":" + e.Err.Error()
 }
 
-// Underlying goes through the error list to retrieve the underlying
+// Unwrap goes through the error list to retrieve the underlying
 // (non-ErrContext) error
-func (e ErrContext) Underlying() error {
+func (e ErrContext) Unwrap() error {
 	err := e.Err
 	for {
 		if er, ok := err.(ErrContext); ok {
