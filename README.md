@@ -1,6 +1,6 @@
 # gedcom
 --
-    import "github.com/MJKWoolnough/gedcom"
+    import "vimagination.zapto.org/gedcom"
 
 Package gedcom implements a parser to read genealogical data in a standard
 ### format
@@ -9,32 +9,32 @@ Package gedcom implements a parser to read genealogical data in a standard
 
 ```go
 var (
-	ErrNoHeader  errors.Error = "no header"
-	ErrNoRecords errors.Error = "no records"
-	ErrNotLevel  errors.Error = "not level token"
-	ErrNotTag    errors.Error = "not tag token"
-	ErrNotLine   errors.Error = "not line_value token"
+	ErrNoHeader  = errors.New("no header")
+	ErrNoRecords = errors.New("no records")
+	ErrNotLevel  = errors.New("not level token")
+	ErrNotTag    = errors.New("not tag token")
+	ErrNotLine   = errors.New("not line_value token")
 )
 ```
 Errors
 
 ```go
 var (
-	ErrRequiredMissing errors.Error = "required tag missing"
-	ErrSingleMultiple  errors.Error = "tag was specified more than the one time allowed"
-	ErrUnknownTag      errors.Error = "unknown tag"
+	ErrRequiredMissing = errors.New("required tag missing")
+	ErrSingleMultiple  = errors.New("tag was specified more than the one time allowed")
+	ErrUnknownTag      = errors.New("unknown tag")
 )
 ```
 Errors
 
 ```go
 var (
-	ErrInvalidLevel   errors.Error = "invalid level num"
-	ErrMissingDelim   errors.Error = "missing delminitator"
-	ErrInvalidPointer errors.Error = "invalid pointer string"
-	ErrInvalidTag     errors.Error = "invalid tag"
-	ErrBadEscape      errors.Error = "bad escape sequence"
-	ErrBadChar        errors.Error = "bad character"
+	ErrInvalidLevel   = errors.New("invalid level num")
+	ErrMissingDelim   = errors.New("missing delminitator")
+	ErrInvalidPointer = errors.New("invalid pointer string")
+	ErrInvalidTag     = errors.New("invalid tag")
+	ErrBadEscape      = errors.New("bad escape sequence")
+	ErrBadChar        = errors.New("bad character")
 )
 ```
 Errors
@@ -599,13 +599,13 @@ func (e ErrContext) Error() string
 ```
 Error implements the error interface
 
-#### func (ErrContext) Underlying
+#### func (ErrContext) Unwrap
 
 ```go
-func (e ErrContext) Underlying() error
+func (e ErrContext) Unwrap() error
 ```
-Underlying goes through the error list to retrieve the underlying
-(non-ErrContext) error
+Unwrap goes through the error list to retrieve the underlying (non-ErrContext)
+error
 
 #### type ErrInvalidLength
 
