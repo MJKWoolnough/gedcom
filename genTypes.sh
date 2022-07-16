@@ -64,7 +64,11 @@ HEREDOC
 			echo "	}";
 			echo "	return nil";
 		else
-			echo "	if !o.allowWrongLength && (len(l.value) < ${data[1]} || len(l.value) > ${data[2]}) {"
+			if [ "${data[1]}" = "0" ]; then
+				echo "	if !o.allowWrongLength && len(l.value) > ${data[2]} {"
+			else
+				echo "	if !o.allowWrongLength && (len(l.value) < ${data[1]} || len(l.value) > ${data[2]}) {"
+			fi;
 			echo "		return ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}";
 			echo "	}";
 			if [ "$vType" = "string" ]; then
