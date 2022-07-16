@@ -515,7 +515,7 @@ func (e *Digit) parse(l *Line, o options) error {
 type EncodedMultimediaLine string
 
 func (e *EncodedMultimediaLine) parse(l *Line, o options) error {
-	if !o.allowWrongLength && (len(l.value) < 0 || len(l.value) > 87) {
+	if !o.allowWrongLength && len(l.value) > 87 {
 		return ErrInvalidLength{"EncodedMultimediaLine", l.value, 0, 87}
 	}
 	*e = EncodedMultimediaLine(l.value)
