@@ -40,25 +40,32 @@ func newTokeniser(r io.Reader, o options) *tokeniser {
 		Parser:  parser.New(parser.NewReaderTokeniser(r)),
 		options: o,
 	}
+
 	t.TokeniserState(t.level)
+
 	return t
 }
 
 func (t *tokeniser) level(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 	p.AcceptRun(levelIgnore)
 	p.Get()
+
 	if p.Peek() == -1 {
 		return p.Done()
-	}
-	if !p.Accept(digit) {
+	} else if !p.Accept(digit) {
 		p.Err = ErrInvalidLevel
+
 		return p.Error()
 	}
+
 	p.AcceptRun(digit)
+
 	if !p.Accept(delim) {
 		p.Err = ErrMissingDelim
+
 		return p.Error()
 	}
+
 	return parser.Token{
 		Type: tokenLevel,
 		Data: strings.TrimSpace(p.Get()),
@@ -69,6 +76,7 @@ func (t *tokeniser) optionalXrefID(p *parser.Tokeniser) (parser.Token, parser.To
 	if p.Peek() == '@' {
 		return t.xrefID(p)
 	}
+
 	return t.tag(p)
 }
 
@@ -76,26 +84,34 @@ func (t *tokeniser) readPointer(p *parser.Tokeniser) (string, error) {
 	if !p.Accept(alphanum) {
 		return "", ErrInvalidPointer
 	}
+
 	p.AcceptRun(nonAt)
+
 	if !p.Accept("@") {
 		return "", ErrInvalidPointer
 	}
+
 	pointer := p.Get()
+
 	return pointer[1 : len(pointer)-1], nil
 }
 
 func (t *tokeniser) xrefID(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 	p.Accept("@")
+
 	pointer, err := t.readPointer(p)
 	if err != nil {
 		p.Err = err
+
 		return p.Error()
-	}
-	if !p.Accept(delim) {
+	} else if !p.Accept(delim) {
 		p.Err = ErrMissingDelim
+
 		return p.Error()
 	}
+
 	p.Get()
+
 	return parser.Token{
 		Type: tokenXref,
 		Data: strings.Trim(pointer, "@"),
@@ -107,26 +123,35 @@ func (t *tokeniser) tag(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 		p.Err = ErrInvalidTag
 		return p.Error()
 	}
+
 	p.AcceptRun(alphanum)
+
 	tag := p.Get()
+
 	if p.Accept(delim) {
 		p.Get()
+
 		return parser.Token{
 			Type: tokenTag,
 			Data: tag,
 		}, t.lineValue
 	}
+
 	next := t.endLine
+
 	if p.Peek() == -1 {
 		next = (*parser.Tokeniser).Done
 	} else {
 		if !p.Accept(terminators) {
 			p.Err = ErrInvalidTag
+
 			return p.Error()
 		}
+
 		p.AcceptRun(terminators)
 		p.Get()
 	}
+
 	return parser.Token{
 		Type: tokenTag,
 		Data: tag,
@@ -143,16 +168,18 @@ func (t *tokeniser) endLine(p *parser.Tokeniser) (parser.Token, parser.TokenFunc
 func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 	if p.Peek() == '@' {
 		p.Accept("@")
+
 		if p.Peek() != '@' {
-			pointer, err := t.readPointer(p)
-			if err != nil {
+			if pointer, err := t.readPointer(p); err != nil {
 				if !t.allowInvalidEscape {
 					p.Err = err
+
 					return p.Error()
 				}
 			} else {
 				p.AcceptRun(terminators)
 				p.Get()
+
 				return parser.Token{
 					Type: tokenPointer,
 					Data: pointer,
@@ -160,7 +187,9 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 			}
 		}
 	}
+
 	next := t.level
+
 	for {
 		for {
 			if t.allowUnknownCharset && p.Except(invalidchar) {
@@ -171,56 +200,66 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 				if t.allowInvalidEscape || p.Accept("@") {
 					continue
 				}
+
 				if !p.Accept("#") {
 					p.Err = ErrBadEscape
+
 					return p.Error()
-				}
-				if t.allowUnknownCharset {
+				} else if t.allowUnknownCharset {
 					p.ExceptRun(invalidchar)
 				} else {
 					p.AcceptRun(nonAt)
 				}
+
 				if !p.Accept("@") {
 					p.Err = ErrBadEscape
+
 					return p.Error()
 				}
 			} else {
 				break
 			}
 		}
+
 		pe := p.Peek()
 		if pe == -1 {
 			next = (*parser.Tokeniser).Done
+
 			break
 		}
+
 		if strings.ContainsRune(terminators, pe) {
 			p.AcceptRun(terminators)
+
 			if !t.allowTerminatorsInValue {
 				break
 			}
-			pe = p.Peek()
-			if pe == -1 {
+
+			if pe = p.Peek(); pe == -1 {
 				next = (*parser.Tokeniser).Done
+
 				break
-			}
-			if strings.ContainsRune(digit, pe) {
+			} else if strings.ContainsRune(digit, pe) {
 				break
 			}
 		} else {
 			if !t.allowInvalidChars {
 				p.Err = ErrBadChar
+
 				return p.Error()
 			}
+
 			p.Except("")
 		}
 	}
+
 	return parser.Token{
 		Type: tokenLine,
 		Data: strings.TrimSpace(p.Get()),
 	}, next
 }
 
-// Errors
+// Errors.
 var (
 	ErrInvalidLevel   = errors.New("invalid level num")
 	ErrMissingDelim   = errors.New("missing delminitator")

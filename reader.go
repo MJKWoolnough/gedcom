@@ -1,4 +1,4 @@
-// Package gedcom implements a parser to read genealogical data in a standard format
+// Package gedcom implements a parser to read genealogical data in a standard format.
 package gedcom // import "vimagination.zapto.org/gedcom"
 
 import (
@@ -16,7 +16,7 @@ type line struct {
 	value  string
 }
 
-// Reader reads Records from the underlying GEDCOM file
+// Reader reads Records from the underlying GEDCOM file.
 type Reader struct {
 	t *tokeniser
 
@@ -31,12 +31,14 @@ type Reader struct {
 	hadHeader, hadRecord bool
 }
 
-// NewReader creates a new Reader, setting the given options
+// NewReader creates a new Reader, setting the given options.
 func NewReader(r io.Reader, opts ...Option) *Reader {
 	var o options
+
 	for _, opt := range opts {
 		opt(&o)
 	}
+
 	return &Reader{
 		t:       newTokeniser(r, o),
 		options: o,
@@ -47,29 +49,27 @@ func (r *Reader) readLine() {
 	if r.err != nil {
 		return
 	}
+
 	var t parser.Token
-	t, r.err = r.t.GetToken()
-	if r.err != nil {
+
+	if t, r.err = r.t.GetToken(); r.err != nil {
 		return
-	}
-	if t.Type != tokenLevel {
+	} else if t.Type != tokenLevel {
 		if t.Type == parser.TokenDone {
 			r.done = true
 			return
 		}
+
 		r.err = ErrNotLevel
+
 		return
-	}
-	r.line.level, r.err = strconv.ParseUint(t.Data, 10, 64)
-	if r.err != nil {
+	} else if r.line.level, r.err = strconv.ParseUint(t.Data, 10, 64); r.err != nil {
 		return
-	}
-	t, r.err = r.t.GetToken()
-	if r.err != nil {
+	} else if t, r.err = r.t.GetToken(); r.err != nil {
 		return
-	}
-	if t.Type == tokenXref {
+	} else if t.Type == tokenXref {
 		r.line.xrefID = t.Data
+
 		t, r.err = r.t.GetToken()
 		if r.err != nil {
 			return
@@ -77,23 +77,27 @@ func (r *Reader) readLine() {
 	} else {
 		r.line.xrefID = ""
 	}
+
 	if t.Type != tokenTag {
 		r.err = ErrNotTag
+
 		return
 	}
+
 	r.line.tag = t.Data
-	t, r.err = r.t.GetToken()
-	if r.err != nil {
+
+	if t, r.err = r.t.GetToken(); r.err != nil {
 		return
-	}
-	if t.Type == tokenEndLine {
+	} else if t.Type == tokenEndLine {
 		r.line.value = ""
+
 		return
-	}
-	if t.Type != tokenLine && t.Type != tokenPointer {
+	} else if t.Type != tokenLine && t.Type != tokenPointer {
 		r.err = ErrNotLine
+
 		return
 	}
+
 	r.line.value = t.Data
 }
 
@@ -111,15 +115,15 @@ func (r *Reader) readLine() {
 func (r *Reader) Record() (Record, error) {
 	if !r.peeked {
 		r.readLine()
+
 		r.peeked = true
 	}
+
 	if r.done {
 		return nil, io.EOF
-	}
-	if r.err != nil {
+	} else if r.err != nil {
 		return nil, r.err
-	}
-	if !r.hadHeader {
+	} else if !r.hadHeader {
 		if r.line.tag != "HEAD" {
 			r.peeked = false
 			return nil, ErrNoHeader
@@ -140,20 +144,25 @@ func (r *Reader) Record() (Record, error) {
 
 	lines := make([]line, 1, 32)
 	lines[0] = r.line
+
 	var lastlevel uint64
+
 	for {
 		if r.err != nil {
 			return nil, r.err
-		}
-		if r.line.level > lastlevel+1 {
+		} else if r.line.level > lastlevel+1 {
 			return nil, ErrInvalidLevel
 		}
 		lastlevel = r.line.level
 		lines = append(lines, r.line)
+
 		r.readLine()
+
 		if r.line.level == 0 {
 			plines := parseLines(lines)
+
 			var record Record
+
 			switch lines[0].tag {
 			case "HEAD":
 				record = &Header{}
@@ -177,19 +186,20 @@ func (r *Reader) Record() (Record, error) {
 				if lines[0].tag[0] == '_' {
 					return plines, nil
 				}
+
 				return plines, ErrContext{"root", lines[0].tag, ErrUnknownTag}
 			}
-			err := record.parse(&plines, r.options)
-			if err != nil {
+
+			if err := record.parse(&plines, r.options); err != nil {
 				return nil, ErrContext{"root", lines[0].tag, err}
 			}
+
 			return record, nil
 		}
 	}
-
 }
 
-// Errors
+// Errors.
 var (
 	ErrNoHeader  = errors.New("no header")
 	ErrNoRecords = errors.New("no records")
