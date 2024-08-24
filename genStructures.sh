@@ -14,7 +14,7 @@ function processStructure {
 	local namedTags=0;
 	local embedded="";
 	echo;
-	echo "// $structureName is a GEDCOM structure type";
+	echo "// $structureName is a GEDCOM structure type.";
 	echo "type $structureName struct {";
 	for type;do
 		IFS=":";
@@ -74,11 +74,13 @@ function processStructure {
 		echo "	if err := s.${ID}.parse(&Line{line: line{value: l.xrefID}}, o); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"xrefID\", err}";
 		echo "	}";
+		echo "";
 	fi;
 	if [ ${#lineValue[@]} -gt 0 ]; then
 		echo "	if err := s.${lineValue[1]}.parse(l, o); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"line_value\", err}";
 		echo "	}";
+		echo "";
 	fi;
 	if [ ${#types[@]} -gt 0 ]; then
 		if [ ${#required[@]} -gt 0 -o ${#oneMost[@]} -gt 0 ]; then
@@ -103,6 +105,7 @@ function processStructure {
 				done;
 			fi;
 			echo " bool";
+			echo "";
 		fi;
 		if [ $namedTags -gt 0 ]; then
 			if [ ${#maxes[@]} -gt 0 ]; then
@@ -112,6 +115,7 @@ function processStructure {
 					pMax="$(echo "$m" | cut -d':' -f3)";
 					if [ "$pMax" != "M" ]; then
 						echo "	s.$pName = make([]$pType, 0, $pMax)";
+						echo "";
 					fi;
 				done;
 			fi;
@@ -142,14 +146,18 @@ function processStructure {
 						echo "				if !o.allowMoreThanAllowed {";
 						echo "					continue";
 						echo "				}";
+						echo "";
 						echo "				return ErrContext{\"$structureName\", c$pTag, ErrSingleMultiple}";
 						echo "			}";
+						echo "";
 						echo "			${pName}Set = true";
+						echo "";
 					elif [ "$pMax" != "M" ]; then
 						echo "			if len(s.$pName) == $pMax {";
 						echo "				if !o.allowMoreThanAllowed {";
 						echo "					continue";
 						echo "				}";
+						echo "";
 						echo "				return ErrContext{\"$structureName\", c$pTag, ErrTooMany($pMax)}";
 						echo "			}";
 						#echo "			${pName}Count++";
@@ -157,16 +165,20 @@ function processStructure {
 					if [ "$pMax" = "1" ]; then
 						echo "			if err := s.${pName}.parse(&sl, o); err != nil {";
 					else
+						echo "";
 						echo "			var t ${pType}";
+						echo "";
 						echo "			if err := t.parse(&sl, o); err != nil {";
 					fi;
 					echo "				return ErrContext{\"$structureName\", c$pTag, err}";
 					echo "			}";
 					if [ "$pMax" != "1" ]; then
 						echo "			s.${pName} = append(s.${pName}, t)";
+						echo "";
 					fi;
 					if [ ! -z "$embedded" ]; then
 						echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
+						echo "";
 						echo "			i--";
 					fi;
 				fi;
@@ -180,6 +192,7 @@ function processStructure {
 			fi;
 			echo "		}";
 			echo "	}";
+			echo "";
 			if [ ${#required} -gt 0 ]; then
 				echo "	if !o.allowMissingRequired {";
 				for r in "${required[@]}"; do
@@ -188,6 +201,7 @@ function processStructure {
 					echo "		}";
 				done;
 				echo "	}";
+				echo "";
 			fi;
 		fi;
 		if [ ! -z "$embedded" ]; then
@@ -267,16 +281,18 @@ func (s *MultimediaLink) parse(l *Line, o options) error {
 		err = t.parse(l, o)
 		s.Data = t
 	}
+
 	return err
 }
 
-// NoteStructure splits between NoteID and NoteText
+// NoteStructure splits between NoteID and NoteText.
 type NoteStructure struct {
 	Data Record
 }
 
 func (s *NoteStructure) parse(l *Line, o options) error {
 	var err error
+
 	if l.xrefID != "" {
 		t := &NoteID{}
 		err = t.parse(l, o)
@@ -286,6 +302,7 @@ func (s *NoteStructure) parse(l *Line, o options) error {
 		err = t.parse(l, o)
 		s.Data = t
 	}
+
 	return err
 }
 
@@ -296,6 +313,7 @@ type SourceCitation struct {
 
 func (s *SourceCitation) parse(l *Line, o options) error {
 	var err error
+
 	if l.xrefID != "" {
 		t := &SourceID{}
 		err = t.parse(l, o)
@@ -305,6 +323,7 @@ func (s *SourceCitation) parse(l *Line, o options) error {
 		err = t.parse(l, o)
 		s.Data = t
 	}
+
 	return err
 }
 
@@ -315,26 +334,26 @@ func (s *Trailer) parse(*Line, options) error {
 	return nil
 }
 
-// Errors
+// Errors.
 var (
 	ErrRequiredMissing = errors.New("required tag missing")
 	ErrSingleMultiple  = errors.New("tag was specified more than the one time allowed")
 	ErrUnknownTag      = errors.New("unknown tag")
 )
 
-// ErrContext adds context to a returned error
+// ErrContext adds context to a returned error.
 type ErrContext struct {
 	Structure, Tag string
 	Err            error
 }
 
-// Error implements the error interface
+// Error implements the error interface.
 func (e ErrContext) Error() string {
 	return e.Tag + ":" + e.Err.Error()
 }
 
 // Unwrap goes through the error list to retrieve the underlying
-// (non-ErrContext) error
+// (non-ErrContext) error.
 func (e ErrContext) Unwrap() error {
 	err := e.Err
 	for {
@@ -346,10 +365,10 @@ func (e ErrContext) Unwrap() error {
 	}
 }
 
-// ErrTooMany is an error returned when too many of a particular tag exist
+// ErrTooMany is an error returned when too many of a particular tag exist.
 type ErrTooMany int
 
-// Error implements the error interface
+// Error implements the error interface.
 func (ErrTooMany) Error() string {
 	return "too many tags"
 }
