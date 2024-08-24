@@ -3,7 +3,7 @@
     import "vimagination.zapto.org/gedcom"
 
 Package gedcom implements a parser to read genealogical data in a standard
-### format
+format.
 
 ## Usage
 
@@ -16,7 +16,7 @@ var (
 	ErrNotLine   = errors.New("not line_value token")
 )
 ```
-Errors
+Errors.
 
 ```go
 var (
@@ -25,7 +25,7 @@ var (
 	ErrUnknownTag      = errors.New("unknown tag")
 )
 ```
-Errors
+Errors.
 
 ```go
 var (
@@ -37,28 +37,28 @@ var (
 	ErrBadChar        = errors.New("bad character")
 )
 ```
-Errors
+Errors.
 
 #### func  AllowInvalidChars
 
 ```go
 func AllowInvalidChars(o *options)
 ```
-AllowInvalidChars allows control characters (<32) in line_values
+AllowInvalidChars allows control characters (<32) in line_values.
 
 #### func  AllowInvalidEscape
 
 ```go
 func AllowInvalidEscape(o *options)
 ```
-AllowInvalidEscape turns off error reporting for invalid escape sequences
+AllowInvalidEscape turns off error reporting for invalid escape sequences.
 
 #### func  AllowMissingRequired
 
 ```go
 func AllowMissingRequired(o *options)
 ```
-AllowMissingRequired turns off error reporting for a missing required field
+AllowMissingRequired turns off error reporting for a missing required field.
 
 #### func  AllowMoreThanAllowed
 
@@ -66,14 +66,14 @@ AllowMissingRequired turns off error reporting for a missing required field
 func AllowMoreThanAllowed(o *options)
 ```
 AllowMoreThanAllowed turns off error reporting when more than the maxumum number
-of a certain item are read
+of a certain item are read.
 
 #### func  AllowTerminatorsInValue
 
 ```go
 func AllowTerminatorsInValue(o *options)
 ```
-AllowTerminatorsInValue allows a line_value to contain newlines
+AllowTerminatorsInValue allows a line_value to contain newlines.
 
 #### func  AllowUnknownCharset
 
@@ -81,14 +81,14 @@ AllowTerminatorsInValue allows a line_value to contain newlines
 func AllowUnknownCharset(o *options)
 ```
 AllowUnknownCharset allows the parser to read any character, not just those
-within ANSEL
+within ANSEL.
 
 #### func  AllowUnknownTags
 
 ```go
 func AllowUnknownTags(o *options)
 ```
-AllowUnknownTags turns off error reporting when an unknown tag is read
+AllowUnknownTags turns off error reporting when an unknown tag is read.
 
 #### func  AllowWrongLength
 
@@ -96,14 +96,14 @@ AllowUnknownTags turns off error reporting when an unknown tag is read
 func AllowWrongLength(o *options)
 ```
 AllowWrongLength turns off error reporting when a base type has an incorrect
-length
+length.
 
 #### func  IgnoreInvalidValue
 
 ```go
 func IgnoreInvalidValue(o *options)
 ```
-IgnoreInvalidValue turns off error reporting when a non-valid value if read
+IgnoreInvalidValue turns off error reporting when a non-valid value if read.
 
 #### type AddressCity
 
@@ -111,7 +111,7 @@ IgnoreInvalidValue turns off error reporting when a non-valid value if read
 type AddressCity string
 ```
 
-AddressCity is a GEDCOM base type
+AddressCity is a GEDCOM base type.
 
 #### type AddressCountry
 
@@ -119,7 +119,7 @@ AddressCity is a GEDCOM base type
 type AddressCountry string
 ```
 
-AddressCountry is a GEDCOM base type
+AddressCountry is a GEDCOM base type.
 
 #### type AddressLine
 
@@ -127,7 +127,7 @@ AddressCountry is a GEDCOM base type
 type AddressLine string
 ```
 
-AddressLine is a GEDCOM base type
+AddressLine is a GEDCOM base type.
 
 #### type AddressLine1
 
@@ -135,7 +135,7 @@ AddressLine is a GEDCOM base type
 type AddressLine1 string
 ```
 
-AddressLine1 is a GEDCOM base type
+AddressLine1 is a GEDCOM base type.
 
 #### type AddressLine2
 
@@ -143,7 +143,7 @@ AddressLine1 is a GEDCOM base type
 type AddressLine2 string
 ```
 
-AddressLine2 is a GEDCOM base type
+AddressLine2 is a GEDCOM base type.
 
 #### type AddressPostalCode
 
@@ -151,7 +151,7 @@ AddressLine2 is a GEDCOM base type
 type AddressPostalCode string
 ```
 
-AddressPostalCode is a GEDCOM base type
+AddressPostalCode is a GEDCOM base type.
 
 #### type AddressState
 
@@ -159,7 +159,7 @@ AddressPostalCode is a GEDCOM base type
 type AddressState string
 ```
 
-AddressState is a GEDCOM base type
+AddressState is a GEDCOM base type.
 
 #### type AddressStructure
 
@@ -175,7 +175,7 @@ type AddressStructure struct {
 }
 ```
 
-AddressStructure is a GEDCOM structure type
+AddressStructure is a GEDCOM structure type.
 
 #### type AdoptedBy
 
@@ -183,7 +183,7 @@ AddressStructure is a GEDCOM structure type
 type AdoptedBy string
 ```
 
-AdoptedBy is a GEDCOM base type
+AdoptedBy is a GEDCOM base type.
 
 #### type AdoptionEvent
 
@@ -194,7 +194,7 @@ type AdoptionEvent struct {
 }
 ```
 
-AdoptionEvent is a GEDCOM structure type
+AdoptionEvent is a GEDCOM structure type.
 
 #### type AdoptionReference
 
@@ -205,7 +205,7 @@ type AdoptionReference struct {
 }
 ```
 
-AdoptionReference is a GEDCOM structure type
+AdoptionReference is a GEDCOM structure type.
 
 #### type AgeAtEvent
 
@@ -213,7 +213,7 @@ AdoptionReference is a GEDCOM structure type
 type AgeAtEvent string
 ```
 
-AgeAtEvent is a GEDCOM base type
+AgeAtEvent is a GEDCOM base type.
 
 #### type AgeStructure
 
@@ -223,7 +223,7 @@ type AgeStructure struct {
 }
 ```
 
-AgeStructure is a GEDCOM structure type
+AgeStructure is a GEDCOM structure type.
 
 #### type AncestralFileNumber
 
@@ -231,7 +231,7 @@ AgeStructure is a GEDCOM structure type
 type AncestralFileNumber string
 ```
 
-AncestralFileNumber is a GEDCOM base type
+AncestralFileNumber is a GEDCOM base type.
 
 #### type ApprovedSystemID
 
@@ -239,7 +239,7 @@ AncestralFileNumber is a GEDCOM base type
 type ApprovedSystemID string
 ```
 
-ApprovedSystemID is a GEDCOM base type
+ApprovedSystemID is a GEDCOM base type.
 
 #### type AssociationStructure
 
@@ -253,7 +253,7 @@ type AssociationStructure struct {
 }
 ```
 
-AssociationStructure is a GEDCOM structure type
+AssociationStructure is a GEDCOM structure type.
 
 #### type AttributeType
 
@@ -261,7 +261,7 @@ AssociationStructure is a GEDCOM structure type
 type AttributeType string
 ```
 
-AttributeType is a GEDCOM base type
+AttributeType is a GEDCOM base type.
 
 #### type AutomatedRecordID
 
@@ -269,7 +269,7 @@ AttributeType is a GEDCOM base type
 type AutomatedRecordID string
 ```
 
-AutomatedRecordID is a GEDCOM base type
+AutomatedRecordID is a GEDCOM base type.
 
 #### type CasteEvent
 
@@ -280,7 +280,7 @@ type CasteEvent struct {
 }
 ```
 
-CasteEvent is a GEDCOM structure type
+CasteEvent is a GEDCOM structure type.
 
 #### type CasteName
 
@@ -288,7 +288,7 @@ CasteEvent is a GEDCOM structure type
 type CasteName string
 ```
 
-CasteName is a GEDCOM base type
+CasteName is a GEDCOM base type.
 
 #### type CauseOfEvent
 
@@ -296,7 +296,7 @@ CasteName is a GEDCOM base type
 type CauseOfEvent string
 ```
 
-CauseOfEvent is a GEDCOM base type
+CauseOfEvent is a GEDCOM base type.
 
 #### type CertaintyAssessment
 
@@ -304,7 +304,7 @@ CauseOfEvent is a GEDCOM base type
 type CertaintyAssessment uint
 ```
 
-CertaintyAssessment is a GEDCOM base type
+CertaintyAssessment is a GEDCOM base type.
 
 #### type ChangeDate
 
@@ -312,7 +312,7 @@ CertaintyAssessment is a GEDCOM base type
 type ChangeDate string
 ```
 
-ChangeDate is a GEDCOM base type
+ChangeDate is a GEDCOM base type.
 
 #### type ChangeDateStructure
 
@@ -323,7 +323,7 @@ type ChangeDateStructure struct {
 }
 ```
 
-ChangeDateStructure is a GEDCOM structure type
+ChangeDateStructure is a GEDCOM structure type.
 
 #### type ChangeDateTime
 
@@ -334,7 +334,7 @@ type ChangeDateTime struct {
 }
 ```
 
-ChangeDateTime is a GEDCOM structure type
+ChangeDateTime is a GEDCOM structure type.
 
 #### type CharacterSet
 
@@ -342,7 +342,7 @@ ChangeDateTime is a GEDCOM structure type
 type CharacterSet string
 ```
 
-CharacterSet is a GEDCOM base type
+CharacterSet is a GEDCOM base type.
 
 #### type CharacterSetStructure
 
@@ -353,7 +353,7 @@ type CharacterSetStructure struct {
 }
 ```
 
-CharacterSetStructure is a GEDCOM structure type
+CharacterSetStructure is a GEDCOM structure type.
 
 #### type ChildToFamilyLink
 
@@ -365,7 +365,7 @@ type ChildToFamilyLink struct {
 }
 ```
 
-ChildToFamilyLink is a GEDCOM structure type
+ChildToFamilyLink is a GEDCOM structure type.
 
 #### type ChildrenEvent
 
@@ -376,7 +376,7 @@ type ChildrenEvent struct {
 }
 ```
 
-ChildrenEvent is a GEDCOM structure type
+ChildrenEvent is a GEDCOM structure type.
 
 #### type ContentDescription
 
@@ -384,7 +384,7 @@ ChildrenEvent is a GEDCOM structure type
 type ContentDescription string
 ```
 
-ContentDescription is a GEDCOM base type
+ContentDescription is a GEDCOM base type.
 
 #### type CopyrightGedcomFile
 
@@ -392,7 +392,7 @@ ContentDescription is a GEDCOM base type
 type CopyrightGedcomFile string
 ```
 
-CopyrightGedcomFile is a GEDCOM base type
+CopyrightGedcomFile is a GEDCOM base type.
 
 #### type CopyrightSourceData
 
@@ -400,7 +400,7 @@ CopyrightGedcomFile is a GEDCOM base type
 type CopyrightSourceData string
 ```
 
-CopyrightSourceData is a GEDCOM base type
+CopyrightSourceData is a GEDCOM base type.
 
 #### type CountOfChildren
 
@@ -408,7 +408,7 @@ CopyrightSourceData is a GEDCOM base type
 type CountOfChildren uint8
 ```
 
-CountOfChildren is a GEDCOM base type
+CountOfChildren is a GEDCOM base type.
 
 #### type CountOfMarriages
 
@@ -416,7 +416,7 @@ CountOfChildren is a GEDCOM base type
 type CountOfMarriages uint8
 ```
 
-CountOfMarriages is a GEDCOM base type
+CountOfMarriages is a GEDCOM base type.
 
 #### type Date
 
@@ -424,7 +424,7 @@ CountOfMarriages is a GEDCOM base type
 type Date string
 ```
 
-Date is a GEDCOM base type
+Date is a GEDCOM base type.
 
 #### type DateApproximated
 
@@ -432,7 +432,7 @@ Date is a GEDCOM base type
 type DateApproximated string
 ```
 
-DateApproximated is a GEDCOM base type
+DateApproximated is a GEDCOM base type.
 
 #### type DateCalendar
 
@@ -440,7 +440,7 @@ DateApproximated is a GEDCOM base type
 type DateCalendar string
 ```
 
-DateCalendar is a GEDCOM base type
+DateCalendar is a GEDCOM base type.
 
 #### type DateCalendarEscape
 
@@ -448,7 +448,7 @@ DateCalendar is a GEDCOM base type
 type DateCalendarEscape string
 ```
 
-DateCalendarEscape is a GEDCOM base type
+DateCalendarEscape is a GEDCOM base type.
 
 #### type DateExact
 
@@ -456,7 +456,7 @@ DateCalendarEscape is a GEDCOM base type
 type DateExact string
 ```
 
-DateExact is a GEDCOM base type
+DateExact is a GEDCOM base type.
 
 #### type DateFren
 
@@ -464,7 +464,7 @@ DateExact is a GEDCOM base type
 type DateFren string
 ```
 
-DateFren is a GEDCOM base type
+DateFren is a GEDCOM base type.
 
 #### type DateGreg
 
@@ -472,7 +472,7 @@ DateFren is a GEDCOM base type
 type DateGreg string
 ```
 
-DateGreg is a GEDCOM base type
+DateGreg is a GEDCOM base type.
 
 #### type DateHebr
 
@@ -480,7 +480,7 @@ DateGreg is a GEDCOM base type
 type DateHebr string
 ```
 
-DateHebr is a GEDCOM base type
+DateHebr is a GEDCOM base type.
 
 #### type DateJuln
 
@@ -488,7 +488,7 @@ DateHebr is a GEDCOM base type
 type DateJuln string
 ```
 
-DateJuln is a GEDCOM base type
+DateJuln is a GEDCOM base type.
 
 #### type DateLDSOrd
 
@@ -496,7 +496,7 @@ DateJuln is a GEDCOM base type
 type DateLDSOrd string
 ```
 
-DateLDSOrd is a GEDCOM base type
+DateLDSOrd is a GEDCOM base type.
 
 #### type DatePeriod
 
@@ -504,7 +504,7 @@ DateLDSOrd is a GEDCOM base type
 type DatePeriod string
 ```
 
-DatePeriod is a GEDCOM base type
+DatePeriod is a GEDCOM base type.
 
 #### type DatePhrase
 
@@ -512,7 +512,7 @@ DatePeriod is a GEDCOM base type
 type DatePhrase string
 ```
 
-DatePhrase is a GEDCOM base type
+DatePhrase is a GEDCOM base type.
 
 #### type DateRange
 
@@ -520,7 +520,7 @@ DatePhrase is a GEDCOM base type
 type DateRange string
 ```
 
-DateRange is a GEDCOM base type
+DateRange is a GEDCOM base type.
 
 #### type DateValue
 
@@ -528,7 +528,7 @@ DateRange is a GEDCOM base type
 type DateValue string
 ```
 
-DateValue is a GEDCOM base type
+DateValue is a GEDCOM base type.
 
 #### type Day
 
@@ -536,7 +536,7 @@ DateValue is a GEDCOM base type
 type Day uint8
 ```
 
-Day is a GEDCOM base type
+Day is a GEDCOM base type.
 
 #### type DescriptionEvent
 
@@ -547,7 +547,7 @@ type DescriptionEvent struct {
 }
 ```
 
-DescriptionEvent is a GEDCOM structure type
+DescriptionEvent is a GEDCOM structure type.
 
 #### type DescriptiveTitle
 
@@ -555,7 +555,7 @@ DescriptionEvent is a GEDCOM structure type
 type DescriptiveTitle string
 ```
 
-DescriptiveTitle is a GEDCOM base type
+DescriptiveTitle is a GEDCOM base type.
 
 #### type Digit
 
@@ -563,7 +563,7 @@ DescriptiveTitle is a GEDCOM base type
 type Digit uint8
 ```
 
-Digit is a GEDCOM base type
+Digit is a GEDCOM base type.
 
 #### type EncodedMultimediaLine
 
@@ -571,7 +571,7 @@ Digit is a GEDCOM base type
 type EncodedMultimediaLine string
 ```
 
-EncodedMultimediaLine is a GEDCOM base type
+EncodedMultimediaLine is a GEDCOM base type.
 
 #### type EntryRecordingDate
 
@@ -579,7 +579,7 @@ EncodedMultimediaLine is a GEDCOM base type
 type EntryRecordingDate string
 ```
 
-EntryRecordingDate is a GEDCOM base type
+EntryRecordingDate is a GEDCOM base type.
 
 #### type ErrContext
 
@@ -590,14 +590,14 @@ type ErrContext struct {
 }
 ```
 
-ErrContext adds context to a returned error
+ErrContext adds context to a returned error.
 
 #### func (ErrContext) Error
 
 ```go
 func (e ErrContext) Error() string
 ```
-Error implements the error interface
+Error implements the error interface.
 
 #### func (ErrContext) Unwrap
 
@@ -605,7 +605,7 @@ Error implements the error interface
 func (e ErrContext) Unwrap() error
 ```
 Unwrap goes through the error list to retrieve the underlying (non-ErrContext)
-error
+error.
 
 #### type ErrInvalidLength
 
@@ -617,14 +617,14 @@ type ErrInvalidLength struct {
 ```
 
 ErrInvalidLength is an error that is generated when a type is given more or less
-data than is required
+data than is required.
 
 #### func (ErrInvalidLength) Error
 
 ```go
 func (e ErrInvalidLength) Error() string
 ```
-Error is an implementation of the error interface
+Error is an implementation of the error interface.
 
 #### type ErrInvalidValue
 
@@ -635,14 +635,14 @@ type ErrInvalidValue struct {
 ```
 
 ErrInvalidValue is an error that is generated when a type is not one of the
-specified values
+specified values.
 
 #### func (ErrInvalidValue) Error
 
 ```go
 func (e ErrInvalidValue) Error() string
 ```
-Error is an implementation of the error interface
+Error is an implementation of the error interface.
 
 #### type ErrTooMany
 
@@ -650,14 +650,14 @@ Error is an implementation of the error interface
 type ErrTooMany int
 ```
 
-ErrTooMany is an error returned when too many of a particular tag exist
+ErrTooMany is an error returned when too many of a particular tag exist.
 
 #### func (ErrTooMany) Error
 
 ```go
 func (ErrTooMany) Error() string
 ```
-Error implements the error interface
+Error implements the error interface.
 
 #### type EventAttributeType
 
@@ -665,7 +665,7 @@ Error implements the error interface
 type EventAttributeType string
 ```
 
-EventAttributeType is a GEDCOM base type
+EventAttributeType is a GEDCOM base type.
 
 #### type EventDescriptor
 
@@ -673,7 +673,7 @@ EventAttributeType is a GEDCOM base type
 type EventDescriptor string
 ```
 
-EventDescriptor is a GEDCOM base type
+EventDescriptor is a GEDCOM base type.
 
 #### type EventDetail
 
@@ -693,7 +693,7 @@ type EventDetail struct {
 }
 ```
 
-EventDetail is a GEDCOM structure type
+EventDetail is a GEDCOM structure type.
 
 #### type EventTypeCitedFrom
 
@@ -701,7 +701,7 @@ EventDetail is a GEDCOM structure type
 type EventTypeCitedFrom string
 ```
 
-EventTypeCitedFrom is a GEDCOM base type
+EventTypeCitedFrom is a GEDCOM base type.
 
 #### type EventTypeFamile
 
@@ -709,7 +709,7 @@ EventTypeCitedFrom is a GEDCOM base type
 type EventTypeFamile string
 ```
 
-EventTypeFamile is a GEDCOM base type
+EventTypeFamile is a GEDCOM base type.
 
 #### type EventTypeIndividual
 
@@ -717,7 +717,7 @@ EventTypeFamile is a GEDCOM base type
 type EventTypeIndividual string
 ```
 
-EventTypeIndividual is a GEDCOM base type
+EventTypeIndividual is a GEDCOM base type.
 
 #### type EventsRecorded
 
@@ -725,7 +725,7 @@ EventTypeIndividual is a GEDCOM base type
 type EventsRecorded string
 ```
 
-EventsRecorded is a GEDCOM base type
+EventsRecorded is a GEDCOM base type.
 
 #### type EventsRecordedStructure
 
@@ -736,7 +736,7 @@ type EventsRecordedStructure struct {
 }
 ```
 
-EventsRecordedStructure is a GEDCOM structure type
+EventsRecordedStructure is a GEDCOM structure type.
 
 #### type Family
 
@@ -766,14 +766,14 @@ type Family struct {
 }
 ```
 
-Family is a GEDCOM structure type
+Family is a GEDCOM structure type.
 
 #### func (Family) Type
 
 ```go
 func (Family) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type FamilyEventDetail
 
@@ -785,7 +785,7 @@ type FamilyEventDetail struct {
 }
 ```
 
-FamilyEventDetail is a GEDCOM structure type
+FamilyEventDetail is a GEDCOM structure type.
 
 #### type FileName
 
@@ -793,7 +793,7 @@ FamilyEventDetail is a GEDCOM structure type
 type FileName string
 ```
 
-FileName is a GEDCOM base type
+FileName is a GEDCOM base type.
 
 #### type Form
 
@@ -801,7 +801,7 @@ FileName is a GEDCOM base type
 type Form string
 ```
 
-Form is a GEDCOM base type
+Form is a GEDCOM base type.
 
 #### type GenerationsOfAncestors
 
@@ -809,7 +809,7 @@ Form is a GEDCOM base type
 type GenerationsOfAncestors uint16
 ```
 
-GenerationsOfAncestors is a GEDCOM base type
+GenerationsOfAncestors is a GEDCOM base type.
 
 #### type GenerationsOfDescendants
 
@@ -817,7 +817,7 @@ GenerationsOfAncestors is a GEDCOM base type
 type GenerationsOfDescendants uint16
 ```
 
-GenerationsOfDescendants is a GEDCOM base type
+GenerationsOfDescendants is a GEDCOM base type.
 
 #### type Header
 
@@ -838,14 +838,14 @@ type Header struct {
 }
 ```
 
-Header is a GEDCOM structure type
+Header is a GEDCOM structure type.
 
 #### func (Header) Type
 
 ```go
 func (Header) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type HeaderBusiness
 
@@ -857,7 +857,7 @@ type HeaderBusiness struct {
 }
 ```
 
-HeaderBusiness is a GEDCOM structure type
+HeaderBusiness is a GEDCOM structure type.
 
 #### type HeaderDataSource
 
@@ -869,7 +869,7 @@ type HeaderDataSource struct {
 }
 ```
 
-HeaderDataSource is a GEDCOM structure type
+HeaderDataSource is a GEDCOM structure type.
 
 #### type HeaderPlace
 
@@ -879,7 +879,7 @@ type HeaderPlace struct {
 }
 ```
 
-HeaderPlace is a GEDCOM structure type
+HeaderPlace is a GEDCOM structure type.
 
 #### type HeaderSource
 
@@ -893,7 +893,7 @@ type HeaderSource struct {
 }
 ```
 
-HeaderSource is a GEDCOM structure type
+HeaderSource is a GEDCOM structure type.
 
 #### type Individual
 
@@ -957,14 +957,14 @@ type Individual struct {
 }
 ```
 
-Individual is a GEDCOM structure type
+Individual is a GEDCOM structure type.
 
 #### func (Individual) Type
 
 ```go
 func (Individual) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type IndividualEventDetail
 
@@ -974,7 +974,7 @@ type IndividualEventDetail struct {
 }
 ```
 
-IndividualEventDetail is a GEDCOM structure type
+IndividualEventDetail is a GEDCOM structure type.
 
 #### type LDSBaptismDateStatus
 
@@ -982,7 +982,7 @@ IndividualEventDetail is a GEDCOM structure type
 type LDSBaptismDateStatus string
 ```
 
-LDSBaptismDateStatus is a GEDCOM base type
+LDSBaptismDateStatus is a GEDCOM base type.
 
 #### type LDSChildSealingDateStatus
 
@@ -990,7 +990,7 @@ LDSBaptismDateStatus is a GEDCOM base type
 type LDSChildSealingDateStatus string
 ```
 
-LDSChildSealingDateStatus is a GEDCOM base type
+LDSChildSealingDateStatus is a GEDCOM base type.
 
 #### type LDSEndowmentDateStatus
 
@@ -998,7 +998,7 @@ LDSChildSealingDateStatus is a GEDCOM base type
 type LDSEndowmentDateStatus string
 ```
 
-LDSEndowmentDateStatus is a GEDCOM base type
+LDSEndowmentDateStatus is a GEDCOM base type.
 
 #### type LDSSpouseSealing
 
@@ -1013,7 +1013,7 @@ type LDSSpouseSealing struct {
 }
 ```
 
-LDSSpouseSealing is a GEDCOM structure type
+LDSSpouseSealing is a GEDCOM structure type.
 
 #### type LDSSpouseSealingDateStatus
 
@@ -1021,7 +1021,7 @@ LDSSpouseSealing is a GEDCOM structure type
 type LDSSpouseSealingDateStatus string
 ```
 
-LDSSpouseSealingDateStatus is a GEDCOM base type
+LDSSpouseSealingDateStatus is a GEDCOM base type.
 
 #### type LanguageID
 
@@ -1029,7 +1029,7 @@ LDSSpouseSealingDateStatus is a GEDCOM base type
 type LanguageID string
 ```
 
-LanguageID is a GEDCOM base type
+LanguageID is a GEDCOM base type.
 
 #### type LanguageOfText
 
@@ -1037,7 +1037,7 @@ LanguageID is a GEDCOM base type
 type LanguageOfText string
 ```
 
-LanguageOfText is a GEDCOM base type
+LanguageOfText is a GEDCOM base type.
 
 #### type LanguagePreference
 
@@ -1045,7 +1045,7 @@ LanguageOfText is a GEDCOM base type
 type LanguagePreference string
 ```
 
-LanguagePreference is a GEDCOM base type
+LanguagePreference is a GEDCOM base type.
 
 #### type Line
 
@@ -1055,14 +1055,14 @@ type Line struct {
 }
 ```
 
-Line represents an unknown GEDCOM record
+Line represents an unknown GEDCOM record.
 
 #### func (Line) Type
 
 ```go
 func (Line) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type MarriagesEvent
 
@@ -1073,7 +1073,7 @@ type MarriagesEvent struct {
 }
 ```
 
-MarriagesEvent is a GEDCOM structure type
+MarriagesEvent is a GEDCOM structure type.
 
 #### type Month
 
@@ -1081,7 +1081,7 @@ MarriagesEvent is a GEDCOM structure type
 type Month string
 ```
 
-Month is a GEDCOM base type
+Month is a GEDCOM base type.
 
 #### type MonthFren
 
@@ -1089,7 +1089,7 @@ Month is a GEDCOM base type
 type MonthFren string
 ```
 
-MonthFren is a GEDCOM base type
+MonthFren is a GEDCOM base type.
 
 #### type MonthHebr
 
@@ -1097,7 +1097,7 @@ MonthFren is a GEDCOM base type
 type MonthHebr string
 ```
 
-MonthHebr is a GEDCOM base type
+MonthHebr is a GEDCOM base type.
 
 #### type MultimediaFileReference
 
@@ -1105,7 +1105,7 @@ MonthHebr is a GEDCOM base type
 type MultimediaFileReference string
 ```
 
-MultimediaFileReference is a GEDCOM base type
+MultimediaFileReference is a GEDCOM base type.
 
 #### type MultimediaFormat
 
@@ -1113,7 +1113,7 @@ MultimediaFileReference is a GEDCOM base type
 type MultimediaFormat string
 ```
 
-MultimediaFormat is a GEDCOM base type
+MultimediaFormat is a GEDCOM base type.
 
 #### type MultimediaLink
 
@@ -1136,14 +1136,14 @@ type MultimediaLinkFile struct {
 }
 ```
 
-MultimediaLinkFile is a GEDCOM structure type
+MultimediaLinkFile is a GEDCOM structure type.
 
 #### func (MultimediaLinkFile) Type
 
 ```go
 func (MultimediaLinkFile) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type MultimediaLinkID
 
@@ -1153,14 +1153,14 @@ type MultimediaLinkID struct {
 }
 ```
 
-MultimediaLinkID is a GEDCOM structure type
+MultimediaLinkID is a GEDCOM structure type.
 
 #### func (MultimediaLinkID) Type
 
 ```go
 func (MultimediaLinkID) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type MultimediaRecord
 
@@ -1178,14 +1178,14 @@ type MultimediaRecord struct {
 }
 ```
 
-MultimediaRecord is a GEDCOM structure type
+MultimediaRecord is a GEDCOM structure type.
 
 #### func (MultimediaRecord) Type
 
 ```go
 func (MultimediaRecord) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type NameOfBusiness
 
@@ -1193,7 +1193,7 @@ Type implements the Record interface
 type NameOfBusiness string
 ```
 
-NameOfBusiness is a GEDCOM base type
+NameOfBusiness is a GEDCOM base type.
 
 #### type NameOfFamilyFile
 
@@ -1201,7 +1201,7 @@ NameOfBusiness is a GEDCOM base type
 type NameOfFamilyFile string
 ```
 
-NameOfFamilyFile is a GEDCOM base type
+NameOfFamilyFile is a GEDCOM base type.
 
 #### type NameOfProduct
 
@@ -1209,7 +1209,7 @@ NameOfFamilyFile is a GEDCOM base type
 type NameOfProduct string
 ```
 
-NameOfProduct is a GEDCOM base type
+NameOfProduct is a GEDCOM base type.
 
 #### type NameOfRepository
 
@@ -1217,7 +1217,7 @@ NameOfProduct is a GEDCOM base type
 type NameOfRepository string
 ```
 
-NameOfRepository is a GEDCOM base type
+NameOfRepository is a GEDCOM base type.
 
 #### type NameOfSourceData
 
@@ -1225,7 +1225,7 @@ NameOfRepository is a GEDCOM base type
 type NameOfSourceData string
 ```
 
-NameOfSourceData is a GEDCOM base type
+NameOfSourceData is a GEDCOM base type.
 
 #### type NamePersonal
 
@@ -1233,7 +1233,7 @@ NameOfSourceData is a GEDCOM base type
 type NamePersonal string
 ```
 
-NamePersonal is a GEDCOM base type
+NamePersonal is a GEDCOM base type.
 
 #### type NamePiece
 
@@ -1241,7 +1241,7 @@ NamePersonal is a GEDCOM base type
 type NamePiece string
 ```
 
-NamePiece is a GEDCOM base type
+NamePiece is a GEDCOM base type.
 
 #### type NamePieceGiven
 
@@ -1249,7 +1249,7 @@ NamePiece is a GEDCOM base type
 type NamePieceGiven string
 ```
 
-NamePieceGiven is a GEDCOM base type
+NamePieceGiven is a GEDCOM base type.
 
 #### type NamePieceNickname
 
@@ -1257,7 +1257,7 @@ NamePieceGiven is a GEDCOM base type
 type NamePieceNickname string
 ```
 
-NamePieceNickname is a GEDCOM base type
+NamePieceNickname is a GEDCOM base type.
 
 #### type NamePiecePrefix
 
@@ -1265,7 +1265,7 @@ NamePieceNickname is a GEDCOM base type
 type NamePiecePrefix string
 ```
 
-NamePiecePrefix is a GEDCOM base type
+NamePiecePrefix is a GEDCOM base type.
 
 #### type NamePieceSuffix
 
@@ -1273,7 +1273,7 @@ NamePiecePrefix is a GEDCOM base type
 type NamePieceSuffix string
 ```
 
-NamePieceSuffix is a GEDCOM base type
+NamePieceSuffix is a GEDCOM base type.
 
 #### type NamePieceSurname
 
@@ -1281,7 +1281,7 @@ NamePieceSuffix is a GEDCOM base type
 type NamePieceSurname string
 ```
 
-NamePieceSurname is a GEDCOM base type
+NamePieceSurname is a GEDCOM base type.
 
 #### type NamePieceSurnamePrefix
 
@@ -1289,7 +1289,7 @@ NamePieceSurname is a GEDCOM base type
 type NamePieceSurnamePrefix string
 ```
 
-NamePieceSurnamePrefix is a GEDCOM base type
+NamePieceSurnamePrefix is a GEDCOM base type.
 
 #### type NationalIDEvent
 
@@ -1300,7 +1300,7 @@ type NationalIDEvent struct {
 }
 ```
 
-NationalIDEvent is a GEDCOM structure type
+NationalIDEvent is a GEDCOM structure type.
 
 #### type NationalIDNumber
 
@@ -1308,7 +1308,7 @@ NationalIDEvent is a GEDCOM structure type
 type NationalIDNumber string
 ```
 
-NationalIDNumber is a GEDCOM base type
+NationalIDNumber is a GEDCOM base type.
 
 #### type NationalOrTribalOrigin
 
@@ -1316,7 +1316,7 @@ NationalIDNumber is a GEDCOM base type
 type NationalOrTribalOrigin string
 ```
 
-NationalOrTribalOrigin is a GEDCOM base type
+NationalOrTribalOrigin is a GEDCOM base type.
 
 #### type NationalOriginEvent
 
@@ -1327,7 +1327,7 @@ type NationalOriginEvent struct {
 }
 ```
 
-NationalOriginEvent is a GEDCOM structure type
+NationalOriginEvent is a GEDCOM structure type.
 
 #### type NewTag
 
@@ -1335,7 +1335,7 @@ NationalOriginEvent is a GEDCOM structure type
 type NewTag string
 ```
 
-NewTag is a GEDCOM base type
+NewTag is a GEDCOM base type.
 
 #### type NobilityEvent
 
@@ -1346,7 +1346,7 @@ type NobilityEvent struct {
 }
 ```
 
-NobilityEvent is a GEDCOM structure type
+NobilityEvent is a GEDCOM structure type.
 
 #### type NobilityTypeTitle
 
@@ -1354,7 +1354,7 @@ NobilityEvent is a GEDCOM structure type
 type NobilityTypeTitle string
 ```
 
-NobilityTypeTitle is a GEDCOM base type
+NobilityTypeTitle is a GEDCOM base type.
 
 #### type NoteID
 
@@ -1364,14 +1364,14 @@ type NoteID struct {
 }
 ```
 
-NoteID is a GEDCOM structure type
+NoteID is a GEDCOM structure type.
 
 #### func (NoteID) Type
 
 ```go
 func (NoteID) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type NoteRecord
 
@@ -1386,14 +1386,14 @@ type NoteRecord struct {
 }
 ```
 
-NoteRecord is a GEDCOM structure type
+NoteRecord is a GEDCOM structure type.
 
 #### func (NoteRecord) Type
 
 ```go
 func (NoteRecord) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type NoteStructure
 
@@ -1403,7 +1403,7 @@ type NoteStructure struct {
 }
 ```
 
-NoteStructure splits between NoteID and NoteText
+NoteStructure splits between NoteID and NoteText.
 
 #### type NoteText
 
@@ -1414,14 +1414,14 @@ type NoteText struct {
 }
 ```
 
-NoteText is a GEDCOM structure type
+NoteText is a GEDCOM structure type.
 
 #### func (NoteText) Type
 
 ```go
 func (NoteText) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type Number
 
@@ -1429,7 +1429,7 @@ Type implements the Record interface
 type Number uint
 ```
 
-Number is a GEDCOM base type
+Number is a GEDCOM base type.
 
 #### type Occupation
 
@@ -1437,7 +1437,7 @@ Number is a GEDCOM base type
 type Occupation string
 ```
 
-Occupation is a GEDCOM base type
+Occupation is a GEDCOM base type.
 
 #### type OccupationEvent
 
@@ -1448,7 +1448,7 @@ type OccupationEvent struct {
 }
 ```
 
-OccupationEvent is a GEDCOM structure type
+OccupationEvent is a GEDCOM structure type.
 
 #### type Option
 
@@ -1456,7 +1456,7 @@ OccupationEvent is a GEDCOM structure type
 type Option func(o *options)
 ```
 
-Option type for turning off generated errors
+Option type for turning off generated errors.
 
 #### type OrdinanceProcessFlag
 
@@ -1464,7 +1464,7 @@ Option type for turning off generated errors
 type OrdinanceProcessFlag string
 ```
 
-OrdinanceProcessFlag is a GEDCOM base type
+OrdinanceProcessFlag is a GEDCOM base type.
 
 #### type PedigreeLinkageType
 
@@ -1472,7 +1472,7 @@ OrdinanceProcessFlag is a GEDCOM base type
 type PedigreeLinkageType string
 ```
 
-PedigreeLinkageType is a GEDCOM base type
+PedigreeLinkageType is a GEDCOM base type.
 
 #### type PermanentRecordFileNumber
 
@@ -1480,7 +1480,7 @@ PedigreeLinkageType is a GEDCOM base type
 type PermanentRecordFileNumber string
 ```
 
-PermanentRecordFileNumber is a GEDCOM base type
+PermanentRecordFileNumber is a GEDCOM base type.
 
 #### type PersonalNameStructure
 
@@ -1498,7 +1498,7 @@ type PersonalNameStructure struct {
 }
 ```
 
-PersonalNameStructure is a GEDCOM structure type
+PersonalNameStructure is a GEDCOM structure type.
 
 #### type PhoneNumber
 
@@ -1506,7 +1506,7 @@ PersonalNameStructure is a GEDCOM structure type
 type PhoneNumber string
 ```
 
-PhoneNumber is a GEDCOM base type
+PhoneNumber is a GEDCOM base type.
 
 #### type PhysicalDescription
 
@@ -1514,7 +1514,7 @@ PhoneNumber is a GEDCOM base type
 type PhysicalDescription string
 ```
 
-PhysicalDescription is a GEDCOM base type
+PhysicalDescription is a GEDCOM base type.
 
 #### type PlaceHierarchy
 
@@ -1522,7 +1522,7 @@ PhysicalDescription is a GEDCOM base type
 type PlaceHierarchy string
 ```
 
-PlaceHierarchy is a GEDCOM base type
+PlaceHierarchy is a GEDCOM base type.
 
 #### type PlaceLivingOrdinance
 
@@ -1530,7 +1530,7 @@ PlaceHierarchy is a GEDCOM base type
 type PlaceLivingOrdinance string
 ```
 
-PlaceLivingOrdinance is a GEDCOM base type
+PlaceLivingOrdinance is a GEDCOM base type.
 
 #### type PlaceStructure
 
@@ -1543,7 +1543,7 @@ type PlaceStructure struct {
 }
 ```
 
-PlaceStructure is a GEDCOM structure type
+PlaceStructure is a GEDCOM structure type.
 
 #### type PlaceValue
 
@@ -1551,7 +1551,7 @@ PlaceStructure is a GEDCOM structure type
 type PlaceValue string
 ```
 
-PlaceValue is a GEDCOM base type
+PlaceValue is a GEDCOM base type.
 
 #### type PossessionEvent
 
@@ -1562,7 +1562,7 @@ type PossessionEvent struct {
 }
 ```
 
-PossessionEvent is a GEDCOM structure type
+PossessionEvent is a GEDCOM structure type.
 
 #### type Possessions
 
@@ -1570,7 +1570,7 @@ PossessionEvent is a GEDCOM structure type
 type Possessions string
 ```
 
-Possessions is a GEDCOM base type
+Possessions is a GEDCOM base type.
 
 #### type PublicationDate
 
@@ -1578,7 +1578,7 @@ Possessions is a GEDCOM base type
 type PublicationDate string
 ```
 
-PublicationDate is a GEDCOM base type
+PublicationDate is a GEDCOM base type.
 
 #### type Reader
 
@@ -1587,14 +1587,14 @@ type Reader struct {
 }
 ```
 
-Reader reads Records from the underlying GEDCOM file
+Reader reads Records from the underlying GEDCOM file.
 
 #### func  NewReader
 
 ```go
 func NewReader(r io.Reader, opts ...Option) *Reader
 ```
-NewReader creates a new Reader, setting the given options
+NewReader creates a new Reader, setting the given options.
 
 #### func (*Reader) Record
 
@@ -1619,7 +1619,7 @@ Record returns a GEDCOM Record. Record types are: -
 type ReceivingSystemName string
 ```
 
-ReceivingSystemName is a GEDCOM base type
+ReceivingSystemName is a GEDCOM base type.
 
 #### type Record
 
@@ -1630,7 +1630,7 @@ type Record interface {
 }
 ```
 
-Record is the interface to contain all of the record types
+Record is the interface to contain all of the record types.
 
 #### type RecordID
 
@@ -1638,7 +1638,7 @@ Record is the interface to contain all of the record types
 type RecordID uint
 ```
 
-RecordID stores the type of record
+RecordID stores the type of record.
 
 ```go
 const (
@@ -1661,7 +1661,7 @@ const (
 	RecordSourceText
 )
 ```
-RecordIDs
+RecordIDs.
 
 #### type RecordIdentifier
 
@@ -1669,7 +1669,7 @@ RecordIDs
 type RecordIdentifier string
 ```
 
-RecordIdentifier is a GEDCOM base type
+RecordIdentifier is a GEDCOM base type.
 
 #### type RecordType
 
@@ -1677,7 +1677,7 @@ RecordIdentifier is a GEDCOM base type
 type RecordType string
 ```
 
-RecordType is a GEDCOM base type
+RecordType is a GEDCOM base type.
 
 #### type RegisteredResourceIdentifier
 
@@ -1685,7 +1685,7 @@ RecordType is a GEDCOM base type
 type RegisteredResourceIdentifier string
 ```
 
-RegisteredResourceIdentifier is a GEDCOM base type
+RegisteredResourceIdentifier is a GEDCOM base type.
 
 #### type RelationIsDescriptor
 
@@ -1693,7 +1693,7 @@ RegisteredResourceIdentifier is a GEDCOM base type
 type RelationIsDescriptor string
 ```
 
-RelationIsDescriptor is a GEDCOM base type
+RelationIsDescriptor is a GEDCOM base type.
 
 #### type ReligiousAffiliation
 
@@ -1701,7 +1701,7 @@ RelationIsDescriptor is a GEDCOM base type
 type ReligiousAffiliation string
 ```
 
-ReligiousAffiliation is a GEDCOM base type
+ReligiousAffiliation is a GEDCOM base type.
 
 #### type ReligiousEvent
 
@@ -1712,7 +1712,7 @@ type ReligiousEvent struct {
 }
 ```
 
-ReligiousEvent is a GEDCOM structure type
+ReligiousEvent is a GEDCOM structure type.
 
 #### type RepositoryRecord
 
@@ -1729,14 +1729,14 @@ type RepositoryRecord struct {
 }
 ```
 
-RepositoryRecord is a GEDCOM structure type
+RepositoryRecord is a GEDCOM structure type.
 
 #### func (RepositoryRecord) Type
 
 ```go
 func (RepositoryRecord) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type ResidenceEvent
 
@@ -1746,7 +1746,7 @@ type ResidenceEvent struct {
 }
 ```
 
-ResidenceEvent is a GEDCOM structure type
+ResidenceEvent is a GEDCOM structure type.
 
 #### type ResponsibleAgency
 
@@ -1754,7 +1754,7 @@ ResidenceEvent is a GEDCOM structure type
 type ResponsibleAgency string
 ```
 
-ResponsibleAgency is a GEDCOM base type
+ResponsibleAgency is a GEDCOM base type.
 
 #### type RestrictionNotice
 
@@ -1762,7 +1762,7 @@ ResponsibleAgency is a GEDCOM base type
 type RestrictionNotice string
 ```
 
-RestrictionNotice is a GEDCOM base type
+RestrictionNotice is a GEDCOM base type.
 
 #### type RoleDescriptor
 
@@ -1770,7 +1770,7 @@ RestrictionNotice is a GEDCOM base type
 type RoleDescriptor string
 ```
 
-RoleDescriptor is a GEDCOM base type
+RoleDescriptor is a GEDCOM base type.
 
 #### type RoleInEvent
 
@@ -1778,7 +1778,7 @@ RoleDescriptor is a GEDCOM base type
 type RoleInEvent string
 ```
 
-RoleInEvent is a GEDCOM base type
+RoleInEvent is a GEDCOM base type.
 
 #### type SSNEvent
 
@@ -1789,7 +1789,7 @@ type SSNEvent struct {
 }
 ```
 
-SSNEvent is a GEDCOM structure type
+SSNEvent is a GEDCOM structure type.
 
 #### type ScholasticAchievement
 
@@ -1797,7 +1797,7 @@ SSNEvent is a GEDCOM structure type
 type ScholasticAchievement string
 ```
 
-ScholasticAchievement is a GEDCOM base type
+ScholasticAchievement is a GEDCOM base type.
 
 #### type ScholasticEvent
 
@@ -1808,7 +1808,7 @@ type ScholasticEvent struct {
 }
 ```
 
-ScholasticEvent is a GEDCOM structure type
+ScholasticEvent is a GEDCOM structure type.
 
 #### type SexValue
 
@@ -1816,7 +1816,7 @@ ScholasticEvent is a GEDCOM structure type
 type SexValue string
 ```
 
-SexValue is a GEDCOM base type
+SexValue is a GEDCOM base type.
 
 #### type SocialSecurityNumber
 
@@ -1824,7 +1824,7 @@ SexValue is a GEDCOM base type
 type SocialSecurityNumber string
 ```
 
-SocialSecurityNumber is a GEDCOM base type
+SocialSecurityNumber is a GEDCOM base type.
 
 #### type SourceCallNumber
 
@@ -1832,7 +1832,7 @@ SocialSecurityNumber is a GEDCOM base type
 type SourceCallNumber string
 ```
 
-SourceCallNumber is a GEDCOM base type
+SourceCallNumber is a GEDCOM base type.
 
 #### type SourceCallStructure
 
@@ -1843,7 +1843,7 @@ type SourceCallStructure struct {
 }
 ```
 
-SourceCallStructure is a GEDCOM structure type
+SourceCallStructure is a GEDCOM structure type.
 
 #### type SourceCitation
 
@@ -1864,7 +1864,7 @@ type SourceCitationEvent struct {
 }
 ```
 
-SourceCitationEvent is a GEDCOM structure type
+SourceCitationEvent is a GEDCOM structure type.
 
 #### type SourceData
 
@@ -1875,7 +1875,7 @@ type SourceData struct {
 }
 ```
 
-SourceData is a GEDCOM structure type
+SourceData is a GEDCOM structure type.
 
 #### type SourceDescription
 
@@ -1883,7 +1883,7 @@ SourceData is a GEDCOM structure type
 type SourceDescription string
 ```
 
-SourceDescription is a GEDCOM base type
+SourceDescription is a GEDCOM base type.
 
 #### type SourceDescriptiveTitle
 
@@ -1891,7 +1891,7 @@ SourceDescription is a GEDCOM base type
 type SourceDescriptiveTitle string
 ```
 
-SourceDescriptiveTitle is a GEDCOM base type
+SourceDescriptiveTitle is a GEDCOM base type.
 
 #### type SourceFiledByEntry
 
@@ -1899,7 +1899,7 @@ SourceDescriptiveTitle is a GEDCOM base type
 type SourceFiledByEntry string
 ```
 
-SourceFiledByEntry is a GEDCOM base type
+SourceFiledByEntry is a GEDCOM base type.
 
 #### type SourceID
 
@@ -1915,14 +1915,14 @@ type SourceID struct {
 }
 ```
 
-SourceID is a GEDCOM structure type
+SourceID is a GEDCOM structure type.
 
 #### func (SourceID) Type
 
 ```go
 func (SourceID) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type SourceJurisdictionPlace
 
@@ -1930,7 +1930,7 @@ Type implements the Record interface
 type SourceJurisdictionPlace string
 ```
 
-SourceJurisdictionPlace is a GEDCOM base type
+SourceJurisdictionPlace is a GEDCOM base type.
 
 #### type SourceMediaType
 
@@ -1938,7 +1938,7 @@ SourceJurisdictionPlace is a GEDCOM base type
 type SourceMediaType string
 ```
 
-SourceMediaType is a GEDCOM base type
+SourceMediaType is a GEDCOM base type.
 
 #### type SourceOriginator
 
@@ -1946,7 +1946,7 @@ SourceMediaType is a GEDCOM base type
 type SourceOriginator string
 ```
 
-SourceOriginator is a GEDCOM base type
+SourceOriginator is a GEDCOM base type.
 
 #### type SourcePublicationFacts
 
@@ -1954,7 +1954,7 @@ SourceOriginator is a GEDCOM base type
 type SourcePublicationFacts string
 ```
 
-SourcePublicationFacts is a GEDCOM base type
+SourcePublicationFacts is a GEDCOM base type.
 
 #### type SourceRecord
 
@@ -1976,14 +1976,14 @@ type SourceRecord struct {
 }
 ```
 
-SourceRecord is a GEDCOM structure type
+SourceRecord is a GEDCOM structure type.
 
 #### func (SourceRecord) Type
 
 ```go
 func (SourceRecord) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type SourceRecordDataStructure
 
@@ -1995,7 +1995,7 @@ type SourceRecordDataStructure struct {
 }
 ```
 
-SourceRecordDataStructure is a GEDCOM structure type
+SourceRecordDataStructure is a GEDCOM structure type.
 
 #### type SourceRepositoryCitation
 
@@ -2006,7 +2006,7 @@ type SourceRepositoryCitation struct {
 }
 ```
 
-SourceRepositoryCitation is a GEDCOM structure type
+SourceRepositoryCitation is a GEDCOM structure type.
 
 #### type SourceText
 
@@ -2018,14 +2018,14 @@ type SourceText struct {
 }
 ```
 
-SourceText is a GEDCOM structure type
+SourceText is a GEDCOM structure type.
 
 #### func (SourceText) Type
 
 ```go
 func (SourceText) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type SpouseToFamilyLink
 
@@ -2036,7 +2036,7 @@ type SpouseToFamilyLink struct {
 }
 ```
 
-SpouseToFamilyLink is a GEDCOM structure type
+SpouseToFamilyLink is a GEDCOM structure type.
 
 #### type SubmissionRecord
 
@@ -2052,14 +2052,14 @@ type SubmissionRecord struct {
 }
 ```
 
-SubmissionRecord is a GEDCOM structure type
+SubmissionRecord is a GEDCOM structure type.
 
 #### func (SubmissionRecord) Type
 
 ```go
 func (SubmissionRecord) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type SubmitterName
 
@@ -2067,7 +2067,7 @@ Type implements the Record interface
 type SubmitterName string
 ```
 
-SubmitterName is a GEDCOM base type
+SubmitterName is a GEDCOM base type.
 
 #### type SubmitterRecord
 
@@ -2085,14 +2085,14 @@ type SubmitterRecord struct {
 }
 ```
 
-SubmitterRecord is a GEDCOM structure type
+SubmitterRecord is a GEDCOM structure type.
 
 #### func (SubmitterRecord) Type
 
 ```go
 func (SubmitterRecord) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type SubmitterRegisteredRFN
 
@@ -2100,7 +2100,7 @@ Type implements the Record interface
 type SubmitterRegisteredRFN string
 ```
 
-SubmitterRegisteredRFN is a GEDCOM base type
+SubmitterRegisteredRFN is a GEDCOM base type.
 
 #### type SubmitterText
 
@@ -2108,7 +2108,7 @@ SubmitterRegisteredRFN is a GEDCOM base type
 type SubmitterText string
 ```
 
-SubmitterText is a GEDCOM base type
+SubmitterText is a GEDCOM base type.
 
 #### type TempleCode
 
@@ -2116,7 +2116,7 @@ SubmitterText is a GEDCOM base type
 type TempleCode string
 ```
 
-TempleCode is a GEDCOM base type
+TempleCode is a GEDCOM base type.
 
 #### type Text
 
@@ -2124,7 +2124,7 @@ TempleCode is a GEDCOM base type
 type Text string
 ```
 
-Text is a GEDCOM base type
+Text is a GEDCOM base type.
 
 #### type TextFromSource
 
@@ -2132,7 +2132,7 @@ Text is a GEDCOM base type
 type TextFromSource string
 ```
 
-TextFromSource is a GEDCOM base type
+TextFromSource is a GEDCOM base type.
 
 #### type TimeValue
 
@@ -2140,7 +2140,7 @@ TextFromSource is a GEDCOM base type
 type TimeValue string
 ```
 
-TimeValue is a GEDCOM base type
+TimeValue is a GEDCOM base type.
 
 #### type Trailer
 
@@ -2155,7 +2155,7 @@ Trailer type
 ```go
 func (Trailer) Type() RecordID
 ```
-Type implements the Record interface
+Type implements the Record interface.
 
 #### type TransmissionDate
 
@@ -2163,7 +2163,7 @@ Type implements the Record interface
 type TransmissionDate string
 ```
 
-TransmissionDate is a GEDCOM base type
+TransmissionDate is a GEDCOM base type.
 
 #### type TransmissionDateTime
 
@@ -2174,7 +2174,7 @@ type TransmissionDateTime struct {
 }
 ```
 
-TransmissionDateTime is a GEDCOM structure type
+TransmissionDateTime is a GEDCOM structure type.
 
 #### type UserReferenceNumber
 
@@ -2182,7 +2182,7 @@ TransmissionDateTime is a GEDCOM structure type
 type UserReferenceNumber string
 ```
 
-UserReferenceNumber is a GEDCOM base type
+UserReferenceNumber is a GEDCOM base type.
 
 #### type UserReferenceStructure
 
@@ -2193,7 +2193,7 @@ type UserReferenceStructure struct {
 }
 ```
 
-UserReferenceStructure is a GEDCOM structure type
+UserReferenceStructure is a GEDCOM structure type.
 
 #### type UserReferenceType
 
@@ -2201,7 +2201,7 @@ UserReferenceStructure is a GEDCOM structure type
 type UserReferenceType string
 ```
 
-UserReferenceType is a GEDCOM base type
+UserReferenceType is a GEDCOM base type.
 
 #### type Verified
 
@@ -2209,7 +2209,7 @@ UserReferenceType is a GEDCOM base type
 type Verified string
 ```
 
-Verified is a GEDCOM base type
+Verified is a GEDCOM base type.
 
 #### type VerifiedEventDetail
 
@@ -2220,7 +2220,7 @@ type VerifiedEventDetail struct {
 }
 ```
 
-VerifiedEventDetail is a GEDCOM structure type
+VerifiedEventDetail is a GEDCOM structure type.
 
 #### type VerifiedFamilyEventDetail
 
@@ -2231,7 +2231,7 @@ type VerifiedFamilyEventDetail struct {
 }
 ```
 
-VerifiedFamilyEventDetail is a GEDCOM structure type
+VerifiedFamilyEventDetail is a GEDCOM structure type.
 
 #### type VerifiedIndividualFamEventDetail
 
@@ -2242,7 +2242,7 @@ type VerifiedIndividualFamEventDetail struct {
 }
 ```
 
-VerifiedIndividualFamEventDetail is a GEDCOM structure type
+VerifiedIndividualFamEventDetail is a GEDCOM structure type.
 
 #### type Version
 
@@ -2253,7 +2253,7 @@ type Version struct {
 }
 ```
 
-Version is a GEDCOM structure type
+Version is a GEDCOM structure type.
 
 #### type VersionNumber
 
@@ -2261,7 +2261,7 @@ Version is a GEDCOM structure type
 type VersionNumber string
 ```
 
-VersionNumber is a GEDCOM base type
+VersionNumber is a GEDCOM base type.
 
 #### type WhereWithinSource
 
@@ -2269,7 +2269,7 @@ VersionNumber is a GEDCOM base type
 type WhereWithinSource string
 ```
 
-WhereWithinSource is a GEDCOM base type
+WhereWithinSource is a GEDCOM base type.
 
 #### type Xref
 
@@ -2277,7 +2277,7 @@ WhereWithinSource is a GEDCOM base type
 type Xref string
 ```
 
-Xref is a GEDCOM base type
+Xref is a GEDCOM base type.
 
 #### type Year
 
@@ -2285,7 +2285,7 @@ Xref is a GEDCOM base type
 type Year string
 ```
 
-Year is a GEDCOM base type
+Year is a GEDCOM base type.
 
 #### type YearGreg
 
@@ -2293,4 +2293,4 @@ Year is a GEDCOM base type
 type YearGreg string
 ```
 
-YearGreg is a GEDCOM base type
+YearGreg is a GEDCOM base type.
