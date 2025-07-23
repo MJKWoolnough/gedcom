@@ -12,17 +12,16 @@ import (
 )
 HEREDOC
 
-
 	while read line; do
 		OFS="$IFS";
-		IFS=":"
-		data=($line)
+		IFS=":";
+		data=( $line );
 		IFS="$OFS";
 		eType="${data[0]}";
 		hasContConc=false;
 		if [ "${eType: -1}" = "*" ]; then
 			eType="${eType:0:-1}";
-			hasContConc=true
+			hasContConc=true;
 		fi;
 		vType="string";
 		first="${data[1]}";
@@ -43,11 +42,11 @@ HEREDOC
 		echo "func (e *$eType) parse(l *Line, o options) error {";
 		if [ -z "${data[1]}" ]; then
 			if [ -z "$(echo "${data[2]}" | tr -d "[:upper:]")" ]; then
-				echo "	switch strings.ToUpper(l.value) {"
+				echo "	switch strings.ToUpper(l.value) {";
 			elif [ -z "$(echo "${data[2]}" | tr -d "[:lower:]")" ]; then
-				echo "	switch strings.ToLower(l.value) {"
+				echo "	switch strings.ToLower(l.value) {";
 			else
-				echo "	switch l.value {"
+				echo "	switch l.value {";
 			fi;
 			for i in $(seq 2 $(( ${#data[@]} - 1 ))); do
 				echo "	case c${data[$i]}:" | tr -d '/' | tr -d '-';
@@ -66,9 +65,9 @@ HEREDOC
 			echo "	return nil";
 		else
 			if [ "${data[1]}" = "0" ]; then
-				echo "	if !o.allowWrongLength && len(l.value) > ${data[2]} {"
+				echo "	if !o.allowWrongLength && len(l.value) > ${data[2]} {";
 			else
-				echo "	if !o.allowWrongLength && (len(l.value) < ${data[1]} || len(l.value) > ${data[2]}) {"
+				echo "	if !o.allowWrongLength && (len(l.value) < ${data[1]} || len(l.value) > ${data[2]}) {";
 			fi;
 			echo "		return ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}";
 			echo "	}";
@@ -84,7 +83,7 @@ HEREDOC
 					echo "";
 					echo "			fallthrough";
 					echo "		case cCONC:";
-					echo "			if !o.allowWrongLength && (len(l.Sub[i].value) < ${data[1]} || len(l.Sub[i].value) > ${data[2]}) {"
+					echo "			if !o.allowWrongLength && (len(l.Sub[i].value) < ${data[1]} || len(l.Sub[i].value) > ${data[2]}) {";
 					echo "				return ErrContext{\"$eType\", l.Sub[i].tag, ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}}";
 					echo "			}";
 					echo "";
@@ -102,7 +101,7 @@ HEREDOC
 			else
 				num="$(echo "$vType" | tr -d "[:alpha:]")";
 				if [ -z "$num" ]; then
-					num="0"
+					num="0";
 				fi;
 				echo "	n, err := strconv.ParseUint(l.value, 10, $num)";
 				echo "	if !o.ignoreInvalidValue && err != nil {";
@@ -115,7 +114,7 @@ HEREDOC
 			echo "	return nil";
 		fi;
 		echo "}";
-	done < types.gen
+	done < types.gen;
 
 	cat <<HEREDOC
 
@@ -142,4 +141,4 @@ func (e ErrInvalidLength) Error() string {
 	return "Value for " + e.Type + " has an invalid length"
 }
 HEREDOC
-) > types.go
+) > types.go;
