@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function processStructure {
+function processStructure() {
 	local structureName="$1";
 	local longest=$2;
 	shift;
@@ -16,9 +16,9 @@ function processStructure {
 	echo;
 	echo "// $structureName is a GEDCOM structure type.";
 	echo "type $structureName struct {";
-	for type;do
+	for type; do
 		IFS=":";
-		parts=($type);
+		parts=( $type );
 		IFS="$OFS";
 		pTag="${parts[0]}";
 		pType="${parts[1]}";
@@ -35,7 +35,7 @@ function processStructure {
 			pName="$pType";
 		fi;
 		if [ "${parts[0]:0:1}" = "@" ]; then
-			pType="Xref"
+			pType="Xref";
 		fi;
 		echo -n "	";
 		if [ ! -z "$pTag" ]; then
@@ -54,7 +54,7 @@ function processStructure {
 			lineValue=( "$pType" "$pName" );
 		elif [ -z "$pTag" ]; then
 			embedded="$pType";
-			types+=("$pTag:$pType:$pName:$pMin:$pMax");
+			types+=( "$pTag:$pType:$pName:$pMin:$pMax" );
 		else
 			if [ "$pMin" = "1" ]; then
 				required+=( "$pName" );
@@ -64,7 +64,7 @@ function processStructure {
 				maxes+=( "$pType:$pName:$pMax" );
 			fi;
 			let "namedTags++";
-			types+=("$pTag:$pType:$pName:$pMin:$pMax");
+			types+=( "$pTag:$pType:$pName:$pMin:$pMax" );
 		fi;
 	done;
 	echo "}";
@@ -89,7 +89,7 @@ function processStructure {
 			if [ ${#required[@]} -gt 0 ]; then
 				for r in "${required[@]}"; do
 					if $c; then
-						echo -n ","
+						echo -n ",";
 					fi;
 					echo -n " ${r}Set";
 					c=true;
@@ -98,7 +98,7 @@ function processStructure {
 			if [ ${#oneMost[@]} -gt 0 ]; then
 				for o in "${oneMost[@]}"; do
 					if $c; then
-						echo -n ","
+						echo -n ",";
 					fi;
 					echo -n " ${o}Set";
 					c=true;
@@ -120,7 +120,7 @@ function processStructure {
 				done;
 			fi;
 			if [ -z "$embedded" ]; then
-				echo "	for _, sl := range l.Sub {"
+				echo "	for _, sl := range l.Sub {";
 			else
 				echo "	for i := 0; i < len(l.Sub); i++ {";
 				echo "		sl := l.Sub[i]";
@@ -128,14 +128,14 @@ function processStructure {
 			echo "		switch sl.tag {";
 			for type in ${types[@]}; do
 				IFS=":";
-				local parts=($type);
+				local parts=( $type );
 				IFS="$OFS";
 				pTag="${parts[0]}";
 				pType="${parts[1]}";
 				pName="${parts[2]}";
 				pMax="${parts[4]}";
 				if [ ! -z "$pTag" ]; then
-					cont=false
+					cont=false;
 					if [ "${pTag: -1}" = "*" ]; then
 						pTag="${pTag:0:-1}";
 						cont=true;
@@ -160,6 +160,7 @@ function processStructure {
 						echo "";
 						echo "				return ErrContext{\"$structureName\", c$pTag, ErrTooMany($pMax)}";
 						echo "			}";
+
 						#echo "			${pName}Count++";
 					fi;
 					if [ "$pMax" = "1" ]; then
@@ -208,7 +209,7 @@ function processStructure {
 			echo "	return s.${embedded}.parse(l, o)";
 		fi;
 	else
-		echo "	for _, sl := range l.Sub {"
+		echo "	for _, sl := range l.Sub {";
 		echo "		if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {";
 		echo "			return ErrContext{\"$structureName\", sl.tag, ErrUnknownTag}";
 		echo "		}";
@@ -235,10 +236,10 @@ OFS="$IFS";
 		types=();
 		longest=0;
 		IFS="$(echo)";
-		while read line;do 
+		while read line; do
 			if [ "${line:0:1}" = "	" ]; then
 				IFS=":";
-				parts=(${line:1});
+				parts=( ${line:1} );
 				IFS="$(echo)";
 				pTag="${parts[0]}";
 				pType="${parts[1]}";
@@ -249,7 +250,7 @@ OFS="$IFS";
 				if [ ! -z "$pTag" -a ${#pName} -gt $longest ]; then
 					longest=${#pName};
 				fi;
-				types+=("${line:1}");
+				types+=( "${line:1}" );
 			else
 				IFS="$OFS";
 				processStructure "$structureName" $longest "${types[@]}";
@@ -258,10 +259,10 @@ OFS="$IFS";
 				types=();
 				structureName="$line";
 			fi;
-		done
+		done;
 		IFS="$OFS";
 		processStructure "$structureName" $longest "${types[@]}";
-	) < structures.gen
+	) < structures.gen;
 
 	cat <<HEREDOC
 
@@ -373,5 +374,4 @@ func (ErrTooMany) Error() string {
 	return "too many tags"
 }
 HEREDOC
-
-) > structures.go
+) > structures.go;
