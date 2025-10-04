@@ -1606,7 +1606,7 @@ Record returns a GEDCOM Record. Record types are: -
     *Header
     *Submission
     *Family
-    *Invididual
+    *Individual
     *MultimediaNote
     *Repository
     *Source
