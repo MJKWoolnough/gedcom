@@ -1,6 +1,7 @@
 package gedcom_test
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -50,20 +51,25 @@ func ExampleNewReader() {
 1 CHIL @I5@
 0 TRLR
 `
+
 	g := gedcom.NewReader(strings.NewReader(gedcomFile))
+
 	for {
 		r, err := g.Record()
-		if err != nil {
-			if err != io.EOF {
-				fmt.Println("Error:", err)
-			}
+		if errors.Is(err, io.EOF) {
+			break
+		} else if err != nil {
+			fmt.Println("Error:", err)
+
 			break
 		}
+
 		switch r := r.(type) {
 		case *gedcom.Header:
 			fmt.Println("Filename:", r.FileName)
 		case *gedcom.Individual:
 			fmt.Printf("Person (%s):\n", r.ID)
+
 			for i, name := range r.PersonalNameStructure {
 				fmt.Printf("	Name %d: %s\n", i+1, name.NamePersonal)
 			}
@@ -71,11 +77,13 @@ func ExampleNewReader() {
 			fmt.Printf("Family (%s):\n", r.ID)
 			fmt.Println("	Father/Husband:", r.Husband)
 			fmt.Println("	Mother/Wife:", r.Wife)
+
 			for i, child := range r.Children {
 				fmt.Printf("	Child %d: %s\n", i+1, child)
 			}
 		}
 	}
+
 	// Output:
 	// Filename: TestFile
 	// Person (I1):
