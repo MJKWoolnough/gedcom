@@ -262,7 +262,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 // Errors.
 var (
 	ErrInvalidLevel   = errors.New("invalid level num")
-	ErrMissingDelim   = errors.New("missing delminitator")
+	ErrMissingDelim   = errors.New("missing delimiter")
 	ErrInvalidPointer = errors.New("invalid pointer string")
 	ErrInvalidTag     = errors.New("invalid tag")
 	ErrBadEscape      = errors.New("bad escape sequence")
