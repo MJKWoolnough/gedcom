@@ -31,7 +31,7 @@ func AllowMissingRequired(o *options) {
 	o.allowMissingRequired = true
 }
 
-// AllowMoreThanAllowed turns off error reporting when more than the maxumum
+// AllowMoreThanAllowed turns off error reporting when more than the maximum
 // number of a certain item are read.
 func AllowMoreThanAllowed(o *options) {
 	o.allowMoreThanAllowed = true
