@@ -2,7 +2,6 @@
 
 [![CI](https://github.com/MJKWoolnough/gedcom/actions/workflows/go-checks.yml/badge.svg)](https://github.com/MJKWoolnough/gedcom/actions)
 [![Go Reference](https://pkg.go.dev/badge/vimagination.zapto.org/gedcom.svg)](https://pkg.go.dev/vimagination.zapto.org/gedcom)
-[![Go Report Card](https://goreportcard.com/badge/vimagination.zapto.org/gedcom)](https://goreportcard.com/report/vimagination.zapto.org/gedcom)
 
 --
     import "vimagination.zapto.org/gedcom"
