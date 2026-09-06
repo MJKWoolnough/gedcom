@@ -51,7 +51,7 @@ func (e *AddressLine) parse(l *Line, o options) error {
 			fallthrough
 		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 60) {
-				return ErrContext{"AddressLine", l.Sub[i].tag, ErrInvalidLength{"AddressLine", l.value, 1, 60}}
+				return ErrContext{"AddressLine", l.Sub[i].tag, ErrInvalidLength{"AddressLine", l.Sub[i].value, 1, 60}}
 			}
 
 			*e += AddressLine(l.Sub[i].value)
@@ -800,7 +800,7 @@ func (e *ContentDescription) parse(l *Line, o options) error {
 			fallthrough
 		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
-				return ErrContext{"ContentDescription", l.Sub[i].tag, ErrInvalidLength{"ContentDescription", l.value, 1, 248}}
+				return ErrContext{"ContentDescription", l.Sub[i].tag, ErrInvalidLength{"ContentDescription", l.Sub[i].value, 1, 248}}
 			}
 
 			*e += ContentDescription(l.Sub[i].value)
@@ -1809,7 +1809,7 @@ func (e *SourceDescription) parse(l *Line, o options) error {
 			fallthrough
 		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
-				return ErrContext{"SourceDescription", l.Sub[i].tag, ErrInvalidLength{"SourceDescription", l.value, 1, 248}}
+				return ErrContext{"SourceDescription", l.Sub[i].tag, ErrInvalidLength{"SourceDescription", l.Sub[i].value, 1, 248}}
 			}
 
 			*e += SourceDescription(l.Sub[i].value)
@@ -1843,7 +1843,7 @@ func (e *SourceDescriptiveTitle) parse(l *Line, o options) error {
 			fallthrough
 		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
-				return ErrContext{"SourceDescriptiveTitle", l.Sub[i].tag, ErrInvalidLength{"SourceDescriptiveTitle", l.value, 1, 248}}
+				return ErrContext{"SourceDescriptiveTitle", l.Sub[i].tag, ErrInvalidLength{"SourceDescriptiveTitle", l.Sub[i].value, 1, 248}}
 			}
 
 			*e += SourceDescriptiveTitle(l.Sub[i].value)
@@ -1943,7 +1943,7 @@ func (e *SourceOriginator) parse(l *Line, o options) error {
 			fallthrough
 		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
-				return ErrContext{"SourceOriginator", l.Sub[i].tag, ErrInvalidLength{"SourceOriginator", l.value, 1, 248}}
+				return ErrContext{"SourceOriginator", l.Sub[i].tag, ErrInvalidLength{"SourceOriginator", l.Sub[i].value, 1, 248}}
 			}
 
 			*e += SourceOriginator(l.Sub[i].value)
@@ -2016,7 +2016,7 @@ func (e *SubmitterText) parse(l *Line, o options) error {
 			fallthrough
 		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
-				return ErrContext{"SubmitterText", l.Sub[i].tag, ErrInvalidLength{"SubmitterText", l.value, 1, 248}}
+				return ErrContext{"SubmitterText", l.Sub[i].tag, ErrInvalidLength{"SubmitterText", l.Sub[i].value, 1, 248}}
 			}
 
 			*e += SubmitterText(l.Sub[i].value)
@@ -2076,7 +2076,7 @@ func (e *TextFromSource) parse(l *Line, o options) error {
 			fallthrough
 		case cCONC:
 			if !o.allowWrongLength && (len(l.Sub[i].value) < 1 || len(l.Sub[i].value) > 248) {
-				return ErrContext{"TextFromSource", l.Sub[i].tag, ErrInvalidLength{"TextFromSource", l.value, 1, 248}}
+				return ErrContext{"TextFromSource", l.Sub[i].tag, ErrInvalidLength{"TextFromSource", l.Sub[i].value, 1, 248}}
 			}
 
 			*e += TextFromSource(l.Sub[i].value)
