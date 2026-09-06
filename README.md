@@ -19,6 +19,7 @@ Package gedcom implements a parser to read genealogical data in a standard forma
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"strings"
