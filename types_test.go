@@ -48,7 +48,7 @@ func l(v string) Line {
 }
 
 func TestAddressCity(t *testing.T) {
-	testType[AddressCity](t, []typeTests[AddressCity]{
+	testType(t, []typeTests[AddressCity]{
 		{
 			Line:   l(""),
 			Error:  ErrInvalidLength{"AddressCity", "", 1, 60},
@@ -67,7 +67,7 @@ func TestAddressCity(t *testing.T) {
 }
 
 func TestAddressCountry(t *testing.T) {
-	testType[AddressCountry](t, []typeTests[AddressCountry]{
+	testType(t, []typeTests[AddressCountry]{
 		{
 			Line:   l(""),
 			Error:  ErrInvalidLength{"AddressCountry", "", 1, 60},
