@@ -65,3 +65,22 @@ func TestAddressCity(t *testing.T) {
 		},
 	})
 }
+
+func TestAddressCountry(t *testing.T) {
+	testType[AddressCountry](t, []typeTests[AddressCountry]{
+		{
+			Line:   l(""),
+			Error:  ErrInvalidLength{"AddressCountry", "", 1, 60},
+			Result: AddressCountry(""),
+		},
+		{
+			Line:   l("a"),
+			Result: AddressCountry("a"),
+		},
+		{
+			Line:   l(strings.Repeat("a", 61)),
+			Error:  ErrInvalidLength{"AddressCountry", strings.Repeat("a", 61), 1, 60},
+			Result: AddressCountry(""),
+		},
+	})
+}
