@@ -84,7 +84,7 @@ HEREDOC
 					echo "			fallthrough";
 					echo "		case cCONC:";
 					echo "			if !o.allowWrongLength && (len(l.Sub[i].value) < ${data[1]} || len(l.Sub[i].value) > ${data[2]}) {";
-					echo "				return ErrContext{\"$eType\", l.Sub[i].tag, ErrInvalidLength{\"$eType\", l.value, ${data[1]}, ${data[2]}}}";
+					echo "				return ErrContext{\"$eType\", l.Sub[i].tag, ErrInvalidLength{\"$eType\", l.Sub[i].value, ${data[1]}, ${data[2]}}}";
 					echo "			}";
 					echo "";
 					echo "			*e += $eType(l.Sub[i].value)";
