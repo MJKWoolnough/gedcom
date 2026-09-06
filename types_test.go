@@ -60,16 +60,16 @@ func lt(v, t string, subs ...Line) Line {
 
 func TestAddressCity(t *testing.T) {
 	testType(t, []typeTests[AddressCity]{
-		{
+		{ // 1
 			Line:   l(""),
 			Error:  ErrInvalidLength{"AddressCity", "", 1, 60},
 			Result: AddressCity(""),
 		},
-		{
+		{ // 2
 			Line:   l("a"),
 			Result: AddressCity("a"),
 		},
-		{
+		{ // 3
 			Line:   l(strings.Repeat("a", 61)),
 			Error:  ErrInvalidLength{"AddressCity", strings.Repeat("a", 61), 1, 60},
 			Result: AddressCity(""),
@@ -79,16 +79,16 @@ func TestAddressCity(t *testing.T) {
 
 func TestAddressCountry(t *testing.T) {
 	testType(t, []typeTests[AddressCountry]{
-		{
+		{ // 1
 			Line:   l(""),
 			Error:  ErrInvalidLength{"AddressCountry", "", 1, 60},
 			Result: AddressCountry(""),
 		},
-		{
+		{ // 2
 			Line:   l("a"),
 			Result: AddressCountry("a"),
 		},
-		{
+		{ // 3
 			Line:   l(strings.Repeat("a", 61)),
 			Error:  ErrInvalidLength{"AddressCountry", strings.Repeat("a", 61), 1, 60},
 			Result: AddressCountry(""),
@@ -98,49 +98,49 @@ func TestAddressCountry(t *testing.T) {
 
 func TestAddressLine(t *testing.T) {
 	testType(t, []typeTests[AddressLine]{
-		{
+		{ // 1
 			Line:   l(""),
 			Error:  ErrInvalidLength{"AddressLine", "", 1, 60},
 			Result: AddressLine(""),
 		},
-		{
+		{ // 2
 			Line:   l(strings.Repeat("a", 61)),
 			Error:  ErrInvalidLength{"AddressLine", strings.Repeat("a", 61), 1, 60},
 			Result: AddressLine(""),
 		},
-		{
+		{ // 3
 			Line:   l("a"),
 			Result: AddressLine("a"),
 		},
-		{
+		{ // 4
 			Line:   l("a", lt("", cCONT)),
 			Error:  ErrContext{"AddressLine", cCONT, ErrInvalidLength{"AddressLine", "", 1, 60}},
 			Result: AddressLine("a\n"),
 		},
-		{
+		{ // 5
 			Line:   l("a", lt(strings.Repeat("b", 61), cCONT)),
 			Error:  ErrContext{"AddressLine", cCONT, ErrInvalidLength{"AddressLine", strings.Repeat("b", 61), 1, 60}},
 			Result: AddressLine("a\n"),
 		},
-		{
+		{ // 6
 			Line:   l("a", lt("b", cCONT)),
 			Result: AddressLine("a\nb"),
 		},
-		{
+		{ // 7
 			Line:   l("a", lt("b", cCONT), lt("c", cCONT)),
 			Result: AddressLine("a\nb\nc"),
 		},
-		{
+		{ // 8
 			Line:   l("a", lt("", cCONC)),
 			Error:  ErrContext{"AddressLine", cCONC, ErrInvalidLength{"AddressLine", "", 1, 60}},
 			Result: AddressLine("a"),
 		},
-		{
+		{ // 9
 			Line:   l("a", lt(strings.Repeat("b", 61), cCONC)),
 			Error:  ErrContext{"AddressLine", cCONC, ErrInvalidLength{"AddressLine", strings.Repeat("b", 61), 1, 60}},
 			Result: AddressLine("a"),
 		},
-		{
+		{ // 10
 			Line:   l("a", lt("b", cCONC)),
 			Result: AddressLine("ab"),
 		},
