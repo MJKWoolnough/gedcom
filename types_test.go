@@ -3,6 +3,7 @@ package gedcom
 import (
 	"errors"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -36,4 +37,31 @@ func testType[T any, U pointerOf[T]](t *testing.T, tests []typeTests[T]) {
 			t.Errorf("test %d: expecting value %v, got %v", n+1, test.Result, *s)
 		}
 	}
+}
+
+func l(v string) Line {
+	return Line{
+		line: line{
+			value: v,
+		},
+	}
+}
+
+func TestAddressCity(t *testing.T) {
+	testType[AddressCity](t, []typeTests[AddressCity]{
+		{
+			Line:   l(""),
+			Error:  ErrInvalidLength{"AddressCity", "", 1, 60},
+			Result: AddressCity(""),
+		},
+		{
+			Line:   l("a"),
+			Result: AddressCity("a"),
+		},
+		{
+			Line:   l(strings.Repeat("a", 61)),
+			Error:  ErrInvalidLength{"AddressCity", strings.Repeat("a", 61), 1, 60},
+			Result: AddressCity(""),
+		},
+	})
 }
