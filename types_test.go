@@ -76,9 +76,18 @@ func TestAddressCity(t *testing.T) {
 			Result: AddressCity("a"),
 		},
 		{ // 3
+			Line:   l(strings.Repeat("a", 60)),
+			Result: AddressCity(strings.Repeat("a", 60)),
+		},
+		{ // 4
 			Line:   l(strings.Repeat("a", 61)),
 			Error:  ErrInvalidLength{"AddressCity", strings.Repeat("a", 61), 1, 60},
 			Result: AddressCity(""),
+		},
+		{ // 5
+			Line:    l(strings.Repeat("a", 61)),
+			Options: []Option{AllowWrongLength},
+			Result:  AddressCity(strings.Repeat("a", 61)),
 		},
 	})
 }
@@ -95,9 +104,18 @@ func TestAddressCountry(t *testing.T) {
 			Result: AddressCountry("a"),
 		},
 		{ // 3
+			Line:   l(strings.Repeat("a", 60)),
+			Result: AddressCountry(strings.Repeat("a", 60)),
+		},
+		{ // 4
 			Line:   l(strings.Repeat("a", 61)),
 			Error:  ErrInvalidLength{"AddressCountry", strings.Repeat("a", 61), 1, 60},
 			Result: AddressCountry(""),
+		},
+		{ // 5
+			Line:    l(strings.Repeat("a", 61)),
+			Options: []Option{AllowWrongLength},
+			Result:  AddressCountry(strings.Repeat("a", 61)),
 		},
 	})
 }
@@ -124,29 +142,38 @@ func TestAddressLine(t *testing.T) {
 			Result: AddressLine("a\n"),
 		},
 		{ // 5
+			Line:   l("a", lt(strings.Repeat("b", 60), cCONT)),
+			Result: AddressLine("a\n" + strings.Repeat("b", 60)),
+		},
+		{ // 6
 			Line:   l("a", lt(strings.Repeat("b", 61), cCONT)),
 			Error:  ErrContext{"AddressLine", cCONT, ErrInvalidLength{"AddressLine", strings.Repeat("b", 61), 1, 60}},
 			Result: AddressLine("a\n"),
 		},
-		{ // 6
+		{ // 7
+			Line:    l("a", lt(strings.Repeat("b", 61), cCONT)),
+			Options: []Option{AllowWrongLength},
+			Result:  AddressLine("a\n" + strings.Repeat("b", 61)),
+		},
+		{ // 8
 			Line:   l("a", lt("b", cCONT)),
 			Result: AddressLine("a\nb"),
 		},
-		{ // 7
+		{ // 9
 			Line:   l("a", lt("b", cCONT), lt("c", cCONT)),
 			Result: AddressLine("a\nb\nc"),
 		},
-		{ // 8
+		{ // 10
 			Line:   l("a", lt("", cCONC)),
 			Error:  ErrContext{"AddressLine", cCONC, ErrInvalidLength{"AddressLine", "", 1, 60}},
 			Result: AddressLine("a"),
 		},
-		{ // 9
+		{ // 11
 			Line:   l("a", lt(strings.Repeat("b", 61), cCONC)),
 			Error:  ErrContext{"AddressLine", cCONC, ErrInvalidLength{"AddressLine", strings.Repeat("b", 61), 1, 60}},
 			Result: AddressLine("a"),
 		},
-		{ // 10
+		{ // 12
 			Line:   l("a", lt("b", cCONC)),
 			Result: AddressLine("ab"),
 		},
@@ -165,9 +192,18 @@ func TestAddressLine1(t *testing.T) {
 			Result: AddressLine1("a"),
 		},
 		{ // 3
+			Line:   l(strings.Repeat("a", 60)),
+			Result: AddressLine1(strings.Repeat("a", 60)),
+		},
+		{ // 4
 			Line:   l(strings.Repeat("a", 61)),
 			Error:  ErrInvalidLength{"AddressLine1", strings.Repeat("a", 61), 1, 60},
 			Result: AddressLine1(""),
+		},
+		{ // 5
+			Line:    l(strings.Repeat("a", 61)),
+			Options: []Option{AllowWrongLength},
+			Result:  AddressLine1(strings.Repeat("a", 61)),
 		},
 	})
 }
@@ -184,9 +220,18 @@ func TestAddressLine2(t *testing.T) {
 			Result: AddressLine2("a"),
 		},
 		{ // 3
+			Line:   l(strings.Repeat("a", 60)),
+			Result: AddressLine2(strings.Repeat("a", 60)),
+		},
+		{ // 4
 			Line:   l(strings.Repeat("a", 61)),
 			Error:  ErrInvalidLength{"AddressLine2", strings.Repeat("a", 61), 1, 60},
 			Result: AddressLine2(""),
+		},
+		{ // 5
+			Line:    l(strings.Repeat("a", 61)),
+			Options: []Option{AllowWrongLength},
+			Result:  AddressLine2(strings.Repeat("a", 61)),
 		},
 	})
 }
