@@ -165,3 +165,22 @@ func TestAddressLine1(t *testing.T) {
 		},
 	})
 }
+
+func TestAddressLine2(t *testing.T) {
+	testType(t, []typeTests[AddressLine2]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidLength{"AddressLine2", "", 1, 60},
+			Result: AddressLine2(""),
+		},
+		{ // 2
+			Line:   l("a"),
+			Result: AddressLine2("a"),
+		},
+		{ // 3
+			Line:   l(strings.Repeat("a", 61)),
+			Error:  ErrInvalidLength{"AddressLine2", strings.Repeat("a", 61), 1, 60},
+			Result: AddressLine2(""),
+		},
+	})
+}
