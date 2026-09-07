@@ -45,6 +45,39 @@ func testType[T any, U pointerOf[T]](t *testing.T, tests []typeTests[T]) {
 	}
 }
 
+func testSimpleType[T ~string, U pointerOf[T]](t *testing.T, name string, min, max uint) {
+	testType[T, U](t, []typeTests[T]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidLength{name, "", min, max},
+			Result: "",
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{AllowWrongLength},
+			Result:  "",
+		},
+		{ // 3
+			Line:   l("a"),
+			Result: "a",
+		},
+		{ // 4
+			Line:   l(strings.Repeat("a", int(max))),
+			Result: T(strings.Repeat("a", int(max))),
+		},
+		{ // 5
+			Line:   l(strings.Repeat("a", int(max)+1)),
+			Error:  ErrInvalidLength{name, strings.Repeat("a", int(max)+1), min, max},
+			Result: "",
+		},
+		{ // 6
+			Line:    l(strings.Repeat("a", int(max)+1)),
+			Options: []Option{AllowWrongLength},
+			Result:  T(strings.Repeat("a", int(max)+1)),
+		},
+	})
+}
+
 func l(v string, subs ...Line) Line {
 	return Line{
 		line: line{
@@ -65,59 +98,11 @@ func lt(v, t string, subs ...Line) Line {
 }
 
 func TestAddressCity(t *testing.T) {
-	testType(t, []typeTests[AddressCity]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"AddressCity", "", 1, 60},
-			Result: AddressCity(""),
-		},
-		{ // 2
-			Line:   l("a"),
-			Result: AddressCity("a"),
-		},
-		{ // 3
-			Line:   l(strings.Repeat("a", 60)),
-			Result: AddressCity(strings.Repeat("a", 60)),
-		},
-		{ // 4
-			Line:   l(strings.Repeat("a", 61)),
-			Error:  ErrInvalidLength{"AddressCity", strings.Repeat("a", 61), 1, 60},
-			Result: AddressCity(""),
-		},
-		{ // 5
-			Line:    l(strings.Repeat("a", 61)),
-			Options: []Option{AllowWrongLength},
-			Result:  AddressCity(strings.Repeat("a", 61)),
-		},
-	})
+	testSimpleType[AddressCity](t, "AddressCity", 1, 60)
 }
 
 func TestAddressCountry(t *testing.T) {
-	testType(t, []typeTests[AddressCountry]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"AddressCountry", "", 1, 60},
-			Result: AddressCountry(""),
-		},
-		{ // 2
-			Line:   l("a"),
-			Result: AddressCountry("a"),
-		},
-		{ // 3
-			Line:   l(strings.Repeat("a", 60)),
-			Result: AddressCountry(strings.Repeat("a", 60)),
-		},
-		{ // 4
-			Line:   l(strings.Repeat("a", 61)),
-			Error:  ErrInvalidLength{"AddressCountry", strings.Repeat("a", 61), 1, 60},
-			Result: AddressCountry(""),
-		},
-		{ // 5
-			Line:    l(strings.Repeat("a", 61)),
-			Options: []Option{AllowWrongLength},
-			Result:  AddressCountry(strings.Repeat("a", 61)),
-		},
-	})
+	testSimpleType[AddressCountry](t, "AddressCountry", 1, 60)
 }
 
 func TestAddressLine(t *testing.T) {
@@ -181,85 +166,13 @@ func TestAddressLine(t *testing.T) {
 }
 
 func TestAddressLine1(t *testing.T) {
-	testType(t, []typeTests[AddressLine1]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"AddressLine1", "", 1, 60},
-			Result: AddressLine1(""),
-		},
-		{ // 2
-			Line:   l("a"),
-			Result: AddressLine1("a"),
-		},
-		{ // 3
-			Line:   l(strings.Repeat("a", 60)),
-			Result: AddressLine1(strings.Repeat("a", 60)),
-		},
-		{ // 4
-			Line:   l(strings.Repeat("a", 61)),
-			Error:  ErrInvalidLength{"AddressLine1", strings.Repeat("a", 61), 1, 60},
-			Result: AddressLine1(""),
-		},
-		{ // 5
-			Line:    l(strings.Repeat("a", 61)),
-			Options: []Option{AllowWrongLength},
-			Result:  AddressLine1(strings.Repeat("a", 61)),
-		},
-	})
+	testSimpleType[AddressLine1](t, "AddressLine1", 1, 60)
 }
 
 func TestAddressLine2(t *testing.T) {
-	testType(t, []typeTests[AddressLine2]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"AddressLine2", "", 1, 60},
-			Result: AddressLine2(""),
-		},
-		{ // 2
-			Line:   l("a"),
-			Result: AddressLine2("a"),
-		},
-		{ // 3
-			Line:   l(strings.Repeat("a", 60)),
-			Result: AddressLine2(strings.Repeat("a", 60)),
-		},
-		{ // 4
-			Line:   l(strings.Repeat("a", 61)),
-			Error:  ErrInvalidLength{"AddressLine2", strings.Repeat("a", 61), 1, 60},
-			Result: AddressLine2(""),
-		},
-		{ // 5
-			Line:    l(strings.Repeat("a", 61)),
-			Options: []Option{AllowWrongLength},
-			Result:  AddressLine2(strings.Repeat("a", 61)),
-		},
-	})
+	testSimpleType[AddressLine2](t, "AddressLine2", 1, 60)
 }
 
 func TestAddressPostalCode(t *testing.T) {
-	testType(t, []typeTests[AddressPostalCode]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"AddressPostalCode", "", 1, 10},
-			Result: AddressPostalCode(""),
-		},
-		{ // 2
-			Line:   l("a"),
-			Result: AddressPostalCode("a"),
-		},
-		{ // 3
-			Line:   l(strings.Repeat("a", 10)),
-			Result: AddressPostalCode(strings.Repeat("a", 10)),
-		},
-		{ // 4
-			Line:   l(strings.Repeat("a", 11)),
-			Error:  ErrInvalidLength{"AddressPostalCode", strings.Repeat("a", 11), 1, 10},
-			Result: AddressPostalCode(""),
-		},
-		{ // 5
-			Line:    l(strings.Repeat("a", 11)),
-			Options: []Option{AllowWrongLength},
-			Result:  AddressPostalCode(strings.Repeat("a", 11)),
-		},
-	})
+	testSimpleType[AddressPostalCode](t, "AddressPostalCode", 1, 10)
 }
