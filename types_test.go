@@ -180,3 +180,40 @@ func TestAddressPostalCode(t *testing.T) {
 func TestAddressState(t *testing.T) {
 	testSimpleType[AddressState](t, "AddressState", 1, 60)
 }
+
+func TestAdoptedBy(t *testing.T) {
+	testType(t, []typeTests[AdoptedBy]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidValue{"AdoptedBy", ""},
+			Result: "",
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{"AdoptedBy", "a"},
+			Result: "",
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+		{ // 5
+			Line:   l("HUSB"),
+			Result: cHUSB,
+		},
+		{ // 6
+			Line:   l("Wife"),
+			Result: cWIFE,
+		},
+		{ // 7
+			Line:   l("both"),
+			Result: cBOTH,
+		},
+	})
+}
