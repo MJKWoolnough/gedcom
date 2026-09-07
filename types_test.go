@@ -217,3 +217,7 @@ func TestAdoptedBy(t *testing.T) {
 		},
 	})
 }
+
+func TestAgeAtEvent(t *testing.T) {
+	testSimpleType[AgeAtEvent](t, "AgeAtEvent", 1, 12)
+}
