@@ -176,3 +176,7 @@ func TestAddressLine2(t *testing.T) {
 func TestAddressPostalCode(t *testing.T) {
 	testSimpleType[AddressPostalCode](t, "AddressPostalCode", 1, 10)
 }
+
+func TestAddressState(t *testing.T) {
+	testSimpleType[AddressState](t, "AddressState", 1, 60)
+}
