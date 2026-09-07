@@ -235,3 +235,31 @@ func TestAddressLine2(t *testing.T) {
 		},
 	})
 }
+
+func TestAddressPostalCode(t *testing.T) {
+	testType(t, []typeTests[AddressPostalCode]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidLength{"AddressPostalCode", "", 1, 10},
+			Result: AddressPostalCode(""),
+		},
+		{ // 2
+			Line:   l("a"),
+			Result: AddressPostalCode("a"),
+		},
+		{ // 3
+			Line:   l(strings.Repeat("a", 10)),
+			Result: AddressPostalCode(strings.Repeat("a", 10)),
+		},
+		{ // 4
+			Line:   l(strings.Repeat("a", 11)),
+			Error:  ErrInvalidLength{"AddressPostalCode", strings.Repeat("a", 11), 1, 10},
+			Result: AddressPostalCode(""),
+		},
+		{ // 5
+			Line:    l(strings.Repeat("a", 11)),
+			Options: []Option{AllowWrongLength},
+			Result:  AddressPostalCode(strings.Repeat("a", 11)),
+		},
+	})
+}
