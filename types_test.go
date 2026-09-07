@@ -13,7 +13,7 @@ type typeI interface {
 
 type typeTests[T any] struct {
 	Line    Line
-	Options options
+	Options []Option
 	Result  T
 	Error   error
 }
@@ -31,7 +31,13 @@ func testType[T any, U pointerOf[T]](t *testing.T, tests []typeTests[T]) {
 
 		s = reflect.New(reflect.TypeOf(s).Elem()).Interface().(U)
 
-		if err := s.parse(&test.Line, test.Options); !errors.Is(err, test.Error) {
+		var opts options
+
+		for _, opt := range test.Options {
+			opt(&opts)
+		}
+
+		if err := s.parse(&test.Line, opts); !errors.Is(err, test.Error) {
 			t.Errorf("test %d: expecting error %v, got %v", n+1, test.Error, err)
 		} else if !reflect.DeepEqual(s, &test.Result) {
 			t.Errorf("test %d: expecting value %v, got %v", n+1, test.Result, *s)
