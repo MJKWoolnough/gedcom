@@ -355,3 +355,40 @@ func TestCertaintyAssessment(t *testing.T) {
 func TestChangeDate(t *testing.T) {
 	testSimpleType[ChangeDate](t, 10, 11)
 }
+
+func TestCharacterSet(t *testing.T) {
+	testType(t, []typeTests[CharacterSet]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidValue{"CharacterSet", ""},
+			Result: "",
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{"CharacterSet", "a"},
+			Result: "",
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+		{ // 5
+			Line:   l("ANSEL"),
+			Result: cANSEL,
+		},
+		{ // 6
+			Line:   l("Unicode"),
+			Result: cUNICODE,
+		},
+		{ // 7
+			Line:   l("ascii"),
+			Result: cASCII,
+		},
+	})
+}
