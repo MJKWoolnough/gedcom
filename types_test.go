@@ -60,19 +60,24 @@ func testSimpleType[T ~string, U pointerOf[T]](t *testing.T, min, max uint) {
 			Result:  "",
 		},
 		{ // 3
-			Line:   l("a"),
-			Result: "a",
+			Line:    l(strings.Repeat("a", int(min)-1)),
+			Options: []Option{AllowWrongLength},
+			Result:  T(strings.Repeat("a", int(min)-1)),
 		},
 		{ // 4
+			Line:   l(strings.Repeat("a", int(min))),
+			Result: T(strings.Repeat("a", int(min))),
+		},
+		{ // 5
 			Line:   l(strings.Repeat("a", int(max))),
 			Result: T(strings.Repeat("a", int(max))),
 		},
-		{ // 5
+		{ // 6
 			Line:   l(strings.Repeat("a", int(max)+1)),
 			Error:  ErrInvalidLength{name, strings.Repeat("a", int(max)+1), min, max},
 			Result: "",
 		},
-		{ // 6
+		{ // 7
 			Line:    l(strings.Repeat("a", int(max)+1)),
 			Options: []Option{AllowWrongLength},
 			Result:  T(strings.Repeat("a", int(max)+1)),
