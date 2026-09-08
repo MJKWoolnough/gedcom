@@ -351,3 +351,7 @@ func TestCertaintyAssessment(t *testing.T) {
 		},
 	})
 }
+
+func TestChangeDate(t *testing.T) {
+	testSimpleType[ChangeDate](t, 10, 11)
+}
