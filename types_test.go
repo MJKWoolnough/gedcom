@@ -229,3 +229,60 @@ func TestAncestralFileNumber(t *testing.T) {
 func TestApprovedSystemID(t *testing.T) {
 	testSimpleType[ApprovedSystemID](t, "ApprovedSystemID", 1, 20)
 }
+
+func TestAttributeType(t *testing.T) {
+	testType(t, []typeTests[AttributeType]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidValue{"AttributeType", ""},
+			Result: "",
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{"AttributeType", "a"},
+			Result: "",
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+		{ // 5
+			Line:   l("CAST"),
+			Result: cCAST,
+		},
+		{ // 6
+			Line:   l("educ"),
+			Result: cEDUC,
+		},
+		{ // 7
+			Line:   l("NatI"),
+			Result: cNATI,
+		},
+		{ // 8
+			Line:   l("oCcU"),
+			Result: cOCCU,
+		},
+		{ // 9
+			Line:   l("PrOp"),
+			Result: cPROP,
+		},
+		{ // 10
+			Line:   l("reLI"),
+			Result: cRELI,
+		},
+		{ // 11
+			Line:   l("REsi"),
+			Result: cRESI,
+		},
+		{ // 12
+			Line:   l("titl"),
+			Result: cTITL,
+		},
+	})
+}
