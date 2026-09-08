@@ -296,3 +296,7 @@ func TestAutomatedRecordID(t *testing.T) {
 func TestCasteName(t *testing.T) {
 	testSimpleType[CasteName](t, 1, 90)
 }
+
+func TestCauseOfEvent(t *testing.T) {
+	testSimpleType[CauseOfEvent](t, 1, 90)
+}
