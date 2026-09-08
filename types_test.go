@@ -292,3 +292,7 @@ func TestAttributeType(t *testing.T) {
 func TestAutomatedRecordID(t *testing.T) {
 	testSimpleType[AutomatedRecordID](t, 1, 12)
 }
+
+func TestCasteName(t *testing.T) {
+	testSimpleType[CasteName](t, 1, 90)
+}
