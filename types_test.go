@@ -225,3 +225,7 @@ func TestAgeAtEvent(t *testing.T) {
 func TestAncestralFileNumber(t *testing.T) {
 	testSimpleType[AncestralFileNumber](t, "AncestralFileNumber", 1, 12)
 }
+
+func TestApprovedSystemID(t *testing.T) {
+	testSimpleType[ApprovedSystemID](t, "ApprovedSystemID", 1, 20)
+}
