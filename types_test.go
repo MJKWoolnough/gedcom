@@ -300,3 +300,49 @@ func TestCasteName(t *testing.T) {
 func TestCauseOfEvent(t *testing.T) {
 	testSimpleType[CauseOfEvent](t, 1, 90)
 }
+
+func TestCertaintyAssessment(t *testing.T) {
+	testType(t, []typeTests[CertaintyAssessment]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidValue{"CertaintyAssessment", ""},
+			Result: 0,
+		},
+		{ // 2
+			Line:    l("CertaintyAssessment"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{"CertaintyAssessment", "a"},
+			Result: 0,
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 5
+			Line:   l("0"),
+			Result: 0,
+		},
+		{ // 6
+			Line:   l("1"),
+			Result: 1,
+		},
+		{ // 7
+			Line:   l("2"),
+			Result: 2,
+		},
+		{ // 8
+			Line:   l("3"),
+			Result: 3,
+		},
+		{ // 9
+			Line:   l("4"),
+			Error:  ErrInvalidValue{"CertaintyAssessment", "4"},
+			Result: 0,
+		},
+	})
+}
