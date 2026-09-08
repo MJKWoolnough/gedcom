@@ -45,7 +45,9 @@ func testType[T any, U pointerOf[T]](t *testing.T, tests []typeTests[T]) {
 	}
 }
 
-func testSimpleType[T ~string, U pointerOf[T]](t *testing.T, name string, min, max uint) {
+func testSimpleType[T ~string, U pointerOf[T]](t *testing.T, min, max uint) {
+	name := reflect.TypeOf(new(T)).Elem().Name()
+
 	testType[T, U](t, []typeTests[T]{
 		{ // 1
 			Line:   l(""),
@@ -98,11 +100,11 @@ func lt(v, t string, subs ...Line) Line {
 }
 
 func TestAddressCity(t *testing.T) {
-	testSimpleType[AddressCity](t, "AddressCity", 1, 60)
+	testSimpleType[AddressCity](t, 1, 60)
 }
 
 func TestAddressCountry(t *testing.T) {
-	testSimpleType[AddressCountry](t, "AddressCountry", 1, 60)
+	testSimpleType[AddressCountry](t, 1, 60)
 }
 
 func TestAddressLine(t *testing.T) {
@@ -166,19 +168,19 @@ func TestAddressLine(t *testing.T) {
 }
 
 func TestAddressLine1(t *testing.T) {
-	testSimpleType[AddressLine1](t, "AddressLine1", 1, 60)
+	testSimpleType[AddressLine1](t, 1, 60)
 }
 
 func TestAddressLine2(t *testing.T) {
-	testSimpleType[AddressLine2](t, "AddressLine2", 1, 60)
+	testSimpleType[AddressLine2](t, 1, 60)
 }
 
 func TestAddressPostalCode(t *testing.T) {
-	testSimpleType[AddressPostalCode](t, "AddressPostalCode", 1, 10)
+	testSimpleType[AddressPostalCode](t, 1, 10)
 }
 
 func TestAddressState(t *testing.T) {
-	testSimpleType[AddressState](t, "AddressState", 1, 60)
+	testSimpleType[AddressState](t, 1, 60)
 }
 
 func TestAdoptedBy(t *testing.T) {
@@ -219,15 +221,15 @@ func TestAdoptedBy(t *testing.T) {
 }
 
 func TestAgeAtEvent(t *testing.T) {
-	testSimpleType[AgeAtEvent](t, "AgeAtEvent", 1, 12)
+	testSimpleType[AgeAtEvent](t, 1, 12)
 }
 
 func TestAncestralFileNumber(t *testing.T) {
-	testSimpleType[AncestralFileNumber](t, "AncestralFileNumber", 1, 12)
+	testSimpleType[AncestralFileNumber](t, 1, 12)
 }
 
 func TestApprovedSystemID(t *testing.T) {
-	testSimpleType[ApprovedSystemID](t, "ApprovedSystemID", 1, 20)
+	testSimpleType[ApprovedSystemID](t, 1, 20)
 }
 
 func TestAttributeType(t *testing.T) {
@@ -288,5 +290,5 @@ func TestAttributeType(t *testing.T) {
 }
 
 func TestAutomatedRecordID(t *testing.T) {
-	testSimpleType[AutomatedRecordID](t, "AutomatedRecordID", 1, 12)
+	testSimpleType[AutomatedRecordID](t, 1, 12)
 }
