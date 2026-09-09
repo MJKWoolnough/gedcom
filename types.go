@@ -338,7 +338,7 @@ func (e *CountOfChildren) parse(l *Line, o options) error {
 
 	n, err := strconv.ParseUint(l.value, 10, 8)
 	if !o.ignoreInvalidValue && err != nil {
-		return err
+		return ErrInvalidValue{"CountOfChildren", l.value}
 	}
 
 	*e = CountOfChildren(n)
@@ -356,7 +356,7 @@ func (e *CountOfMarriages) parse(l *Line, o options) error {
 
 	n, err := strconv.ParseUint(l.value, 10, 8)
 	if !o.ignoreInvalidValue && err != nil {
-		return err
+		return ErrInvalidValue{"CountOfMarriages", l.value}
 	}
 
 	*e = CountOfMarriages(n)
@@ -556,7 +556,7 @@ func (e *Day) parse(l *Line, o options) error {
 
 	n, err := strconv.ParseUint(l.value, 10, 8)
 	if !o.ignoreInvalidValue && err != nil {
-		return err
+		return ErrInvalidValue{"Day", l.value}
 	}
 
 	*e = Day(n)
@@ -587,7 +587,7 @@ func (e *Digit) parse(l *Line, o options) error {
 
 	n, err := strconv.ParseUint(l.value, 10, 8)
 	if !o.ignoreInvalidValue && err != nil {
-		return err
+		return ErrInvalidValue{"Digit", l.value}
 	}
 
 	*e = Digit(n)
@@ -839,7 +839,7 @@ func (e *GenerationsOfAncestors) parse(l *Line, o options) error {
 
 	n, err := strconv.ParseUint(l.value, 10, 16)
 	if !o.ignoreInvalidValue && err != nil {
-		return err
+		return ErrInvalidValue{"GenerationsOfAncestors", l.value}
 	}
 
 	*e = GenerationsOfAncestors(n)
@@ -857,7 +857,7 @@ func (e *GenerationsOfDescendants) parse(l *Line, o options) error {
 
 	n, err := strconv.ParseUint(l.value, 10, 16)
 	if !o.ignoreInvalidValue && err != nil {
-		return err
+		return ErrInvalidValue{"GenerationsOfDescendants", l.value}
 	}
 
 	*e = GenerationsOfDescendants(n)
@@ -1422,7 +1422,7 @@ func (e *Number) parse(l *Line, o options) error {
 
 	n, err := strconv.ParseUint(l.value, 10, 0)
 	if !o.ignoreInvalidValue && err != nil {
-		return err
+		return ErrInvalidValue{"Number", l.value}
 	}
 
 	*e = Number(n)
