@@ -496,3 +496,7 @@ func TestCountOfMarriages(t *testing.T) {
 		},
 	})
 }
+
+func TestDate(t *testing.T) {
+	testSimpleType[Date](t, 3, 35)
+}
