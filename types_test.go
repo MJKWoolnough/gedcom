@@ -448,3 +448,51 @@ func TestCountOfChildren(t *testing.T) {
 		},
 	})
 }
+
+func TestCountOfMarriages(t *testing.T) {
+	testType(t, []typeTests[CountOfMarriages]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidLength{"CountOfMarriages", "", 1, 3},
+			Result: 0,
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{AllowWrongLength, IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{"CountOfMarriages", "a"},
+			Result: 0,
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 5
+			Line:   l("1"),
+			Result: 1,
+		},
+		{ // 6
+			Line:   l("-1"),
+			Error:  ErrInvalidValue{"CountOfMarriages", "-1"},
+			Result: 0,
+		},
+		{ // 7
+			Line:   l("255"),
+			Result: 255,
+		},
+		{ // 8
+			Line:   l("256"),
+			Error:  ErrInvalidValue{"CountOfMarriages", "256"},
+			Result: 0,
+		},
+		{ // 9
+			Line:   l("1000"),
+			Error:  ErrInvalidLength{"CountOfMarriages", "1000", 1, 3},
+			Result: 0,
+		},
+	})
+}
