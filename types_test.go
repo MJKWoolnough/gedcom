@@ -500,3 +500,7 @@ func TestCountOfMarriages(t *testing.T) {
 func TestDate(t *testing.T) {
 	testSimpleType[Date](t, 3, 35)
 }
+
+func TestDateApproximated(t *testing.T) {
+	testSimpleType[DateApproximated](t, 4, 35)
+}
