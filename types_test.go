@@ -504,3 +504,7 @@ func TestDate(t *testing.T) {
 func TestDateApproximated(t *testing.T) {
 	testSimpleType[DateApproximated](t, 4, 35)
 }
+
+func TestDateCalendar(t *testing.T) {
+	testSimpleType[DateCalendar](t, 4, 35)
+}
