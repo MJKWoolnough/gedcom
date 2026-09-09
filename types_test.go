@@ -400,3 +400,51 @@ func TestCopyrightGedcomFile(t *testing.T) {
 func TestCopyrightSourceData(t *testing.T) {
 	testSimpleType[CopyrightSourceData](t, 1, 90)
 }
+
+func TestCountOfChildren(t *testing.T) {
+	testType(t, []typeTests[CountOfChildren]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidLength{"CountOfChildren", "", 1, 3},
+			Result: 0,
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{AllowWrongLength, IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{"CountOfChildren", "a"},
+			Result: 0,
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 5
+			Line:   l("1"),
+			Result: 1,
+		},
+		{ // 6
+			Line:   l("-1"),
+			Error:  ErrInvalidValue{"CountOfChildren", "-1"},
+			Result: 0,
+		},
+		{ // 7
+			Line:   l("255"),
+			Result: 255,
+		},
+		{ // 8
+			Line:   l("256"),
+			Error:  ErrInvalidValue{"CountOfChildren", "256"},
+			Result: 0,
+		},
+		{ // 9
+			Line:   l("1000"),
+			Error:  ErrInvalidLength{"CountOfChildren", "1000", 1, 3},
+			Result: 0,
+		},
+	})
+}
