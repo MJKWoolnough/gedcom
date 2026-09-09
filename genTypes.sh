@@ -105,7 +105,7 @@ HEREDOC
 				fi;
 				echo "	n, err := strconv.ParseUint(l.value, 10, $num)";
 				echo "	if !o.ignoreInvalidValue && err != nil {";
-				echo "		return err";
+				echo "		return ErrInvalidValue{\"$eType\", l.value}";
 				echo "	}";
 				echo "";
 				echo "	*e = $eType(n)";
