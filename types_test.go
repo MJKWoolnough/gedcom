@@ -392,3 +392,7 @@ func TestCharacterSet(t *testing.T) {
 		},
 	})
 }
+
+func TestCopyrightGedcomFile(t *testing.T) {
+	testSimpleType[CopyrightGedcomFile](t, 1, 90)
+}
