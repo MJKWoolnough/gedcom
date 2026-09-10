@@ -516,3 +516,7 @@ func TestDateCalendarEscape(t *testing.T) {
 func TestDateExact(t *testing.T) {
 	testSimpleType[DateExact](t, 10, 11)
 }
+
+func TestDateFren(t *testing.T) {
+	testSimpleType[DateFren](t, 4, 35)
+}
