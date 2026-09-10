@@ -540,3 +540,7 @@ func TestDatePeriod(t *testing.T) {
 func TestDatePhrase(t *testing.T) {
 	testSimpleType[DatePhrase](t, 1, 35)
 }
+
+func TestDateRange(t *testing.T) {
+	testSimpleType[DateRange](t, 8, 35)
+}
