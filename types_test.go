@@ -528,3 +528,7 @@ func TestDateHebr(t *testing.T) {
 func TestDateJuln(t *testing.T) {
 	testSimpleType[DateJuln](t, 4, 35)
 }
+
+func TestDateLDSOrd(t *testing.T) {
+	testSimpleType[DateLDSOrd](t, 4, 35)
+}
