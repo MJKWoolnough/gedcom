@@ -536,3 +536,7 @@ func TestDateLDSOrd(t *testing.T) {
 func TestDatePeriod(t *testing.T) {
 	testSimpleType[DatePeriod](t, 7, 35)
 }
+
+func TestDatePhrase(t *testing.T) {
+	testSimpleType[DatePhrase](t, 1, 35)
+}
