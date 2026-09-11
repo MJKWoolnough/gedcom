@@ -645,3 +645,7 @@ func TestDigit(t *testing.T) {
 func TestEncodedMultimediaLine(t *testing.T) {
 	testSimpleType[EncodedMultimediaLine](t, 0, 87)
 }
+
+func TestEntryRecordingDate(t *testing.T) {
+	testSimpleType[EntryRecordingDate](t, 1, 90)
+}
