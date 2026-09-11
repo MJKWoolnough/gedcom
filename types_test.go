@@ -657,3 +657,7 @@ func TestEventAttributeType(t *testing.T) {
 func TestEventDescriptor(t *testing.T) {
 	testSimpleType[EventDescriptor](t, 1, 90)
 }
+
+func TestEventTypeCitedFrom(t *testing.T) {
+	testSimpleType[EventTypeCitedFrom](t, 1, 15)
+}
