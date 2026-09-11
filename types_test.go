@@ -641,3 +641,7 @@ func TestDigit(t *testing.T) {
 		},
 	})
 }
+
+func TestEncodedMultimediaLine(t *testing.T) {
+	testSimpleType[EncodedMultimediaLine](t, 0, 87)
+}
