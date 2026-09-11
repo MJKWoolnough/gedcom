@@ -649,3 +649,7 @@ func TestEncodedMultimediaLine(t *testing.T) {
 func TestEntryRecordingDate(t *testing.T) {
 	testSimpleType[EntryRecordingDate](t, 1, 90)
 }
+
+func TestEventAttributeType(t *testing.T) {
+	testSimpleType[EventAttributeType](t, 1, 15)
+}
