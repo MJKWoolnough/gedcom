@@ -47,42 +47,50 @@ func testType[T any, U pointerOf[T]](t *testing.T, tests []typeTests[T]) {
 
 func testSimpleType[T ~string, U pointerOf[T]](t *testing.T, min, max uint) {
 	name := reflect.TypeOf(new(T)).Elem().Name()
+	var tests []typeTests[T]
 
-	testType[T, U](t, []typeTests[T]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{name, "", min, max},
-			Result: "",
-		},
-		{ // 2
-			Line:    l(""),
-			Options: []Option{AllowWrongLength},
-			Result:  "",
-		},
-		{ // 3
-			Line:    l(strings.Repeat("a", int(min)-1)),
-			Options: []Option{AllowWrongLength},
-			Result:  T(strings.Repeat("a", int(min)-1)),
-		},
-		{ // 4
+	if min > 0 {
+		tests = []typeTests[T]{
+			{
+				Line:   l(""),
+				Error:  ErrInvalidLength{name, "", min, max},
+				Result: "",
+			},
+			{
+				Line:    l(""),
+				Options: []Option{AllowWrongLength},
+				Result:  "",
+			},
+			{
+				Line:    l(strings.Repeat("a", int(min)-1)),
+				Options: []Option{AllowWrongLength},
+				Result:  T(strings.Repeat("a", int(min)-1)),
+			},
+		}
+	}
+
+	tests = append(tests,
+		typeTests[T]{
 			Line:   l(strings.Repeat("a", int(min))),
 			Result: T(strings.Repeat("a", int(min))),
 		},
-		{ // 5
+		typeTests[T]{
 			Line:   l(strings.Repeat("a", int(max))),
 			Result: T(strings.Repeat("a", int(max))),
 		},
-		{ // 6
+		typeTests[T]{
 			Line:   l(strings.Repeat("a", int(max)+1)),
 			Error:  ErrInvalidLength{name, strings.Repeat("a", int(max)+1), min, max},
 			Result: "",
 		},
-		{ // 7
+		typeTests[T]{
 			Line:    l(strings.Repeat("a", int(max)+1)),
 			Options: []Option{AllowWrongLength},
 			Result:  T(strings.Repeat("a", int(max)+1)),
 		},
-	})
+	)
+
+	testType[T, U](t, tests)
 }
 
 func l(v string, subs ...Line) Line {
