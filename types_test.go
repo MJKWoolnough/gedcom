@@ -595,3 +595,41 @@ func TestDay(t *testing.T) {
 func TestDescriptiveTitle(t *testing.T) {
 	testSimpleType[DescriptiveTitle](t, 1, 248)
 }
+
+func TestDigit(t *testing.T) {
+	testType(t, []typeTests[Digit]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidLength{"Digit", "", 1, 1},
+			Result: 0,
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{AllowWrongLength, IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{"Digit", "a"},
+			Result: 0,
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 5
+			Line:   l("1"),
+			Result: 1,
+		},
+		{ // 6
+			Line:   l("9"),
+			Result: 9,
+		},
+		{ // 7
+			Line:   l("10"),
+			Error:  ErrInvalidLength{"Digit", "10", 1, 1},
+			Result: 0,
+		},
+	})
+}
