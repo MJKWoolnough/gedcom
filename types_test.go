@@ -653,3 +653,7 @@ func TestEntryRecordingDate(t *testing.T) {
 func TestEventAttributeType(t *testing.T) {
 	testSimpleType[EventAttributeType](t, 1, 15)
 }
+
+func TestEventDescriptor(t *testing.T) {
+	testSimpleType[EventDescriptor](t, 1, 90)
+}
