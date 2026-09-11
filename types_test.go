@@ -591,3 +591,7 @@ func TestDay(t *testing.T) {
 		},
 	})
 }
+
+func TestDescriptiveTitle(t *testing.T) {
+	testSimpleType[DescriptiveTitle](t, 1, 248)
+}
