@@ -548,3 +548,46 @@ func TestDateRange(t *testing.T) {
 func TestDateValue(t *testing.T) {
 	testSimpleType[DateValue](t, 1, 35)
 }
+
+func TestDay(t *testing.T) {
+	testType(t, []typeTests[Day]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidLength{"Day", "", 1, 2},
+			Result: 0,
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{AllowWrongLength, IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{"Day", "a"},
+			Result: 0,
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 5
+			Line:   l("1"),
+			Result: 1,
+		},
+		{ // 6
+			Line:   l("-1"),
+			Error:  ErrInvalidValue{"Day", "-1"},
+			Result: 0,
+		},
+		{ // 7
+			Line:   l("99"),
+			Result: 99,
+		},
+		{ // 9
+			Line:   l("100"),
+			Error:  ErrInvalidLength{"Day", "100", 1, 2},
+			Result: 0,
+		},
+	})
+}
