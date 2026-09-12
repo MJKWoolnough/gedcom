@@ -141,6 +141,68 @@ func testOptions[T ~string, U pointerOf[T]](t *testing.T, options ...T) {
 	testType[T, U](t, tests)
 }
 
+func testMultiLine[T ~string, U pointerOf[T]](t *testing.T, max uint) {
+	name := reflect.TypeOf(new(T)).Elem().Name()
+
+	testType[T, U](t, []typeTests[T]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidLength{name, "", 1, max},
+			Result: T(""),
+		},
+		{ // 2
+			Line:   l(strings.Repeat("a", int(max)+1)),
+			Error:  ErrInvalidLength{name, strings.Repeat("a", int(max)+1), 1, max},
+			Result: T(""),
+		},
+		{ // 3
+			Line:   l("a"),
+			Result: T("a"),
+		},
+		{ // 4
+			Line:   l("a", lt("", cCONT)),
+			Error:  ErrContext{name, cCONT, ErrInvalidLength{name, "", 1, max}},
+			Result: T("a\n"),
+		},
+		{ // 5
+			Line:   l("a", lt(strings.Repeat("b", int(max)), cCONT)),
+			Result: T("a\n" + strings.Repeat("b", int(max))),
+		},
+		{ // 6
+			Line:   l("a", lt(strings.Repeat("b", int(max)+1), cCONT)),
+			Error:  ErrContext{name, cCONT, ErrInvalidLength{name, strings.Repeat("b", int(max)+1), 1, max}},
+			Result: T("a\n"),
+		},
+		{ // 7
+			Line:    l("a", lt(strings.Repeat("b", int(max)+1), cCONT)),
+			Options: []Option{AllowWrongLength},
+			Result:  T("a\n" + strings.Repeat("b", int(max)+1)),
+		},
+		{ // 8
+			Line:   l("a", lt("b", cCONT)),
+			Result: T("a\nb"),
+		},
+		{ // 9
+			Line:   l("a", lt("b", cCONT), lt("c", cCONT)),
+			Result: T("a\nb\nc"),
+		},
+		{ // 10
+			Line:   l("a", lt("", cCONC)),
+			Error:  ErrContext{name, cCONC, ErrInvalidLength{name, "", 1, max}},
+			Result: T("a"),
+		},
+		{ // 11
+			Line:   l("a", lt(strings.Repeat("b", int(max)+1), cCONC)),
+			Error:  ErrContext{name, cCONC, ErrInvalidLength{name, strings.Repeat("b", int(max)+1), 1, max}},
+			Result: T("a"),
+		},
+		{ // 12
+			Line:   l("a", lt("b", cCONC)),
+			Result: T("ab"),
+		},
+	})
+}
+
 func l(v string, subs ...Line) Line {
 	return Line{
 		line: line{
@@ -169,63 +231,7 @@ func TestAddressCountry(t *testing.T) {
 }
 
 func TestAddressLine(t *testing.T) {
-	testType(t, []typeTests[AddressLine]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"AddressLine", "", 1, 60},
-			Result: AddressLine(""),
-		},
-		{ // 2
-			Line:   l(strings.Repeat("a", 61)),
-			Error:  ErrInvalidLength{"AddressLine", strings.Repeat("a", 61), 1, 60},
-			Result: AddressLine(""),
-		},
-		{ // 3
-			Line:   l("a"),
-			Result: AddressLine("a"),
-		},
-		{ // 4
-			Line:   l("a", lt("", cCONT)),
-			Error:  ErrContext{"AddressLine", cCONT, ErrInvalidLength{"AddressLine", "", 1, 60}},
-			Result: AddressLine("a\n"),
-		},
-		{ // 5
-			Line:   l("a", lt(strings.Repeat("b", 60), cCONT)),
-			Result: AddressLine("a\n" + strings.Repeat("b", 60)),
-		},
-		{ // 6
-			Line:   l("a", lt(strings.Repeat("b", 61), cCONT)),
-			Error:  ErrContext{"AddressLine", cCONT, ErrInvalidLength{"AddressLine", strings.Repeat("b", 61), 1, 60}},
-			Result: AddressLine("a\n"),
-		},
-		{ // 7
-			Line:    l("a", lt(strings.Repeat("b", 61), cCONT)),
-			Options: []Option{AllowWrongLength},
-			Result:  AddressLine("a\n" + strings.Repeat("b", 61)),
-		},
-		{ // 8
-			Line:   l("a", lt("b", cCONT)),
-			Result: AddressLine("a\nb"),
-		},
-		{ // 9
-			Line:   l("a", lt("b", cCONT), lt("c", cCONT)),
-			Result: AddressLine("a\nb\nc"),
-		},
-		{ // 10
-			Line:   l("a", lt("", cCONC)),
-			Error:  ErrContext{"AddressLine", cCONC, ErrInvalidLength{"AddressLine", "", 1, 60}},
-			Result: AddressLine("a"),
-		},
-		{ // 11
-			Line:   l("a", lt(strings.Repeat("b", 61), cCONC)),
-			Error:  ErrContext{"AddressLine", cCONC, ErrInvalidLength{"AddressLine", strings.Repeat("b", 61), 1, 60}},
-			Result: AddressLine("a"),
-		},
-		{ // 12
-			Line:   l("a", lt("b", cCONC)),
-			Result: AddressLine("ab"),
-		},
-	})
+	testMultiLine[AddressLine](t, 60)
 }
 
 func TestAddressLine1(t *testing.T) {
