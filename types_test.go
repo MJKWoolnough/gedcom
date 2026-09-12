@@ -598,3 +598,7 @@ func TestEventTypeFamily(t *testing.T) {
 func TestEventTypeIndividual(t *testing.T) {
 	testOptions[EventTypeIndividual](t, cADOP, cBIRT, cBAPM, cBARM, cBASM, cBLES, cBURI, cCENS, cCHR, cCHRA, cCONF, cCREM, cDEAT, cEMIG, cFCOM, cGRAD, cIMMI, cNATU, cORDN, cRETI, cPROB, cWILL, cEVEN)
 }
+
+func TestEventsRecorded(t *testing.T) {
+	testSimpleType[EventsRecorded](t, 1, 90)
+}
