@@ -592,7 +592,7 @@ func TestDay(t *testing.T) {
 			Line:   l("99"),
 			Result: 99,
 		},
-		{ // 9
+		{ // 8
 			Line:   l("100"),
 			Error:  ErrInvalidLength{"Day", "100", 1, 2},
 			Result: 0,
@@ -660,4 +660,73 @@ func TestEventDescriptor(t *testing.T) {
 
 func TestEventTypeCitedFrom(t *testing.T) {
 	testSimpleType[EventTypeCitedFrom](t, 1, 15)
+}
+
+func TestEventTypeFamily(t *testing.T) {
+	testType(t, []typeTests[EventTypeFamily]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidValue{"EventTypeFamily", ""},
+			Result: "",
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{"EventTypeFamily", "a"},
+			Result: "",
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+		{ // 5
+			Line:   l("ANUL"),
+			Result: cANUL,
+		},
+		{ // 6
+			Line:   l("cens"),
+			Result: cCENS,
+		},
+		{ // 7
+			Line:   l("Div"),
+			Result: cDIV,
+		},
+		{ // 8
+			Line:   l("DIVf"),
+			Result: cDIVF,
+		},
+		{ // 9
+			Line:   l("EnGa"),
+			Result: cENGA,
+		},
+		{ // 10
+			Line:   l("mArR"),
+			Result: cMARR,
+		},
+		{ // 11
+			Line:   l("MarB"),
+			Result: cMARB,
+		},
+		{ // 12
+			Line:   l("mARc"),
+			Result: cMARC,
+		},
+		{ // 13
+			Line:   l("marL"),
+			Result: cMARL,
+		},
+		{ // 14
+			Line:   l("maRS"),
+			Result: cMARS,
+		},
+		{ // 15
+			Line:   l("eVEN"),
+			Result: cEVEN,
+		},
+	})
 }
