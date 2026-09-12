@@ -594,3 +594,7 @@ func TestEventTypeCitedFrom(t *testing.T) {
 func TestEventTypeFamily(t *testing.T) {
 	testOptions[EventTypeFamily](t, cANUL, cCENS, cDIV, cDIVF, cENGA, cMARR, cMARB, cMARC, cMARL, cMARS, cEVEN)
 }
+
+func TestEventTypeIndividual(t *testing.T) {
+	testOptions[EventTypeIndividual](t, cADOP, cBIRT, cBAPM, cBARM, cBASM, cBLES, cBURI, cCENS, cCHR, cCHRA, cCONF, cCREM, cDEAT, cEMIG, cFCOM, cGRAD, cIMMI, cNATU, cORDN, cRETI, cPROB, cWILL, cEVEN)
+}
