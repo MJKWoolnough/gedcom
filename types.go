@@ -660,10 +660,10 @@ func (e *EventTypeCitedFrom) parse(l *Line, o options) error {
 	return nil
 }
 
-// EventTypeFamile is a GEDCOM base type.
-type EventTypeFamile string
+// EventTypeFamily is a GEDCOM base type.
+type EventTypeFamily string
 
-func (e *EventTypeFamile) parse(l *Line, o options) error {
+func (e *EventTypeFamily) parse(l *Line, o options) error {
 	switch strings.ToUpper(l.value) {
 	case cANUL:
 		*e = cANUL
@@ -689,7 +689,7 @@ func (e *EventTypeFamile) parse(l *Line, o options) error {
 		*e = cEVEN
 	default:
 		if !o.ignoreInvalidValue {
-			return ErrInvalidValue{"EventTypeFamile", l.value}
+			return ErrInvalidValue{"EventTypeFamily", l.value}
 		}
 	}
 
