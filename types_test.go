@@ -602,3 +602,7 @@ func TestEventTypeIndividual(t *testing.T) {
 func TestEventsRecorded(t *testing.T) {
 	testSimpleType[EventsRecorded](t, 1, 90)
 }
+
+func TestFileName(t *testing.T) {
+	testSimpleType[FileName](t, 1, 90)
+}
