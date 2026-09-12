@@ -47,6 +47,7 @@ func testType[T any, U pointerOf[T]](t *testing.T, tests []typeTests[T]) {
 
 func testSimpleType[T ~string, U pointerOf[T]](t *testing.T, min, max uint) {
 	name := reflect.TypeOf(new(T)).Elem().Name()
+
 	var tests []typeTests[T]
 
 	if min > 0 {
@@ -89,6 +90,53 @@ func testSimpleType[T ~string, U pointerOf[T]](t *testing.T, min, max uint) {
 			Result:  T(strings.Repeat("a", int(max)+1)),
 		},
 	)
+
+	testType[T, U](t, tests)
+}
+
+func testOptions[T ~string, U pointerOf[T]](t *testing.T, options ...T) {
+	name := reflect.TypeOf(new(T)).Elem().Name()
+	tests := []typeTests[T]{
+		{
+			Line:   l(""),
+			Error:  ErrInvalidValue{name, ""},
+			Result: "",
+		},
+		{
+			Line:    l(""),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+		{
+			Line:   l("a"),
+			Error:  ErrInvalidValue{name, "a"},
+			Result: "",
+		},
+		{
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  "",
+		},
+	}
+
+	for _, opt := range options {
+		for i := range 1 << len(opt) {
+			var sb strings.Builder
+
+			for n, c := range opt {
+				if i&(1<<n) == 0 {
+					sb.WriteByte(byte(c) | 0x20)
+				} else {
+					sb.WriteByte(byte(c) & 0xDF)
+				}
+			}
+
+			tests = append(tests, typeTests[T]{
+				Line:   l(sb.String()),
+				Result: opt,
+			})
+		}
+	}
 
 	testType[T, U](t, tests)
 }
@@ -197,40 +245,7 @@ func TestAddressState(t *testing.T) {
 }
 
 func TestAdoptedBy(t *testing.T) {
-	testType(t, []typeTests[AdoptedBy]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidValue{"AdoptedBy", ""},
-			Result: "",
-		},
-		{ // 2
-			Line:    l(""),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  "",
-		},
-		{ // 3
-			Line:   l("a"),
-			Error:  ErrInvalidValue{"AdoptedBy", "a"},
-			Result: "",
-		},
-		{ // 4
-			Line:    l("a"),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  "",
-		},
-		{ // 5
-			Line:   l("HUSB"),
-			Result: cHUSB,
-		},
-		{ // 6
-			Line:   l("Wife"),
-			Result: cWIFE,
-		},
-		{ // 7
-			Line:   l("both"),
-			Result: cBOTH,
-		},
-	})
+	testOptions[AdoptedBy](t, cHUSB, cWIFE, cBOTH)
 }
 
 func TestAgeAtEvent(t *testing.T) {
@@ -246,60 +261,7 @@ func TestApprovedSystemID(t *testing.T) {
 }
 
 func TestAttributeType(t *testing.T) {
-	testType(t, []typeTests[AttributeType]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidValue{"AttributeType", ""},
-			Result: "",
-		},
-		{ // 2
-			Line:    l(""),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  "",
-		},
-		{ // 3
-			Line:   l("a"),
-			Error:  ErrInvalidValue{"AttributeType", "a"},
-			Result: "",
-		},
-		{ // 4
-			Line:    l("a"),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  "",
-		},
-		{ // 5
-			Line:   l("CAST"),
-			Result: cCAST,
-		},
-		{ // 6
-			Line:   l("educ"),
-			Result: cEDUC,
-		},
-		{ // 7
-			Line:   l("NatI"),
-			Result: cNATI,
-		},
-		{ // 8
-			Line:   l("oCcU"),
-			Result: cOCCU,
-		},
-		{ // 9
-			Line:   l("PrOp"),
-			Result: cPROP,
-		},
-		{ // 10
-			Line:   l("reLI"),
-			Result: cRELI,
-		},
-		{ // 11
-			Line:   l("REsi"),
-			Result: cRESI,
-		},
-		{ // 12
-			Line:   l("titl"),
-			Result: cTITL,
-		},
-	})
+	testOptions[AttributeType](t, cCAST, cEDUC, cNATI, cOCCU, cPROP, cRELI, cRESI, cTITL)
 }
 
 func TestAutomatedRecordID(t *testing.T) {
@@ -365,40 +327,7 @@ func TestChangeDate(t *testing.T) {
 }
 
 func TestCharacterSet(t *testing.T) {
-	testType(t, []typeTests[CharacterSet]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidValue{"CharacterSet", ""},
-			Result: "",
-		},
-		{ // 2
-			Line:    l(""),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  "",
-		},
-		{ // 3
-			Line:   l("a"),
-			Error:  ErrInvalidValue{"CharacterSet", "a"},
-			Result: "",
-		},
-		{ // 4
-			Line:    l("a"),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  "",
-		},
-		{ // 5
-			Line:   l("ANSEL"),
-			Result: cANSEL,
-		},
-		{ // 6
-			Line:   l("Unicode"),
-			Result: cUNICODE,
-		},
-		{ // 7
-			Line:   l("ascii"),
-			Result: cASCII,
-		},
-	})
+	testOptions[CharacterSet](t, cANSEL, cUNICODE, cASCII)
 }
 
 func TestCopyrightGedcomFile(t *testing.T) {
@@ -663,70 +592,5 @@ func TestEventTypeCitedFrom(t *testing.T) {
 }
 
 func TestEventTypeFamily(t *testing.T) {
-	testType(t, []typeTests[EventTypeFamily]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidValue{"EventTypeFamily", ""},
-			Result: "",
-		},
-		{ // 2
-			Line:    l(""),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  "",
-		},
-		{ // 3
-			Line:   l("a"),
-			Error:  ErrInvalidValue{"EventTypeFamily", "a"},
-			Result: "",
-		},
-		{ // 4
-			Line:    l("a"),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  "",
-		},
-		{ // 5
-			Line:   l("ANUL"),
-			Result: cANUL,
-		},
-		{ // 6
-			Line:   l("cens"),
-			Result: cCENS,
-		},
-		{ // 7
-			Line:   l("Div"),
-			Result: cDIV,
-		},
-		{ // 8
-			Line:   l("DIVf"),
-			Result: cDIVF,
-		},
-		{ // 9
-			Line:   l("EnGa"),
-			Result: cENGA,
-		},
-		{ // 10
-			Line:   l("mArR"),
-			Result: cMARR,
-		},
-		{ // 11
-			Line:   l("MarB"),
-			Result: cMARB,
-		},
-		{ // 12
-			Line:   l("mARc"),
-			Result: cMARC,
-		},
-		{ // 13
-			Line:   l("marL"),
-			Result: cMARL,
-		},
-		{ // 14
-			Line:   l("maRS"),
-			Result: cMARS,
-		},
-		{ // 15
-			Line:   l("eVEN"),
-			Result: cEVEN,
-		},
-	})
+	testOptions[EventTypeFamily](t, cANUL, cCENS, cDIV, cDIVF, cENGA, cMARR, cMARB, cMARC, cMARL, cMARS, cEVEN)
 }
