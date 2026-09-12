@@ -612,3 +612,7 @@ func TestEventsRecorded(t *testing.T) {
 func TestFileName(t *testing.T) {
 	testSimpleType[FileName](t, 1, 90)
 }
+
+func TestContentDescription(t *testing.T) {
+	testMultiLine[ContentDescription](t, 248)
+}
