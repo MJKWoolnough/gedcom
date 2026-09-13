@@ -535,3 +535,7 @@ func TestGenerationsOfAncestors(t *testing.T) {
 func TestGenerationsOfDescendants(t *testing.T) {
 	testRange[GenerationsOfDescendants](t, 9999)
 }
+
+func TestLanguageID(t *testing.T) {
+	testSimpleType[LanguageID](t, 1, 15)
+}
