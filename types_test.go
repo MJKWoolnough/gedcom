@@ -527,3 +527,7 @@ func TestContentDescription(t *testing.T) {
 func TestForm(t *testing.T) {
 	testSimpleType[Form](t, 14, 20)
 }
+
+func TestGenerationsOfAncestors(t *testing.T) {
+	testRange[GenerationsOfAncestors](t, 9999)
+}
