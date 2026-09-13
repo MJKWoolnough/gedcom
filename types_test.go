@@ -127,6 +127,12 @@ func testOptions[T ~string, U pointerOf[T]](t *testing.T, options ...T) {
 			var sb strings.Builder
 
 			for n, c := range opt {
+				if c < 'A' || c > 'Z' {
+					sb.WriteByte(byte(c))
+
+					continue
+				}
+
 				if i&(1<<n) == 0 {
 					sb.WriteByte(byte(c) | 0x20)
 				} else {
@@ -546,4 +552,8 @@ func TestLanguageOfText(t *testing.T) {
 
 func TestLanguagePreference(t *testing.T) {
 	testSimpleType[LanguagePreference](t, 1, 90)
+}
+
+func TestLDSBaptismDateStatus(t *testing.T) {
+	testOptions[LDSBaptismDateStatus](t, cCHILD, cCLEARED, cINFANT, cPRE1970, cQUALIFIED, cSTILLBORN, cSUBMITTED, cUNCLEARED)
 }
