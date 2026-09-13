@@ -543,3 +543,7 @@ func TestLanguageID(t *testing.T) {
 func TestLanguageOfText(t *testing.T) {
 	testSimpleType[LanguageOfText](t, 1, 15)
 }
+
+func TestLanguagePreference(t *testing.T) {
+	testSimpleType[LanguagePreference](t, 1, 90)
+}
