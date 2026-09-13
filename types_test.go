@@ -539,3 +539,7 @@ func TestGenerationsOfDescendants(t *testing.T) {
 func TestLanguageID(t *testing.T) {
 	testSimpleType[LanguageID](t, 1, 15)
 }
+
+func TestLanguageOfText(t *testing.T) {
+	testSimpleType[LanguageOfText](t, 1, 15)
+}
