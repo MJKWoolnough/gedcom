@@ -955,8 +955,8 @@ func (e *LDSChildSealingDateStatus) parse(l *Line, o options) error {
 		*e = cQUALIFIED
 	case cSTILLBORN:
 		*e = cSTILLBORN
-	case cSUBMITTES:
-		*e = cSUBMITTES
+	case cSUBMITTED:
+		*e = cSUBMITTED
 	case cUNCLEARED:
 		*e = cUNCLEARED
 	default:

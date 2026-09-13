@@ -190,7 +190,6 @@ const (
 	cSTILLBORN  = "STILLBORN"
 	cSUBM       = "SUBM"
 	cSUBMITTED  = "SUBMITTED"
-	cSUBMITTES  = "SUBMITTES"
 	cSUBN       = "SUBN"
 	cSUMB       = "SUMB"
 	cSURN       = "SURN"
