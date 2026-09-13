@@ -531,3 +531,7 @@ func TestForm(t *testing.T) {
 func TestGenerationsOfAncestors(t *testing.T) {
 	testRange[GenerationsOfAncestors](t, 9999)
 }
+
+func TestGenerationsOfDescendants(t *testing.T) {
+	testRange[GenerationsOfDescendants](t, 9999)
+}
