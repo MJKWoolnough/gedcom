@@ -2,7 +2,9 @@ package gedcom
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -38,6 +40,7 @@ func testType[T any, U pointerOf[T]](t *testing.T, tests []typeTests[T]) {
 		}
 
 		if err := s.parse(&test.Line, opts); !errors.Is(err, test.Error) {
+			fmt.Printf("%#v\n%#v\n", err, test.Error)
 			t.Errorf("test %d: expecting error %v, got %v", n+1, test.Error, err)
 		} else if !reflect.DeepEqual(s, &test.Result) {
 			t.Errorf("test %d: expecting value %v, got %v", n+1, test.Result, *s)
@@ -203,6 +206,71 @@ func testMultiLine[T ~string, U pointerOf[T]](t *testing.T, max uint) {
 	})
 }
 
+func testRange[T ~uint8 | ~uint16 | ~uint32 | ~uint64, U pointerOf[T]](t *testing.T, max T) {
+	name := reflect.TypeOf(new(T)).Elem().Name()
+	maxLength := uint(len(strconv.FormatUint(uint64(max), 10)))
+
+	var minErr, largeErr error
+
+	if uint(len(strconv.FormatUint(uint64(max)+1, 10))) > maxLength {
+		largeErr = ErrInvalidLength{name, strconv.FormatUint(uint64(max)+1, 10), 1, maxLength}
+	} else {
+		largeErr = ErrInvalidValue{name, strconv.FormatUint(uint64(max)+1, 10)}
+	}
+
+	if max < 10 {
+		minErr = ErrInvalidLength{name, "-1", 1, maxLength}
+	} else {
+		minErr = ErrInvalidValue{name, "-1"}
+	}
+
+	testType[T, U](t, []typeTests[T]{
+		{ // 1
+			Line:   l(""),
+			Error:  ErrInvalidLength{name, "", 1, maxLength},
+			Result: 0,
+		},
+		{ // 2
+			Line:    l(""),
+			Options: []Option{AllowWrongLength, IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 3
+			Line:   l("a"),
+			Error:  ErrInvalidValue{name, "a"},
+			Result: 0,
+		},
+		{ // 4
+			Line:    l("a"),
+			Options: []Option{IgnoreInvalidValue},
+			Result:  0,
+		},
+		{ // 5
+			Line:   l("1"),
+			Result: 1,
+		},
+		{ // 6
+			Line:   l("-1"),
+			Error:  minErr,
+			Result: 0,
+		},
+		{ // 7
+			Line:   l(strconv.FormatUint(uint64(max), 10)),
+			Result: max,
+		},
+		{ // 8
+			Line:   l(strconv.FormatUint(uint64(max)+1, 10)),
+			Error:  largeErr,
+			Result: 0,
+		},
+		{ // 9
+			Line:   l("1" + strings.Repeat("0", int(maxLength))),
+			Error:  ErrInvalidLength{name, "1" + strings.Repeat("0", int(maxLength)), 1, maxLength},
+			Result: 0,
+		},
+	})
+}
+
 func l(v string, subs ...Line) Line {
 	return Line{
 		line: line{
@@ -345,99 +413,11 @@ func TestCopyrightSourceData(t *testing.T) {
 }
 
 func TestCountOfChildren(t *testing.T) {
-	testType(t, []typeTests[CountOfChildren]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"CountOfChildren", "", 1, 3},
-			Result: 0,
-		},
-		{ // 2
-			Line:    l(""),
-			Options: []Option{AllowWrongLength, IgnoreInvalidValue},
-			Result:  0,
-		},
-		{ // 3
-			Line:   l("a"),
-			Error:  ErrInvalidValue{"CountOfChildren", "a"},
-			Result: 0,
-		},
-		{ // 4
-			Line:    l("a"),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  0,
-		},
-		{ // 5
-			Line:   l("1"),
-			Result: 1,
-		},
-		{ // 6
-			Line:   l("-1"),
-			Error:  ErrInvalidValue{"CountOfChildren", "-1"},
-			Result: 0,
-		},
-		{ // 7
-			Line:   l("255"),
-			Result: 255,
-		},
-		{ // 8
-			Line:   l("256"),
-			Error:  ErrInvalidValue{"CountOfChildren", "256"},
-			Result: 0,
-		},
-		{ // 9
-			Line:   l("1000"),
-			Error:  ErrInvalidLength{"CountOfChildren", "1000", 1, 3},
-			Result: 0,
-		},
-	})
+	testRange[CountOfChildren](t, 255)
 }
 
 func TestCountOfMarriages(t *testing.T) {
-	testType(t, []typeTests[CountOfMarriages]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"CountOfMarriages", "", 1, 3},
-			Result: 0,
-		},
-		{ // 2
-			Line:    l(""),
-			Options: []Option{AllowWrongLength, IgnoreInvalidValue},
-			Result:  0,
-		},
-		{ // 3
-			Line:   l("a"),
-			Error:  ErrInvalidValue{"CountOfMarriages", "a"},
-			Result: 0,
-		},
-		{ // 4
-			Line:    l("a"),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  0,
-		},
-		{ // 5
-			Line:   l("1"),
-			Result: 1,
-		},
-		{ // 6
-			Line:   l("-1"),
-			Error:  ErrInvalidValue{"CountOfMarriages", "-1"},
-			Result: 0,
-		},
-		{ // 7
-			Line:   l("255"),
-			Result: 255,
-		},
-		{ // 8
-			Line:   l("256"),
-			Error:  ErrInvalidValue{"CountOfMarriages", "256"},
-			Result: 0,
-		},
-		{ // 9
-			Line:   l("1000"),
-			Error:  ErrInvalidLength{"CountOfMarriages", "1000", 1, 3},
-			Result: 0,
-		},
-	})
+	testRange[CountOfMarriages](t, 255)
 }
 
 func TestDate(t *testing.T) {
@@ -493,46 +473,7 @@ func TestDateValue(t *testing.T) {
 }
 
 func TestDay(t *testing.T) {
-	testType(t, []typeTests[Day]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"Day", "", 1, 2},
-			Result: 0,
-		},
-		{ // 2
-			Line:    l(""),
-			Options: []Option{AllowWrongLength, IgnoreInvalidValue},
-			Result:  0,
-		},
-		{ // 3
-			Line:   l("a"),
-			Error:  ErrInvalidValue{"Day", "a"},
-			Result: 0,
-		},
-		{ // 4
-			Line:    l("a"),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  0,
-		},
-		{ // 5
-			Line:   l("1"),
-			Result: 1,
-		},
-		{ // 6
-			Line:   l("-1"),
-			Error:  ErrInvalidValue{"Day", "-1"},
-			Result: 0,
-		},
-		{ // 7
-			Line:   l("99"),
-			Result: 99,
-		},
-		{ // 8
-			Line:   l("100"),
-			Error:  ErrInvalidLength{"Day", "100", 1, 2},
-			Result: 0,
-		},
-	})
+	testRange[Day](t, 99)
 }
 
 func TestDescriptiveTitle(t *testing.T) {
@@ -540,41 +481,7 @@ func TestDescriptiveTitle(t *testing.T) {
 }
 
 func TestDigit(t *testing.T) {
-	testType(t, []typeTests[Digit]{
-		{ // 1
-			Line:   l(""),
-			Error:  ErrInvalidLength{"Digit", "", 1, 1},
-			Result: 0,
-		},
-		{ // 2
-			Line:    l(""),
-			Options: []Option{AllowWrongLength, IgnoreInvalidValue},
-			Result:  0,
-		},
-		{ // 3
-			Line:   l("a"),
-			Error:  ErrInvalidValue{"Digit", "a"},
-			Result: 0,
-		},
-		{ // 4
-			Line:    l("a"),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  0,
-		},
-		{ // 5
-			Line:   l("1"),
-			Result: 1,
-		},
-		{ // 6
-			Line:   l("9"),
-			Result: 9,
-		},
-		{ // 7
-			Line:   l("10"),
-			Error:  ErrInvalidLength{"Digit", "10", 1, 1},
-			Result: 0,
-		},
-	})
+	testRange[Digit](t, 9)
 }
 
 func TestEncodedMultimediaLine(t *testing.T) {
