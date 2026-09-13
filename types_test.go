@@ -616,3 +616,7 @@ func TestFileName(t *testing.T) {
 func TestContentDescription(t *testing.T) {
 	testMultiLine[ContentDescription](t, 248)
 }
+
+func TestForm(t *testing.T) {
+	testSimpleType[Form](t, 14, 20)
+}
