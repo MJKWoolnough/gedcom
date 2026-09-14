@@ -577,3 +577,7 @@ func TestMonth(t *testing.T) {
 func TestMonthFren(t *testing.T) {
 	testOptions[MonthFren](t, cVEND, cBRUM, cFRIM, cNIVO, cPLUV, cVENT, cGERM, cFLOR, cPRAI, cMESS, cTHER, cFRUC, cCOMP)
 }
+
+func TestMonthHebr(t *testing.T) {
+	testOptions[MonthHebr](t, cTSH, cCSH, cKSL, cTVT, cSHV, cADR, cADS, cNSN, cIYR, cSVN, cTMZ, cAAV, cELL)
+}
