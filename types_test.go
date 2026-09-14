@@ -593,3 +593,7 @@ func TestMultimediaFormat(t *testing.T) {
 func TestNameOfBusiness(t *testing.T) {
 	testSimpleType[NameOfBusiness](t, 1, 90)
 }
+
+func TestNameOfFamilyFile(t *testing.T) {
+	testSimpleType[NameOfFamilyFile](t, 1, 20)
+}
