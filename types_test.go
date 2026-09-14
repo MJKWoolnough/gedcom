@@ -585,3 +585,7 @@ func TestMonthHebr(t *testing.T) {
 func TestMultimediaFileReference(t *testing.T) {
 	testSimpleType[MultimediaFileReference](t, 1, 30)
 }
+
+func TestMultimediaFormat(t *testing.T) {
+	testOptions[MultimediaFormat](t, cbmp, cgif, cjpeg, cole, cpcx, ctiff, cwav)
+}
