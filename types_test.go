@@ -581,3 +581,7 @@ func TestMonthFren(t *testing.T) {
 func TestMonthHebr(t *testing.T) {
 	testOptions[MonthHebr](t, cTSH, cCSH, cKSL, cTVT, cSHV, cADR, cADS, cNSN, cIYR, cSVN, cTMZ, cAAV, cELL)
 }
+
+func TestMultimediaFileReference(t *testing.T) {
+	testSimpleType[MultimediaFileReference](t, 1, 30)
+}
