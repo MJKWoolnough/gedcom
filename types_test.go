@@ -589,3 +589,7 @@ func TestMultimediaFileReference(t *testing.T) {
 func TestMultimediaFormat(t *testing.T) {
 	testOptions[MultimediaFormat](t, cbmp, cgif, cjpeg, cole, cpcx, ctiff, cwav)
 }
+
+func TestNameOfBusiness(t *testing.T) {
+	testSimpleType[NameOfBusiness](t, 1, 90)
+}
