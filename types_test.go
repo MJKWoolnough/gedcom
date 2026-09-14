@@ -561,3 +561,7 @@ func TestLDSBaptismDateStatus(t *testing.T) {
 func TestLDSChildSealingDateStatus(t *testing.T) {
 	testOptions[LDSChildSealingDateStatus](t, cBIC, cCLEARED, cCOMPLETED, cDNS, cPRE1970, cQUALIFIED, cSTILLBORN, cSUBMITTED, cUNCLEARED)
 }
+
+func TestLDSEndowmentDateStatus(t *testing.T) {
+	testOptions[LDSEndowmentDateStatus](t, cCHILD, cCLEARED, cCOMPLETED, cINFANT, cPRE1970, cQUALIFIED, cSTILLBORN, cSUBMITTED, cUNCLEARED)
+}
