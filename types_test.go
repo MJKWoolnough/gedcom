@@ -569,3 +569,7 @@ func TestLDSEndowmentDateStatus(t *testing.T) {
 func TestLDSSpouseSealingDateStatus(t *testing.T) {
 	testOptions[LDSSpouseSealingDateStatus](t, cCANCELED, cCLEARED, cCOMPLETED, cDNS, cDNSCAN, cPRE1970, cQUALIFIED, cSUBMITTED, cUNCLEARED)
 }
+
+func TestMonth(t *testing.T) {
+	testOptions[Month](t, cJAN, cFEB, cMAR, cAPR, cMAY, cJUN, cJUL, cAUG, cSEP, cOCT, cNOV, cDEC)
+}
