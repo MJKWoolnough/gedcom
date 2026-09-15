@@ -625,3 +625,7 @@ func TestNamePieceGiven(t *testing.T) {
 func TestNamePieceNickname(t *testing.T) {
 	testSimpleType[NamePieceNickname](t, 1, 30)
 }
+
+func TestNamePiecePrefix(t *testing.T) {
+	testSimpleType[NamePiecePrefix](t, 1, 30)
+}
