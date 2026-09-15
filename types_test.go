@@ -597,3 +597,7 @@ func TestNameOfBusiness(t *testing.T) {
 func TestNameOfFamilyFile(t *testing.T) {
 	testSimpleType[NameOfFamilyFile](t, 1, 20)
 }
+
+func TestNameOfProduct(t *testing.T) {
+	testSimpleType[NameOfProduct](t, 1, 90)
+}
