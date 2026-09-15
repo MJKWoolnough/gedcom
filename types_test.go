@@ -609,3 +609,7 @@ func TestNameOfRepository(t *testing.T) {
 func TestNameOfSourceData(t *testing.T) {
 	testSimpleType[NameOfSourceData](t, 1, 90)
 }
+
+func TestNamePersonal(t *testing.T) {
+	testSimpleType[NamePersonal](t, 1, 120)
+}
