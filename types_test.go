@@ -617,3 +617,11 @@ func TestNamePersonal(t *testing.T) {
 func TestNamePiece(t *testing.T) {
 	testSimpleType[NamePiece](t, 1, 90)
 }
+
+func TestNamePieceGiven(t *testing.T) {
+	testSimpleType[NamePieceGiven](t, 1, 120)
+}
+
+func TestNamePieceNickname(t *testing.T) {
+	testSimpleType[NamePieceNickname](t, 1, 30)
+}
