@@ -613,3 +613,7 @@ func TestNameOfSourceData(t *testing.T) {
 func TestNamePersonal(t *testing.T) {
 	testSimpleType[NamePersonal](t, 1, 120)
 }
+
+func TestNamePiece(t *testing.T) {
+	testSimpleType[NamePiece](t, 1, 90)
+}
