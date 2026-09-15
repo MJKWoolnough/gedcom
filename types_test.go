@@ -605,3 +605,7 @@ func TestNameOfProduct(t *testing.T) {
 func TestNameOfRepository(t *testing.T) {
 	testSimpleType[NameOfRepository](t, 1, 90)
 }
+
+func TestNameOfSourceData(t *testing.T) {
+	testSimpleType[NameOfSourceData](t, 1, 90)
+}
