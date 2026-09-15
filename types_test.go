@@ -633,3 +633,7 @@ func TestNamePiecePrefix(t *testing.T) {
 func TestNamePieceSuffix(t *testing.T) {
 	testSimpleType[NamePieceSuffix](t, 1, 30)
 }
+
+func TestNamePieceSurname(t *testing.T) {
+	testSimpleType[NamePieceSurname](t, 1, 120)
+}
