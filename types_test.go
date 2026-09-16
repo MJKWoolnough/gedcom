@@ -665,3 +665,7 @@ func TestNumber(t *testing.T) {
 func TestOccupation(t *testing.T) {
 	testSimpleType[Occupation](t, 1, 90)
 }
+
+func TestOrdinanceProcessFlag(t *testing.T) {
+	testOptions[OrdinanceProcessFlag](t, cyes, cno)
+}
