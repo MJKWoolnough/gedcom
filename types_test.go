@@ -653,3 +653,7 @@ func TestNationalOrTribalOrigin(t *testing.T) {
 func TestNewTag(t *testing.T) {
 	testSimpleType[NewTag](t, 1, 15)
 }
+
+func TestNobilityTypeTitle(t *testing.T) {
+	testSimpleType[NobilityTypeTitle](t, 1, 120)
+}
