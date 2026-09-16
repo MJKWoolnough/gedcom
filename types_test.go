@@ -649,3 +649,7 @@ func TestNationalIDNumber(t *testing.T) {
 func TestNationalOrTribalOrigin(t *testing.T) {
 	testSimpleType[NationalOrTribalOrigin](t, 1, 120)
 }
+
+func TestNewTag(t *testing.T) {
+	testSimpleType[NewTag](t, 1, 15)
+}
