@@ -669,3 +669,7 @@ func TestOccupation(t *testing.T) {
 func TestOrdinanceProcessFlag(t *testing.T) {
 	testOptions[OrdinanceProcessFlag](t, cyes, cno)
 }
+
+func TestPedigreeLinkageType(t *testing.T) {
+	testOptions[PedigreeLinkageType](t, cadopted, cbirth, cfoster, csealing)
+}
