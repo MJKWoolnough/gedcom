@@ -661,3 +661,7 @@ func TestNobilityTypeTitle(t *testing.T) {
 func TestNumber(t *testing.T) {
 	testRange[Number](t, 999999999)
 }
+
+func TestOccupation(t *testing.T) {
+	testSimpleType[Occupation](t, 1, 90)
+}
