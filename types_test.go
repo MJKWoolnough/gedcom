@@ -673,3 +673,7 @@ func TestOrdinanceProcessFlag(t *testing.T) {
 func TestPedigreeLinkageType(t *testing.T) {
 	testOptions[PedigreeLinkageType](t, cadopted, cbirth, cfoster, csealing)
 }
+
+func TestPhoneNumber(t *testing.T) {
+	testSimpleType[PhoneNumber](t, 1, 25)
+}
