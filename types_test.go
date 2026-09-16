@@ -212,7 +212,7 @@ func testMultiLine[T ~string, U pointerOf[T]](t *testing.T, max uint) {
 	})
 }
 
-func testRange[T ~uint8 | ~uint16 | ~uint32 | ~uint64, U pointerOf[T]](t *testing.T, max T) {
+func testRange[T ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uint, U pointerOf[T]](t *testing.T, max T) {
 	name := reflect.TypeOf(new(T)).Elem().Name()
 	maxLength := uint(len(strconv.FormatUint(uint64(max), 10)))
 
@@ -656,4 +656,8 @@ func TestNewTag(t *testing.T) {
 
 func TestNobilityTypeTitle(t *testing.T) {
 	testSimpleType[NobilityTypeTitle](t, 1, 120)
+}
+
+func TestNumber(t *testing.T) {
+	testRange[Number](t, 999999999)
 }
