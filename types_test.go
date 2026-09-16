@@ -641,3 +641,7 @@ func TestNamePieceSurname(t *testing.T) {
 func TestNamePieceSurnamePrefix(t *testing.T) {
 	testSimpleType[NamePieceSurnamePrefix](t, 1, 30)
 }
+
+func TestNationalIDNumber(t *testing.T) {
+	testSimpleType[NationalIDNumber](t, 1, 30)
+}
