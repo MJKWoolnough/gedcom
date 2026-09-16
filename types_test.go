@@ -677,3 +677,7 @@ func TestPedigreeLinkageType(t *testing.T) {
 func TestPhoneNumber(t *testing.T) {
 	testSimpleType[PhoneNumber](t, 1, 25)
 }
+
+func TestPhysicalDescription(t *testing.T) {
+	testSimpleType[PhysicalDescription](t, 1, 248)
+}
