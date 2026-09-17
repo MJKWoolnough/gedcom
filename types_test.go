@@ -705,3 +705,7 @@ func TestPublicationDate(t *testing.T) {
 func TestReceivingSystemName(t *testing.T) {
 	testSimpleType[ReceivingSystemName](t, 1, 20)
 }
+
+func TestRecordIdentifier(t *testing.T) {
+	testSimpleType[RecordIdentifier](t, 1, 18)
+}
