@@ -693,3 +693,7 @@ func TestPlaceLivingOrdinance(t *testing.T) {
 func TestPlaceValue(t *testing.T) {
 	testSimpleType[PlaceValue](t, 1, 120)
 }
+
+func TestPossessions(t *testing.T) {
+	testSimpleType[Possessions](t, 1, 248)
+}
