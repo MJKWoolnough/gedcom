@@ -685,3 +685,7 @@ func TestPhysicalDescription(t *testing.T) {
 func TestPlaceHierarchy(t *testing.T) {
 	testSimpleType[PlaceHierarchy](t, 1, 120)
 }
+
+func TestPlaceLivingOrdinance(t *testing.T) {
+	testSimpleType[PlaceLivingOrdinance](t, 1, 120)
+}
