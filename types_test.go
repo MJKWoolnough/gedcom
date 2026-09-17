@@ -697,3 +697,7 @@ func TestPlaceValue(t *testing.T) {
 func TestPossessions(t *testing.T) {
 	testSimpleType[Possessions](t, 1, 248)
 }
+
+func TestPublicationDate(t *testing.T) {
+	testSimpleType[PublicationDate](t, 10, 11)
+}
