@@ -689,3 +689,7 @@ func TestPlaceHierarchy(t *testing.T) {
 func TestPlaceLivingOrdinance(t *testing.T) {
 	testSimpleType[PlaceLivingOrdinance](t, 1, 120)
 }
+
+func TestPlaceValue(t *testing.T) {
+	testSimpleType[PlaceValue](t, 1, 120)
+}
