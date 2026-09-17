@@ -701,3 +701,7 @@ func TestPossessions(t *testing.T) {
 func TestPublicationDate(t *testing.T) {
 	testSimpleType[PublicationDate](t, 10, 11)
 }
+
+func TestReceivingSystemName(t *testing.T) {
+	testSimpleType[ReceivingSystemName](t, 1, 20)
+}
