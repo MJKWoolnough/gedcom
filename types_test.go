@@ -717,3 +717,7 @@ func TestRecordType(t *testing.T) {
 func TestRegisteredResourceIdentifier(t *testing.T) {
 	testSimpleType[RegisteredResourceIdentifier](t, 1, 25)
 }
+
+func TestRelationIsDescriptor(t *testing.T) {
+	testSimpleType[RelationIsDescriptor](t, 1, 25)
+}
