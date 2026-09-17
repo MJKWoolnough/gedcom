@@ -681,3 +681,7 @@ func TestPhoneNumber(t *testing.T) {
 func TestPhysicalDescription(t *testing.T) {
 	testSimpleType[PhysicalDescription](t, 1, 248)
 }
+
+func TestPlaceHierarchy(t *testing.T) {
+	testSimpleType[PlaceHierarchy](t, 1, 120)
+}
