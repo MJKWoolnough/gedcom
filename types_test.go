@@ -709,3 +709,7 @@ func TestReceivingSystemName(t *testing.T) {
 func TestRecordIdentifier(t *testing.T) {
 	testSimpleType[RecordIdentifier](t, 1, 18)
 }
+
+func TestRecordType(t *testing.T) {
+	testOptions[RecordType](t, cFAM, cINDI, cNOTE, cOBJE, cREPO, cSOUR, cSUBM, cSUBN)
+}
