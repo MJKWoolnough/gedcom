@@ -713,3 +713,7 @@ func TestRecordIdentifier(t *testing.T) {
 func TestRecordType(t *testing.T) {
 	testOptions[RecordType](t, cFAM, cINDI, cNOTE, cOBJE, cREPO, cSOUR, cSUBM, cSUBN)
 }
+
+func TestRegisteredResourceIdentifier(t *testing.T) {
+	testSimpleType[RegisteredResourceIdentifier](t, 1, 25)
+}
