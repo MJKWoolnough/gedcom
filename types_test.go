@@ -745,3 +745,7 @@ func TestRoleInEvent(t *testing.T) {
 func TestScholasticAchievement(t *testing.T) {
 	testSimpleType[ScholasticAchievement](t, 1, 248)
 }
+
+func TestSexValue(t *testing.T) {
+	testSimpleType[SexValue](t, 1, 7)
+}
