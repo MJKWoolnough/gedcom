@@ -725,3 +725,7 @@ func TestRelationIsDescriptor(t *testing.T) {
 func TestReligiousAffiliation(t *testing.T) {
 	testSimpleType[ReligiousAffiliation](t, 1, 90)
 }
+
+func TestResponsibleAgency(t *testing.T) {
+	testSimpleType[ResponsibleAgency](t, 1, 120)
+}
