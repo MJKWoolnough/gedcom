@@ -757,3 +757,7 @@ func TestSocialSecurityNumber(t *testing.T) {
 func TestSourceCallNumber(t *testing.T) {
 	testSimpleType[SourceCallNumber](t, 1, 120)
 }
+
+func TestSourceDescription(t *testing.T) {
+	testMultiLine[SourceDescription](t, 248)
+}
