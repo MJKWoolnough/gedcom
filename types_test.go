@@ -741,3 +741,7 @@ func TestRoleDescriptor(t *testing.T) {
 func TestRoleInEvent(t *testing.T) {
 	testSimpleType[RoleInEvent](t, 1, 15)
 }
+
+func TestScholasticAchievement(t *testing.T) {
+	testSimpleType[ScholasticAchievement](t, 1, 248)
+}
