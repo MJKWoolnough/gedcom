@@ -729,3 +729,7 @@ func TestReligiousAffiliation(t *testing.T) {
 func TestResponsibleAgency(t *testing.T) {
 	testSimpleType[ResponsibleAgency](t, 1, 120)
 }
+
+func TestRestrictionNotice(t *testing.T) {
+	testOptions[RestrictionNotice](t, clocked, cprivacy)
+}
