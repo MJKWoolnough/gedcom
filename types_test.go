@@ -753,3 +753,7 @@ func TestSexValue(t *testing.T) {
 func TestSocialSecurityNumber(t *testing.T) {
 	testSimpleType[SocialSecurityNumber](t, 9, 11)
 }
+
+func TestSourceCallNumber(t *testing.T) {
+	testSimpleType[SourceCallNumber](t, 1, 120)
+}
