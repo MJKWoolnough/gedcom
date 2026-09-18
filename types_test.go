@@ -733,3 +733,7 @@ func TestResponsibleAgency(t *testing.T) {
 func TestRestrictionNotice(t *testing.T) {
 	testOptions[RestrictionNotice](t, clocked, cprivacy)
 }
+
+func TestRoleDescriptor(t *testing.T) {
+	testSimpleType[RoleDescriptor](t, 1, 25)
+}
