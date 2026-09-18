@@ -737,3 +737,7 @@ func TestRestrictionNotice(t *testing.T) {
 func TestRoleDescriptor(t *testing.T) {
 	testSimpleType[RoleDescriptor](t, 1, 25)
 }
+
+func TestRoleInEvent(t *testing.T) {
+	testSimpleType[RoleInEvent](t, 1, 15)
+}
