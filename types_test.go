@@ -749,3 +749,7 @@ func TestScholasticAchievement(t *testing.T) {
 func TestSexValue(t *testing.T) {
 	testSimpleType[SexValue](t, 1, 7)
 }
+
+func TestSocialSecurityNumber(t *testing.T) {
+	testSimpleType[SocialSecurityNumber](t, 9, 11)
+}
