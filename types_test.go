@@ -721,3 +721,7 @@ func TestRegisteredResourceIdentifier(t *testing.T) {
 func TestRelationIsDescriptor(t *testing.T) {
 	testSimpleType[RelationIsDescriptor](t, 1, 25)
 }
+
+func TestReligiousAffiliation(t *testing.T) {
+	testSimpleType[ReligiousAffiliation](t, 1, 90)
+}
