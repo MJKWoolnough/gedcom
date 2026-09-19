@@ -765,3 +765,7 @@ func TestSourceDescription(t *testing.T) {
 func TestSourceDescriptiveTitle(t *testing.T) {
 	testMultiLine[SourceDescriptiveTitle](t, 248)
 }
+
+func TestSourceFiledByEntry(t *testing.T) {
+	testSimpleType[SourceFiledByEntry](t, 1, 60)
+}
