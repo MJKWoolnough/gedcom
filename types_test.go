@@ -801,3 +801,7 @@ func TestSubmitterText(t *testing.T) {
 func TestTempleCode(t *testing.T) {
 	testSimpleType[TempleCode](t, 4, 5)
 }
+
+func TestText(t *testing.T) {
+	testSimpleType[Text](t, 1, 248)
+}
