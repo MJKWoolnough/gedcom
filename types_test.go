@@ -793,3 +793,7 @@ func TestSubmitterName(t *testing.T) {
 func TestSubmitterRegisteredRFN(t *testing.T) {
 	testSimpleType[SubmitterRegisteredRFN](t, 1, 30)
 }
+
+func TestSubmitterText(t *testing.T) {
+	testMultiLine[SubmitterText](t, 248)
+}
