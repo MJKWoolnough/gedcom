@@ -769,3 +769,11 @@ func TestSourceDescriptiveTitle(t *testing.T) {
 func TestSourceFiledByEntry(t *testing.T) {
 	testSimpleType[SourceFiledByEntry](t, 1, 60)
 }
+
+func TestSourceJurisdictionPlace(t *testing.T) {
+	testSimpleType[SourceJurisdictionPlace](t, 1, 120)
+}
+
+func TestSourceMediaType(t *testing.T) {
+	testOptions[SourceMediaType](t, caudio, cbook, ccard, celectronic, cfiche, cmagazine, cmanuscript, cmap, cnewspaper, cphoto, ctombstone, cvideo)
+}
