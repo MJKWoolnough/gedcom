@@ -797,3 +797,7 @@ func TestSubmitterRegisteredRFN(t *testing.T) {
 func TestSubmitterText(t *testing.T) {
 	testMultiLine[SubmitterText](t, 248)
 }
+
+func TestTempleCode(t *testing.T) {
+	testSimpleType[TempleCode](t, 4, 5)
+}
