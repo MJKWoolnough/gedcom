@@ -761,3 +761,7 @@ func TestSourceCallNumber(t *testing.T) {
 func TestSourceDescription(t *testing.T) {
 	testMultiLine[SourceDescription](t, 248)
 }
+
+func TestSourceDescriptiveTitle(t *testing.T) {
+	testMultiLine[SourceDescriptiveTitle](t, 248)
+}
