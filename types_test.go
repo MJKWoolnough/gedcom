@@ -777,3 +777,7 @@ func TestSourceJurisdictionPlace(t *testing.T) {
 func TestSourceMediaType(t *testing.T) {
 	testOptions[SourceMediaType](t, caudio, cbook, ccard, celectronic, cfiche, cmagazine, cmanuscript, cmap, cnewspaper, cphoto, ctombstone, cvideo)
 }
+
+func TestSourceOriginator(t *testing.T) {
+	testMultiLine[SourceOriginator](t, 248)
+}
