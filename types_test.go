@@ -789,3 +789,7 @@ func TestSourcePublicationFacts(t *testing.T) {
 func TestSubmitterName(t *testing.T) {
 	testSimpleType[SubmitterName](t, 1, 60)
 }
+
+func TestSubmitterRegisteredRFN(t *testing.T) {
+	testSimpleType[SubmitterRegisteredRFN](t, 1, 30)
+}
