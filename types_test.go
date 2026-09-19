@@ -781,3 +781,7 @@ func TestSourceMediaType(t *testing.T) {
 func TestSourceOriginator(t *testing.T) {
 	testMultiLine[SourceOriginator](t, 248)
 }
+
+func TestSourcePublicationFacts(t *testing.T) {
+	testSimpleType[SourcePublicationFacts](t, 1, 248)
+}
