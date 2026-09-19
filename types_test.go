@@ -785,3 +785,7 @@ func TestSourceOriginator(t *testing.T) {
 func TestSourcePublicationFacts(t *testing.T) {
 	testSimpleType[SourcePublicationFacts](t, 1, 248)
 }
+
+func TestSubmitterName(t *testing.T) {
+	testSimpleType[SubmitterName](t, 1, 60)
+}
