@@ -813,3 +813,7 @@ func TestTextFromSource(t *testing.T) {
 func TestTimeValue(t *testing.T) {
 	testSimpleType[TimeValue](t, 1, 12)
 }
+
+func TestTransmissionDate(t *testing.T) {
+	testSimpleType[TransmissionDate](t, 10, 11)
+}
