@@ -805,3 +805,7 @@ func TestTempleCode(t *testing.T) {
 func TestText(t *testing.T) {
 	testSimpleType[Text](t, 1, 248)
 }
+
+func TestTextFromSource(t *testing.T) {
+	testMultiLine[TextFromSource](t, 248)
+}
