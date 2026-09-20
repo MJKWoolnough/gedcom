@@ -817,3 +817,7 @@ func TestTimeValue(t *testing.T) {
 func TestTransmissionDate(t *testing.T) {
 	testSimpleType[TransmissionDate](t, 10, 11)
 }
+
+func TestUserReferenceNumber(t *testing.T) {
+	testSimpleType[UserReferenceNumber](t, 1, 20)
+}
