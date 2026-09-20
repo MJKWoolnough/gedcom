@@ -809,3 +809,7 @@ func TestText(t *testing.T) {
 func TestTextFromSource(t *testing.T) {
 	testMultiLine[TextFromSource](t, 248)
 }
+
+func TestTimeValue(t *testing.T) {
+	testSimpleType[TimeValue](t, 1, 12)
+}
