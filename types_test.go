@@ -837,3 +837,7 @@ func TestWhereWithinSource(t *testing.T) {
 func TestXref(t *testing.T) {
 	testSimpleType[Xref](t, 1, 22)
 }
+
+func TestYear(t *testing.T) {
+	testSimpleType[Year](t, 3, 4)
+}
