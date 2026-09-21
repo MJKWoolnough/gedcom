@@ -833,3 +833,7 @@ func TestVersionNumber(t *testing.T) {
 func TestWhereWithinSource(t *testing.T) {
 	testSimpleType[WhereWithinSource](t, 1, 248)
 }
+
+func TestXref(t *testing.T) {
+	testSimpleType[Xref](t, 1, 22)
+}
