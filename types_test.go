@@ -825,3 +825,7 @@ func TestUserReferenceNumber(t *testing.T) {
 func TestUserReferenceType(t *testing.T) {
 	testSimpleType[UserReferenceType](t, 1, 40)
 }
+
+func TestVersionNumber(t *testing.T) {
+	testSimpleType[VersionNumber](t, 1, 15)
+}
