@@ -829,3 +829,7 @@ func TestUserReferenceType(t *testing.T) {
 func TestVersionNumber(t *testing.T) {
 	testSimpleType[VersionNumber](t, 1, 15)
 }
+
+func TestWhereWithinSource(t *testing.T) {
+	testSimpleType[WhereWithinSource](t, 1, 248)
+}
