@@ -458,6 +458,10 @@ func TestDateFren(t *testing.T) {
 	testSimpleType[DateFren](t, 4, 35)
 }
 
+func TestDateGreg(t *testing.T) {
+	testSimpleType[DateGreg](t, 4, 35)
+}
+
 func TestDateHebr(t *testing.T) {
 	testSimpleType[DateHebr](t, 4, 35)
 }
