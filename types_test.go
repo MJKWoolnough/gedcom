@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"slices"
 	"strconv"
 	"strings"
 	"testing"
@@ -99,28 +100,35 @@ func testSimpleType[T ~string, U pointerOf[T]](t *testing.T, min, max uint) {
 
 func testOptions[T ~string, U pointerOf[T]](t *testing.T, options ...T) {
 	name := reflect.TypeOf(new(T)).Elem().Name()
-	tests := []typeTests[T]{
-		{
-			Line:   l(""),
-			Error:  ErrInvalidValue{name, ""},
-			Result: "",
-		},
-		{
-			Line:    l(""),
-			Options: []Option{IgnoreInvalidValue},
-			Result:  "",
-		},
-		{
-			Line:   l("a"),
-			Error:  ErrInvalidValue{name, "a"},
-			Result: "",
-		},
-		{
+
+	var tests []typeTests[T]
+
+	if !slices.Contains(options, "") {
+		tests = []typeTests[T]{
+			{
+				Line:   l(""),
+				Error:  ErrInvalidValue{name, ""},
+				Result: "",
+			},
+			{
+				Line:    l(""),
+				Options: []Option{IgnoreInvalidValue},
+				Result:  "",
+			},
+		}
+	}
+
+	tests = append(tests, typeTests[T]{
+		Line:   l("a"),
+		Error:  ErrInvalidValue{name, "a"},
+		Result: "",
+	},
+		typeTests[T]{
 			Line:    l("a"),
 			Options: []Option{IgnoreInvalidValue},
 			Result:  "",
 		},
-	}
+	)
 
 	for _, opt := range options {
 		for i := range 1 << len(opt) {
@@ -824,6 +832,10 @@ func TestUserReferenceNumber(t *testing.T) {
 
 func TestUserReferenceType(t *testing.T) {
 	testSimpleType[UserReferenceType](t, 1, 40)
+}
+
+func TestVerified(t *testing.T) {
+	testOptions[Verified](t, c, cY)
 }
 
 func TestVersionNumber(t *testing.T) {
