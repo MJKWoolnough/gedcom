@@ -821,3 +821,7 @@ func TestTransmissionDate(t *testing.T) {
 func TestUserReferenceNumber(t *testing.T) {
 	testSimpleType[UserReferenceNumber](t, 1, 20)
 }
+
+func TestUserReferenceType(t *testing.T) {
+	testSimpleType[UserReferenceType](t, 1, 40)
+}
