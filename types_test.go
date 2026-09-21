@@ -841,3 +841,7 @@ func TestXref(t *testing.T) {
 func TestYear(t *testing.T) {
 	testSimpleType[Year](t, 3, 4)
 }
+
+func TestYearGreg(t *testing.T) {
+	testSimpleType[YearGreg](t, 3, 7)
+}
