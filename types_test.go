@@ -686,6 +686,10 @@ func TestPedigreeLinkageType(t *testing.T) {
 	testOptions[PedigreeLinkageType](t, cadopted, cbirth, cfoster, csealing)
 }
 
+func TestPermanentRecordFileNumber(t *testing.T) {
+	testSimpleType[PermanentRecordFileNumber](t, 1, 90)
+}
+
 func TestPhoneNumber(t *testing.T) {
 	testSimpleType[PhoneNumber](t, 1, 25)
 }
