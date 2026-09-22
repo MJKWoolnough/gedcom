@@ -101,6 +101,17 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
+		{ // 12
+			Input: "12 @abc@ a\n",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: tokenXref, Data: "abc"},
+				{Type: tokenTag, Data: "a"},
+				{Type: tokenEndLine, Data: ""},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			Options: options{},
+		},
 	} {
 		tks := newTokeniser(strings.NewReader(test.Input), test.Options)
 
