@@ -27,6 +27,28 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
+		{
+			Input: "a",
+			Output: []parser.Token{
+				{Type: parser.TokenError, Data: ErrInvalidLevel.Error()},
+			},
+			Options: options{},
+		},
+		{
+			Input: "12a",
+			Output: []parser.Token{
+				{Type: parser.TokenError, Data: ErrMissingDelim.Error()},
+			},
+			Options: options{},
+		},
+		{
+			Input: " 12 ",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: parser.TokenError, Data: ErrInvalidTag.Error()},
+			},
+			Options: options{},
+		},
 	} {
 		tks := newTokeniser(strings.NewReader(test.Input), test.Options)
 
