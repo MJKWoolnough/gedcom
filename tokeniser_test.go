@@ -13,35 +13,35 @@ func TestTokeniser(t *testing.T) {
 		Output  []parser.Token
 		Options options
 	}{
-		{
+		{ // 1
 			Input: "",
 			Output: []parser.Token{
 				{Type: parser.TokenDone, Data: ""},
 			},
 			Options: options{},
 		},
-		{
+		{ // 2
 			Input: " \t\r\n",
 			Output: []parser.Token{
 				{Type: parser.TokenDone, Data: ""},
 			},
 			Options: options{},
 		},
-		{
+		{ // 3
 			Input: "a",
 			Output: []parser.Token{
 				{Type: parser.TokenError, Data: ErrInvalidLevel.Error()},
 			},
 			Options: options{},
 		},
-		{
+		{ // 4
 			Input: "12a",
 			Output: []parser.Token{
 				{Type: parser.TokenError, Data: ErrMissingDelim.Error()},
 			},
 			Options: options{},
 		},
-		{
+		{ // 5
 			Input: " 12 ",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -49,7 +49,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{
+		{ // 6
 			Input: "12 @",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -57,7 +57,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{
+		{ // 7
 			Input: "12 @a123",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -65,7 +65,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{
+		{ // 8
 			Input: "12 @a123@ ",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -74,7 +74,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{
+		{ // 9
 			Input: "12 a",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -83,7 +83,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{
+		{ // 10
 			Input: "12 a\n",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -93,7 +93,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{
+		{ // 11
 			Input: "12 a|",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
