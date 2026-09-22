@@ -20,6 +20,13 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
+		{
+			Input: " \t\r\n",
+			Output: []parser.Token{
+				{Type: parser.TokenDone, Data: ""},
+			},
+			Options: options{},
+		},
 	} {
 		tks := newTokeniser(strings.NewReader(test.Input), test.Options)
 
