@@ -75,6 +75,14 @@ func TestTokeniser(t *testing.T) {
 			Options: options{},
 		},
 		{ // 9
+			Input: "12 @a123@",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: parser.TokenError, Data: ErrMissingDelim.Error()},
+			},
+			Options: options{},
+		},
+		{ // 10
 			Input: "12 a",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -83,7 +91,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{ // 10
+		{ // 11
 			Input: "12 a\n",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -93,7 +101,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{ // 11
+		{ // 12
 			Input: "12 a|",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -101,7 +109,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{ // 12
+		{ // 13
 			Input: "12 @abc@ a\n",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -112,7 +120,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{ // 13
+		{ // 14
 			Input: "12 @abc@ def @ghi",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -122,7 +130,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{ // 14
+		{ // 15
 			Input: "12 @abc@ def @ghi@",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -133,7 +141,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{ // 15
+		{ // 16
 			Input: "12 @abc@ def ghi jkl",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -144,7 +152,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{ // 16
+		{ // 17
 			Input: "12 @abc@ def ghi jkl\n13 zyx @@ wvu",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
