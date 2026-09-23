@@ -177,6 +177,27 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
+		{ // 19
+			Input: "12 @abc@ def £",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: tokenXref, Data: "abc"},
+				{Type: tokenTag, Data: "def"},
+				{Type: parser.TokenError, Data: ErrBadChar.Error()},
+			},
+			Options: options{},
+		},
+		{ // 19
+			Input: "12 @abc@ def £",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: tokenXref, Data: "abc"},
+				{Type: tokenTag, Data: "def"},
+				{Type: tokenLine, Data: "£"},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			Options: options{allowUnknownCharset: true},
+		},
 	} {
 		tks := newTokeniser(strings.NewReader(test.Input), test.Options)
 
