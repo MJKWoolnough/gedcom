@@ -131,6 +131,17 @@ func TestTokeniser(t *testing.T) {
 			Options: options{},
 		},
 		{ // 15
+			Input: "12 @abc@ def @ghi",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: tokenXref, Data: "abc"},
+				{Type: tokenTag, Data: "def"},
+				{Type: tokenLine, Data: "@ghi"},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			Options: options{allowInvalidEscape: true},
+		},
+		{ // 16
 			Input: "12 @abc@ def @ghi@",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -141,7 +152,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{ // 16
+		{ // 17
 			Input: "12 @abc@ def ghi jkl",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
@@ -152,7 +163,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{},
 		},
-		{ // 17
+		{ // 18
 			Input: "12 @abc@ def ghi jkl\n13 zyx @@ wvu",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
