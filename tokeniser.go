@@ -186,6 +186,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 				}, t.level
 			}
 		} else {
+			p.Reset()
 		}
 	}
 
