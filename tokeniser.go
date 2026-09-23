@@ -169,7 +169,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 	if p.Peek() == '@' {
 		p.Accept("@")
 
-		if p.Peek() != '@' {
+		if !p.Accept("@") {
 			if pointer, err := t.readPointer(p); err != nil {
 				if !t.allowInvalidEscape {
 					p.Err = err
@@ -185,6 +185,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 					Data: pointer,
 				}, t.level
 			}
+		} else {
 		}
 	}
 
