@@ -1,5 +1,5 @@
 module vimagination.zapto.org/gedcom
 
-go 1.22
+go 1.23
 
-require vimagination.zapto.org/parser v1.0.3
+require vimagination.zapto.org/parser v1.2.3
