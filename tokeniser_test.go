@@ -251,6 +251,26 @@ func TestTokeniser(t *testing.T) {
 			},
 			Options: options{allowUnknownCharset: true},
 		},
+		{ // 26
+			Input: "12 abc def\nghi jkl\n \n\n  mno",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: tokenTag, Data: "abc"},
+				{Type: tokenLine, Data: "def"},
+				{Type: parser.TokenError, Data: ErrInvalidLevel.Error()},
+			},
+			Options: options{},
+		},
+		{ // 27
+			Input: "12 abc def\nghi jkl\n \n\n  mno",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: tokenTag, Data: "abc"},
+				{Type: tokenLine, Data: "def\nghi jkl\n \n\n  mno"},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			Options: options{allowTerminatorsInValue: true},
+		},
 	} {
 		tks := newTokeniser(strings.NewReader(test.Input), test.Options)
 
