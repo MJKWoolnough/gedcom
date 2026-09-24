@@ -243,13 +243,11 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 
 				break
 			}
+		} else if !t.allowInvalidChars {
+			p.Err = ErrBadChar
+
+			return p.Error()
 		} else {
-			if !t.allowInvalidChars {
-				p.Err = ErrBadChar
-
-				return p.Error()
-			}
-
 			p.Except("")
 		}
 	}
