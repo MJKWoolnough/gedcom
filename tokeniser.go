@@ -120,6 +120,7 @@ func (t *tokeniser) xrefID(p *parser.Tokeniser) (parser.Token, parser.TokenFunc)
 func (t *tokeniser) tag(p *parser.Tokeniser) (parser.Token, parser.TokenFunc) {
 	if !p.Accept(alphanum) {
 		p.Err = ErrInvalidTag
+
 		return p.Error()
 	}
 
