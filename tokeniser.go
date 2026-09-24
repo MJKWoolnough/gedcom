@@ -238,13 +238,7 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 
 			p.AcceptRun(levelIgnore)
 
-			if p.Peek() == -1 {
-				s.Reset()
-
-				next = (*parser.Tokeniser).Done
-
-				break
-			} else if p.Accept(digit) {
+			if p.Peek() == -1 || p.Accept(digit) {
 				s.Reset()
 
 				break
