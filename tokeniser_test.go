@@ -18,28 +18,24 @@ func TestTokeniser(t *testing.T) {
 			Output: []parser.Token{
 				{Type: parser.TokenDone, Data: ""},
 			},
-			Options: options{},
 		},
 		{ // 2
 			Input: " \t\r\n",
 			Output: []parser.Token{
 				{Type: parser.TokenDone, Data: ""},
 			},
-			Options: options{},
 		},
 		{ // 3
 			Input: "a",
 			Output: []parser.Token{
 				{Type: parser.TokenError, Data: ErrInvalidLevel.Error()},
 			},
-			Options: options{},
 		},
 		{ // 4
 			Input: "12a",
 			Output: []parser.Token{
 				{Type: parser.TokenError, Data: ErrMissingDelim.Error()},
 			},
-			Options: options{},
 		},
 		{ // 5
 			Input: " 12 ",
@@ -47,7 +43,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenLevel, Data: "12"},
 				{Type: parser.TokenError, Data: ErrInvalidTag.Error()},
 			},
-			Options: options{},
 		},
 		{ // 6
 			Input: "12 @",
@@ -55,7 +50,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenLevel, Data: "12"},
 				{Type: parser.TokenError, Data: ErrInvalidPointer.Error()},
 			},
-			Options: options{},
 		},
 		{ // 7
 			Input: "12 @a123",
@@ -63,7 +57,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenLevel, Data: "12"},
 				{Type: parser.TokenError, Data: ErrInvalidPointer.Error()},
 			},
-			Options: options{},
 		},
 		{ // 8
 			Input: "12 @a123@ ",
@@ -72,7 +65,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenXref, Data: "a123"},
 				{Type: parser.TokenError, Data: ErrInvalidTag.Error()},
 			},
-			Options: options{},
 		},
 		{ // 9
 			Input: "12 @a123@",
@@ -80,7 +72,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenLevel, Data: "12"},
 				{Type: parser.TokenError, Data: ErrMissingDelim.Error()},
 			},
-			Options: options{},
 		},
 		{ // 10
 			Input: "12 a",
@@ -89,7 +80,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenTag, Data: "a"},
 				{Type: parser.TokenDone, Data: ""},
 			},
-			Options: options{},
 		},
 		{ // 11
 			Input: "12 a\n",
@@ -99,7 +89,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenEndLine, Data: ""},
 				{Type: parser.TokenDone, Data: ""},
 			},
-			Options: options{},
 		},
 		{ // 12
 			Input: "12 a|",
@@ -107,7 +96,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenLevel, Data: "12"},
 				{Type: parser.TokenError, Data: ErrInvalidTag.Error()},
 			},
-			Options: options{},
 		},
 		{ // 13
 			Input: "12 @abc@ a\n",
@@ -118,7 +106,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenEndLine, Data: ""},
 				{Type: parser.TokenDone, Data: ""},
 			},
-			Options: options{},
 		},
 		{ // 14
 			Input: "12 @abc@ def @ghi",
@@ -128,7 +115,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenTag, Data: "def"},
 				{Type: parser.TokenError, Data: ErrInvalidPointer.Error()},
 			},
-			Options: options{},
 		},
 		{ // 15
 			Input: "12 @abc@ def @ghi",
@@ -150,7 +136,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenPointer, Data: "ghi"},
 				{Type: parser.TokenDone, Data: ""},
 			},
-			Options: options{},
 		},
 		{ // 17
 			Input: "12 @abc@ def ghi jkl",
@@ -161,7 +146,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenLine, Data: "ghi jkl"},
 				{Type: parser.TokenDone, Data: ""},
 			},
-			Options: options{},
 		},
 		{ // 18
 			Input: "12 @abc@ def ghi jkl\n13 zyx @@ wvu",
@@ -175,7 +159,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenLine, Data: "@@ wvu"},
 				{Type: parser.TokenDone, Data: ""},
 			},
-			Options: options{},
 		},
 		{ // 19
 			Input: "12 @abc@ def £",
@@ -185,7 +168,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenTag, Data: "def"},
 				{Type: parser.TokenError, Data: ErrBadChar.Error()},
 			},
-			Options: options{},
 		},
 		{ // 20
 			Input: "12 @abc@ def £",
@@ -207,7 +189,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenLine, Data: "line @#98@"},
 				{Type: parser.TokenDone, Data: ""},
 			},
-			Options: options{},
 		},
 		{ // 22
 			Input: "12 @abc@ def line @98@",
@@ -217,7 +198,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenTag, Data: "def"},
 				{Type: parser.TokenError, Data: ErrBadEscape.Error()},
 			},
-			Options: options{},
 		},
 		{ // 23
 			Input: "12 @abc@ def @#98@",
@@ -238,7 +218,6 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenTag, Data: "def"},
 				{Type: parser.TokenError, Data: ErrBadEscape.Error()},
 			},
-			Options: options{},
 		},
 		{ // 25
 			Input: "12 @abc@ def ghi @#£@",
@@ -259,9 +238,29 @@ func TestTokeniser(t *testing.T) {
 				{Type: tokenLine, Data: "def"},
 				{Type: parser.TokenError, Data: ErrInvalidLevel.Error()},
 			},
-			Options: options{},
 		},
 		{ // 27
+			Input: "12 abc def\nghi jkl\n \n\n  mno",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: tokenTag, Data: "abc"},
+				{Type: tokenLine, Data: "def\nghi jkl\n \n\n  mno"},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			Options: options{allowTerminatorsInValue: true},
+		},
+		{ // 28
+			Input: "12 abc def\nghi jkl\n \n\n  mno\n13 ",
+			Output: []parser.Token{
+				{Type: tokenLevel, Data: "12"},
+				{Type: tokenTag, Data: "abc"},
+				{Type: tokenLine, Data: "def\nghi jkl\n \n\n  mno"},
+				{Type: tokenLevel, Data: "13"},
+				{Type: parser.TokenError, Data: ErrInvalidTag.Error()},
+			},
+			Options: options{allowTerminatorsInValue: true},
+		},
+		{ // 29
 			Input: "12 abc def\nghi jkl\n \n\n  mno",
 			Output: []parser.Token{
 				{Type: tokenLevel, Data: "12"},
