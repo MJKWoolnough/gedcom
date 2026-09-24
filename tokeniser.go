@@ -223,25 +223,30 @@ func (t *tokeniser) lineValue(p *parser.Tokeniser) (parser.Token, parser.TokenFu
 			}
 		}
 
-		pe := p.Peek()
-		if pe == -1 {
+		if p.Peek() == -1 {
 			next = (*parser.Tokeniser).Done
 
 			break
 		}
 
-		if strings.ContainsRune(terminators, pe) {
-			p.AcceptRun(terminators)
-
+		if s := p.State(); p.Accept(terminators) {
 			if !t.allowTerminatorsInValue {
+				s.Reset()
+
 				break
 			}
 
-			if pe = p.Peek(); pe == -1 {
+			p.AcceptRun(levelIgnore)
+
+			if p.Peek() == -1 {
+				s.Reset()
+
 				next = (*parser.Tokeniser).Done
 
 				break
-			} else if strings.ContainsRune(digit, pe) {
+			} else if p.Accept(digit) {
+				s.Reset()
+
 				break
 			}
 		} else {
