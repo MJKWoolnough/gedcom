@@ -777,7 +777,6 @@ func (s *Family) parse(l *Line, o options) error {
 				return ErrContext{"Family", cMARS, err}
 			}
 		case cEVEN:
-
 			var t FamilyEventDetail
 
 			if err := t.parse(&sl, o); err != nil {
@@ -814,7 +813,6 @@ func (s *Family) parse(l *Line, o options) error {
 				return ErrContext{"Family", cWIFE, err}
 			}
 		case cCHIL:
-
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
@@ -837,7 +835,6 @@ func (s *Family) parse(l *Line, o options) error {
 				return ErrContext{"Family", cNCHI, err}
 			}
 		case cSUBM:
-
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
@@ -846,7 +843,6 @@ func (s *Family) parse(l *Line, o options) error {
 			s.Submitters = append(s.Submitters, t)
 
 		case cSLGS:
-
 			var t LDSSpouseSealing
 
 			if err := t.parse(&sl, o); err != nil {
@@ -855,7 +851,6 @@ func (s *Family) parse(l *Line, o options) error {
 			s.LDSSpouseSealing = append(s.LDSSpouseSealing, t)
 
 		case cSOUR:
-
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
@@ -864,7 +859,6 @@ func (s *Family) parse(l *Line, o options) error {
 			s.Sources = append(s.Sources, t)
 
 		case cOBJE:
-
 			var t MultimediaLink
 
 			if err := t.parse(&sl, o); err != nil {
@@ -873,7 +867,6 @@ func (s *Family) parse(l *Line, o options) error {
 			s.Multimedia = append(s.Multimedia, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1083,7 +1076,6 @@ func (s *Individual) parse(l *Line, o options) error {
 				return ErrContext{"Individual", cRESN, err}
 			}
 		case cNAME:
-
 			var t PersonalNameStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1414,7 +1406,6 @@ func (s *Individual) parse(l *Line, o options) error {
 				return ErrContext{"Individual", cRETI, err}
 			}
 		case cEVEN:
-
 			var t IndividualEventDetail
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1423,7 +1414,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Events = append(s.Events, t)
 
 		case cCAST:
-
 			var t CasteEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1432,7 +1422,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Caste = append(s.Caste, t)
 
 		case cDSCR:
-
 			var t DescriptionEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1441,7 +1430,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Description = append(s.Description, t)
 
 		case cEDUC:
-
 			var t ScholasticEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1450,7 +1438,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.ScholasticAchievement = append(s.ScholasticAchievement, t)
 
 		case cIDNO:
-
 			var t NationalIDEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1459,7 +1446,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.NationalID = append(s.NationalID, t)
 
 		case cNATI:
-
 			var t NationalOriginEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1468,7 +1454,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.NationalTribalOrigin = append(s.NationalTribalOrigin, t)
 
 		case cNCHI:
-
 			var t ChildrenEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1477,7 +1462,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.CountOfChildren = append(s.CountOfChildren, t)
 
 		case cNMR:
-
 			var t MarriagesEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1486,7 +1470,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.CountOfMarriages = append(s.CountOfMarriages, t)
 
 		case cOCCU:
-
 			var t OccupationEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1495,7 +1478,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Occupation = append(s.Occupation, t)
 
 		case cPROP:
-
 			var t PossessionEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1504,7 +1486,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Possessions = append(s.Possessions, t)
 
 		case cRELI:
-
 			var t ReligiousEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1513,7 +1494,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.ReligiousAffiliation = append(s.ReligiousAffiliation, t)
 
 		case cRESI:
-
 			var t ResidenceEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1522,7 +1502,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Residences = append(s.Residences, t)
 
 		case cSSN:
-
 			var t SSNEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1531,7 +1510,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.SocialSecurity = append(s.SocialSecurity, t)
 
 		case cTITL:
-
 			var t NobilityEvent
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1540,7 +1518,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.NobilityTypeTitle = append(s.NobilityTypeTitle, t)
 
 		case cFAMC:
-
 			var t ChildToFamilyLink
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1549,7 +1526,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.ChildOf = append(s.ChildOf, t)
 
 		case cFAMS:
-
 			var t SpouseToFamilyLink
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1558,7 +1534,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.SpouseOf = append(s.SpouseOf, t)
 
 		case cSUBM:
-
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1567,7 +1542,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Submitters = append(s.Submitters, t)
 
 		case cASSO:
-
 			var t AssociationStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1576,7 +1550,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Associations = append(s.Associations, t)
 
 		case cALIA:
-
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1585,7 +1558,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Aliases = append(s.Aliases, t)
 
 		case cANCI:
-
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1594,7 +1566,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.AncestorInterest = append(s.AncestorInterest, t)
 
 		case cDESI:
-
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1603,7 +1574,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.DescendentInterest = append(s.DescendentInterest, t)
 
 		case cSOUR:
-
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1612,7 +1582,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Sources = append(s.Sources, t)
 
 		case cOBJE:
-
 			var t MultimediaLink
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1621,7 +1590,6 @@ func (s *Individual) parse(l *Line, o options) error {
 			s.Multimedia = append(s.Multimedia, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -1658,7 +1626,6 @@ func (s *Individual) parse(l *Line, o options) error {
 				return ErrContext{"Individual", cAFN, err}
 			}
 		case cREFN:
-
 			var t UserReferenceStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2106,7 +2073,6 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 				return ErrContext{"MultimediaRecord", cTITLE, err}
 			}
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2143,7 +2109,6 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 				return ErrContext{"MultimediaRecord", cOBJE, err}
 			}
 		case cREFN:
-
 			var t UserReferenceStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2224,7 +2189,6 @@ func (s *NoteRecord) parse(l *Line, o options) error {
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case cSOUR:
-
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2233,7 +2197,6 @@ func (s *NoteRecord) parse(l *Line, o options) error {
 			s.Sources = append(s.Sources, t)
 
 		case cREFN:
-
 			var t UserReferenceStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2348,7 +2311,6 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 			s.PhoneNumber = append(s.PhoneNumber, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2357,7 +2319,6 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		case cREFN:
-
 			var t UserReferenceStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2543,7 +2504,6 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 				return ErrContext{"SourceRecord", cOBJE, err}
 			}
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2552,7 +2512,6 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		case cREFN:
-
 			var t UserReferenceStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2618,7 +2577,6 @@ func (s *SourceRecordDataStructure) parse(l *Line, o options) error {
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case cEVEN:
-
 			var t EventsRecordedStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2641,7 +2599,6 @@ func (s *SourceRecordDataStructure) parse(l *Line, o options) error {
 				return ErrContext{"SourceRecordDataStructure", cAGNC, err}
 			}
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -2896,7 +2853,6 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			s.PhoneNumber = append(s.PhoneNumber, t)
 
 		case cOBJE:
-
 			var t MultimediaLink
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3141,7 +3097,6 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 				return ErrContext{"AssociationStructure", cRELA, err}
 			}
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3150,7 +3105,6 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		case cSOUR:
-
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3205,7 +3159,6 @@ func (s *ChangeDateStructure) parse(l *Line, o options) error {
 				return ErrContext{"ChangeDateStructure", cDATE, err}
 			}
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3285,7 +3238,6 @@ func (s *ChildToFamilyLink) parse(l *Line, o options) error {
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case cPEDI:
-
 			var t PedigreeLinkageType
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3294,7 +3246,6 @@ func (s *ChildToFamilyLink) parse(l *Line, o options) error {
 			s.PedigreeLinkageType = append(s.PedigreeLinkageType, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3450,7 +3401,6 @@ func (s *EventDetail) parse(l *Line, o options) error {
 				return ErrContext{"EventDetail", cCAUS, err}
 			}
 		case cSOUR:
-
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3459,7 +3409,6 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			s.Sources = append(s.Sources, t)
 
 		case cOBJE:
-
 			var t MultimediaLink
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3468,7 +3417,6 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			s.Multimedia = append(s.Multimedia, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3559,7 +3507,6 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 				return ErrContext{"LDSSpouseSealing", cPLAC, err}
 			}
 		case cSOUR:
-
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3568,7 +3515,6 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			s.Sources = append(s.Sources, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3662,7 +3608,6 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 				return ErrContext{"MultimediaLinkFile", cFILE, err}
 			}
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3720,7 +3665,6 @@ func (s *NoteText) parse(l *Line, o options) error {
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case cSOUR:
-
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3846,7 +3790,6 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 				return ErrContext{"PersonalNameStructure", cNSFX, err}
 			}
 		case cSOUR:
-
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3855,7 +3798,6 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			s.Sources = append(s.Sources, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3906,7 +3848,6 @@ func (s *PlaceStructure) parse(l *Line, o options) error {
 				return ErrContext{"PlaceStructure", cFORM, err}
 			}
 		case cSOUR:
-
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
@@ -3915,7 +3856,6 @@ func (s *PlaceStructure) parse(l *Line, o options) error {
 			s.Sources = append(s.Sources, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -4011,7 +3951,6 @@ func (s *SourceID) parse(l *Line, o options) error {
 				return ErrContext{"SourceID", cQUAY, err}
 			}
 		case cOBJE:
-
 			var t MultimediaLink
 
 			if err := t.parse(&sl, o); err != nil {
@@ -4020,7 +3959,6 @@ func (s *SourceID) parse(l *Line, o options) error {
 			s.Multimedia = append(s.Multimedia, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -4105,7 +4043,6 @@ func (s *SourceData) parse(l *Line, o options) error {
 				return ErrContext{"SourceData", cDATE, err}
 			}
 		case cTEXT:
-
 			var t TextFromSource
 
 			if err := t.parse(&sl, o); err != nil {
@@ -4139,7 +4076,6 @@ func (s *SourceText) parse(l *Line, o options) error {
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case cTEXT:
-
 			var t TextFromSource
 
 			if err := t.parse(&sl, o); err != nil {
@@ -4148,7 +4084,6 @@ func (s *SourceText) parse(l *Line, o options) error {
 			s.Texts = append(s.Texts, t)
 
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -4181,7 +4116,6 @@ func (s *SourceRepositoryCitation) parse(l *Line, o options) error {
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case cCALN:
-
 			var t SourceCallStructure
 
 			if err := t.parse(&sl, o); err != nil {
@@ -4254,7 +4188,6 @@ func (s *SpouseToFamilyLink) parse(l *Line, o options) error {
 	for _, sl := range l.Sub {
 		switch sl.tag {
 		case cNOTE:
-
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
