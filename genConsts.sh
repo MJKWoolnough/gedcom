@@ -25,12 +25,16 @@ HEREDOC
 
 	while read line; do
 		name="$(echo "$line" | tr -d "-" | tr -d "/")";
+
 		echo -n "	c$name";
+
 		pad=$(( $maxLength - ${#name} ));
+
 		while [ $pad -gt 0 ]; do
 			let "pad--";
 			echo -n " ";
 		done;
+
 		echo " = \"$line\"";
 	done < <(
 		{
