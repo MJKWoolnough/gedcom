@@ -127,6 +127,7 @@ func (r *Reader) Record() (Record, error) {
 	} else if !r.hadHeader {
 		if r.line.tag != "HEAD" {
 			r.peeked = false
+
 			return nil, ErrNoHeader
 		}
 		r.hadHeader = true
@@ -136,10 +137,12 @@ func (r *Reader) Record() (Record, error) {
 			r.hadRecord = true
 		case "TRLR":
 			r.peeked = false
+
 			return nil, ErrNoRecords
 		}
 	} else if r.line.tag == "TRLR" {
 		r.peeked = false
+
 		return &Trailer{}, nil
 	}
 
