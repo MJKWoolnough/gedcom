@@ -205,12 +205,15 @@ func (s *Header) parse(l *Line, o options) error {
 		if !SourceSet {
 			return ErrContext{"Header", "Source", ErrRequiredMissing}
 		}
+
 		if !SubmitterSet {
 			return ErrContext{"Header", "Submitter", ErrRequiredMissing}
 		}
+
 		if !VersionSet {
 			return ErrContext{"Header", "Version", ErrRequiredMissing}
 		}
+
 		if !CharacterSetSet {
 			return ErrContext{"Header", "CharacterSet", ErrRequiredMissing}
 		}
@@ -509,6 +512,7 @@ func (s *Version) parse(l *Line, o options) error {
 		if !VersionNumberSet {
 			return ErrContext{"Version", "VersionNumber", ErrRequiredMissing}
 		}
+
 		if !FormSet {
 			return ErrContext{"Version", "Form", ErrRequiredMissing}
 		}
@@ -2187,6 +2191,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 		if !FormatSet {
 			return ErrContext{"MultimediaRecord", "Format", ErrRequiredMissing}
 		}
+
 		if !BlobSet {
 			return ErrContext{"MultimediaRecord", "Blob", ErrRequiredMissing}
 		}
@@ -3165,6 +3170,7 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 		if !RecordTypeSet {
 			return ErrContext{"AssociationStructure", "RecordType", ErrRequiredMissing}
 		}
+
 		if !RelationSet {
 			return ErrContext{"AssociationStructure", "Relation", ErrRequiredMissing}
 		}
