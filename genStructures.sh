@@ -195,8 +195,9 @@ function processStructure() {
 			echo "	}";
 			echo "";
 			if [ ${#required} -gt 0 ]; then
-				echo "	if !o.allowMissingRequired {";
+				echo -n "	if !o.allowMissingRequired {";
 				for r in "${required[@]}"; do
+					echo;
 					echo "		if !${r}Set {";
 					echo "			return ErrContext{\"$structureName\", \"$r\", ErrRequiredMissing}";
 					echo "		}";
