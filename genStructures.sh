@@ -13,9 +13,11 @@ function processStructure() {
 	local maxes=();
 	local namedTags=0;
 	local embedded="";
+
 	echo;
 	echo "// $structureName is a GEDCOM structure type.";
 	echo "type $structureName struct {";
+
 	for type; do
 		IFS=":";
 		parts=( $type );
@@ -25,29 +27,39 @@ function processStructure() {
 		pName="${parts[2]}";
 		pMin="${parts[3]}";
 		pMax="${parts[4]}";
+
 		if [ -z "$pMin" ]; then
 			pMin="1";
 		fi;
+
 		if [ -z "$pMax" ]; then
 			pMax="1";
 		fi;
+
 		if [ -z "$pName" ]; then
 			pName="$pType";
 		fi;
+
 		if [ "${parts[0]:0:1}" = "@" ]; then
 			pType="Xref";
 		fi;
+
 		echo -n "	";
+
 		if [ ! -z "$pTag" ]; then
 			echo -n "$pName ";
+
 			for i in $(seq $(( longest - ${#pName} ))); do
 				echo -n " ";
 			done;
+
 			if [ "$pMax" != "1" ]; then
 				echo -n "[]";
 			fi;
 		fi;
+
 		echo "$pType";
+
 		if [ "${pTag:0:1}" = "@" ]; then
 			ID="$pName";
 		elif [ "${pTag:0:1}" = "#" ]; then
@@ -63,84 +75,108 @@ function processStructure() {
 			elif [ "$pMax" != "M" ]; then
 				maxes+=( "$pType:$pName:$pMax" );
 			fi;
+
 			let "namedTags++";
+
 			types+=( "$pTag:$pType:$pName:$pMin:$pMax" );
 		fi;
 	done;
+
 	echo "}";
 	echo;
 	echo "func (s *$structureName) parse(l *Line, o options) error {";
+
 	if [ ! -z "$ID" ]; then
 		echo "	if err := s.${ID}.parse(&Line{line: line{value: l.xrefID}}, o); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"xrefID\", err}";
 		echo "	}";
 		echo "";
 	fi;
+
 	if [ ${#lineValue[@]} -gt 0 ]; then
 		echo "	if err := s.${lineValue[1]}.parse(l, o); err != nil {";
 		echo "		return ErrContext{\"$structureName\", \"line_value\", err}";
 		echo "	}";
 		echo "";
 	fi;
+
 	if [ ${#types[@]} -gt 0 ]; then
 		if [ ${#required[@]} -gt 0 -o ${#oneMost[@]} -gt 0 ]; then
 			echo -n "	var";
+
 			local c=false;
+
 			if [ ${#required[@]} -gt 0 ]; then
 				for r in "${required[@]}"; do
 					if $c; then
 						echo -n ",";
 					fi;
+
 					echo -n " ${r}Set";
+
 					c=true;
 				done;
 			fi;
+
 			if [ ${#oneMost[@]} -gt 0 ]; then
 				for o in "${oneMost[@]}"; do
 					if $c; then
 						echo -n ",";
 					fi;
+
 					echo -n " ${o}Set";
+
 					c=true;
 				done;
 			fi;
+
 			echo " bool";
 			echo "";
 		fi;
+
 		if [ $namedTags -gt 0 ]; then
 			if [ ${#maxes[@]} -gt 0 ]; then
 				for m in "${maxes[@]}"; do
 					pType="$(echo "$m" | cut -d':' -f1)";
 					pName="$(echo "$m" | cut -d':' -f2)";
 					pMax="$(echo "$m" | cut -d':' -f3)";
+
 					if [ "$pMax" != "M" ]; then
 						echo "	s.$pName = make([]$pType, 0, $pMax)";
 						echo "";
 					fi;
 				done;
 			fi;
+
 			if [ -z "$embedded" ]; then
 				echo "	for _, sl := range l.Sub {";
 			else
 				echo "	for i := 0; i < len(l.Sub); i++ {";
 				echo "		sl := l.Sub[i]";
 			fi;
+
 			echo "		switch sl.tag {";
+
 			for type in ${types[@]}; do
 				IFS=":";
 				local parts=( $type );
+
 				IFS="$OFS";
 				pTag="${parts[0]}";
 				pType="${parts[1]}";
 				pName="${parts[2]}";
 				pMax="${parts[4]}";
+
 				if [ ! -z "$pTag" ]; then
 					cont=false;
+
 					if [ "${pTag: -1}" = "*" ]; then
 						pTag="${pTag:0:-1}";
 						cont=true;
 					fi;
+
 					echo "		case c$pTag:" | tr -d '/' | tr -d '-';
+
 					if [ "$pMax" = "1" ]; then
 						echo "			if ${pName}Set {";
 						echo "				if !o.allowMoreThanAllowed {";
@@ -163,6 +199,7 @@ function processStructure() {
 
 						#echo "			${pName}Count++";
 					fi;
+
 					if [ "$pMax" = "1" ]; then
 						echo "			if err := s.${pName}.parse(&sl, o); err != nil {";
 					else
@@ -171,12 +208,15 @@ function processStructure() {
 						echo "";
 						echo "			if err := t.parse(&sl, o); err != nil {";
 					fi;
+
 					echo "				return ErrContext{\"$structureName\", c$pTag, err}";
 					echo "			}";
+
 					if [ "$pMax" != "1" ]; then
 						echo "			s.${pName} = append(s.${pName}, t)";
 						echo "";
 					fi;
+
 					if [ ! -z "$embedded" ]; then
 						echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
 						echo "";
@@ -184,6 +224,7 @@ function processStructure() {
 					fi;
 				fi;
 			done;
+
 			if [ -z "$embedded" ]; then
 				echo "		default:";
 				echo "			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {";
@@ -191,21 +232,26 @@ function processStructure() {
 				echo "			}";
 				echo "			// possibly store in a Other field";
 			fi;
+
 			echo "		}";
 			echo "	}";
 			echo "";
+
 			if [ ${#required} -gt 0 ]; then
 				echo -n "	if !o.allowMissingRequired {";
+
 				for r in "${required[@]}"; do
 					echo;
 					echo "		if !${r}Set {";
 					echo "			return ErrContext{\"$structureName\", \"$r\", ErrRequiredMissing}";
 					echo "		}";
 				done;
+
 				echo "	}";
 				echo "";
 			fi;
 		fi;
+
 		if [ ! -z "$embedded" ]; then
 			echo "	return s.${embedded}.parse(l, o)";
 		fi;
@@ -217,9 +263,11 @@ function processStructure() {
 		echo "		// possibly store in a Other field";
 		echo "	}";
 	fi;
+
 	if [ -z "$embedded" ]; then
 		echo "	return nil";
 	fi;
+
 	echo "}";
 }
 
@@ -237,6 +285,7 @@ OFS="$IFS";
 		types=();
 		longest=0;
 		IFS="$(echo)";
+
 		while read line; do
 			if [ "${line:0:1}" = "	" ]; then
 				IFS=":";
@@ -245,23 +294,30 @@ OFS="$IFS";
 				pTag="${parts[0]}";
 				pType="${parts[1]}";
 				pName="${parts[2]}";
+
 				if [ -z "$pName" ]; then
 					pName="$pType";
 				fi;
+
 				if [ ! -z "$pTag" -a ${#pName} -gt $longest ]; then
 					longest=${#pName};
 				fi;
+
 				types+=( "${line:1}" );
 			else
 				IFS="$OFS";
+
 				processStructure "$structureName" $longest "${types[@]}";
+
 				IFS="$(echo)";
 				longest=0;
 				types=();
 				structureName="$line";
 			fi;
 		done;
+
 		IFS="$OFS";
+
 		processStructure "$structureName" $longest "${types[@]}";
 	) < structures.gen;
 
