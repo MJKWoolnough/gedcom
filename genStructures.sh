@@ -203,7 +203,11 @@ function processStructure() {
 					if [ "$pMax" = "1" ]; then
 						echo "			if err := s.${pName}.parse(&sl, o); err != nil {";
 					else
-						echo "";
+
+						if [ "$pMax" != "M" ]; then
+							echo "";
+						fi;
+
 						echo "			var t ${pType}";
 						echo "";
 						echo "			if err := t.parse(&sl, o); err != nil {";
