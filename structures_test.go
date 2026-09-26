@@ -101,7 +101,7 @@ func TestHeader(t *testing.T) {
 			Err:   ErrContext{"Header", cDEST, ErrSingleMultiple},
 		},
 		{ // 13
-			Input:   "0 HEADER\n1 SOUR id\n1 DEST destination\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Input:   "0 HEADER\n1 SOUR id\n1 DEST destination\n1 DEST destination2\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
 				Source: HeaderSource{
@@ -116,6 +116,53 @@ func TestHeader(t *testing.T) {
 					CharacterSet: "ANSEL",
 				},
 				ReceivingSystemName: "destination",
+			},
+		},
+		{ // 14
+			Input: "0 HEADER\n1 SOUR id\n1 DATE 2006-05-04\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+				TransmissionLDate: TransmissionDateTime{
+					TransmissionDate: "2006-05-04",
+				},
+			},
+		},
+		{ // 15
+			Input: "0 HEADER\n1 SOUR id\n1 DATE\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Err:   ErrContext{"Header", cDATE, ErrContext{"TransmissionDateTime", "line_value", ErrInvalidLength{"TransmissionDate", "", 10, 11}}},
+		},
+		{ // 16
+			Input: "0 HEADER\n1 SOUR id\n1 DATE 2006-05-04\n1 DATE 2007-06-05\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Err:   ErrContext{"Header", cDATE, ErrSingleMultiple},
+		},
+		{ // 17
+			Input:   "0 HEADER\n1 SOUR id\n1 DATE 2006-05-04\n1 DATE 2007-06-05\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+				TransmissionLDate: TransmissionDateTime{
+					TransmissionDate: "2006-05-04",
+				},
 			},
 		},
 	} {
