@@ -14,23 +14,23 @@ func TestHeader(t *testing.T) {
 		Output  Header
 		Err     error
 	}{
-		{
+		{ // 1
 			Input: "0 HEADER\n0 TRLR",
 			Err:   ErrContext{"Header", "Source", ErrRequiredMissing},
 		},
-		{
+		{ // 2
 			Input: "0 HEADER\n1 SOUR id\n0 TRLR",
 			Err:   ErrContext{"Header", "Submitter", ErrRequiredMissing},
 		},
-		{
+		{ // 3
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n0 TRLR",
 			Err:   ErrContext{"Header", "Version", ErrRequiredMissing},
 		},
-		{
+		{ // 4
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n0 TRLR",
 			Err:   ErrContext{"Header", "CharacterSet", ErrRequiredMissing},
 		},
-		{
+		{ // 5
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
 			Output: Header{
 				Source: HeaderSource{
@@ -46,15 +46,15 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // 6
 			Input: "0 HEADER\n1 SOUR\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
 			Err:   ErrContext{"Header", cSOUR, ErrContext{"HeaderSource", "line_value", ErrInvalidLength{"ApprovedSystemID", "", 1, 20}}},
 		},
-		{
+		{ // 7
 			Input: "0 HEADER\n1 SOUR id\n1 SOUR other\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
 			Err:   ErrContext{"Header", cSOUR, ErrSingleMultiple},
 		},
-		{
+		{ // 8
 			Input:   "0 HEADER\n1 SOUR id\n1 SOUR other\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
