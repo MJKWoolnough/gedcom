@@ -27,7 +27,7 @@ func (s *Header) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cSOUR:
 			if SourceSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -41,7 +41,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cDEST:
 			if ReceivingSystemNameSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -55,7 +55,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cDATE:
 			if TransmissionLDateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -69,7 +69,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cSUBM:
 			if SubmitterSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -83,7 +83,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cSUMB:
 			if SubmissionSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -97,7 +97,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cFILE:
 			if FileNameSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -111,7 +111,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cCOPR:
 			if CopyrightSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -125,7 +125,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cGEDC:
 			if VersionSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -139,7 +139,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cCHAR:
 			if CharacterSetSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -153,7 +153,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cLANG:
 			if LanguageSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -167,7 +167,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cPLAC:
 			if PlaceSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -181,7 +181,7 @@ func (s *Header) parse(l *Line, o options) error {
 			}
 		case cNOTE:
 			if ContentDescriptionSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -242,7 +242,7 @@ func (s *HeaderSource) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cVERS:
 			if VersionNumberSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -256,7 +256,7 @@ func (s *HeaderSource) parse(l *Line, o options) error {
 			}
 		case cNAME:
 			if NameSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -270,7 +270,7 @@ func (s *HeaderSource) parse(l *Line, o options) error {
 			}
 		case cCORP:
 			if BusinessSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -284,7 +284,7 @@ func (s *HeaderSource) parse(l *Line, o options) error {
 			}
 		case cDATA:
 			if DataSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -324,7 +324,7 @@ func (s *TransmissionDateTime) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cTIME:
 			if TimeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -367,7 +367,7 @@ func (s *HeaderBusiness) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cADDR:
 			if AddressSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -424,7 +424,7 @@ func (s *HeaderDataSource) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cDATE:
 			if PublicationDateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -438,7 +438,7 @@ func (s *HeaderDataSource) parse(l *Line, o options) error {
 			}
 		case cCOPR:
 			if CopyrightSourceDataSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -474,7 +474,7 @@ func (s *Version) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cVERS:
 			if VersionNumberSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -488,7 +488,7 @@ func (s *Version) parse(l *Line, o options) error {
 			}
 		case cFORM:
 			if FormSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -538,7 +538,7 @@ func (s *CharacterSetStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cVERS:
 			if VersionNumberSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -573,7 +573,7 @@ func (s *HeaderPlace) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cFORM:
 			if PlaceHierarchySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -638,7 +638,7 @@ func (s *Family) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cANUL:
 			if AnnulmentSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -652,7 +652,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cCENS:
 			if CensusSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -666,7 +666,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cDIV:
 			if DivorceSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -680,7 +680,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cDIVF:
 			if DivorceFiledSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -694,7 +694,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cENGA:
 			if EngagementSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -708,7 +708,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cMARR:
 			if MarriageSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -722,7 +722,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cMARB:
 			if MarriageBannSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -736,7 +736,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cMARC:
 			if MarriageContractSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -750,7 +750,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cMARL:
 			if MarriageLicenseSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -764,7 +764,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cMARS:
 			if MarriageSettlementSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -786,7 +786,7 @@ func (s *Family) parse(l *Line, o options) error {
 
 		case cHUSB:
 			if HusbandSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -800,7 +800,7 @@ func (s *Family) parse(l *Line, o options) error {
 			}
 		case cWIFE:
 			if WifeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -822,7 +822,7 @@ func (s *Family) parse(l *Line, o options) error {
 
 		case cNCHI:
 			if NumChildrenSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -914,7 +914,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cHUSB:
 			if HusbandAgeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -931,7 +931,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 			i--
 		case cWIFE:
 			if WifeAgeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -964,7 +964,7 @@ func (s *AgeStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cAGE:
 			if AgeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1063,7 +1063,7 @@ func (s *Individual) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cRESN:
 			if RestrictionNoticeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1085,7 +1085,7 @@ func (s *Individual) parse(l *Line, o options) error {
 
 		case cSEX:
 			if GenderSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1099,7 +1099,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cBIRT:
 			if BirthSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1113,7 +1113,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cCHR:
 			if ChristeningSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1127,7 +1127,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cDEAT:
 			if DeathSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1141,7 +1141,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cBURI:
 			if BuriedSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1155,7 +1155,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cCREM:
 			if CremationSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1169,7 +1169,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cADOP:
 			if AdoptionSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1183,7 +1183,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cBAPM:
 			if MaptismSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1197,7 +1197,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cBARM:
 			if BarMitzvahSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1211,7 +1211,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cBASM:
 			if BasMitzvahSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1225,7 +1225,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cBLES:
 			if BlessingSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1239,7 +1239,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cCHRA:
 			if AdultChristeningSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1253,7 +1253,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cCONF:
 			if ConfirmationSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1267,7 +1267,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cFCOM:
 			if FirstCommunionSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1281,7 +1281,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cORDN:
 			if OrdinationSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1295,7 +1295,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cNATU:
 			if NaturalizationSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1309,7 +1309,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cEMIG:
 			if EmigratedSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1323,7 +1323,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cIMMI:
 			if ImmigratedSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1337,7 +1337,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cCENS:
 			if CensusSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1351,7 +1351,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cPROB:
 			if ProbateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1365,7 +1365,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cWILL:
 			if WillSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1379,7 +1379,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cGRAD:
 			if GraduatedSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1393,7 +1393,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cRETI:
 			if RetiredSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1599,7 +1599,7 @@ func (s *Individual) parse(l *Line, o options) error {
 
 		case cRFN:
 			if PermanentRecordSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1613,7 +1613,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cAFN:
 			if AncestralFileNumberSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1635,7 +1635,7 @@ func (s *Individual) parse(l *Line, o options) error {
 
 		case cRIN:
 			if AutomatedRecordIDSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1649,7 +1649,7 @@ func (s *Individual) parse(l *Line, o options) error {
 			}
 		case cCHAN:
 			if ChangeDateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1686,7 +1686,7 @@ func (s *VerifiedIndividualFamEventDetail) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cFAMC:
 			if FamcSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1744,7 +1744,7 @@ func (s *AdoptionEvent) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cFAMC:
 			if FamilySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1782,7 +1782,7 @@ func (s *AdoptionReference) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cADOP:
 			if AdoptedBySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -1999,7 +1999,7 @@ func (s *UserReferenceStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cTYPE:
 			if TypeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2046,7 +2046,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cFORM:
 			if FormatSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2060,7 +2060,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			}
 		case cTITLE:
 			if TitleSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2082,7 +2082,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 
 		case cBLOB:
 			if BlobSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2096,7 +2096,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			}
 		case cOBJE:
 			if ContinuedObjectSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2118,7 +2118,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 
 		case cRIN:
 			if AutomatedRecordIDSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2132,7 +2132,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			}
 		case cCHAN:
 			if ChangeDateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2206,7 +2206,7 @@ func (s *NoteRecord) parse(l *Line, o options) error {
 
 		case cRIN:
 			if AutomatedRecordIDSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2220,7 +2220,7 @@ func (s *NoteRecord) parse(l *Line, o options) error {
 			}
 		case cCHAN:
 			if ChangeDateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2268,7 +2268,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cNAME:
 			if NameOfRepositorySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2282,7 +2282,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 			}
 		case cADDR:
 			if AddressSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2328,7 +2328,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 
 		case cRIN:
 			if AutomatedRecordIDSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2342,7 +2342,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 			}
 		case cCHAN:
 			if ChangeDateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2393,7 +2393,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cDATA:
 			if DataSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2407,7 +2407,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			}
 		case cAUTH:
 			if OriginatorSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2421,7 +2421,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			}
 		case cTITL:
 			if TitleSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2435,7 +2435,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			}
 		case cABBR:
 			if FiledBySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2449,7 +2449,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			}
 		case cPUBL:
 			if PublicationFactsSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2463,7 +2463,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			}
 		case cTEXT:
 			if TextFromSourceSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2477,7 +2477,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			}
 		case cREPO:
 			if SourceRepositoryCitationSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2491,7 +2491,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			}
 		case cOBJE:
 			if ContinuedObjectSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2521,7 +2521,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 
 		case cRIN:
 			if AutomatedRecordIDSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2535,7 +2535,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			}
 		case cCHAN:
 			if ChangeDateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2586,7 +2586,7 @@ func (s *SourceRecordDataStructure) parse(l *Line, o options) error {
 
 		case cAGNC:
 			if ResponsibleAgencySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2630,7 +2630,7 @@ func (s *EventsRecordedStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cDATE:
 			if DatePeriodSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2644,7 +2644,7 @@ func (s *EventsRecordedStructure) parse(l *Line, o options) error {
 			}
 		case cPLACE:
 			if SourceJurisdictionPlaceSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2689,7 +2689,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cFAMF:
 			if NameOfFamilyFileSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2703,7 +2703,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			}
 		case cTEMP:
 			if TempleCodeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2717,7 +2717,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			}
 		case cANCE:
 			if GenerationsOfAncestorsSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2731,7 +2731,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			}
 		case cDESC:
 			if GenerationsOfDescendantsSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2745,7 +2745,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			}
 		case cORDI:
 			if OrdinanceProcessFlagSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2759,7 +2759,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 			}
 		case cRIN:
 			if AutomatedRecordIDSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2810,7 +2810,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cNAME:
 			if SubmitterNameSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2824,7 +2824,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			}
 		case cADDR:
 			if AddressSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2878,7 +2878,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 
 		case cRFN:
 			if SubmitterRegisteredRFNSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2892,7 +2892,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			}
 		case cRIN:
 			if AutomatedRecordIDSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2906,7 +2906,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			}
 		case cCHAN:
 			if ChangeDateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2957,7 +2957,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cADR1:
 			if AddressLine1Set {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2971,7 +2971,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			}
 		case cADR2:
 			if AddressLine2Set {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2985,7 +2985,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			}
 		case cCITY:
 			if CitySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2999,7 +2999,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			}
 		case cSTAE:
 			if StateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3013,7 +3013,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			}
 		case cPOST:
 			if PostalCodeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3027,7 +3027,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 			}
 		case cCTRY:
 			if CountrySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3070,7 +3070,7 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cTYPE:
 			if RecordTypeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3084,7 +3084,7 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 			}
 		case cRELA:
 			if RelationSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3146,7 +3146,7 @@ func (s *ChangeDateStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cDATE:
 			if DateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3200,7 +3200,7 @@ func (s *ChangeDateTime) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cTIME:
 			if TimeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3288,7 +3288,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cTYPE:
 			if TypeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3302,7 +3302,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			}
 		case cDATE:
 			if DateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3316,7 +3316,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			}
 		case cPLAC:
 			if PlaceSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3330,7 +3330,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			}
 		case cADDR:
 			if AddressSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3360,7 +3360,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 
 		case cAGE:
 			if AgeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3374,7 +3374,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			}
 		case cAGNC:
 			if ResponsibleAgencySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3388,7 +3388,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			}
 		case cCAUS:
 			if CauseOfEventSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3452,7 +3452,7 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cSTAT:
 			if LDSSpouseSealingDateStatusSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3466,7 +3466,7 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			}
 		case cDATE:
 			if DateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3480,7 +3480,7 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			}
 		case cTEMP:
 			if TempleCodeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3494,7 +3494,7 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			}
 		case cPLAC:
 			if PlaceSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3567,7 +3567,7 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cFORM:
 			if FormatSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3581,7 +3581,7 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 			}
 		case cTITLE:
 			if TitleSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3595,7 +3595,7 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 			}
 		case cFILE:
 			if FileSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3707,7 +3707,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cNPFX:
 			if PrefixSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3721,7 +3721,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			}
 		case cGIVN:
 			if GivenSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3735,7 +3735,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			}
 		case cNICK:
 			if NicknameSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3749,7 +3749,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			}
 		case cSPFX:
 			if SurnamePrefixSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3763,7 +3763,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			}
 		case cSURN:
 			if SurnameSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3777,7 +3777,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			}
 		case cNSFX:
 			if SuffixSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3835,7 +3835,7 @@ func (s *PlaceStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cFORM:
 			if PlaceHierarchySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3896,7 +3896,7 @@ func (s *SourceID) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cPAGE:
 			if WhereWithinSourceSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3910,7 +3910,7 @@ func (s *SourceID) parse(l *Line, o options) error {
 			}
 		case cEVEN:
 			if SourceCitationEventSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3924,7 +3924,7 @@ func (s *SourceID) parse(l *Line, o options) error {
 			}
 		case cDATA:
 			if DataSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3938,7 +3938,7 @@ func (s *SourceID) parse(l *Line, o options) error {
 			}
 		case cQUAY:
 			if CertaintySet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3994,7 +3994,7 @@ func (s *SourceCitationEvent) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cROLE:
 			if RoleSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -4030,7 +4030,7 @@ func (s *SourceData) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cDATE:
 			if DateSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -4151,7 +4151,7 @@ func (s *SourceCallStructure) parse(l *Line, o options) error {
 		switch sl.tag {
 		case cMEDI:
 			if TypeSet {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
