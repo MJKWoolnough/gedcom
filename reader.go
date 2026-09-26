@@ -130,6 +130,7 @@ func (r *Reader) Record() (Record, error) {
 
 			return nil, ErrNoHeader
 		}
+
 		r.hadHeader = true
 	} else if !r.hadRecord {
 		switch r.line.tag {
@@ -146,59 +147,79 @@ func (r *Reader) Record() (Record, error) {
 		return &Trailer{}, nil
 	}
 
+	for {
+		lines, err := readLines(r)
+		if err != nil {
+			return nil, err
+		}
+
+		plines := parseLines(lines)
+
+		var record Record
+
+		switch lines[0].tag {
+		case "HEAD":
+			record = &Header{}
+		case "SUBM":
+			record = &SubmissionRecord{}
+		case "FAM":
+			record = &Family{}
+		case "INDI":
+			record = &Individual{}
+		case "OBJE":
+			record = &MultimediaRecord{}
+		case "NOTE":
+			record = &NoteRecord{}
+		case "REPO":
+			record = &RepositoryRecord{}
+		case "SOUR":
+			record = &SourceRecord{}
+		case "SUBN":
+			record = &SubmitterRecord{}
+		default:
+			if lines[0].tag[0] == '_' {
+				return plines, nil
+			}
+
+			return plines, ErrContext{"root", lines[0].tag, ErrUnknownTag}
+		}
+
+		if err := record.parse(&plines, r.options); err != nil {
+			return nil, ErrContext{"root", lines[0].tag, err}
+		}
+
+		return record, nil
+	}
+}
+
+func readLines(r *Reader) ([]line, error) {
+	if !r.peeked {
+		r.readLine()
+
+		r.peeked = true
+	}
+
 	lines := make([]line, 1, 32)
 	lines[0] = r.line
 
 	var lastlevel uint64
 
 	for {
-		if r.err != nil {
+		if r.done {
+			return nil, ErrInvalidLevel
+		} else if r.err != nil {
 			return nil, r.err
 		} else if r.line.level > lastlevel+1 {
 			return nil, ErrInvalidLevel
 		}
+
 		lastlevel = r.line.level
 		lines = append(lines, r.line)
 
 		r.readLine()
 
 		if r.line.level == 0 {
-			plines := parseLines(lines)
-
-			var record Record
-
-			switch lines[0].tag {
-			case "HEAD":
-				record = &Header{}
-			case "SUBM":
-				record = &SubmissionRecord{}
-			case "FAM":
-				record = &Family{}
-			case "INDI":
-				record = &Individual{}
-			case "OBJE":
-				record = &MultimediaRecord{}
-			case "NOTE":
-				record = &NoteRecord{}
-			case "REPO":
-				record = &RepositoryRecord{}
-			case "SOUR":
-				record = &SourceRecord{}
-			case "SUBN":
-				record = &SubmitterRecord{}
-			default:
-				if lines[0].tag[0] == '_' {
-					return plines, nil
-				}
-
-				return plines, ErrContext{"root", lines[0].tag, ErrUnknownTag}
-			}
-
-			if err := record.parse(&plines, r.options); err != nil {
-				return nil, ErrContext{"root", lines[0].tag, err}
-			}
-
-			return record, nil
+			return lines, nil
 		}
 	}
 }
