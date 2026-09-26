@@ -179,7 +179,7 @@ function processStructure() {
 
 					if [ "$pMax" = "1" ]; then
 						echo "			if ${pName}Set {";
-						echo "				if !o.allowMoreThanAllowed {";
+						echo "				if o.allowMoreThanAllowed {";
 						echo "					continue";
 						echo "				}";
 						echo "";
