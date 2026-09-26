@@ -1,0 +1,66 @@
+package gedcom
+
+import (
+	"errors"
+	"reflect"
+	"strings"
+	"testing"
+)
+
+func TestHeader(t *testing.T) {
+	for n, test := range [...]struct {
+		Input   string
+		Options []Option
+		Output  Header
+		Err     error
+	}{
+		{
+			Input: "0 HEADER\n0 TRLR",
+			Err:   ErrContext{"Header", "Source", ErrRequiredMissing},
+		},
+		{
+			Input: "0 HEADER\n1 SOUR id\n0 TRLR",
+			Err:   ErrContext{"Header", "Submitter", ErrRequiredMissing},
+		},
+		{
+			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n0 TRLR",
+			Err:   ErrContext{"Header", "Version", ErrRequiredMissing},
+		},
+		{
+			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n0 TRLR",
+			Err:   ErrContext{"Header", "CharacterSet", ErrRequiredMissing},
+		},
+		{
+			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+			},
+		},
+	} {
+		var s Header
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v to equal %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
