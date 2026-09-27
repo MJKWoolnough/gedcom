@@ -277,6 +277,49 @@ func TestHeader(t *testing.T) {
 				FileName: "filename1",
 			},
 		},
+		{ // 29
+			Input: "0 HEADER\n1 COPR copyright\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+				Copyright: "copyright",
+			},
+		},
+		{ // 30
+			Input: "0 HEADER\n1 COPR\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Err:   ErrContext{"Header", cCOPR, ErrInvalidLength{"CopyrightGedcomFile", "", 1, 90}},
+		},
+		{ // 31
+			Input: "0 HEADER\n1 COPR copyright1\n1 COPR copyright2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Err:   ErrContext{"Header", cCOPR, ErrSingleMultiple},
+		},
+		{ // 32
+			Input:   "0 HEADER\n1 COPR copyright1\n1 COPR copyright2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+				Copyright: "copyright1",
+			},
+		},
 	} {
 		var s Header
 
