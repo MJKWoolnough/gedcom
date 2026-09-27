@@ -460,6 +460,49 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
+		{ // 47
+			Input: "0 HEADER\n1 NOTE note\n2 FORM place\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+				ContentDescription: "note",
+			},
+		},
+		{ // 48
+			Input: "0 HEADER\n1 NOTE\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Err:   ErrContext{"Header", cNOTE, ErrInvalidLength{"ContentDescription", "", 1, 248}},
+		},
+		{ // 49
+			Input: "0 HEADER\n1 NOTE note1\n1 NOTE note2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Err:   ErrContext{"Header", cNOTE, ErrSingleMultiple},
+		},
+		{ // 50
+			Input:   "0 HEADER\n1 NOTE note1\n1 NOTE note2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+				ContentDescription: "note1",
+			},
+		},
 	} {
 		var s Header
 
