@@ -345,6 +345,31 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
+		{ // 36
+			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR utf-8\n0 TRLR",
+			Err:   ErrContext{"Header", cCHAR, ErrContext{"CharacterSetStructure", "line_value", ErrInvalidValue{"CharacterSet", "utf-8"}}},
+		},
+		{ // 37
+			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n1 CHAR ASCII\n0 TRLR",
+			Err:   ErrContext{"Header", cCHAR, ErrSingleMultiple},
+		},
+		{ // 38
+			Input:   "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ASCII\n1 CHAR ANSEL\n0 TRLR",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ASCII",
+				},
+			},
+		},
 	} {
 		var s Header
 
