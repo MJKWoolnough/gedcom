@@ -320,6 +320,31 @@ func TestHeader(t *testing.T) {
 				Copyright: "copyright1",
 			},
 		},
+		{ // 33
+			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n1 CHAR ANSEL\n0 TRLR",
+			Err:   ErrContext{"Header", cGEDC, ErrContext{"Version", "VersionNumber", ErrRequiredMissing}},
+		},
+		{ // 34
+			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 GEDC\n2 VERS 5.6\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Err:   ErrContext{"Header", cGEDC, ErrSingleMultiple},
+		},
+		{ // 35
+			Input:   "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 GEDC\n2 VERS 5.6\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+			},
+		},
 	} {
 		var s Header
 
