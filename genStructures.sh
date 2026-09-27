@@ -231,7 +231,7 @@ function processStructure() {
 
 			if [ -z "$embedded" ]; then
 				echo "		default:";
-				echo "			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {";
+				echo "			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {";
 				echo "				return ErrContext{\"$structureName\", sl.tag, ErrUnknownTag}";
 				echo "			}";
 				echo "			// possibly store in a Other field";
