@@ -247,7 +247,7 @@ func TestHeader(t *testing.T) {
 			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
 				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
 			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v to equal %#v", n+1, test.Output, s)
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
 			}
 		}
 	}
