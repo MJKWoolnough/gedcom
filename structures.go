@@ -194,7 +194,7 @@ func (s *Header) parse(l *Line, o options) error {
 				return ErrContext{"Header", cNOTE, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"Header", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -297,7 +297,7 @@ func (s *HeaderSource) parse(l *Line, o options) error {
 				return ErrContext{"HeaderSource", cDATA, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"HeaderSource", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -337,7 +337,7 @@ func (s *TransmissionDateTime) parse(l *Line, o options) error {
 				return ErrContext{"TransmissionDateTime", cTIME, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"TransmissionDateTime", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -396,7 +396,7 @@ func (s *HeaderBusiness) parse(l *Line, o options) error {
 			s.PhoneNumber = append(s.PhoneNumber, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"HeaderBusiness", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -451,7 +451,7 @@ func (s *HeaderDataSource) parse(l *Line, o options) error {
 				return ErrContext{"HeaderDataSource", cCOPR, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"HeaderDataSource", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -501,7 +501,7 @@ func (s *Version) parse(l *Line, o options) error {
 				return ErrContext{"Version", cFORM, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"Version", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -551,7 +551,7 @@ func (s *CharacterSetStructure) parse(l *Line, o options) error {
 				return ErrContext{"CharacterSetStructure", cVERS, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"CharacterSetStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -586,7 +586,7 @@ func (s *HeaderPlace) parse(l *Line, o options) error {
 				return ErrContext{"HeaderPlace", cFORM, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"HeaderPlace", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -875,7 +875,7 @@ func (s *Family) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"Family", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -977,7 +977,7 @@ func (s *AgeStructure) parse(l *Line, o options) error {
 				return ErrContext{"AgeStructure", cAGE, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"AgeStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -1662,7 +1662,7 @@ func (s *Individual) parse(l *Line, o options) error {
 				return ErrContext{"Individual", cCHAN, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"Individual", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -1795,7 +1795,7 @@ func (s *AdoptionReference) parse(l *Line, o options) error {
 				return ErrContext{"AdoptionReference", cADOP, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"AdoptionReference", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -2012,7 +2012,7 @@ func (s *UserReferenceStructure) parse(l *Line, o options) error {
 				return ErrContext{"UserReferenceStructure", cTYPE, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"UserReferenceStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -2145,7 +2145,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 				return ErrContext{"MultimediaRecord", cCHAN, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"MultimediaRecord", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -2233,7 +2233,7 @@ func (s *NoteRecord) parse(l *Line, o options) error {
 				return ErrContext{"NoteRecord", cCHAN, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"NoteRecord", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -2355,7 +2355,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 				return ErrContext{"RepositoryRecord", cCHAN, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"RepositoryRecord", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -2548,7 +2548,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 				return ErrContext{"SourceRecord", cCHAN, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceRecord", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -2607,7 +2607,7 @@ func (s *SourceRecordDataStructure) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceRecordDataStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -2657,7 +2657,7 @@ func (s *EventsRecordedStructure) parse(l *Line, o options) error {
 				return ErrContext{"EventsRecordedStructure", cPLACE, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"EventsRecordedStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -2772,7 +2772,7 @@ func (s *SubmissionRecord) parse(l *Line, o options) error {
 				return ErrContext{"SubmissionRecord", cRIN, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SubmissionRecord", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -2919,7 +2919,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 				return ErrContext{"SubmitterRecord", cCHAN, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SubmitterRecord", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3040,7 +3040,7 @@ func (s *AddressStructure) parse(l *Line, o options) error {
 				return ErrContext{"AddressStructure", cCTRY, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"AddressStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3113,7 +3113,7 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 			s.Sources = append(s.Sources, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"AssociationStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3167,7 +3167,7 @@ func (s *ChangeDateStructure) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"ChangeDateStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3213,7 +3213,7 @@ func (s *ChangeDateTime) parse(l *Line, o options) error {
 				return ErrContext{"ChangeDateTime", cTIME, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"ChangeDateTime", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3254,7 +3254,7 @@ func (s *ChildToFamilyLink) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"ChildToFamilyLink", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3425,7 +3425,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"EventDetail", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3523,7 +3523,7 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"LDSSpouseSealing", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3616,7 +3616,7 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"MultimediaLinkFile", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3673,7 +3673,7 @@ func (s *NoteText) parse(l *Line, o options) error {
 			s.Sources = append(s.Sources, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"NoteText", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3806,7 +3806,7 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"PersonalNameStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3864,7 +3864,7 @@ func (s *PlaceStructure) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"PlaceStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -3967,7 +3967,7 @@ func (s *SourceID) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceID", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -4007,7 +4007,7 @@ func (s *SourceCitationEvent) parse(l *Line, o options) error {
 				return ErrContext{"SourceCitationEvent", cROLE, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceCitationEvent", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -4051,7 +4051,7 @@ func (s *SourceData) parse(l *Line, o options) error {
 			s.Text = append(s.Text, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceData", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -4092,7 +4092,7 @@ func (s *SourceText) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceText", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -4124,7 +4124,7 @@ func (s *SourceRepositoryCitation) parse(l *Line, o options) error {
 			s.Numbers = append(s.Numbers, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceRepositoryCitation", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -4164,7 +4164,7 @@ func (s *SourceCallStructure) parse(l *Line, o options) error {
 				return ErrContext{"SourceCallStructure", cMEDI, err}
 			}
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceCallStructure", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
@@ -4196,7 +4196,7 @@ func (s *SpouseToFamilyLink) parse(l *Line, o options) error {
 			s.Notes = append(s.Notes, t)
 
 		default:
-			if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SpouseToFamilyLink", sl.tag, ErrUnknownTag}
 			}
 			// possibly store in a Other field
