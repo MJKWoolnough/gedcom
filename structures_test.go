@@ -622,6 +622,35 @@ func TestHeaderSource(t *testing.T) {
 				Name:     "NoQ",
 			},
 		},
+		{ // 11
+			Input: "0 SOUR ID\n1 CORP BusinessName",
+			Output: HeaderSource{
+				SystemID: "ID",
+				Business: HeaderBusiness{
+					NameOfBusiness: "BusinessName",
+					PhoneNumber:    []PhoneNumber{},
+				},
+			},
+		},
+		{ // 12
+			Input: "0 SOUR ID\n1 CORP\n",
+			Err:   ErrContext{"HeaderSource", cCORP, ErrContext{"HeaderBusiness", "line_value", ErrInvalidLength{"NameOfBusiness", "", 1, 90}}},
+		},
+		{ // 13
+			Input: "0 SOUR ID\n1 CORP BusinessName2\n1 CORP BusinessName3",
+			Err:   ErrContext{"HeaderSource", cCORP, ErrSingleMultiple},
+		},
+		{ // 14
+			Input:   "0 SOUR ID\n1 CORP BusinessName2\n1 CORP BusinessName3",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: HeaderSource{
+				SystemID: "ID",
+				Business: HeaderBusiness{
+					NameOfBusiness: "BusinessName2",
+					PhoneNumber:    []PhoneNumber{},
+				},
+			},
+		},
 	} {
 		var s HeaderSource
 
