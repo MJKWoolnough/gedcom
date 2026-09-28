@@ -503,6 +503,43 @@ func TestHeader(t *testing.T) {
 				ContentDescription: "note1",
 			},
 		},
+		{ // 51
+			Input: "0 HEADER\n1 UNKNOWN\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Err:   ErrContext{"Header", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 52
+			Input: "0 HEADER\n1 _UNKNOWN\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+			},
+		},
+		{ // 53
+			Input:   "0 HEADER\n1 UNKNOWN\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n0 TRLR",
+			Options: []Option{AllowUnknownTags},
+			Output: Header{
+				Source: HeaderSource{
+					SystemID: ApprovedSystemID("id"),
+				},
+				Submitter: "submitter",
+				Version: Version{
+					VersionNumber: "5.5",
+					Form:          "LINEAGE-LINKED",
+				},
+				CharacterSet: CharacterSetStructure{
+					CharacterSet: "ANSEL",
+				},
+			},
+		},
 	} {
 		var s Header
 
