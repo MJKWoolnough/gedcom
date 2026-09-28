@@ -651,6 +651,33 @@ func TestHeaderSource(t *testing.T) {
 				},
 			},
 		},
+		{ // 15
+			Input: "0 SOUR ID\n1 DATA DataSourceName",
+			Output: HeaderSource{
+				SystemID: "ID",
+				Data: HeaderDataSource{
+					SourceName: "DataSourceName",
+				},
+			},
+		},
+		{ // 16
+			Input: "0 SOUR ID\n1 DATA\n",
+			Err:   ErrContext{"HeaderSource", cDATA, ErrContext{"HeaderDataSource", "line_value", ErrInvalidLength{"NameOfSourceData", "", 1, 90}}},
+		},
+		{ // 17
+			Input: "0 SOUR ID\n1 DATA DataSourceName2\n1 DATA DataSourceName3",
+			Err:   ErrContext{"HeaderSource", cDATA, ErrSingleMultiple},
+		},
+		{ // 18
+			Input:   "0 SOUR ID\n1 DATA DataSourceName2\n1 DATA DataSourceName3",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: HeaderSource{
+				SystemID: "ID",
+				Data: HeaderDataSource{
+					SourceName: "DataSourceName2",
+				},
+			},
+		},
 	} {
 		var s HeaderSource
 
