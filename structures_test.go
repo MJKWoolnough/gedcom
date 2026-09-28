@@ -576,6 +576,29 @@ func TestHeaderSource(t *testing.T) {
 				SystemID: "ID",
 			},
 		},
+		{ // 3
+			Input: "0 SOUR ID\n1 VERS 5.5",
+			Output: HeaderSource{
+				SystemID:      "ID",
+				VersionNumber: "5.5",
+			},
+		},
+		{ // 4
+			Input: "0 SOUR ID\n1 VERS\n",
+			Err:   ErrContext{"HeaderSource", cVERS, ErrInvalidLength{"VersionNumber", "", 1, 15}},
+		},
+		{ // 5
+			Input: "0 SOUR ID\n1 VERS 5.6\n1 VERS 5.7",
+			Err:   ErrContext{"HeaderSource", cVERS, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 SOUR ID\n1 VERS 5.6\n1 VERS 5.7",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: HeaderSource{
+				SystemID:      "ID",
+				VersionNumber: "5.6",
+			},
+		},
 	} {
 		var s HeaderSource
 
