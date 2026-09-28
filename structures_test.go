@@ -678,6 +678,23 @@ func TestHeaderSource(t *testing.T) {
 				},
 			},
 		},
+		{ // 19
+			Input: "0 SOUR ID\n1 UNKNOWN\n",
+			Err:   ErrContext{"HeaderSource", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 20
+			Input: "0 SOUR ID\n1 _UNKNOWN\n",
+			Output: HeaderSource{
+				SystemID: "ID",
+			},
+		},
+		{ // 21
+			Input:   "0 SOUR ID\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: HeaderSource{
+				SystemID: "ID",
+			},
+		},
 	} {
 		var s HeaderSource
 
