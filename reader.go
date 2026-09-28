@@ -54,11 +54,11 @@ func (r *Reader) readLine() {
 
 	if t, r.err = r.t.GetToken(); r.err != nil {
 		return
+	} else if t.Type == parser.TokenDone {
+		r.done = true
+
+		return
 	} else if t.Type != tokenLevel {
-		if t.Type == parser.TokenDone {
-			r.done = true
-			return
-		}
 
 		r.err = ErrNotLevel
 
@@ -206,7 +206,7 @@ func readLines(r *Reader) ([]line, error) {
 
 	for {
 		if r.done {
-			return nil, ErrInvalidLevel
+			return lines, nil
 		} else if r.err != nil {
 			return nil, r.err
 		} else if r.line.level > lastlevel+1 {
