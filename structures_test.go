@@ -599,6 +599,29 @@ func TestHeaderSource(t *testing.T) {
 				VersionNumber: "5.6",
 			},
 		},
+		{ // 7
+			Input: "0 SOUR ID\n1 NAME NoP",
+			Output: HeaderSource{
+				SystemID: "ID",
+				Name:     "NoP",
+			},
+		},
+		{ // 8
+			Input: "0 SOUR ID\n1 NAME\n",
+			Err:   ErrContext{"HeaderSource", cNAME, ErrInvalidLength{"NameOfProduct", "", 1, 90}},
+		},
+		{ // 9
+			Input: "0 SOUR ID\n1 NAME NoQ\n1 NAME NoR",
+			Err:   ErrContext{"HeaderSource", cNAME, ErrSingleMultiple},
+		},
+		{ // 10
+			Input:   "0 SOUR ID\n1 NAME NoQ\n1 NAME NoR",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: HeaderSource{
+				SystemID: "ID",
+				Name:     "NoQ",
+			},
+		},
 	} {
 		var s HeaderSource
 
