@@ -378,7 +378,7 @@ func (s *HeaderBusiness) parse(l *Line, o options) error {
 			}
 		case cPHON:
 			if len(s.PhoneNumber) == 3 {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2281,7 +2281,7 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 			}
 		case cPHON:
 			if len(s.PhoneNumber) == 3 {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2818,7 +2818,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			}
 		case cPHON:
 			if len(s.PhoneNumber) == 3 {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -2842,7 +2842,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 
 		case cLANG:
 			if len(s.LanguagePreference) == 3 {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
@@ -3318,7 +3318,7 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			}
 		case cPHON:
 			if len(s.PhoneNumber) == 3 {
-				if !o.allowMoreThanAllowed {
+				if o.allowMoreThanAllowed {
 					continue
 				}
 
