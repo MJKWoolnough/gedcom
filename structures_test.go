@@ -754,6 +754,23 @@ func TestTransmissionDateTime(t *testing.T) {
 				Time:             "15:03",
 			},
 		},
+		{ // 7
+			Input: "0 DATE 2006-05-04\n1 UNKNOWN\n",
+			Err:   ErrContext{"TransmissionDateTime", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 8
+			Input: "0 DATE 2006-05-04\n1 _UNKNOWN\n",
+			Output: TransmissionDateTime{
+				TransmissionDate: "2006-05-04",
+			},
+		},
+		{ // 9
+			Input:   "0 DATE 2006-05-04\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: TransmissionDateTime{
+				TransmissionDate: "2006-05-04",
+			},
+		},
 	} {
 		var s TransmissionDateTime
 
