@@ -740,14 +740,14 @@ func TestTransmissionDateTime(t *testing.T) {
 		},
 		{ // 4
 			Input: "0 DATE 2006-05-04\n1 TIME\n",
-			Err:   ErrContext{"TransmissionDateTime", cTIME, ErrInvalidLength{"TransmissionTime", "", 1, 12}},
+			Err:   ErrContext{"TransmissionDateTime", cTIME, ErrInvalidLength{"TimeValue", "", 1, 12}},
 		},
 		{ // 5
-			Input: "0 SOUR ID\n1 TIME 15:03\n1 TIME 15:04",
+			Input: "0 DATE 2006-05-04\n1 TIME 15:03\n1 TIME 15:04",
 			Err:   ErrContext{"TransmissionDateTime", cTIME, ErrSingleMultiple},
 		},
 		{ // 6
-			Input:   "0 SOUR ID\n1 TIME 15:03\n1 TIME 15:04",
+			Input:   "0 DATE 2006-05-04\n1 TIME 15:03\n1 TIME 15:04",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: TransmissionDateTime{
 				TransmissionDate: "2006-05-04",
@@ -773,6 +773,43 @@ func TestTransmissionDateTime(t *testing.T) {
 		},
 	} {
 		var s TransmissionDateTime
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
+
+func TestHeaderBusiness(t *testing.T) {
+	for n, test := range [...]struct {
+		Input   string
+		Options []Option
+		Output  HeaderBusiness
+		Err     error
+	}{
+		{ // 1
+			Input: "0 CORP\n",
+			Err:   ErrContext{"HeaderBusiness", "line_value", ErrInvalidLength{"NameOfBusiness", "", 1, 90}},
+		},
+		{ // 2
+			Input: "0 CORP business name\n",
+			Output: HeaderBusiness{
+				NameOfBusiness: "business name",
+				PhoneNumber:    []PhoneNumber{},
+			},
+		},
+	} {
+		var s HeaderBusiness
 
 		r := NewReader(strings.NewReader(test.Input), test.Options...)
 
