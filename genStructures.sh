@@ -190,7 +190,7 @@ function processStructure() {
 						echo "";
 					elif [ "$pMax" != "M" ]; then
 						echo "			if len(s.$pName) == $pMax {";
-						echo "				if !o.allowMoreThanAllowed {";
+						echo "				if o.allowMoreThanAllowed {";
 						echo "					continue";
 						echo "				}";
 						echo "";
