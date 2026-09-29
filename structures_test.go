@@ -808,6 +808,35 @@ func TestHeaderBusiness(t *testing.T) {
 				PhoneNumber:    []PhoneNumber{},
 			},
 		},
+		{ // 3
+			Input: "0 CORP business name\n1 ADDR line 1",
+			Output: HeaderBusiness{
+				NameOfBusiness: "business name",
+				Address: AddressStructure{
+					AddressLine: "line 1",
+				},
+				PhoneNumber: []PhoneNumber{},
+			},
+		},
+		{ // 4
+			Input: "0 CORP business name\n1 ADDR\n",
+			Err:   ErrContext{"HeaderBusiness", cADDR, ErrContext{"AddressStructure", "line_value", ErrInvalidLength{"AddressLine", "", 1, 60}}},
+		},
+		{ // 5
+			Input: "0 CORP business name\n1 ADDR line_1\n1 ADDR line_2",
+			Err:   ErrContext{"HeaderBusiness", cADDR, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 CORP business name\n1 ADDR line_1\n1 ADDR line_2",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: HeaderBusiness{
+				NameOfBusiness: "business name",
+				Address: AddressStructure{
+					AddressLine: "line_1",
+				},
+				PhoneNumber: []PhoneNumber{},
+			},
+		},
 	} {
 		var s HeaderBusiness
 
