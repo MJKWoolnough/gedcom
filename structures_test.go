@@ -731,6 +731,29 @@ func TestTransmissionDateTime(t *testing.T) {
 				TransmissionDate: "2006-05-04",
 			},
 		},
+		{ // 3
+			Input: "0 DATE 2006-05-04\n1 TIME 15:02",
+			Output: TransmissionDateTime{
+				TransmissionDate: "2006-05-04",
+				Time:             "15:02",
+			},
+		},
+		{ // 4
+			Input: "0 DATE 2006-05-04\n1 TIME\n",
+			Err:   ErrContext{"TransmissionDateTime", cTIME, ErrInvalidLength{"TransmissionTime", "", 1, 12}},
+		},
+		{ // 5
+			Input: "0 SOUR ID\n1 TIME 15:03\n1 TIME 15:04",
+			Err:   ErrContext{"TransmissionDateTime", cTIME, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 SOUR ID\n1 TIME 15:03\n1 TIME 15:04",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: TransmissionDateTime{
+				TransmissionDate: "2006-05-04",
+				Time:             "15:03",
+			},
+		},
 	} {
 		var s TransmissionDateTime
 
