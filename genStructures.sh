@@ -234,7 +234,7 @@ function processStructure() {
 				echo "			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {";
 				echo "				return ErrContext{\"$structureName\", sl.tag, ErrUnknownTag}";
 				echo "			}";
-				echo "			// possibly store in a Other field";
+				# possibly store in a Other field
 			fi;
 
 			echo "		}";
