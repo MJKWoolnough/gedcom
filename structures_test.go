@@ -837,6 +837,43 @@ func TestHeaderBusiness(t *testing.T) {
 				PhoneNumber: []PhoneNumber{},
 			},
 		},
+		{ // 7
+			Input: "0 CORP business name\n1 PHON number",
+			Output: HeaderBusiness{
+				NameOfBusiness: "business name",
+				PhoneNumber:    []PhoneNumber{"number"},
+			},
+		},
+		{ // 8
+			Input: "0 CORP business name\n1 PHON\n",
+			Err:   ErrContext{"HeaderBusiness", cPHON, ErrInvalidLength{"PhoneNumber", "", 1, 25}},
+		},
+		{ // 9
+			Input: "0 CORP business name\n1 PHON number 1\n1 PHON number 2",
+			Output: HeaderBusiness{
+				NameOfBusiness: "business name",
+				PhoneNumber:    []PhoneNumber{"number 1", "number 2"},
+			},
+		},
+		{ // 10
+			Input: "0 CORP business name\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3",
+			Output: HeaderBusiness{
+				NameOfBusiness: "business name",
+				PhoneNumber:    []PhoneNumber{"number 1", "number 2", "number 3"},
+			},
+		},
+		{ // 11
+			Input: "0 CORP business name\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3\n1 PHON number 4",
+			Err:   ErrContext{"HeaderBusiness", cPHON, ErrTooMany(3)},
+		},
+		{ // 12
+			Input:   "0 CORP business name\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3\n1 PHON number 4",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: HeaderBusiness{
+				NameOfBusiness: "business name",
+				PhoneNumber:    []PhoneNumber{"number 1", "number 2", "number 3"},
+			},
+		},
 	} {
 		var s HeaderBusiness
 
