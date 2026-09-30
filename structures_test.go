@@ -874,18 +874,18 @@ func TestHeaderBusiness(t *testing.T) {
 				PhoneNumber:    []PhoneNumber{"number 1", "number 2", "number 3"},
 			},
 		},
-		{ // 7
+		{ // 13
 			Input: "0 CORP business name\n1 UNKNOWN\n",
 			Err:   ErrContext{"HeaderBusiness", "UNKNOWN", ErrUnknownTag},
 		},
-		{ // 8
+		{ // 14
 			Input: "0 CORP business name\n1 _UNKNOWN\n",
 			Output: HeaderBusiness{
 				NameOfBusiness: "business name",
 				PhoneNumber:    []PhoneNumber{},
 			},
 		},
-		{ // 9
+		{ // 15
 			Input:   "0 CORP business name\n1 UNKNOWN\n",
 			Options: []Option{AllowUnknownTags},
 			Output: HeaderBusiness{
@@ -950,6 +950,29 @@ func TestHeaderDataSource(t *testing.T) {
 			Output: HeaderDataSource{
 				SourceName:      "data-source",
 				PublicationDate: "2026-09-30",
+			},
+		},
+		{ // 7
+			Input: "0 DATA data-source\n1 COPR copyright data",
+			Output: HeaderDataSource{
+				SourceName:          "data-source",
+				CopyrightSourceData: "copyright data",
+			},
+		},
+		{ // 8
+			Input: "0 DATA data-source\n1 COPR\n",
+			Err:   ErrContext{"HeaderDataSource", cCOPR, ErrInvalidLength{"CopyrightSourceData", "", 1, 90}},
+		},
+		{ // 9
+			Input: "0 DATA data-source\n1 COPR copyright-data\n1 COPR data for copyright",
+			Err:   ErrContext{"HeaderDataSource", cCOPR, ErrSingleMultiple},
+		},
+		{ // 10
+			Input:   "0 DATA data-source\n1 COPR copyright-data\n1 COPR data for copyright",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: HeaderDataSource{
+				SourceName:          "data-source",
+				CopyrightSourceData: "copyright-data",
 			},
 		},
 	} {
