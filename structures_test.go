@@ -975,17 +975,17 @@ func TestHeaderDataSource(t *testing.T) {
 				CopyrightSourceData: "copyright-data",
 			},
 		},
-		{ // 13
+		{ // 11
 			Input: "0 DATA data-source\n1 UNKNOWN\n",
 			Err:   ErrContext{"HeaderDataSource", "UNKNOWN", ErrUnknownTag},
 		},
-		{ // 14
+		{ // 12
 			Input: "0 DATA data-source\n1 _UNKNOWN\n",
 			Output: HeaderDataSource{
 				SourceName: "data-source",
 			},
 		},
-		{ // 15
+		{ // 13
 			Input:   "0 DATA data-source\n1 UNKNOWN\n",
 			Options: []Option{AllowUnknownTags},
 			Output: HeaderDataSource{
@@ -1060,6 +1060,25 @@ func TestVersion(t *testing.T) {
 		{ // 9
 			Input:   "0 GEDC\n1 VERS 1.1\n1 FORM LINEAGE-LINKED\n1 FORM LINKED LINEAGE",
 			Options: []Option{AllowMoreThanAllowed},
+			Output: Version{
+				VersionNumber: "1.1",
+				Form:          "LINEAGE-LINKED",
+			},
+		},
+		{ // 10
+			Input: "0 GEDC\n1 VERS 1.1\n1 FORM LINEAGE-LINKED\n1 UNKNOWN\n",
+			Err:   ErrContext{"Version", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 11
+			Input: "0 GEDC\n1 VERS 1.1\n1 FORM LINEAGE-LINKED\n1 _UNKNOWN\n",
+			Output: Version{
+				VersionNumber: "1.1",
+				Form:          "LINEAGE-LINKED",
+			},
+		},
+		{ // 12
+			Input:   "0 GEDC\n1 VERS 1.1\n1 FORM LINEAGE-LINKED\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
 			Output: Version{
 				VersionNumber: "1.1",
 				Form:          "LINEAGE-LINKED",
