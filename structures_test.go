@@ -1010,3 +1010,44 @@ func TestHeaderDataSource(t *testing.T) {
 		}
 	}
 }
+
+func TestVersion(t *testing.T) {
+	for n, test := range [...]struct {
+		Input   string
+		Options []Option
+		Output  Version
+		Err     error
+	}{
+		{ // 1
+			Input: "0 GEDC\n",
+			Err:   ErrContext{"Version", "VersionNumber", ErrRequiredMissing},
+		},
+		{ // 2
+			Input: "0 GEDC\n1 VERS 1.1",
+			Err:   ErrContext{"Version", "Form", ErrRequiredMissing},
+		},
+		{ // 3
+			Input: "0 GEDC\n1 VERS 1.1\n1 FORM LINEAGE-LINKED",
+			Output: Version{
+				VersionNumber: "1.1",
+				Form:          "LINEAGE-LINKED",
+			},
+		},
+	} {
+		var s Version
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
