@@ -874,6 +874,25 @@ func TestHeaderBusiness(t *testing.T) {
 				PhoneNumber:    []PhoneNumber{"number 1", "number 2", "number 3"},
 			},
 		},
+		{ // 7
+			Input: "0 CORP business name\n1 UNKNOWN\n",
+			Err:   ErrContext{"HeaderBusiness", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 8
+			Input: "0 CORP business name\n1 _UNKNOWN\n",
+			Output: HeaderBusiness{
+				NameOfBusiness: "business name",
+				PhoneNumber:    []PhoneNumber{},
+			},
+		},
+		{ // 9
+			Input:   "0 CORP business name\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: HeaderBusiness{
+				NameOfBusiness: "business name",
+				PhoneNumber:    []PhoneNumber{},
+			},
+		},
 	} {
 		var s HeaderBusiness
 
