@@ -1049,6 +1049,22 @@ func TestVersion(t *testing.T) {
 				Form:          "LINEAGE-LINKED",
 			},
 		},
+		{ // 7
+			Input: "0 GEDC\n1 VERS 1.1\n1 FORM\n",
+			Err:   ErrContext{"Version", cFORM, ErrInvalidLength{"Form", "", 14, 20}},
+		},
+		{ // 8
+			Input: "0 GEDC\n1 VERS 1.1\n1 FORM LINEAGE-LINKED\n1 FORM LINKED LINEAGE",
+			Err:   ErrContext{"Version", cFORM, ErrSingleMultiple},
+		},
+		{ // 9
+			Input:   "0 GEDC\n1 VERS 1.1\n1 FORM LINEAGE-LINKED\n1 FORM LINKED LINEAGE",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Version{
+				VersionNumber: "1.1",
+				Form:          "LINEAGE-LINKED",
+			},
+		},
 	} {
 		var s Version
 
