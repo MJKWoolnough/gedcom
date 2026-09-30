@@ -929,6 +929,29 @@ func TestHeaderDataSource(t *testing.T) {
 				SourceName: "data-source",
 			},
 		},
+		{ // 3
+			Input: "0 DATA data-source\n1 DATE 2026-09-30",
+			Output: HeaderDataSource{
+				SourceName:      "data-source",
+				PublicationDate: "2026-09-30",
+			},
+		},
+		{ // 4
+			Input: "0 DATA data-source\n1 DATE\n",
+			Err:   ErrContext{"HeaderDataSource", cDATE, ErrInvalidLength{"PublicationDate", "", 10, 11}},
+		},
+		{ // 5
+			Input: "0 DATA data-source\n1 DATE 2026-09-30\n1 DATE 2025-08-29",
+			Err:   ErrContext{"HeaderDataSource", cDATE, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 DATA data-source\n1 DATE 2026-09-30\n1 DATE 2025-08-29",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: HeaderDataSource{
+				SourceName:      "data-source",
+				PublicationDate: "2026-09-30",
+			},
+		},
 	} {
 		var s HeaderDataSource
 
