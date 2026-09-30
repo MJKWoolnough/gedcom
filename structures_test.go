@@ -911,3 +911,39 @@ func TestHeaderBusiness(t *testing.T) {
 		}
 	}
 }
+
+func TestHeaderDataSource(t *testing.T) {
+	for n, test := range [...]struct {
+		Input   string
+		Options []Option
+		Output  HeaderDataSource
+		Err     error
+	}{
+		{ // 1
+			Input: "0 DATA\n",
+			Err:   ErrContext{"HeaderDataSource", "line_value", ErrInvalidLength{"NameOfSourceData", "", 1, 90}},
+		},
+		{ // 2
+			Input: "0 DATA data-source\n",
+			Output: HeaderDataSource{
+				SourceName: "data-source",
+			},
+		},
+	} {
+		var s HeaderDataSource
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
