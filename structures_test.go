@@ -975,6 +975,23 @@ func TestHeaderDataSource(t *testing.T) {
 				CopyrightSourceData: "copyright-data",
 			},
 		},
+		{ // 13
+			Input: "0 DATA data-source\n1 UNKNOWN\n",
+			Err:   ErrContext{"HeaderDataSource", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 14
+			Input: "0 DATA data-source\n1 _UNKNOWN\n",
+			Output: HeaderDataSource{
+				SourceName: "data-source",
+			},
+		},
+		{ // 15
+			Input:   "0 DATA data-source\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: HeaderDataSource{
+				SourceName: "data-source",
+			},
+		},
 	} {
 		var s HeaderDataSource
 
