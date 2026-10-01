@@ -1211,6 +1211,23 @@ func TestHeaderPlace(t *testing.T) {
 				PlaceHierarchy: "A",
 			},
 		},
+		{ // 6
+			Input: "0 PLAC\n1 FORM A\n1 UNKNOWN\n",
+			Err:   ErrContext{"HeaderPlace", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 7
+			Input: "0 PLAC\n1 FORM A\n1 _UNKNOWN\n",
+			Output: HeaderPlace{
+				PlaceHierarchy: "A",
+			},
+		},
+		{ // 8
+			Input:   "0 PLAC\n1 FORM A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: HeaderPlace{
+				PlaceHierarchy: "A",
+			},
+		},
 	} {
 		var s HeaderPlace
 
