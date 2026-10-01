@@ -21,7 +21,7 @@ type Header struct {
 }
 
 func (s *Header) parse(l *Line, o options) error {
-	var SourceSet, SubmitterSet, VersionSet, CharacterSetSet, ReceivingSystemNameSet, TransmissionLDateSet, SubmissionSet, FileNameSet, CopyrightSet, LanguageSet, PlaceSet, ContentDescriptionSet bool
+	var SubmitterSet, VersionSet, CharacterSetSet, SourceSet, ReceivingSystemNameSet, TransmissionLDateSet, SubmissionSet, FileNameSet, CopyrightSet, LanguageSet, PlaceSet, ContentDescriptionSet bool
 
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -201,20 +201,20 @@ func (s *Header) parse(l *Line, o options) error {
 	}
 
 	if !o.allowMissingRequired {
-		if !SourceSet {
-			return ErrContext{"Header", "Source", ErrRequiredMissing}
-		}
-
 		if !SubmitterSet {
-			return ErrContext{"Header", "Submitter", ErrRequiredMissing}
+			return ErrContext{"Header", cSUBM, ErrRequiredMissing}
 		}
 
 		if !VersionSet {
-			return ErrContext{"Header", "Version", ErrRequiredMissing}
+			return ErrContext{"Header", cGEDC, ErrRequiredMissing}
 		}
 
 		if !CharacterSetSet {
-			return ErrContext{"Header", "CharacterSet", ErrRequiredMissing}
+			return ErrContext{"Header", cCHAR, ErrRequiredMissing}
+		}
+
+		if !SourceSet {
+			return ErrContext{"Header", cSOUR, ErrRequiredMissing}
 		}
 	}
 
@@ -504,11 +504,11 @@ func (s *Version) parse(l *Line, o options) error {
 
 	if !o.allowMissingRequired {
 		if !VersionNumberSet {
-			return ErrContext{"Version", "VersionNumber", ErrRequiredMissing}
+			return ErrContext{"Version", cVERS, ErrRequiredMissing}
 		}
 
 		if !FormSet {
-			return ErrContext{"Version", "Form", ErrRequiredMissing}
+			return ErrContext{"Version", cFORM, ErrRequiredMissing}
 		}
 	}
 
@@ -587,7 +587,7 @@ func (s *HeaderPlace) parse(l *Line, o options) error {
 
 	if !o.allowMissingRequired {
 		if !PlaceHierarchySet {
-			return ErrContext{"HeaderPlace", "PlaceHierarchy", ErrRequiredMissing}
+			return ErrContext{"HeaderPlace", cFORM, ErrRequiredMissing}
 		}
 	}
 
@@ -976,7 +976,7 @@ func (s *AgeStructure) parse(l *Line, o options) error {
 
 	if !o.allowMissingRequired {
 		if !AgeSet {
-			return ErrContext{"AgeStructure", "Age", ErrRequiredMissing}
+			return ErrContext{"AgeStructure", cAGE, ErrRequiredMissing}
 		}
 	}
 
@@ -2027,7 +2027,7 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 		return ErrContext{"MultimediaRecord", "xrefID", err}
 	}
 
-	var FormatSet, BlobSet, TitleSet, ContinuedObjectSet, AutomatedRecordIDSet, ChangeDateSet bool
+	var BlobSet, FormatSet, TitleSet, ContinuedObjectSet, AutomatedRecordIDSet, ChangeDateSet bool
 
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -2139,12 +2139,12 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 	}
 
 	if !o.allowMissingRequired {
-		if !FormatSet {
-			return ErrContext{"MultimediaRecord", "Format", ErrRequiredMissing}
+		if !BlobSet {
+			return ErrContext{"MultimediaRecord", cBLOB, ErrRequiredMissing}
 		}
 
-		if !BlobSet {
-			return ErrContext{"MultimediaRecord", "Blob", ErrRequiredMissing}
+		if !FormatSet {
+			return ErrContext{"MultimediaRecord", cFORM, ErrRequiredMissing}
 		}
 	}
 
@@ -2540,7 +2540,7 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 
 	if !o.allowMissingRequired {
 		if !SourceRepositoryCitationSet {
-			return ErrContext{"SourceRecord", "SourceRepositoryCitation", ErrRequiredMissing}
+			return ErrContext{"SourceRecord", cREPO, ErrRequiredMissing}
 		}
 	}
 
@@ -2907,7 +2907,7 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 
 	if !o.allowMissingRequired {
 		if !SubmitterNameSet {
-			return ErrContext{"SubmitterRecord", "SubmitterName", ErrRequiredMissing}
+			return ErrContext{"SubmitterRecord", cNAME, ErrRequiredMissing}
 		}
 	}
 
@@ -3042,7 +3042,7 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 		return ErrContext{"AssociationStructure", "xrefID", err}
 	}
 
-	var RecordTypeSet, RelationSet bool
+	var RelationSet, RecordTypeSet bool
 
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -3098,12 +3098,12 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 	}
 
 	if !o.allowMissingRequired {
-		if !RecordTypeSet {
-			return ErrContext{"AssociationStructure", "RecordType", ErrRequiredMissing}
+		if !RelationSet {
+			return ErrContext{"AssociationStructure", cRELA, ErrRequiredMissing}
 		}
 
-		if !RelationSet {
-			return ErrContext{"AssociationStructure", "Relation", ErrRequiredMissing}
+		if !RecordTypeSet {
+			return ErrContext{"AssociationStructure", cTYPE, ErrRequiredMissing}
 		}
 	}
 
@@ -3152,7 +3152,7 @@ func (s *ChangeDateStructure) parse(l *Line, o options) error {
 
 	if !o.allowMissingRequired {
 		if !DateSet {
-			return ErrContext{"ChangeDateStructure", "Date", ErrRequiredMissing}
+			return ErrContext{"ChangeDateStructure", cDATE, ErrRequiredMissing}
 		}
 	}
 
@@ -3596,7 +3596,7 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 
 	if !o.allowMissingRequired {
 		if !FormatSet {
-			return ErrContext{"MultimediaLinkFile", "Format", ErrRequiredMissing}
+			return ErrContext{"MultimediaLinkFile", cFORM, ErrRequiredMissing}
 		}
 	}
 
