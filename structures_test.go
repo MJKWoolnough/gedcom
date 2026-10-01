@@ -1143,6 +1143,23 @@ func TestCharacterSetStructure(t *testing.T) {
 				VersionNumber: "1.2",
 			},
 		},
+		{ // 7
+			Input: "0 CHAR ASCII\n1 UNKNOWN\n",
+			Err:   ErrContext{"CharacterSetStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 8
+			Input: "0 CHAR ASCII\n1 _UNKNOWN\n",
+			Output: CharacterSetStructure{
+				CharacterSet: "ASCII",
+			},
+		},
+		{ // 9
+			Input:   "0 CHAR ASCII\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: CharacterSetStructure{
+				CharacterSet: "ASCII",
+			},
+		},
 	} {
 		var s CharacterSetStructure
 
