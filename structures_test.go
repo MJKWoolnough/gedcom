@@ -1196,6 +1196,21 @@ func TestHeaderPlace(t *testing.T) {
 				PlaceHierarchy: "A",
 			},
 		},
+		{ // 3
+			Input: "0 PLAC\n1 FORM\n",
+			Err:   ErrContext{"HeaderPlace", cFORM, ErrInvalidLength{"PlaceHierarchy", "", 1, 120}},
+		},
+		{ // 4
+			Input: "0 PLAC\n1 FORM A\n1 FORM B",
+			Err:   ErrContext{"HeaderPlace", cFORM, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 PLAC\n1 FORM A\n1 FORM B",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: HeaderPlace{
+				PlaceHierarchy: "A",
+			},
+		},
 	} {
 		var s HeaderPlace
 
