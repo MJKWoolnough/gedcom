@@ -1120,6 +1120,29 @@ func TestCharacterSetStructure(t *testing.T) {
 				CharacterSet: "ASCII",
 			},
 		},
+		{ // 3
+			Input: "0 CHAR ASCII\n1 VERS 1.1",
+			Output: CharacterSetStructure{
+				CharacterSet:  "ASCII",
+				VersionNumber: "1.1",
+			},
+		},
+		{ // 4
+			Input: "0 CHAR ASCII\n1 VERS\n",
+			Err:   ErrContext{"CharacterSetStructure", cVERS, ErrInvalidLength{"VersionNumber", "", 1, 15}},
+		},
+		{ // 5
+			Input: "0 CHAR ASCII\n1 VERS 1.2\n1 VERS 2.3",
+			Err:   ErrContext{"CharacterSetStructure", cVERS, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 CHAR ASCII\n1 VERS 1.2\n1 VERS 2.3",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: CharacterSetStructure{
+				CharacterSet:  "ASCII",
+				VersionNumber: "1.2",
+			},
+		},
 	} {
 		var s CharacterSetStructure
 
