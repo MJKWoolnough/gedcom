@@ -8,7 +8,7 @@ function processStructure() {
 	local types=();
 	local ID="";
 	local lineValue=();
-	local required=();
+	local -A required=();
 	local oneMost=();
 	local maxes=();
 	local namedTags=0;
@@ -69,7 +69,7 @@ function processStructure() {
 			types+=( "$pTag:$pType:$pName:$pMin:$pMax" );
 		else
 			if [ "$pMin" = "1" ]; then
-				required+=( "$pName" );
+				required+=( ["$pName"]="$pTag" );
 			elif [ "$pMax" == "1" ]; then
 				oneMost+=( "$pName" );
 			elif [ "$pMax" != "M" ]; then
@@ -107,7 +107,7 @@ function processStructure() {
 			local c=false;
 
 			if [ ${#required[@]} -gt 0 ]; then
-				for r in "${required[@]}"; do
+				for r in "${!required[@]}"; do
 					if $c; then
 						echo -n ",";
 					fi;
@@ -241,13 +241,13 @@ function processStructure() {
 			echo "	}";
 			echo "";
 
-			if [ ${#required} -gt 0 ]; then
+			if [ ${#required[@]} -gt 0 ]; then
 				echo -n "	if !o.allowMissingRequired {";
 
-				for r in "${required[@]}"; do
+				for r in "${!required[@]}"; do
 					echo;
 					echo "		if !${r}Set {";
-					echo "			return ErrContext{\"$structureName\", \"$r\", ErrRequiredMissing}";
+					echo "			return ErrContext{\"$structureName\", c${required[$r]}, ErrRequiredMissing}";
 					echo "		}";
 				done;
 
