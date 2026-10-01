@@ -16,7 +16,7 @@ func TestHeader(t *testing.T) {
 	}{
 		{ // 1
 			Input: "0 HEADER\n",
-			Err:   ErrContext{"Header", "Source", ErrRequiredMissing},
+			Err:   ErrContext{"Header", cSUBM, ErrRequiredMissing},
 		},
 		{ // 2
 			Input:   "0 HEADER\n",
@@ -24,15 +24,15 @@ func TestHeader(t *testing.T) {
 		},
 		{ // 3
 			Input: "0 HEADER\n1 SOUR id",
-			Err:   ErrContext{"Header", "Submitter", ErrRequiredMissing},
+			Err:   ErrContext{"Header", cSUBM, ErrRequiredMissing},
 		},
 		{ // 4
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter",
-			Err:   ErrContext{"Header", "Version", ErrRequiredMissing},
+			Err:   ErrContext{"Header", cGEDC, ErrRequiredMissing},
 		},
 		{ // 5
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED",
-			Err:   ErrContext{"Header", "CharacterSet", ErrRequiredMissing},
+			Err:   ErrContext{"Header", cCHAR, ErrRequiredMissing},
 		},
 		{ // 6
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
@@ -322,7 +322,7 @@ func TestHeader(t *testing.T) {
 		},
 		{ // 33
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n1 CHAR ANSEL",
-			Err:   ErrContext{"Header", cGEDC, ErrContext{"Version", "VersionNumber", ErrRequiredMissing}},
+			Err:   ErrContext{"Header", cGEDC, ErrContext{"Version", cVERS, ErrRequiredMissing}},
 		},
 		{ // 34
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 GEDC\n2 VERS 5.6\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
@@ -434,7 +434,7 @@ func TestHeader(t *testing.T) {
 		},
 		{ // 44
 			Input: "0 HEADER\n1 PLAC\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
-			Err:   ErrContext{"Header", cPLAC, ErrContext{"HeaderPlace", "PlaceHierarchy", ErrRequiredMissing}},
+			Err:   ErrContext{"Header", cPLAC, ErrContext{"HeaderPlace", cFORM, ErrRequiredMissing}},
 		},
 		{ // 45
 			Input: "0 HEADER\n1 PLAC\n2 FORM place1\n1 PLAC\n2 FORM place2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
@@ -1020,11 +1020,11 @@ func TestVersion(t *testing.T) {
 	}{
 		{ // 1
 			Input: "0 GEDC\n",
-			Err:   ErrContext{"Version", "VersionNumber", ErrRequiredMissing},
+			Err:   ErrContext{"Version", cVERS, ErrRequiredMissing},
 		},
 		{ // 2
 			Input: "0 GEDC\n1 VERS 1.1",
-			Err:   ErrContext{"Version", "Form", ErrRequiredMissing},
+			Err:   ErrContext{"Version", cFORM, ErrRequiredMissing},
 		},
 		{ // 3
 			Input: "0 GEDC\n1 VERS 1.1\n1 FORM LINEAGE-LINKED",
@@ -1188,7 +1188,7 @@ func TestHeaderPlace(t *testing.T) {
 	}{
 		{ // 1
 			Input: "0 PLAC\n",
-			Err:   ErrContext{"HeaderPlace", "PlaceHierarchy", ErrRequiredMissing},
+			Err:   ErrContext{"HeaderPlace", cFORM, ErrRequiredMissing},
 		},
 		{ // 2
 			Input: "0 PLAC\n1 FORM A",
