@@ -1480,6 +1480,42 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 27
+			Input: "0 @ID@ FAM\n1 MARB\n",
+			Output: Family{
+				ID: "ID",
+				MarriageBann: VerifiedFamilyEventDetail{
+					FamilyEventDetail: FamilyEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 28
+			Input: "0 @ID@ FAM\n1 MARB N\n",
+			Err:   ErrContext{"Family", cMARB, ErrContext{"VerifiedFamilyEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 29
+			Input: "0 @ID@ FAM\n1 MARB Y\n1 MARB\n",
+			Err:   ErrContext{"Family", cMARB, ErrSingleMultiple},
+		},
+		{ // 30
+			Input:   "0 @ID@ FAM\n1 MARB Y\n1 MARB\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Family{
+				ID: "ID",
+				MarriageBann: VerifiedFamilyEventDetail{
+					Verified: "Y",
+					FamilyEventDetail: FamilyEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Family
 
