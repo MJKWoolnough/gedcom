@@ -1336,6 +1336,42 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 11
+			Input: "0 @ID@ FAM\n1 DIV\n",
+			Output: Family{
+				ID: "ID",
+				Divorce: VerifiedFamilyEventDetail{
+					FamilyEventDetail: FamilyEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 12
+			Input: "0 @ID@ FAM\n1 DIV N\n",
+			Err:   ErrContext{"Family", cDIV, ErrContext{"VerifiedFamilyEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 13
+			Input: "0 @ID@ FAM\n1 DIV Y\n1 DIV\n",
+			Err:   ErrContext{"Family", cDIV, ErrSingleMultiple},
+		},
+		{ // 14
+			Input:   "0 @ID@ FAM\n1 DIV Y\n1 DIV\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Family{
+				ID: "ID",
+				Divorce: VerifiedFamilyEventDetail{
+					Verified: "Y",
+					FamilyEventDetail: FamilyEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Family
 
