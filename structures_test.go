@@ -1408,6 +1408,42 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 19
+			Input: "0 @ID@ FAM\n1 ENGA\n",
+			Output: Family{
+				ID: "ID",
+				Engagement: VerifiedFamilyEventDetail{
+					FamilyEventDetail: FamilyEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 20
+			Input: "0 @ID@ FAM\n1 ENGA N\n",
+			Err:   ErrContext{"Family", cENGA, ErrContext{"VerifiedFamilyEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 21
+			Input: "0 @ID@ FAM\n1 ENGA Y\n1 ENGA\n",
+			Err:   ErrContext{"Family", cENGA, ErrSingleMultiple},
+		},
+		{ // 22
+			Input:   "0 @ID@ FAM\n1 ENGA Y\n1 ENGA\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Family{
+				ID: "ID",
+				Engagement: VerifiedFamilyEventDetail{
+					Verified: "Y",
+					FamilyEventDetail: FamilyEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Family
 
