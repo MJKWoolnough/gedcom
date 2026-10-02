@@ -1300,6 +1300,42 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 7
+			Input: "0 @ID@ FAM\n1 CENS\n",
+			Output: Family{
+				ID: "ID",
+				Census: VerifiedFamilyEventDetail{
+					FamilyEventDetail: FamilyEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 8
+			Input: "0 @ID@ FAM\n1 CENS N\n",
+			Err:   ErrContext{"Family", cCENS, ErrContext{"VerifiedFamilyEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 9
+			Input: "0 @ID@ FAM\n1 CENS Y\n1 CENS\n",
+			Err:   ErrContext{"Family", cCENS, ErrSingleMultiple},
+		},
+		{ // 10
+			Input:   "0 @ID@ FAM\n1 CENS Y\n1 CENS\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Family{
+				ID: "ID",
+				Census: VerifiedFamilyEventDetail{
+					Verified: "Y",
+					FamilyEventDetail: FamilyEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Family
 
