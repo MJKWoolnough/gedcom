@@ -390,8 +390,8 @@ func (s *HeaderBusiness) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"HeaderBusiness", cPHON, err}
 			}
-			s.PhoneNumber = append(s.PhoneNumber, t)
 
+			s.PhoneNumber = append(s.PhoneNumber, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"HeaderBusiness", sl.tag, ErrUnknownTag}
@@ -774,8 +774,8 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", cEVEN, err}
 			}
-			s.Events = append(s.Events, t)
 
+			s.Events = append(s.Events, t)
 		case cHUSB:
 			if HusbandSet {
 				if o.allowMoreThanAllowed {
@@ -810,8 +810,8 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", cCHIL, err}
 			}
-			s.Children = append(s.Children, t)
 
+			s.Children = append(s.Children, t)
 		case cNCHI:
 			if NumChildrenSet {
 				if o.allowMoreThanAllowed {
@@ -832,40 +832,40 @@ func (s *Family) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", cSUBM, err}
 			}
-			s.Submitters = append(s.Submitters, t)
 
+			s.Submitters = append(s.Submitters, t)
 		case cSLGS:
 			var t LDSSpouseSealing
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", cSLGS, err}
 			}
-			s.LDSSpouseSealing = append(s.LDSSpouseSealing, t)
 
+			s.LDSSpouseSealing = append(s.LDSSpouseSealing, t)
 		case cSOUR:
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", cSOUR, err}
 			}
-			s.Sources = append(s.Sources, t)
 
+			s.Sources = append(s.Sources, t)
 		case cOBJE:
 			var t MultimediaLink
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", cOBJE, err}
 			}
-			s.Multimedia = append(s.Multimedia, t)
 
+			s.Multimedia = append(s.Multimedia, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Family", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"Family", sl.tag, ErrUnknownTag}
@@ -1071,8 +1071,8 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cNAME, err}
 			}
-			s.PersonalNameStructure = append(s.PersonalNameStructure, t)
 
+			s.PersonalNameStructure = append(s.PersonalNameStructure, t)
 		case cSEX:
 			if GenderSet {
 				if o.allowMoreThanAllowed {
@@ -1401,192 +1401,192 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cEVEN, err}
 			}
-			s.Events = append(s.Events, t)
 
+			s.Events = append(s.Events, t)
 		case cCAST:
 			var t CasteEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cCAST, err}
 			}
-			s.Caste = append(s.Caste, t)
 
+			s.Caste = append(s.Caste, t)
 		case cDSCR:
 			var t DescriptionEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cDSCR, err}
 			}
-			s.Description = append(s.Description, t)
 
+			s.Description = append(s.Description, t)
 		case cEDUC:
 			var t ScholasticEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cEDUC, err}
 			}
-			s.ScholasticAchievement = append(s.ScholasticAchievement, t)
 
+			s.ScholasticAchievement = append(s.ScholasticAchievement, t)
 		case cIDNO:
 			var t NationalIDEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cIDNO, err}
 			}
-			s.NationalID = append(s.NationalID, t)
 
+			s.NationalID = append(s.NationalID, t)
 		case cNATI:
 			var t NationalOriginEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cNATI, err}
 			}
-			s.NationalTribalOrigin = append(s.NationalTribalOrigin, t)
 
+			s.NationalTribalOrigin = append(s.NationalTribalOrigin, t)
 		case cNCHI:
 			var t ChildrenEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cNCHI, err}
 			}
-			s.CountOfChildren = append(s.CountOfChildren, t)
 
+			s.CountOfChildren = append(s.CountOfChildren, t)
 		case cNMR:
 			var t MarriagesEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cNMR, err}
 			}
-			s.CountOfMarriages = append(s.CountOfMarriages, t)
 
+			s.CountOfMarriages = append(s.CountOfMarriages, t)
 		case cOCCU:
 			var t OccupationEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cOCCU, err}
 			}
-			s.Occupation = append(s.Occupation, t)
 
+			s.Occupation = append(s.Occupation, t)
 		case cPROP:
 			var t PossessionEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cPROP, err}
 			}
-			s.Possessions = append(s.Possessions, t)
 
+			s.Possessions = append(s.Possessions, t)
 		case cRELI:
 			var t ReligiousEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cRELI, err}
 			}
-			s.ReligiousAffiliation = append(s.ReligiousAffiliation, t)
 
+			s.ReligiousAffiliation = append(s.ReligiousAffiliation, t)
 		case cRESI:
 			var t ResidenceEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cRESI, err}
 			}
-			s.Residences = append(s.Residences, t)
 
+			s.Residences = append(s.Residences, t)
 		case cSSN:
 			var t SSNEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cSSN, err}
 			}
-			s.SocialSecurity = append(s.SocialSecurity, t)
 
+			s.SocialSecurity = append(s.SocialSecurity, t)
 		case cTITL:
 			var t NobilityEvent
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cTITL, err}
 			}
-			s.NobilityTypeTitle = append(s.NobilityTypeTitle, t)
 
+			s.NobilityTypeTitle = append(s.NobilityTypeTitle, t)
 		case cFAMC:
 			var t ChildToFamilyLink
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cFAMC, err}
 			}
-			s.ChildOf = append(s.ChildOf, t)
 
+			s.ChildOf = append(s.ChildOf, t)
 		case cFAMS:
 			var t SpouseToFamilyLink
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cFAMS, err}
 			}
-			s.SpouseOf = append(s.SpouseOf, t)
 
+			s.SpouseOf = append(s.SpouseOf, t)
 		case cSUBM:
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cSUBM, err}
 			}
-			s.Submitters = append(s.Submitters, t)
 
+			s.Submitters = append(s.Submitters, t)
 		case cASSO:
 			var t AssociationStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cASSO, err}
 			}
-			s.Associations = append(s.Associations, t)
 
+			s.Associations = append(s.Associations, t)
 		case cALIA:
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cALIA, err}
 			}
-			s.Aliases = append(s.Aliases, t)
 
+			s.Aliases = append(s.Aliases, t)
 		case cANCI:
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cANCI, err}
 			}
-			s.AncestorInterest = append(s.AncestorInterest, t)
 
+			s.AncestorInterest = append(s.AncestorInterest, t)
 		case cDESI:
 			var t Xref
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cDESI, err}
 			}
-			s.DescendentInterest = append(s.DescendentInterest, t)
 
+			s.DescendentInterest = append(s.DescendentInterest, t)
 		case cSOUR:
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cSOUR, err}
 			}
-			s.Sources = append(s.Sources, t)
 
+			s.Sources = append(s.Sources, t)
 		case cOBJE:
 			var t MultimediaLink
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cOBJE, err}
 			}
-			s.Multimedia = append(s.Multimedia, t)
 
+			s.Multimedia = append(s.Multimedia, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		case cRFN:
 			if PermanentRecordSet {
 				if o.allowMoreThanAllowed {
@@ -1621,8 +1621,8 @@ func (s *Individual) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cREFN, err}
 			}
-			s.UserReferences = append(s.UserReferences, t)
 
+			s.UserReferences = append(s.UserReferences, t)
 		case cRIN:
 			if AutomatedRecordIDSet {
 				if o.allowMoreThanAllowed {
@@ -2065,8 +2065,8 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		case cBLOB:
 			if BlobSet {
 				if o.allowMoreThanAllowed {
@@ -2101,8 +2101,8 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", cREFN, err}
 			}
-			s.UserReferences = append(s.UserReferences, t)
 
+			s.UserReferences = append(s.UserReferences, t)
 		case cRIN:
 			if AutomatedRecordIDSet {
 				if o.allowMoreThanAllowed {
@@ -2180,16 +2180,16 @@ func (s *NoteRecord) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"NoteRecord", cSOUR, err}
 			}
-			s.Sources = append(s.Sources, t)
 
+			s.Sources = append(s.Sources, t)
 		case cREFN:
 			var t UserReferenceStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"NoteRecord", cREFN, err}
 			}
-			s.UserReferences = append(s.UserReferences, t)
 
+			s.UserReferences = append(s.UserReferences, t)
 		case cRIN:
 			if AutomatedRecordIDSet {
 				if o.allowMoreThanAllowed {
@@ -2293,24 +2293,24 @@ func (s *RepositoryRecord) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"RepositoryRecord", cPHON, err}
 			}
-			s.PhoneNumber = append(s.PhoneNumber, t)
 
+			s.PhoneNumber = append(s.PhoneNumber, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"RepositoryRecord", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		case cREFN:
 			var t UserReferenceStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"RepositoryRecord", cREFN, err}
 			}
-			s.UserReferences = append(s.UserReferences, t)
 
+			s.UserReferences = append(s.UserReferences, t)
 		case cRIN:
 			if AutomatedRecordIDSet {
 				if o.allowMoreThanAllowed {
@@ -2493,16 +2493,16 @@ func (s *SourceRecord) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		case cREFN:
 			var t UserReferenceStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecord", cREFN, err}
 			}
-			s.UserReferences = append(s.UserReferences, t)
 
+			s.UserReferences = append(s.UserReferences, t)
 		case cRIN:
 			if AutomatedRecordIDSet {
 				if o.allowMoreThanAllowed {
@@ -2565,8 +2565,8 @@ func (s *SourceRecordDataStructure) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecordDataStructure", cEVEN, err}
 			}
-			s.EventsRecorded = append(s.EventsRecorded, t)
 
+			s.EventsRecorded = append(s.EventsRecorded, t)
 		case cAGNC:
 			if ResponsibleAgencySet {
 				if o.allowMoreThanAllowed {
@@ -2587,8 +2587,8 @@ func (s *SourceRecordDataStructure) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRecordDataStructure", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceRecordDataStructure", sl.tag, ErrUnknownTag}
@@ -2830,16 +2830,16 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", cPHON, err}
 			}
-			s.PhoneNumber = append(s.PhoneNumber, t)
 
+			s.PhoneNumber = append(s.PhoneNumber, t)
 		case cOBJE:
 			var t MultimediaLink
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", cOBJE, err}
 			}
-			s.Multimedia = append(s.Multimedia, t)
 
+			s.Multimedia = append(s.Multimedia, t)
 		case cLANG:
 			if len(s.LanguagePreference) == 3 {
 				if o.allowMoreThanAllowed {
@@ -2854,8 +2854,8 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SubmitterRecord", cLANG, err}
 			}
-			s.LanguagePreference = append(s.LanguagePreference, t)
 
+			s.LanguagePreference = append(s.LanguagePreference, t)
 		case cRFN:
 			if SubmitterRegisteredRFNSet {
 				if o.allowMoreThanAllowed {
@@ -3080,16 +3080,16 @@ func (s *AssociationStructure) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"AssociationStructure", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		case cSOUR:
 			var t SourceCitation
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"AssociationStructure", cSOUR, err}
 			}
-			s.Sources = append(s.Sources, t)
 
+			s.Sources = append(s.Sources, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"AssociationStructure", sl.tag, ErrUnknownTag}
@@ -3141,8 +3141,8 @@ func (s *ChangeDateStructure) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"ChangeDateStructure", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"ChangeDateStructure", sl.tag, ErrUnknownTag}
@@ -3218,16 +3218,16 @@ func (s *ChildToFamilyLink) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"ChildToFamilyLink", cPEDI, err}
 			}
-			s.PedigreeLinkageType = append(s.PedigreeLinkageType, t)
 
+			s.PedigreeLinkageType = append(s.PedigreeLinkageType, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"ChildToFamilyLink", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"ChildToFamilyLink", sl.tag, ErrUnknownTag}
@@ -3330,8 +3330,8 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", cPHON, err}
 			}
-			s.PhoneNumber = append(s.PhoneNumber, t)
 
+			s.PhoneNumber = append(s.PhoneNumber, t)
 		case cAGE:
 			if AgeSet {
 				if o.allowMoreThanAllowed {
@@ -3380,24 +3380,24 @@ func (s *EventDetail) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", cSOUR, err}
 			}
-			s.Sources = append(s.Sources, t)
 
+			s.Sources = append(s.Sources, t)
 		case cOBJE:
 			var t MultimediaLink
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", cOBJE, err}
 			}
-			s.Multimedia = append(s.Multimedia, t)
 
+			s.Multimedia = append(s.Multimedia, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"EventDetail", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"EventDetail", sl.tag, ErrUnknownTag}
@@ -3485,16 +3485,16 @@ func (s *LDSSpouseSealing) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"LDSSpouseSealing", cSOUR, err}
 			}
-			s.Sources = append(s.Sources, t)
 
+			s.Sources = append(s.Sources, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"LDSSpouseSealing", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"LDSSpouseSealing", sl.tag, ErrUnknownTag}
@@ -3585,8 +3585,8 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaLinkFile", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"MultimediaLinkFile", sl.tag, ErrUnknownTag}
@@ -3641,8 +3641,8 @@ func (s *NoteText) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"NoteText", cSOUR, err}
 			}
-			s.Sources = append(s.Sources, t)
 
+			s.Sources = append(s.Sources, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"NoteText", sl.tag, ErrUnknownTag}
@@ -3765,16 +3765,16 @@ func (s *PersonalNameStructure) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", cSOUR, err}
 			}
-			s.Sources = append(s.Sources, t)
 
+			s.Sources = append(s.Sources, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"PersonalNameStructure", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"PersonalNameStructure", sl.tag, ErrUnknownTag}
@@ -3822,16 +3822,16 @@ func (s *PlaceStructure) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"PlaceStructure", cSOUR, err}
 			}
-			s.Sources = append(s.Sources, t)
 
+			s.Sources = append(s.Sources, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"PlaceStructure", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"PlaceStructure", sl.tag, ErrUnknownTag}
@@ -3924,16 +3924,16 @@ func (s *SourceID) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceID", cOBJE, err}
 			}
-			s.Multimedia = append(s.Multimedia, t)
 
+			s.Multimedia = append(s.Multimedia, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceID", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceID", sl.tag, ErrUnknownTag}
@@ -4014,8 +4014,8 @@ func (s *SourceData) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceData", cTEXT, err}
 			}
-			s.Text = append(s.Text, t)
 
+			s.Text = append(s.Text, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceData", sl.tag, ErrUnknownTag}
@@ -4046,16 +4046,16 @@ func (s *SourceText) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceText", cTEXT, err}
 			}
-			s.Texts = append(s.Texts, t)
 
+			s.Texts = append(s.Texts, t)
 		case cNOTE:
 			var t NoteStructure
 
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceText", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceText", sl.tag, ErrUnknownTag}
@@ -4085,8 +4085,8 @@ func (s *SourceRepositoryCitation) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SourceRepositoryCitation", cCALN, err}
 			}
-			s.Numbers = append(s.Numbers, t)
 
+			s.Numbers = append(s.Numbers, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SourceRepositoryCitation", sl.tag, ErrUnknownTag}
@@ -4155,8 +4155,8 @@ func (s *SpouseToFamilyLink) parse(l *Line, o options) error {
 			if err := t.parse(&sl, o); err != nil {
 				return ErrContext{"SpouseToFamilyLink", cNOTE, err}
 			}
-			s.Notes = append(s.Notes, t)
 
+			s.Notes = append(s.Notes, t)
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 				return ErrContext{"SpouseToFamilyLink", sl.tag, ErrUnknownTag}
