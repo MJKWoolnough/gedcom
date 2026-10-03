@@ -1748,6 +1748,24 @@ func TestFamily(t *testing.T) {
 				NumChildren: 1,
 			},
 		},
+		{ // 61
+			Input: "0 @ID@ FAM\n1 SUBM @A@",
+			Output: Family{
+				ID:         "ID",
+				Submitters: []Xref{"A"},
+			},
+		},
+		{ // 62
+			Input: "0 @ID@ FAM\n1 SUBM\n",
+			Err:   ErrContext{"Family", cSUBM, ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 63
+			Input: "0 @ID@ FAM\n1 SUBM @A@\n1 SUBM @B@",
+			Output: Family{
+				ID:         "ID",
+				Submitters: []Xref{"A", "B"},
+			},
+		},
 	} {
 		var s Family
 
