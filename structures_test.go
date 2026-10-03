@@ -1707,6 +1707,24 @@ func TestFamily(t *testing.T) {
 				Wife: "A",
 			},
 		},
+		{ // 54
+			Input: "0 @ID@ FAM\n1 CHIL @A@",
+			Output: Family{
+				ID:       "ID",
+				Children: []Xref{"A"},
+			},
+		},
+		{ // 55
+			Input: "0 @ID@ FAM\n1 CHIL\n",
+			Err:   ErrContext{"Family", cCHIL, ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 56
+			Input: "0 @ID@ FAM\n1 CHIL @A@\n1 CHIL @B@",
+			Output: Family{
+				ID:       "ID",
+				Children: []Xref{"A", "B"},
+			},
+		},
 	} {
 		var s Family
 
