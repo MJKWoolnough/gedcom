@@ -1789,6 +1789,41 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 67
+			Input: "0 @ID@ FAM\n1 @A@ SOUR\n",
+			Output: Family{
+				ID: "ID",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 68
+			Input: "0 @ID@ FAM\n1 SOUR\n",
+			Err:   ErrContext{"Family", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
+		},
+		{ // 69
+			Input: "0 @ID@ FAM\n1 @A@ SOUR\n1 @B@ SOUR\n",
+			Output: Family{
+				ID: "ID",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &SourceID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Family
 
