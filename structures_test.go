@@ -1661,6 +1661,29 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 46
+			Input: "0 @ID@ FAM\n1 HUSB @A@\n",
+			Output: Family{
+				ID:      "ID",
+				Husband: "A",
+			},
+		},
+		{ // 47
+			Input: "0 @ID@ FAM\n1 HUSB\n",
+			Err:   ErrContext{"Family", cHUSB, ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 48
+			Input: "0 @ID@ FAM\n1 HUSB @A@\n1 HUSB @B@",
+			Err:   ErrContext{"Family", cHUSB, ErrSingleMultiple},
+		},
+		{ // 49
+			Input:   "0 @ID@ FAM\n1 HUSB @A@\n1 HUSB @B@",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Family{
+				ID:      "ID",
+				Husband: "A",
+			},
+		},
 	} {
 		var s Family
 
