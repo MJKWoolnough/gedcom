@@ -1766,6 +1766,29 @@ func TestFamily(t *testing.T) {
 				Submitters: []Xref{"A", "B"},
 			},
 		},
+		{ // 64
+			Input: "0 @ID@ FAM\n1 SLGS\n",
+			Output: Family{
+				ID: "ID",
+				LDSSpouseSealing: []LDSSpouseSealing{
+					{},
+				},
+			},
+		},
+		{ // 65
+			Input: "0 @ID@ FAM\n1 SLGS\n2 STAT\n",
+			Err:   ErrContext{"Family", cSLGS, ErrContext{"LDSSpouseSealing", cSTAT, ErrInvalidValue{"LDSSpouseSealingDateStatus", ""}}},
+		},
+		{ // 66
+			Input: "0 @ID@ FAM\n1 SLGS\n1 SLGS\n",
+			Output: Family{
+				ID: "ID",
+				LDSSpouseSealing: []LDSSpouseSealing{
+					{},
+					{},
+				},
+			},
+		},
 	} {
 		var s Family
 
