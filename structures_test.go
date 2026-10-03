@@ -1624,6 +1624,43 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 43
+			Input: "0 @ID@ FAM\n1 EVEN\n",
+			Output: Family{
+				ID: "ID",
+				Events: []FamilyEventDetail{
+					{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 44
+			Input: "0 @ID@ FAM\n1 EVEN\n2 TYPE\n",
+			Err:   ErrContext{"Family", cEVEN, ErrContext{"EventDetail", cTYPE, ErrInvalidLength{"EventDescriptor", "", 1, 90}}},
+		},
+		{ // 45
+			Input: "0 @ID@ FAM\n1 EVEN\n2 TYPE A\n1 EVEN\n2 TYPE B\n",
+			Output: Family{
+				ID: "ID",
+				Events: []FamilyEventDetail{
+					{
+						EventDetail: EventDetail{
+							Type:        "A",
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						EventDetail: EventDetail{
+							Type:        "B",
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Family
 
