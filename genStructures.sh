@@ -217,8 +217,8 @@ function processStructure() {
 					echo "			}";
 
 					if [ "$pMax" != "1" ]; then
-						echo "			s.${pName} = append(s.${pName}, t)";
 						echo "";
+						echo "			s.${pName} = append(s.${pName}, t)";
 					fi;
 
 					if [ ! -z "$embedded" ]; then
