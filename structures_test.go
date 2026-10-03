@@ -1725,6 +1725,29 @@ func TestFamily(t *testing.T) {
 				Children: []Xref{"A", "B"},
 			},
 		},
+		{ // 57
+			Input: "0 @ID@ FAM\n1 NCHI 1\n",
+			Output: Family{
+				ID:          "ID",
+				NumChildren: 1,
+			},
+		},
+		{ // 58
+			Input: "0 @ID@ FAM\n1 NCHI\n",
+			Err:   ErrContext{"Family", cNCHI, ErrInvalidLength{"CountOfChildren", "", 1, 3}},
+		},
+		{ // 59
+			Input: "0 @ID@ FAM\n1 NCHI 1\n1 NCHI 2",
+			Err:   ErrContext{"Family", cNCHI, ErrSingleMultiple},
+		},
+		{ // 60
+			Input:   "0 @ID@ FAM\n1 NCHI 1\n1 NCHI 2",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Family{
+				ID:          "ID",
+				NumChildren: 1,
+			},
+		},
 	} {
 		var s Family
 
