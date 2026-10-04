@@ -917,6 +917,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 			if err := s.HusbandAge.parse(&sl, o); err != nil {
 				return ErrContext{"FamilyEventDetail", cHUSB, err}
 			}
+
 			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
 
 			i--
@@ -934,6 +935,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 			if err := s.WifeAge.parse(&sl, o); err != nil {
 				return ErrContext{"FamilyEventDetail", cWIFE, err}
 			}
+
 			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
 
 			i--
@@ -1687,6 +1689,7 @@ func (s *VerifiedIndividualFamEventDetail) parse(l *Line, o options) error {
 			if err := s.Famc.parse(&sl, o); err != nil {
 				return ErrContext{"VerifiedIndividualFamEventDetail", cFAMC, err}
 			}
+
 			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
 
 			i--
@@ -1745,6 +1748,7 @@ func (s *AdoptionEvent) parse(l *Line, o options) error {
 			if err := s.Family.parse(&sl, o); err != nil {
 				return ErrContext{"AdoptionEvent", cFAMC, err}
 			}
+
 			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
 
 			i--
