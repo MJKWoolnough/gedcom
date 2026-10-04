@@ -1859,6 +1859,41 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 73
+			Input: "0 @ID@ FAM\n1 @A@ NOTE\n",
+			Output: Family{
+				ID: "ID",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 74
+			Input: "0 @ID@ FAM\n1 NOTE\n",
+			Err:   ErrContext{"Family", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 75
+			Input: "0 @ID@ FAM\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: Family{
+				ID: "ID",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Family
 
