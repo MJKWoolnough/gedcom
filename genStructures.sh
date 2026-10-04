@@ -334,6 +334,7 @@ type MultimediaLink struct {
 
 func (s *MultimediaLink) parse(l *Line, o options) error {
 	var err error
+
 	if l.xrefID != "" {
 		t := &MultimediaLinkID{}
 		err = t.parse(l, o)
@@ -418,6 +419,7 @@ func (e ErrContext) Error() string {
 // (non-ErrContext) error.
 func (e ErrContext) Unwrap() error {
 	err := e.Err
+
 	for {
 		if er, ok := err.(ErrContext); ok {
 			err = er.Err
