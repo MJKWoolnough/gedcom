@@ -222,6 +222,7 @@ function processStructure() {
 					fi;
 
 					if [ ! -z "$embedded" ]; then
+						echo "";
 						echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
 						echo "";
 						echo "			i--";
