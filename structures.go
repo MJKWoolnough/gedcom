@@ -902,6 +902,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 
 	for i := 0; i < len(l.Sub); i++ {
 		sl := l.Sub[i]
+
 		switch sl.tag {
 		case cHUSB:
 			if HusbandAgeSet {
@@ -1674,6 +1675,7 @@ func (s *VerifiedIndividualFamEventDetail) parse(l *Line, o options) error {
 
 	for i := 0; i < len(l.Sub); i++ {
 		sl := l.Sub[i]
+
 		switch sl.tag {
 		case cFAMC:
 			if FamcSet {
@@ -1733,6 +1735,7 @@ func (s *AdoptionEvent) parse(l *Line, o options) error {
 
 	for i := 0; i < len(l.Sub); i++ {
 		sl := l.Sub[i]
+
 		switch sl.tag {
 		case cFAMC:
 			if FamilySet {
