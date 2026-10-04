@@ -153,6 +153,7 @@ function processStructure() {
 			else
 				echo "	for i := 0; i < len(l.Sub); i++ {";
 				echo "		sl := l.Sub[i]";
+				echo "";
 			fi;
 
 			echo "		switch sl.tag {";
