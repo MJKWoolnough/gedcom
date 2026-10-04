@@ -1894,6 +1894,23 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 76
+			Input: "0 @ID@ FAM\n1 UNKNOWN\n",
+			Err:   ErrContext{"Family", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 77
+			Input: "0 @ID@ FAM\n1 _UNKNOWN\n",
+			Output: Family{
+				ID: "ID",
+			},
+		},
+		{ // 78
+			Input:   "0 @ID@ FAM\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: Family{
+				ID: "ID",
+			},
+		},
 	} {
 		var s Family
 
