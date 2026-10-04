@@ -1824,6 +1824,41 @@ func TestFamily(t *testing.T) {
 				},
 			},
 		},
+		{ // 70
+			Input: "0 @ID@ FAM\n1 @A@ OBJE\n",
+			Output: Family{
+				ID: "ID",
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 71
+			Input: "0 @ID@ FAM\n1 OBJE\n",
+			Err:   ErrContext{"Family", cOBJE, ErrContext{"MultimediaLinkFile", cFORM, ErrRequiredMissing}},
+		},
+		{ // 72
+			Input: "0 @ID@ FAM\n1 @A@ OBJE\n1 @B@ OBJE\n",
+			Output: Family{
+				ID: "ID",
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &MultimediaLinkID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Family
 
