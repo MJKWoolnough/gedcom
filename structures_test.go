@@ -2158,6 +2158,29 @@ func TestIndividual(t *testing.T) {
 			Input: "0 INDI\n",
 			Err:   ErrContext{"Individual", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
 		},
+		{ // 3
+			Input: "0 @A@ INDI\n1 RESN locked",
+			Output: Individual{
+				ID:                "A",
+				RestrictionNotice: "locked",
+			},
+		},
+		{ // 4
+			Input: "0 @A@ INDI\n1 RESN\n",
+			Err:   ErrContext{"Individual", cRESN, ErrInvalidValue{"RestrictionNotice", ""}},
+		},
+		{ // 5
+			Input: "0 @A@ INDI\n1 RESN locked\n1 RESN privacy",
+			Err:   ErrContext{"Individual", cRESN, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 @A@ INDI\n1 RESN locked\n1 RESN privacy",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID:                "A",
+				RestrictionNotice: "locked",
+			},
+		},
 	} {
 		var s Individual
 
