@@ -2181,6 +2181,35 @@ func TestIndividual(t *testing.T) {
 				RestrictionNotice: "locked",
 			},
 		},
+		{ // 7
+			Input: "0 @A@ INDI\n1 NAME my name",
+			Output: Individual{
+				ID: "A",
+				PersonalNameStructure: []PersonalNameStructure{
+					{
+						NamePersonal: "my name",
+					},
+				},
+			},
+		},
+		{ // 7
+			Input: "0 @A@ INDI\n1 NAME\n",
+			Err:   ErrContext{"Individual", cNAME, ErrContext{"PersonalNameStructure", "line_value", ErrInvalidLength{"NamePersonal", "", 1, 120}}},
+		},
+		{ // 8
+			Input: "0 @A@ INDI\n1 NAME my name\n1 NAME my other name",
+			Output: Individual{
+				ID: "A",
+				PersonalNameStructure: []PersonalNameStructure{
+					{
+						NamePersonal: "my name",
+					},
+					{
+						NamePersonal: "my other name",
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
