@@ -2105,6 +2105,23 @@ func TestAgeStructure(t *testing.T) {
 				Age: "20",
 			},
 		},
+		{ // 5
+			Input: "0 HUSB\n1 AGE 20\n1 UNKNOWN\n",
+			Err:   ErrContext{"AgeStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 6
+			Input: "0 HUSB\n1 AGE 20\n1 _UNKNOWN\n",
+			Output: AgeStructure{
+				Age: "20",
+			},
+		},
+		{ // 7
+			Input:   "0 HUSB\n1 AGE 20\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: AgeStructure{
+				Age: "20",
+			},
+		},
 	} {
 		var s AgeStructure
 
