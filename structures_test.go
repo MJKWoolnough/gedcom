@@ -2027,6 +2027,37 @@ func TestFamilyEventDetail(t *testing.T) {
 				},
 			},
 		},
+		{ // 6
+			Input: "0 EVEN\n1 WIFE\n2 AGE 20",
+			Output: FamilyEventDetail{
+				WifeAge: AgeStructure{
+					Age: "20",
+				},
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+		{ // 7
+			Input: "0 EVEN\n1 WIFE\n",
+			Err:   ErrContext{"FamilyEventDetail", cWIFE, ErrContext{"AgeStructure", cAGE, ErrRequiredMissing}},
+		},
+		{ // 8
+			Input: "0 EVEN\n1 WIFE\n2 AGE 20\n1 WIFE\n2 AGE 21",
+			Err:   ErrContext{"FamilyEventDetail", cWIFE, ErrSingleMultiple},
+		},
+		{ // 9
+			Input:   "0 EVEN\n1 WIFE\n2 AGE 20\n1 WIFE\n2 AGE 21",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: FamilyEventDetail{
+				WifeAge: AgeStructure{
+					Age: "20",
+				},
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
 	} {
 		var s FamilyEventDetail
 
