@@ -181,7 +181,13 @@ function processStructure() {
 					if [ "$pMax" = "1" ]; then
 						echo "			if ${pName}Set {";
 						echo "				if o.allowMoreThanAllowed {";
-						echo "					continue";
+
+						if [ -z "$embedded" ]; then
+							echo "					continue";
+						else
+							echo "					break";
+						fi;
+
 						echo "				}";
 						echo "";
 						echo "				return ErrContext{\"$structureName\", c$pTag, ErrSingleMultiple}";
@@ -221,13 +227,6 @@ function processStructure() {
 						echo "";
 						echo "			s.${pName} = append(s.${pName}, t)";
 					fi;
-
-					if [ ! -z "$embedded" ]; then
-						echo "";
-						echo "			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
-						echo "";
-						echo "			i--";
-					fi;
 				fi;
 			done;
 
@@ -237,9 +236,17 @@ function processStructure() {
 				echo "				return ErrContext{\"$structureName\", sl.tag, ErrUnknownTag}";
 				echo "			}";
 				# possibly store in a Other field
+				echo "		}";
+			else
+				echo "		default:";
+				echo "			continue"
+				echo "		}";
+				echo "";
+				echo "		l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
+				echo "";
+				echo "		i--";
 			fi;
 
-			echo "		}";
 			echo "	}";
 			echo "";
 
