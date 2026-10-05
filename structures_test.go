@@ -1996,6 +1996,37 @@ func TestFamilyEventDetail(t *testing.T) {
 				},
 			},
 		},
+		{ // 2
+			Input: "0 EVEN\n1 HUSB\n2 AGE 20",
+			Output: FamilyEventDetail{
+				HusbandAge: AgeStructure{
+					Age: "20",
+				},
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+		{ // 3
+			Input: "0 EVEN\n1 HUSB\n",
+			Err:   ErrContext{"FamilyEventDetail", cHUSB, ErrContext{"AgeStructure", cAGE, ErrRequiredMissing}},
+		},
+		{ // 4
+			Input: "0 EVEN\n1 HUSB\n2 AGE 20\n1 HUSB\n2 AGE 21",
+			Err:   ErrContext{"FamilyEventDetail", cHUSB, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 EVEN\n1 HUSB\n2 AGE 20\n1 HUSB\n2 AGE 21",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: FamilyEventDetail{
+				HusbandAge: AgeStructure{
+					Age: "20",
+				},
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
 	} {
 		var s FamilyEventDetail
 
