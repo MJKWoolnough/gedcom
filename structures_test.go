@@ -2140,3 +2140,39 @@ func TestAgeStructure(t *testing.T) {
 		}
 	}
 }
+
+func TestIndividual(t *testing.T) {
+	for n, test := range [...]struct {
+		Input   string
+		Options []Option
+		Output  Individual
+		Err     error
+	}{
+		{ // 1
+			Input: "0 @A@ INDI\n",
+			Output: Individual{
+				ID: "A",
+			},
+		},
+		{ // 2
+			Input: "0 INDI\n",
+			Err:   ErrContext{"Individual", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+	} {
+		var s Individual
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
