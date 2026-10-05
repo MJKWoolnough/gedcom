@@ -907,7 +907,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 		case cHUSB:
 			if HusbandAgeSet {
 				if o.allowMoreThanAllowed {
-					continue
+					break
 				}
 
 				return ErrContext{"FamilyEventDetail", cHUSB, ErrSingleMultiple}
@@ -918,14 +918,10 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 			if err := s.HusbandAge.parse(&sl, o); err != nil {
 				return ErrContext{"FamilyEventDetail", cHUSB, err}
 			}
-
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
-
-			i--
 		case cWIFE:
 			if WifeAgeSet {
 				if o.allowMoreThanAllowed {
-					continue
+					break
 				}
 
 				return ErrContext{"FamilyEventDetail", cWIFE, ErrSingleMultiple}
@@ -936,11 +932,13 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 			if err := s.WifeAge.parse(&sl, o); err != nil {
 				return ErrContext{"FamilyEventDetail", cWIFE, err}
 			}
-
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
-
-			i--
+		default:
+			continue
 		}
+
+		l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+
+		i--
 	}
 
 	return s.EventDetail.parse(l, o)
@@ -1680,7 +1678,7 @@ func (s *VerifiedIndividualFamEventDetail) parse(l *Line, o options) error {
 		case cFAMC:
 			if FamcSet {
 				if o.allowMoreThanAllowed {
-					continue
+					break
 				}
 
 				return ErrContext{"VerifiedIndividualFamEventDetail", cFAMC, ErrSingleMultiple}
@@ -1691,11 +1689,13 @@ func (s *VerifiedIndividualFamEventDetail) parse(l *Line, o options) error {
 			if err := s.Famc.parse(&sl, o); err != nil {
 				return ErrContext{"VerifiedIndividualFamEventDetail", cFAMC, err}
 			}
-
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
-
-			i--
+		default:
+			continue
 		}
+
+		l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+
+		i--
 	}
 
 	return s.VerifiedEventDetail.parse(l, o)
@@ -1740,7 +1740,7 @@ func (s *AdoptionEvent) parse(l *Line, o options) error {
 		case cFAMC:
 			if FamilySet {
 				if o.allowMoreThanAllowed {
-					continue
+					break
 				}
 
 				return ErrContext{"AdoptionEvent", cFAMC, ErrSingleMultiple}
@@ -1751,11 +1751,13 @@ func (s *AdoptionEvent) parse(l *Line, o options) error {
 			if err := s.Family.parse(&sl, o); err != nil {
 				return ErrContext{"AdoptionEvent", cFAMC, err}
 			}
-
-			l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
-
-			i--
+		default:
+			continue
 		}
+
+		l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+
+		i--
 	}
 
 	return s.EventDetail.parse(l, o)
