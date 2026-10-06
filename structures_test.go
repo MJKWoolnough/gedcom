@@ -2435,6 +2435,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 38
+			Input: "0 @A@ INDI\n1 BAPM\n",
+			Output: Individual{
+				ID: "A",
+				Baptism: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 39
+			Input: "0 @A@ INDI\n1 BAPM N\n",
+			Err:   ErrContext{"Individual", cBAPM, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 40
+			Input: "0 @A@ INDI\n1 BAPM Y\n1 BAPM\n",
+			Err:   ErrContext{"Individual", cBAPM, ErrSingleMultiple},
+		},
+		{ // 41
+			Input:   "0 @A@ INDI\n1 BAPM Y\n1 BAPM\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Baptism: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
