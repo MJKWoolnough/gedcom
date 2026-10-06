@@ -2269,6 +2269,42 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 18
+			Input: "0 @A@ INDI\n1 CHR\n",
+			Output: Individual{
+				ID: "A",
+				Christening: VerifiedIndividualFamEventDetail{
+					VerifiedEventDetail: VerifiedEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 19
+			Input: "0 @A@ INDI\n1 CHR N\n",
+			Err:   ErrContext{"Individual", cCHR, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 20
+			Input: "0 @A@ INDI\n1 CHR Y\n1 CHR\n",
+			Err:   ErrContext{"Individual", cCHR, ErrSingleMultiple},
+		},
+		{ // 21
+			Input:   "0 @A@ INDI\n1 CHR Y\n1 CHR\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Christening: VerifiedIndividualFamEventDetail{
+					VerifiedEventDetail: VerifiedEventDetail{
+						Verified: "Y",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
