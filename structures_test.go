@@ -2337,6 +2337,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 26
+			Input: "0 @A@ INDI\n1 BURI\n",
+			Output: Individual{
+				ID: "A",
+				Buried: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 27
+			Input: "0 @A@ INDI\n1 BURI N\n",
+			Err:   ErrContext{"Individual", cBURI, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 28
+			Input: "0 @A@ INDI\n1 BURI Y\n1 BURI\n",
+			Err:   ErrContext{"Individual", cBURI, ErrSingleMultiple},
+		},
+		{ // 29
+			Input:   "0 @A@ INDI\n1 BURI Y\n1 BURI\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Buried: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
