@@ -2210,6 +2210,29 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 9
+			Input: "0 @A@ INDI\n1 SEX M",
+			Output: Individual{
+				ID:     "A",
+				Gender: "M",
+			},
+		},
+		{ // 10
+			Input: "0 @A@ INDI\n1 SEX\n",
+			Err:   ErrContext{"Individual", cSEX, ErrInvalidLength{"SexValue", "", 1, 7}},
+		},
+		{ // 11
+			Input: "0 @A@ INDI\n1 SEX M\n1 SEX F",
+			Err:   ErrContext{"Individual", cSEX, ErrSingleMultiple},
+		},
+		{ // 12
+			Input:   "0 @A@ INDI\n1 SEX M\n1 SEX F",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID:     "A",
+				Gender: "M",
+			},
+		},
 	} {
 		var s Individual
 
