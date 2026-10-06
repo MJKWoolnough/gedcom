@@ -78,7 +78,7 @@ Individual
 	BURI:VerifiedEventDetail:Buried:0:1
 	CREM:VerifiedEventDetail:Cremation:0:1
 	ADOP:AdoptionEvent:Adoption:0:1
-	BAPM:VerifiedEventDetail:Maptism:0:1
+	BAPM:VerifiedEventDetail:Baptism:0:1
 	BARM:VerifiedEventDetail:BarMitzvah:0:1
 	BASM:VerifiedEventDetail:BasMitzvah:0:1
 	BLES:VerifiedEventDetail:Blessing:0:1
