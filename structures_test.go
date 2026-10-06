@@ -2401,6 +2401,40 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 34
+			Input: "0 @A@ INDI\n1 ADOP\n",
+			Output: Individual{
+				ID: "A",
+				Adoption: AdoptionEvent{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 35
+			Input: "0 @A@ INDI\n1 ADOP\n2 FAMC\n",
+			Err:   ErrContext{"Individual", cADOP, ErrContext{"AdoptionEvent", cFAMC, ErrContext{"AdoptionReference", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}}}},
+		},
+		{ // 36
+			Input: "0 @A@ INDI\n1 ADOP\n2 @A@ FAMC\n1 ADOP\n2 @B@ FAMC\n",
+			Err:   ErrContext{"Individual", cADOP, ErrSingleMultiple},
+		},
+		{ // 37
+			Input:   "0 @A@ INDI\n1 ADOP\n2 @A@ FAMC\n1 ADOP\n2 @B@ FAMC\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Adoption: AdoptionEvent{
+					Family: AdoptionReference{
+						ID: "A",
+					},
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
