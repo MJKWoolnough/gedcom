@@ -2192,11 +2192,11 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 7
+		{ // 8
 			Input: "0 @A@ INDI\n1 NAME\n",
 			Err:   ErrContext{"Individual", cNAME, ErrContext{"PersonalNameStructure", "line_value", ErrInvalidLength{"NamePersonal", "", 1, 120}}},
 		},
-		{ // 8
+		{ // 9
 			Input: "0 @A@ INDI\n1 NAME my name\n1 NAME my other name",
 			Output: Individual{
 				ID: "A",
@@ -2210,27 +2210,63 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 9
+		{ // 10
 			Input: "0 @A@ INDI\n1 SEX M",
 			Output: Individual{
 				ID:     "A",
 				Gender: "M",
 			},
 		},
-		{ // 10
+		{ // 11
 			Input: "0 @A@ INDI\n1 SEX\n",
 			Err:   ErrContext{"Individual", cSEX, ErrInvalidLength{"SexValue", "", 1, 7}},
 		},
-		{ // 11
+		{ // 12
 			Input: "0 @A@ INDI\n1 SEX M\n1 SEX F",
 			Err:   ErrContext{"Individual", cSEX, ErrSingleMultiple},
 		},
-		{ // 12
+		{ // 13
 			Input:   "0 @A@ INDI\n1 SEX M\n1 SEX F",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Individual{
 				ID:     "A",
 				Gender: "M",
+			},
+		},
+		{ // 14
+			Input: "0 @A@ INDI\n1 BIRT\n",
+			Output: Individual{
+				ID: "A",
+				Birth: VerifiedIndividualFamEventDetail{
+					VerifiedEventDetail: VerifiedEventDetail{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 15
+			Input: "0 @A@ INDI\n1 BIRT N\n",
+			Err:   ErrContext{"Individual", cBIRT, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 16
+			Input: "0 @A@ INDI\n1 BIRT Y\n1 BIRT\n",
+			Err:   ErrContext{"Individual", cBIRT, ErrSingleMultiple},
+		},
+		{ // 17
+			Input:   "0 @A@ INDI\n1 BIRT Y\n1 BIRT\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Birth: VerifiedIndividualFamEventDetail{
+					VerifiedEventDetail: VerifiedEventDetail{
+						Verified: "Y",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
 			},
 		},
 	} {
