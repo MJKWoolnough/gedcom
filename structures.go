@@ -996,7 +996,7 @@ type Individual struct {
 	Buried                VerifiedEventDetail
 	Cremation             VerifiedEventDetail
 	Adoption              AdoptionEvent
-	Maptism               VerifiedEventDetail
+	Baptism               VerifiedEventDetail
 	BarMitzvah            VerifiedEventDetail
 	BasMitzvah            VerifiedEventDetail
 	Blessing              VerifiedEventDetail
@@ -1048,7 +1048,7 @@ func (s *Individual) parse(l *Line, o options) error {
 		return ErrContext{"Individual", "xrefID", err}
 	}
 
-	var RestrictionNoticeSet, GenderSet, BirthSet, ChristeningSet, DeathSet, BuriedSet, CremationSet, AdoptionSet, MaptismSet, BarMitzvahSet, BasMitzvahSet, BlessingSet, AdultChristeningSet, ConfirmationSet, FirstCommunionSet, OrdinationSet, NaturalizationSet, EmigratedSet, ImmigratedSet, CensusSet, ProbateSet, WillSet, GraduatedSet, RetiredSet, PermanentRecordSet, AncestralFileNumberSet, AutomatedRecordIDSet, ChangeDateSet bool
+	var RestrictionNoticeSet, GenderSet, BirthSet, ChristeningSet, DeathSet, BuriedSet, CremationSet, AdoptionSet, BaptismSet, BarMitzvahSet, BasMitzvahSet, BlessingSet, AdultChristeningSet, ConfirmationSet, FirstCommunionSet, OrdinationSet, NaturalizationSet, EmigratedSet, ImmigratedSet, CensusSet, ProbateSet, WillSet, GraduatedSet, RetiredSet, PermanentRecordSet, AncestralFileNumberSet, AutomatedRecordIDSet, ChangeDateSet bool
 
 	for _, sl := range l.Sub {
 		switch sl.tag {
@@ -1173,7 +1173,7 @@ func (s *Individual) parse(l *Line, o options) error {
 				return ErrContext{"Individual", cADOP, err}
 			}
 		case cBAPM:
-			if MaptismSet {
+			if BaptismSet {
 				if o.allowMoreThanAllowed {
 					continue
 				}
@@ -1181,9 +1181,9 @@ func (s *Individual) parse(l *Line, o options) error {
 				return ErrContext{"Individual", cBAPM, ErrSingleMultiple}
 			}
 
-			MaptismSet = true
+			BaptismSet = true
 
-			if err := s.Maptism.parse(&sl, o); err != nil {
+			if err := s.Baptism.parse(&sl, o); err != nil {
 				return ErrContext{"Individual", cBAPM, err}
 			}
 		case cBARM:
