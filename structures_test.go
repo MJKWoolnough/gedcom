@@ -2305,6 +2305,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 22
+			Input: "0 @A@ INDI\n1 DEAT\n",
+			Output: Individual{
+				ID: "A",
+				Death: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 23
+			Input: "0 @A@ INDI\n1 DEAT N\n",
+			Err:   ErrContext{"Individual", cDEAT, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 24
+			Input: "0 @A@ INDI\n1 DEAT Y\n1 DEAT\n",
+			Err:   ErrContext{"Individual", cDEAT, ErrSingleMultiple},
+		},
+		{ // 25
+			Input:   "0 @A@ INDI\n1 DEAT Y\n1 DEAT\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Death: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
