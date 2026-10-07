@@ -2723,6 +2723,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 74
+			Input: "0 @A@ INDI\n1 EMIG\n",
+			Output: Individual{
+				ID: "A",
+				Emigrated: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 75
+			Input: "0 @A@ INDI\n1 EMIG N\n",
+			Err:   ErrContext{"Individual", cEMIG, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 76
+			Input: "0 @A@ INDI\n1 EMIG Y\n1 EMIG\n",
+			Err:   ErrContext{"Individual", cEMIG, ErrSingleMultiple},
+		},
+		{ // 77
+			Input:   "0 @A@ INDI\n1 EMIG Y\n1 EMIG\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Emigrated: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
