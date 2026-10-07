@@ -2627,6 +2627,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 62
+			Input: "0 @A@ INDI\n1 FCOM\n",
+			Output: Individual{
+				ID: "A",
+				FirstCommunion: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 63
+			Input: "0 @A@ INDI\n1 FCOM N\n",
+			Err:   ErrContext{"Individual", cFCOM, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 64
+			Input: "0 @A@ INDI\n1 FCOM Y\n1 FCOM\n",
+			Err:   ErrContext{"Individual", cFCOM, ErrSingleMultiple},
+		},
+		{ // 65
+			Input:   "0 @A@ INDI\n1 FCOM Y\n1 FCOM\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				FirstCommunion: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
