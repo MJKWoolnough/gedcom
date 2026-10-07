@@ -2499,6 +2499,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 46
+			Input: "0 @A@ INDI\n1 BASM\n",
+			Output: Individual{
+				ID: "A",
+				BasMitzvah: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 47
+			Input: "0 @A@ INDI\n1 BASM N\n",
+			Err:   ErrContext{"Individual", cBASM, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 48
+			Input: "0 @A@ INDI\n1 BASM Y\n1 BASM\n",
+			Err:   ErrContext{"Individual", cBASM, ErrSingleMultiple},
+		},
+		{ // 49
+			Input:   "0 @A@ INDI\n1 BASM Y\n1 BASM\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				BasMitzvah: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
