@@ -2755,6 +2755,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 78
+			Input: "0 @A@ INDI\n1 IMMI\n",
+			Output: Individual{
+				ID: "A",
+				Immigrated: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 79
+			Input: "0 @A@ INDI\n1 IMMI N\n",
+			Err:   ErrContext{"Individual", cIMMI, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 80
+			Input: "0 @A@ INDI\n1 IMMI Y\n1 IMMI\n",
+			Err:   ErrContext{"Individual", cIMMI, ErrSingleMultiple},
+		},
+		{ // 81
+			Input:   "0 @A@ INDI\n1 IMMI Y\n1 IMMI\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Immigrated: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
