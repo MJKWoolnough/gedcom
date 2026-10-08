@@ -2787,6 +2787,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 82
+			Input: "0 @A@ INDI\n1 CENS\n",
+			Output: Individual{
+				ID: "A",
+				Census: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 83
+			Input: "0 @A@ INDI\n1 CENS N\n",
+			Err:   ErrContext{"Individual", cCENS, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 84
+			Input: "0 @A@ INDI\n1 CENS Y\n1 CENS\n",
+			Err:   ErrContext{"Individual", cCENS, ErrSingleMultiple},
+		},
+		{ // 85
+			Input:   "0 @A@ INDI\n1 CENS Y\n1 CENS\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Census: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
