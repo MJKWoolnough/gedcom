@@ -2947,6 +2947,43 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 102
+			Input: "0 @A@ INDI\n1 EVEN\n",
+			Output: Individual{
+				ID: "A",
+				Events: []IndividualEventDetail{
+					{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 103
+			Input: "0 @A@ INDI\n1 EVEN\n2 TYPE\n",
+			Err:   ErrContext{"Individual", cEVEN, ErrContext{"EventDetail", cTYPE, ErrInvalidLength{"EventDescriptor", "", 1, 90}}},
+		},
+		{ // 104
+			Input: "0 @A@ INDI\n1 EVEN\n2 TYPE A\n1 EVEN\n2 TYPE B",
+			Output: Individual{
+				ID: "A",
+				Events: []IndividualEventDetail{
+					{
+						EventDetail: EventDetail{
+							Type:        "A",
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						EventDetail: EventDetail{
+							Type:        "B",
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
