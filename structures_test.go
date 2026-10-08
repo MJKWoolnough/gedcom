@@ -3098,6 +3098,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 114
+			Input: "0 @A@ INDI\n1 IDNO A\n",
+			Output: Individual{
+				ID: "A",
+				NationalID: []NationalIDEvent{
+					{
+						NationalIDNumber: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 115
+			Input: "0 @A@ INDI\n1 IDNO\n",
+			Err:   ErrContext{"Individual", cIDNO, ErrContext{"NationalIDEvent", "line_value", ErrInvalidLength{"NationalIDNumber", "", 1, 30}}},
+		},
+		{ // 116
+			Input: "0 @A@ INDI\n1 IDNO A\n1 IDNO B",
+			Output: Individual{
+				ID: "A",
+				NationalID: []NationalIDEvent{
+					{
+						NationalIDNumber: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						NationalIDNumber: "B",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
