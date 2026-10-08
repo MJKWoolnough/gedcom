@@ -2851,6 +2851,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 90
+			Input: "0 @A@ INDI\n1 WILL\n",
+			Output: Individual{
+				ID: "A",
+				Will: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 91
+			Input: "0 @A@ INDI\n1 WILL N\n",
+			Err:   ErrContext{"Individual", cWILL, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 92
+			Input: "0 @A@ INDI\n1 WILL Y\n1 WILL\n",
+			Err:   ErrContext{"Individual", cWILL, ErrSingleMultiple},
+		},
+		{ // 93
+			Input:   "0 @A@ INDI\n1 WILL Y\n1 WILL\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Will: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
