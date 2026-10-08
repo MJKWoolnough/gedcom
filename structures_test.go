@@ -3003,7 +3003,7 @@ func TestIndividual(t *testing.T) {
 			Err:   ErrContext{"Individual", cCAST, ErrContext{"CasteEvent", "line_value", ErrInvalidLength{"CasteName", "", 1, 90}}},
 		},
 		{ // 107
-			Input: "0 @A@ INDI\n1 CAST  A\n1 CAST B",
+			Input: "0 @A@ INDI\n1 CAST A\n1 CAST B",
 			Output: Individual{
 				ID: "A",
 				Caste: []CasteEvent{
@@ -3015,6 +3015,44 @@ func TestIndividual(t *testing.T) {
 					},
 					{
 						CasteName: "B",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 108
+			Input: "0 @A@ INDI\n1 DSCR A\n",
+			Output: Individual{
+				ID: "A",
+				Description: []DescriptionEvent{
+					{
+						PhysicalDescription: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 109
+			Input: "0 @A@ INDI\n1 DSCR\n",
+			Err:   ErrContext{"Individual", cDSCR, ErrContext{"DescriptionEvent", "line_value", ErrInvalidLength{"PhysicalDescription", "", 1, 248}}},
+		},
+		{ // 110
+			Input: "0 @A@ INDI\n1 DSCR A\n1 DSCR B",
+			Output: Individual{
+				ID: "A",
+				Description: []DescriptionEvent{
+					{
+						PhysicalDescription: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						PhysicalDescription: "B",
 						EventDetail: EventDetail{
 							PhoneNumber: make([]PhoneNumber, 0, 3),
 						},
