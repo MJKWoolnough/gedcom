@@ -3060,6 +3060,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 111
+			Input: "0 @A@ INDI\n1 EDUC A\n",
+			Output: Individual{
+				ID: "A",
+				ScholasticAchievement: []ScholasticEvent{
+					{
+						ScholasticAchievement: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 112
+			Input: "0 @A@ INDI\n1 EDUC\n",
+			Err:   ErrContext{"Individual", cEDUC, ErrContext{"ScholasticEvent", "line_value", ErrInvalidLength{"ScholasticAchievement", "", 1, 248}}},
+		},
+		{ // 113
+			Input: "0 @A@ INDI\n1 EDUC A\n1 EDUC B",
+			Output: Individual{
+				ID: "A",
+				ScholasticAchievement: []ScholasticEvent{
+					{
+						ScholasticAchievement: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						ScholasticAchievement: "B",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
