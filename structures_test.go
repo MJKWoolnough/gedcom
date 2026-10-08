@@ -2883,6 +2883,38 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 94
+			Input: "0 @A@ INDI\n1 GRAD\n",
+			Output: Individual{
+				ID: "A",
+				Graduated: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 95
+			Input: "0 @A@ INDI\n1 GRAD N\n",
+			Err:   ErrContext{"Individual", cGRAD, ErrContext{"VerifiedEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}}},
+		},
+		{ // 96
+			Input: "0 @A@ INDI\n1 GRAD Y\n1 GRAD\n",
+			Err:   ErrContext{"Individual", cGRAD, ErrSingleMultiple},
+		},
+		{ // 97
+			Input:   "0 @A@ INDI\n1 GRAD Y\n1 GRAD\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "A",
+				Graduated: VerifiedEventDetail{
+					Verified: "Y",
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
