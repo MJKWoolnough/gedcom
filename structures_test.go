@@ -2984,6 +2984,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 105
+			Input: "0 @A@ INDI\n1 CAST A\n",
+			Output: Individual{
+				ID: "A",
+				Caste: []CasteEvent{
+					{
+						CasteName: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 106
+			Input: "0 @A@ INDI\n1 CAST\n",
+			Err:   ErrContext{"Individual", cCAST, ErrContext{"CasteEvent", "line_value", ErrInvalidLength{"CasteName", "", 1, 90}}},
+		},
+		{ // 107
+			Input: "0 @A@ INDI\n1 CAST  A\n1 CAST B",
+			Output: Individual{
+				ID: "A",
+				Caste: []CasteEvent{
+					{
+						CasteName: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						CasteName: "B",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
