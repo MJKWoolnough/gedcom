@@ -3401,6 +3401,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 138
+			Input: "0 @A@ INDI\n1 SSN AAAAAAAAA\n",
+			Output: Individual{
+				ID: "A",
+				SocialSecurity: []SSNEvent{
+					{
+						SocialSecurityNumber: "AAAAAAAAA",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 139
+			Input: "0 @A@ INDI\n1 SSN\n",
+			Err:   ErrContext{"Individual", cSSN, ErrContext{"SSNEvent", "line_value", ErrInvalidLength{"SocialSecurityNumber", "", 9, 11}}},
+		},
+		{ // 140
+			Input: "0 @A@ INDI\n1 SSN AAAAAAAAA\n1 SSN BBBBBBBBB",
+			Output: Individual{
+				ID: "A",
+				SocialSecurity: []SSNEvent{
+					{
+						SocialSecurityNumber: "AAAAAAAAA",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						SocialSecurityNumber: "BBBBBBBBB",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
