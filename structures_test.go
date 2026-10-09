@@ -3136,6 +3136,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 117
+			Input: "0 @A@ INDI\n1 NATI A\n",
+			Output: Individual{
+				ID: "A",
+				NationalTribalOrigin: []NationalOriginEvent{
+					{
+						NationalOrTribalOrigin: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 118
+			Input: "0 @A@ INDI\n1 NATI\n",
+			Err:   ErrContext{"Individual", cNATI, ErrContext{"NationalOriginEvent", "line_value", ErrInvalidLength{"NationalOrTribalOrigin", "", 1, 120}}},
+		},
+		{ // 119
+			Input: "0 @A@ INDI\n1 NATI A\n1 NATI B",
+			Output: Individual{
+				ID: "A",
+				NationalTribalOrigin: []NationalOriginEvent{
+					{
+						NationalOrTribalOrigin: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						NationalOrTribalOrigin: "B",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
