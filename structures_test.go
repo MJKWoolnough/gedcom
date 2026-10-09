@@ -3250,6 +3250,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 126
+			Input: "0 @A@ INDI\n1 OCCU A\n",
+			Output: Individual{
+				ID: "A",
+				Occupation: []OccupationEvent{
+					{
+						Occupation: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 127
+			Input: "0 @A@ INDI\n1 OCCU\n",
+			Err:   ErrContext{"Individual", cOCCU, ErrContext{"OccupationEvent", "line_value", ErrInvalidLength{"Occupation", "", 1, 90}}},
+		},
+		{ // 128
+			Input: "0 @A@ INDI\n1 OCCU A\n1 OCCU B",
+			Output: Individual{
+				ID: "A",
+				Occupation: []OccupationEvent{
+					{
+						Occupation: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						Occupation: "B",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
