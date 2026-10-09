@@ -3174,6 +3174,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 120
+			Input: "0 @A@ INDI\n1 NCHI 1\n",
+			Output: Individual{
+				ID: "A",
+				CountOfChildren: []ChildrenEvent{
+					{
+						CountOfChildren: 1,
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 121
+			Input: "0 @A@ INDI\n1 NCHI\n",
+			Err:   ErrContext{"Individual", cNCHI, ErrContext{"ChildrenEvent", "line_value", ErrInvalidLength{"CountOfChildren", "", 1, 3}}},
+		},
+		{ // 122
+			Input: "0 @A@ INDI\n1 NCHI 1\n1 NCHI 2",
+			Output: Individual{
+				ID: "A",
+				CountOfChildren: []ChildrenEvent{
+					{
+						CountOfChildren: 1,
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						CountOfChildren: 2,
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
