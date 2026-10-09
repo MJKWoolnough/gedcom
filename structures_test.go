@@ -3364,6 +3364,43 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 135
+			Input: "0 @A@ INDI\n1 RESI A\n",
+			Output: Individual{
+				ID: "A",
+				Residences: []ResidenceEvent{
+					{
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 136
+			Input: "0 @A@ INDI\n1 RESI\n2 TYPE\n",
+			Err:   ErrContext{"Individual", cRESI, ErrContext{"EventDetail", cTYPE, ErrInvalidLength{"EventDescriptor", "", 1, 90}}},
+		},
+		{ // 137
+			Input: "0 @A@ INDI\n1 RESI\n2 TYPE A\n1 RESI\n2 TYPE B",
+			Output: Individual{
+				ID: "A",
+				Residences: []ResidenceEvent{
+					{
+						EventDetail: EventDetail{
+							Type:        "A",
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						EventDetail: EventDetail{
+							Type:        "B",
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
