@@ -3439,6 +3439,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 141
+			Input: "0 @A@ INDI\n1 TITL A\n",
+			Output: Individual{
+				ID: "A",
+				NobilityTypeTitle: []NobilityEvent{
+					{
+						NobilityTypeTitle: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 142
+			Input: "0 @A@ INDI\n1 TITL\n",
+			Err:   ErrContext{"Individual", cTITL, ErrContext{"NobilityEvent", "line_value", ErrInvalidLength{"NobilityTypeTitle", "", 1, 120}}},
+		},
+		{ // 143
+			Input: "0 @A@ INDI\n1 TITL A\n1 TITL B",
+			Output: Individual{
+				ID: "A",
+				NobilityTypeTitle: []NobilityEvent{
+					{
+						NobilityTypeTitle: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						NobilityTypeTitle: "B",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
