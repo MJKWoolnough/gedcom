@@ -3326,6 +3326,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 132
+			Input: "0 @A@ INDI\n1 RELI A\n",
+			Output: Individual{
+				ID: "A",
+				ReligiousAffiliation: []ReligiousEvent{
+					{
+						ReligiousAffiliation: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 133
+			Input: "0 @A@ INDI\n1 RELI\n",
+			Err:   ErrContext{"Individual", cRELI, ErrContext{"ReligiousEvent", "line_value", ErrInvalidLength{"ReligiousAffiliation", "", 1, 90}}},
+		},
+		{ // 134
+			Input: "0 @A@ INDI\n1 RELI A\n1 RELI B",
+			Output: Individual{
+				ID: "A",
+				ReligiousAffiliation: []ReligiousEvent{
+					{
+						ReligiousAffiliation: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						ReligiousAffiliation: "B",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
