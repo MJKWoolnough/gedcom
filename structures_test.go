@@ -3212,6 +3212,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 123
+			Input: "0 @A@ INDI\n1 NMR 1\n",
+			Output: Individual{
+				ID: "A",
+				CountOfMarriages: []MarriagesEvent{
+					{
+						CountOfMarriages: 1,
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 124
+			Input: "0 @A@ INDI\n1 NMR\n",
+			Err:   ErrContext{"Individual", cNMR, ErrContext{"MarriagesEvent", "line_value", ErrInvalidLength{"CountOfMarriages", "", 1, 3}}},
+		},
+		{ // 125
+			Input: "0 @A@ INDI\n1 NMR 1\n1 NMR 2",
+			Output: Individual{
+				ID: "A",
+				CountOfMarriages: []MarriagesEvent{
+					{
+						CountOfMarriages: 1,
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						CountOfMarriages: 2,
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
