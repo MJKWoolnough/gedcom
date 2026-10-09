@@ -3288,6 +3288,44 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 129
+			Input: "0 @A@ INDI\n1 PROP A\n",
+			Output: Individual{
+				ID: "A",
+				Possessions: []PossessionEvent{
+					{
+						Possessions: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
+		{ // 130
+			Input: "0 @A@ INDI\n1 PROP\n",
+			Err:   ErrContext{"Individual", cPROP, ErrContext{"PossessionEvent", "line_value", ErrInvalidLength{"Possessions", "", 1, 248}}},
+		},
+		{ // 131
+			Input: "0 @A@ INDI\n1 PROP A\n1 PROP B",
+			Output: Individual{
+				ID: "A",
+				Possessions: []PossessionEvent{
+					{
+						Possessions: "A",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+					{
+						Possessions: "B",
+						EventDetail: EventDetail{
+							PhoneNumber: make([]PhoneNumber, 0, 3),
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
