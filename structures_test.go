@@ -3610,6 +3610,41 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 159
+			Input: "0 @ID@ INDI\n1 @A@ SOUR\n",
+			Output: Individual{
+				ID: "ID",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 160
+			Input: "0 @ID@ INDI\n1 SOUR\n",
+			Err:   ErrContext{"Individual", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
+		},
+		{ // 161
+			Input: "0 @ID@ INDI\n1 @A@ SOUR\n1 @B@ SOUR\n",
+			Output: Individual{
+				ID: "ID",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &SourceID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
