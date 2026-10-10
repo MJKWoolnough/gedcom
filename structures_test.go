@@ -3541,6 +3541,29 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 150
+			Input: "0 @A@ INDI\n1 ALIA @B@\n",
+			Output: Individual{
+				ID: "A",
+				Aliases: []Xref{
+					"B",
+				},
+			},
+		},
+		{ // 151
+			Input: "0 @A@ INDI\n1 ALIA\n",
+			Err:   ErrContext{"Individual", cALIA, ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 152
+			Input: "0 @A@ INDI\n1 ALIA @B@\n1 ALIA @C@",
+			Output: Individual{
+				ID: "A",
+				Aliases: []Xref{
+					"B",
+					"C",
+				},
+			},
+		},
 	} {
 		var s Individual
 
