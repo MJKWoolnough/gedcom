@@ -3507,25 +3507,37 @@ func TestIndividual(t *testing.T) {
 			},
 		},
 		{ // 147
-			Input: "0 @A@ INDI\n1 SUBM @B@\n",
+			Input: "0 @A@ INDI\n1 @B@ ASSO\n2 TYPE FAM\n2 RELA C",
 			Output: Individual{
 				ID: "A",
-				Submitters: []Xref{
-					"B",
+				Associations: []AssociationStructure{
+					{
+						ID:         "B",
+						RecordType: "FAM",
+						Relation:   "C",
+					},
 				},
 			},
 		},
 		{ // 148
-			Input: "0 @A@ INDI\n1 SUBM\n",
-			Err:   ErrContext{"Individual", cSUBM, ErrInvalidLength{"Xref", "", 1, 22}},
+			Input: "0 @A@ INDI\n1 ASSO\n",
+			Err:   ErrContext{"Individual", cASSO, ErrContext{"AssociationStructure", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}}},
 		},
 		{ // 149
-			Input: "0 @A@ INDI\n1 SUBM @B@\n1 SUBM @C@",
+			Input: "0 @A@ INDI\n1 @B@ ASSO\n2 TYPE FAM\n2 RELA C\n1 @C@ ASSO\n2 TYPE FAM\n2 RELA D",
 			Output: Individual{
 				ID: "A",
-				Submitters: []Xref{
-					"B",
-					"C",
+				Associations: []AssociationStructure{
+					{
+						ID:         "B",
+						RecordType: "FAM",
+						Relation:   "C",
+					},
+					{
+						ID:         "C",
+						RecordType: "FAM",
+						Relation:   "D",
+					},
 				},
 			},
 		},
