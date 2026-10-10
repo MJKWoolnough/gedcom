@@ -3645,6 +3645,41 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 162
+			Input: "0 @ID@ INDI\n1 @A@ OBJE\n",
+			Output: Individual{
+				ID: "ID",
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 163
+			Input: "0 @ID@ INDI\n1 OBJE\n",
+			Err:   ErrContext{"Individual", cOBJE, ErrContext{"MultimediaLinkFile", cFORM, ErrRequiredMissing}},
+		},
+		{ // 164
+			Input: "0 @ID@ INDI\n1 @A@ OBJE\n1 @B@ OBJE\n",
+			Output: Individual{
+				ID: "ID",
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &MultimediaLinkID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
