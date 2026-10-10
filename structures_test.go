@@ -3680,6 +3680,41 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 165
+			Input: "0 @ID@ INDI\n1 @A@ NOTE\n",
+			Output: Individual{
+				ID: "ID",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 166
+			Input: "0 @ID@ INDI\n1 NOTE\n",
+			Err:   ErrContext{"Individual", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 167
+			Input: "0 @ID@ INDI\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: Individual{
+				ID: "ID",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
