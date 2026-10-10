@@ -3507,31 +3507,25 @@ func TestIndividual(t *testing.T) {
 			},
 		},
 		{ // 147
-			Input: "0 @A@ INDI\n1 FAMS @B@\n",
+			Input: "0 @A@ INDI\n1 SUBM @B@\n",
 			Output: Individual{
 				ID: "A",
-				SpouseOf: []SpouseToFamilyLink{
-					{
-						ID: "B",
-					},
+				Submitters: []Xref{
+					"B",
 				},
 			},
 		},
 		{ // 148
-			Input: "0 @A@ INDI\n1 FAMS\n",
-			Err:   ErrContext{"Individual", cFAMS, ErrContext{"SpouseToFamilyLink", "line_value", ErrInvalidLength{"Xref", "", 1, 22}}},
+			Input: "0 @A@ INDI\n1 SUBM\n",
+			Err:   ErrContext{"Individual", cSUBM, ErrInvalidLength{"Xref", "", 1, 22}},
 		},
 		{ // 149
-			Input: "0 @A@ INDI\n1 FAMS @B@\n1 FAMS @C@",
+			Input: "0 @A@ INDI\n1 SUBM @B@\n1 SUBM @C@",
 			Output: Individual{
 				ID: "A",
-				SpouseOf: []SpouseToFamilyLink{
-					{
-						ID: "B",
-					},
-					{
-						ID: "C",
-					},
+				Submitters: []Xref{
+					"B",
+					"C",
 				},
 			},
 		},
