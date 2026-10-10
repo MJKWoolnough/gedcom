@@ -3564,6 +3564,29 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 153
+			Input: "0 @A@ INDI\n1 ANCI @B@\n",
+			Output: Individual{
+				ID: "A",
+				AncestorInterest: []Xref{
+					"B",
+				},
+			},
+		},
+		{ // 154
+			Input: "0 @A@ INDI\n1 ANCI\n",
+			Err:   ErrContext{"Individual", cANCI, ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 155
+			Input: "0 @A@ INDI\n1 ANCI @B@\n1 ANCI @C@",
+			Output: Individual{
+				ID: "A",
+				AncestorInterest: []Xref{
+					"B",
+					"C",
+				},
+			},
+		},
 	} {
 		var s Individual
 
