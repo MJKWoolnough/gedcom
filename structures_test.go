@@ -3761,6 +3761,35 @@ func TestIndividual(t *testing.T) {
 				AncestralFileNumber: "A",
 			},
 		},
+		{ // 176
+			Input: "0 @ID@ INDI\n1 REFN A\n",
+			Output: Individual{
+				ID: "ID",
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "A",
+					},
+				},
+			},
+		},
+		{ // 177
+			Input: "0 @ID@ INDI\n1 REFN\n",
+			Err:   ErrContext{"Individual", cREFN, ErrContext{"UserReferenceStructure", "line_value", ErrInvalidLength{"UserReferenceNumber", "", 1, 20}}},
+		},
+		{ // 178
+			Input: "0 @ID@ INDI\n1 REFN A\n1 REFN B\n",
+			Output: Individual{
+				ID: "ID",
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "A",
+					},
+					{
+						UserReferenceNumber: "B",
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
