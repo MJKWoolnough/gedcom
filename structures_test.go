@@ -3844,6 +3844,23 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 187
+			Input: "0 @ID@ INDI\n1 UNKNOWN\n",
+			Err:   ErrContext{"Individual", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 188
+			Input: "0 @ID@ INDI\n1 _UNKNOWN\n",
+			Output: Individual{
+				ID: "ID",
+			},
+		},
+		{ // 189
+			Input:   "0 @ID@ INDI\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: Individual{
+				ID: "ID",
+			},
+		},
 	} {
 		var s Individual
 
