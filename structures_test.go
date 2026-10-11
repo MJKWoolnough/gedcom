@@ -3790,6 +3790,29 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 179
+			Input: "0 @ID@ INDI\n1 RIN A\n",
+			Output: Individual{
+				ID:                "ID",
+				AutomatedRecordID: "A",
+			},
+		},
+		{ // 180
+			Input: "0 @ID@ INDI\n1 RIN\n",
+			Err:   ErrContext{"Individual", cRIN, ErrInvalidLength{"AutomatedRecordID", "", 1, 12}},
+		},
+		{ // 181
+			Input: "0 @ID@ INDI\n1 RIN A\n1 RIN B",
+			Err:   ErrContext{"Individual", cRIN, ErrSingleMultiple},
+		},
+		{ // 182
+			Input:   "0 @ID@ INDI\n1 RIN A\n1 RIN B",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID:                "ID",
+				AutomatedRecordID: "A",
+			},
+		},
 	} {
 		var s Individual
 
