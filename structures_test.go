@@ -3813,6 +3813,37 @@ func TestIndividual(t *testing.T) {
 				AutomatedRecordID: "A",
 			},
 		},
+		{ // 183
+			Input: "0 @ID@ INDI\n1 CHAN\n2 DATE 2006-05-04",
+			Output: Individual{
+				ID: "ID",
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
+		{ // 184
+			Input: "0 @ID@ INDI\n1 CHAN\n",
+			Err:   ErrContext{"Individual", cCHAN, ErrContext{"ChangeDateStructure", cDATE, ErrRequiredMissing}},
+		},
+		{ // 185
+			Input: "0 @ID@ INDI\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Err:   ErrContext{"Individual", cCHAN, ErrSingleMultiple},
+		},
+		{ // 186
+			Input:   "0 @ID@ INDI\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID: "ID",
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
 	} {
 		var s Individual
 
