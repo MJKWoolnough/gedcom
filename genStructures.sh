@@ -242,7 +242,7 @@ function processStructure() {
 				echo "			continue"
 				echo "		}";
 				echo "";
-				echo "		l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)";
+				echo "		l.Sub = slices.Delete(l.Sub, i, i+1)";
 				echo "";
 				echo "		i--";
 			fi;
@@ -291,7 +291,10 @@ OFS="$IFS";
 	echo;
 	echo "// File automatically generated with ./genStructures.sh";
 	echo;
-	echo "import \"errors\"";
+	echo "import ("
+	echo "	\"errors\"";
+	echo "	\"slices\"";
+	echo ")";
 
 	(
 		read structureName;
