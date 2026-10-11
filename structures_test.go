@@ -3738,6 +3738,29 @@ func TestIndividual(t *testing.T) {
 				PermanentRecord: "A",
 			},
 		},
+		{ // 172
+			Input: "0 @ID@ INDI\n1 AFN A\n",
+			Output: Individual{
+				ID:                  "ID",
+				AncestralFileNumber: "A",
+			},
+		},
+		{ // 173
+			Input: "0 @ID@ INDI\n1 AFN\n",
+			Err:   ErrContext{"Individual", cAFN, ErrInvalidLength{"AncestralFileNumber", "", 1, 12}},
+		},
+		{ // 174
+			Input: "0 @ID@ INDI\n1 AFN A\n1 AFN B",
+			Err:   ErrContext{"Individual", cAFN, ErrSingleMultiple},
+		},
+		{ // 175
+			Input:   "0 @ID@ INDI\n1 AFN A\n1 AFN B",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID:                  "ID",
+				AncestralFileNumber: "A",
+			},
+		},
 	} {
 		var s Individual
 
