@@ -3897,6 +3897,37 @@ func TestVerifiedIndividualFamEventDetail(t *testing.T) {
 				},
 			},
 		},
+		{ // 2
+			Input: "0 BIRT\n1 FAMC @A@\n",
+			Output: VerifiedIndividualFamEventDetail{
+				Famc: "A",
+				VerifiedEventDetail: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
+		{ // 3
+			Input: "0 BIRT\n1 FAMC\n",
+			Err:   ErrContext{"VerifiedIndividualFamEventDetail", cFAMC, ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 4
+			Input: "0 BIRT\n1 FAMC @A@\n1 FAMC @B@",
+			Err:   ErrContext{"VerifiedIndividualFamEventDetail", cFAMC, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 BIRT\n1 FAMC @A@\n1 FAMC @B@",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: VerifiedIndividualFamEventDetail{
+				Famc: "A",
+				VerifiedEventDetail: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s VerifiedIndividualFamEventDetail
 
