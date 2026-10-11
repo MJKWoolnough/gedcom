@@ -2,7 +2,10 @@ package gedcom
 
 // File automatically generated with ./genStructures.sh
 
-import "errors"
+import (
+	"errors"
+	"slices"
+)
 
 // Header is a GEDCOM structure type.
 type Header struct {
@@ -936,7 +939,7 @@ func (s *FamilyEventDetail) parse(l *Line, o options) error {
 			continue
 		}
 
-		l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+		l.Sub = slices.Delete(l.Sub, i, i+1)
 
 		i--
 	}
@@ -1693,7 +1696,7 @@ func (s *VerifiedIndividualFamEventDetail) parse(l *Line, o options) error {
 			continue
 		}
 
-		l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+		l.Sub = slices.Delete(l.Sub, i, i+1)
 
 		i--
 	}
@@ -1755,7 +1758,7 @@ func (s *AdoptionEvent) parse(l *Line, o options) error {
 			continue
 		}
 
-		l.Sub = append(l.Sub[:i], l.Sub[i+1:]...)
+		l.Sub = slices.Delete(l.Sub, i, i+1)
 
 		i--
 	}
