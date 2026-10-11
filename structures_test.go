@@ -3715,6 +3715,29 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
+		{ // 168
+			Input: "0 @ID@ INDI\n1 RFN A\n",
+			Output: Individual{
+				ID:              "ID",
+				PermanentRecord: "A",
+			},
+		},
+		{ // 169
+			Input: "0 @ID@ INDI\n1 RFN\n",
+			Err:   ErrContext{"Individual", cRFN, ErrInvalidLength{"PermanentRecordFileNumber", "", 1, 90}},
+		},
+		{ // 170
+			Input: "0 @ID@ INDI\n1 RFN A\n1 RFN B",
+			Err:   ErrContext{"Individual", cRFN, ErrSingleMultiple},
+		},
+		{ // 171
+			Input:   "0 @ID@ INDI\n1 RFN A\n1 RFN B",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: Individual{
+				ID:              "ID",
+				PermanentRecord: "A",
+			},
+		},
 	} {
 		var s Individual
 
