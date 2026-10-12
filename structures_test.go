@@ -4047,6 +4047,15 @@ func TestAdoptionEvent(t *testing.T) {
 				},
 			},
 		},
+		{ // 6
+			Input: "0 ADOP\n1 TYPE A",
+			Output: AdoptionEvent{
+				EventDetail: EventDetail{
+					Type:        "A",
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
 	} {
 		var s AdoptionEvent
 
