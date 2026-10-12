@@ -4167,6 +4167,16 @@ func TestCasteEvent(t *testing.T) {
 			Input: "0 CAST\n",
 			Err:   ErrContext{"CasteEvent", "line_value", ErrInvalidLength{"CasteName", "", 1, 90}},
 		},
+		{ // 3
+			Input: "0 CAST A\n1 TYPE B",
+			Output: CasteEvent{
+				CasteName: "A",
+				EventDetail: EventDetail{
+					Type:        "B",
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
 	} {
 		var s CasteEvent
 
