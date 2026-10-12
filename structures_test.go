@@ -4111,6 +4111,23 @@ func TestAdoptionReference(t *testing.T) {
 				AdoptedBy: cWIFE,
 			},
 		},
+		{ // 6
+			Input: "0 @A@ FAMC\n1 UNKNOWN\n",
+			Err:   ErrContext{"AdoptionReference", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 7
+			Input: "0 @A@ FAMC\n1 _UNKNOWN\n",
+			Output: AdoptionReference{
+				ID: "A",
+			},
+		},
+		{ // 8
+			Input:   "0 @A@ FAMC\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: AdoptionReference{
+				ID: "A",
+			},
+		},
 	} {
 		var s AdoptionReference
 
