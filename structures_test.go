@@ -4016,6 +4016,37 @@ func TestAdoptionEvent(t *testing.T) {
 				},
 			},
 		},
+		{ // 2
+			Input: "0 ADOP\n1 @A@ FAMC\n",
+			Output: AdoptionEvent{
+				Family: AdoptionReference{
+					ID: "A",
+				},
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+		{ // 3
+			Input: "0 ADOP\n1 FAMC\n",
+			Err:   ErrContext{"AdoptionEvent", cFAMC, ErrContext{"AdoptionReference", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}}},
+		},
+		{ // 4
+			Input: "0 ADOP\n1 @A@ FAMC\n1 @B@ FAMC\n",
+			Err:   ErrContext{"AdoptionEvent", cFAMC, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 ADOP\n1 @A@ FAMC\n1 @B@ FAMC\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: AdoptionEvent{
+				Family: AdoptionReference{
+					ID: "A",
+				},
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
 	} {
 		var s AdoptionEvent
 
