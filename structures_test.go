@@ -3928,6 +3928,17 @@ func TestVerifiedIndividualFamEventDetail(t *testing.T) {
 				},
 			},
 		},
+		{ // 6
+			Input: "0 BIRT\n1 TYPE A",
+			Output: VerifiedIndividualFamEventDetail{
+				VerifiedEventDetail: VerifiedEventDetail{
+					EventDetail: EventDetail{
+						Type:        "A",
+						PhoneNumber: make([]PhoneNumber, 0, 3),
+					},
+				},
+			},
+		},
 	} {
 		var s VerifiedIndividualFamEventDetail
 
