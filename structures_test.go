@@ -4088,6 +4088,29 @@ func TestAdoptionReference(t *testing.T) {
 				ID: "A",
 			},
 		},
+		{ // 2
+			Input: "0 @A@ FAMC\n1 ADOP HUSB\n",
+			Output: AdoptionReference{
+				ID:        "A",
+				AdoptedBy: cHUSB,
+			},
+		},
+		{ // 3
+			Input: "0 @A@ FAMC\n1 ADOP\n",
+			Err:   ErrContext{"AdoptionReference", cADOP, ErrInvalidValue{"AdoptedBy", ""}},
+		},
+		{ // 4
+			Input: "0 @A@ INDI\n1 ADOP WIFE\n1 ADOP BOTH",
+			Err:   ErrContext{"AdoptionReference", cADOP, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 @A@ INDI\n1 ADOP WIFE\n1 ADOP BOTH",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: AdoptionReference{
+				ID:        "A",
+				AdoptedBy: cWIFE,
+			},
+		},
 	} {
 		var s AdoptionReference
 
