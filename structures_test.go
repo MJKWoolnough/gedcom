@@ -4636,3 +4636,52 @@ func TestReligiousEvent(t *testing.T) {
 		}
 	}
 }
+
+func TestSSNEvent(t *testing.T) {
+	for n, test := range [...]struct {
+		Input   string
+		Options []Option
+		Output  SSNEvent
+		Err     error
+	}{
+		{ // 1
+			Input: "0 SSN AAAAAAAAA\n",
+			Output: SSNEvent{
+				SocialSecurityNumber: "AAAAAAAAA",
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+		{ // 2
+			Input: "0 SSN\n",
+			Err:   ErrContext{"SSNEvent", "line_value", ErrInvalidLength{"SocialSecurityNumber", "", 9, 11}},
+		},
+		{ // 3
+			Input: "0 SSN AAAAAAAAA\n1 TYPE B",
+			Output: SSNEvent{
+				SocialSecurityNumber: "AAAAAAAAA",
+				EventDetail: EventDetail{
+					Type:        "B",
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+	} {
+		var s SSNEvent
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
