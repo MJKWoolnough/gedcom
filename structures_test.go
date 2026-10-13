@@ -4587,3 +4587,52 @@ func TestPossessionEvent(t *testing.T) {
 		}
 	}
 }
+
+func TestReligiousEvent(t *testing.T) {
+	for n, test := range [...]struct {
+		Input   string
+		Options []Option
+		Output  ReligiousEvent
+		Err     error
+	}{
+		{ // 1
+			Input: "0 RELI A\n",
+			Output: ReligiousEvent{
+				ReligiousAffiliation: "A",
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+		{ // 2
+			Input: "0 RELI\n",
+			Err:   ErrContext{"ReligiousEvent", "line_value", ErrInvalidLength{"ReligiousAffiliation", "", 1, 90}},
+		},
+		{ // 3
+			Input: "0 RELI A\n1 TYPE B",
+			Output: ReligiousEvent{
+				ReligiousAffiliation: "A",
+				EventDetail: EventDetail{
+					Type:        "B",
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+	} {
+		var s ReligiousEvent
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
