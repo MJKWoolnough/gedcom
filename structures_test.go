@@ -4440,3 +4440,52 @@ func TestChildrenEvent(t *testing.T) {
 		}
 	}
 }
+
+func TestMarriagesEvent(t *testing.T) {
+	for n, test := range [...]struct {
+		Input   string
+		Options []Option
+		Output  MarriagesEvent
+		Err     error
+	}{
+		{ // 1
+			Input: "0 NMR 1\n",
+			Output: MarriagesEvent{
+				CountOfMarriages: 1,
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+		{ // 2
+			Input: "0 NMR\n",
+			Err:   ErrContext{"MarriagesEvent", "line_value", ErrInvalidLength{"CountOfMarriages", "", 1, 3}},
+		},
+		{ // 3
+			Input: "0 NMR 1\n1 TYPE B",
+			Output: MarriagesEvent{
+				CountOfMarriages: 1,
+				EventDetail: EventDetail{
+					Type:        "B",
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+	} {
+		var s MarriagesEvent
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
