@@ -4293,3 +4293,52 @@ func TestScholasticEvent(t *testing.T) {
 		}
 	}
 }
+
+func TestNationalIDEvent(t *testing.T) {
+	for n, test := range [...]struct {
+		Input   string
+		Options []Option
+		Output  NationalIDEvent
+		Err     error
+	}{
+		{ // 1
+			Input: "0 IDNO A\n",
+			Output: NationalIDEvent{
+				NationalIDNumber: "A",
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+		{ // 2
+			Input: "0 IDNO\n",
+			Err:   ErrContext{"NationalIDEvent", "line_value", ErrInvalidLength{"NationalIDNumber", "", 1, 30}},
+		},
+		{ // 3
+			Input: "0 IDNO A\n1 TYPE B",
+			Output: NationalIDEvent{
+				NationalIDNumber: "A",
+				EventDetail: EventDetail{
+					Type:        "B",
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+	} {
+		var s NationalIDEvent
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
