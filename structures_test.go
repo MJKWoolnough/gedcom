@@ -4129,3 +4129,31 @@ func TestSSNEvent(t *testing.T) {
 		},
 	})
 }
+
+func TestNobilityEvent(t *testing.T) {
+	test(t, []testData[NobilityEvent]{
+		{ // 1
+			Input: "0 TITL A\n",
+			Output: NobilityEvent{
+				NobilityTypeTitle: "A",
+				EventDetail: EventDetail{
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+		{ // 2
+			Input: "0 RELI\n",
+			Err:   ErrContext{"NobilityEvent", "line_value", ErrInvalidLength{"NobilityTypeTitle", "", 1, 120}},
+		},
+		{ // 3
+			Input: "0 TITL A\n1 TYPE B",
+			Output: NobilityEvent{
+				NobilityTypeTitle: "A",
+				EventDetail: EventDetail{
+					Type:        "B",
+					PhoneNumber: make([]PhoneNumber, 0, 3),
+				},
+			},
+		},
+	})
+}
