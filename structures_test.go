@@ -4208,3 +4208,27 @@ func TestUserReferenceStructure(t *testing.T) {
 		},
 	})
 }
+
+func TestMultimediaRecord(t *testing.T) {
+	test(t, []testData[MultimediaRecord]{
+		{ // 1
+			Input: "0 OBJE\n",
+			Err:   ErrContext{"MultimediaRecord", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ OBJE\n",
+			Err:   ErrContext{"MultimediaRecord", cBLOB, ErrRequiredMissing},
+		},
+		{ // 3
+			Input: "0 @A@ OBJE\n1 BLOB\n",
+			Err:   ErrContext{"MultimediaRecord", cFORM, ErrRequiredMissing},
+		},
+		{ // 4
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP",
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+			},
+		},
+	})
+}
