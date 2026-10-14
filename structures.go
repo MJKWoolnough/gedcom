@@ -2057,19 +2057,19 @@ func (s *MultimediaRecord) parse(l *Line, o options) error {
 			if err := s.Format.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaRecord", cFORM, err}
 			}
-		case cTITLE:
+		case cTITL:
 			if TitleSet {
 				if o.allowMoreThanAllowed {
 					continue
 				}
 
-				return ErrContext{"MultimediaRecord", cTITLE, ErrSingleMultiple}
+				return ErrContext{"MultimediaRecord", cTITL, ErrSingleMultiple}
 			}
 
 			TitleSet = true
 
 			if err := s.Title.parse(&sl, o); err != nil {
-				return ErrContext{"MultimediaRecord", cTITLE, err}
+				return ErrContext{"MultimediaRecord", cTITL, err}
 			}
 		case cNOTE:
 			var t NoteStructure
