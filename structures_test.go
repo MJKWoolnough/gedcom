@@ -4230,5 +4230,21 @@ func TestMultimediaRecord(t *testing.T) {
 				Format: cbmp,
 			},
 		},
+		{ // 5
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM\n",
+			Err:   ErrContext{"MultimediaRecord", cFORM, ErrInvalidValue{"MultimediaFormat", ""}},
+		},
+		{ // 6
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 FORM GIF",
+			Err:   ErrContext{"MultimediaRecord", cFORM, ErrSingleMultiple},
+		},
+		{ // 7
+			Input:   "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 FORM GIF",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+			},
+		},
 	})
 }
