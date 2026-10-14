@@ -7,13 +7,40 @@ import (
 	"testing"
 )
 
+type testData[T any] struct {
+	Input   string
+	Options []Option
+	Output  T
+	Err     error
+}
+
+func test[T any, I interface {
+	*T
+	parse(l *Line, o options) error
+}](t *testing.T, tests []testData[T]) {
+	for n, test := range tests {
+		var s T
+
+		var si I = &s
+
+		r := NewReader(strings.NewReader(test.Input), test.Options...)
+
+		if lines, err := readLines(r); err != nil {
+			t.Errorf("test %d: unexpected error: %s", n+1, err)
+		} else {
+			l := parseLines(lines)
+
+			if err = si.parse(&l, r.options); !errors.Is(err, test.Err) {
+				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
+			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
+				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
+			}
+		}
+	}
+}
+
 func TestHeader(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  Header
-		Err     error
-	}{
+	test(t, []testData[Header]{
 		{ // 1
 			Input: "0 HEADER\n",
 			Err:   ErrContext{"Header", cSUBM, ErrRequiredMissing},
@@ -540,32 +567,11 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s Header
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestHeaderSource(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  HeaderSource
-		Err     error
-	}{
+	test(t, []testData[HeaderSource]{
 		{ // 1
 			Input: "0 SOUR\n",
 			Err:   ErrContext{"HeaderSource", "line_value", ErrInvalidLength{"ApprovedSystemID", "", 1, 20}},
@@ -695,32 +701,11 @@ func TestHeaderSource(t *testing.T) {
 				SystemID: "ID",
 			},
 		},
-	} {
-		var s HeaderSource
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestTransmissionDateTime(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  TransmissionDateTime
-		Err     error
-	}{
+	test(t, []testData[TransmissionDateTime]{
 		{ // 1
 			Input: "0 DATE\n",
 			Err:   ErrContext{"TransmissionDateTime", "line_value", ErrInvalidLength{"TransmissionDate", "", 10, 11}},
@@ -771,32 +756,11 @@ func TestTransmissionDateTime(t *testing.T) {
 				TransmissionDate: "2006-05-04",
 			},
 		},
-	} {
-		var s TransmissionDateTime
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestHeaderBusiness(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  HeaderBusiness
-		Err     error
-	}{
+	test(t, []testData[HeaderBusiness]{
 		{ // 1
 			Input: "0 CORP\n",
 			Err:   ErrContext{"HeaderBusiness", "line_value", ErrInvalidLength{"NameOfBusiness", "", 1, 90}},
@@ -893,32 +857,11 @@ func TestHeaderBusiness(t *testing.T) {
 				PhoneNumber:    []PhoneNumber{},
 			},
 		},
-	} {
-		var s HeaderBusiness
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestHeaderDataSource(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  HeaderDataSource
-		Err     error
-	}{
+	test(t, []testData[HeaderDataSource]{
 		{ // 1
 			Input: "0 DATA\n",
 			Err:   ErrContext{"HeaderDataSource", "line_value", ErrInvalidLength{"NameOfSourceData", "", 1, 90}},
@@ -992,32 +935,11 @@ func TestHeaderDataSource(t *testing.T) {
 				SourceName: "data-source",
 			},
 		},
-	} {
-		var s HeaderDataSource
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestVersion(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  Version
-		Err     error
-	}{
+	test(t, []testData[Version]{
 		{ // 1
 			Input: "0 GEDC\n",
 			Err:   ErrContext{"Version", cVERS, ErrRequiredMissing},
@@ -1084,32 +1006,11 @@ func TestVersion(t *testing.T) {
 				Form:          "LINEAGE-LINKED",
 			},
 		},
-	} {
-		var s Version
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestCharacterSetStructure(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  CharacterSetStructure
-		Err     error
-	}{
+	test(t, []testData[CharacterSetStructure]{
 		{ // 1
 			Input: "0 CHAR\n",
 			Err:   ErrContext{"CharacterSetStructure", "line_value", ErrInvalidValue{"CharacterSet", ""}},
@@ -1160,32 +1061,11 @@ func TestCharacterSetStructure(t *testing.T) {
 				CharacterSet: "ASCII",
 			},
 		},
-	} {
-		var s CharacterSetStructure
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestHeaderPlace(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  HeaderPlace
-		Err     error
-	}{
+	test(t, []testData[HeaderPlace]{
 		{ // 1
 			Input: "0 PLAC\n",
 			Err:   ErrContext{"HeaderPlace", cFORM, ErrRequiredMissing},
@@ -1228,32 +1108,11 @@ func TestHeaderPlace(t *testing.T) {
 				PlaceHierarchy: "A",
 			},
 		},
-	} {
-		var s HeaderPlace
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestFamily(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  Family
-		Err     error
-	}{
+	test(t, []testData[Family]{
 		{ // 1
 			Input: "0 FAM\n",
 			Err:   ErrContext{"Family", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
@@ -1911,32 +1770,11 @@ func TestFamily(t *testing.T) {
 				ID: "ID",
 			},
 		},
-	} {
-		var s Family
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestVerifiedFamilyEventDetail(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  VerifiedFamilyEventDetail
-		Err     error
-	}{
+	test(t, []testData[VerifiedFamilyEventDetail]{
 		{ // 1
 			Input: "0 ANUL\n",
 			Output: VerifiedFamilyEventDetail{
@@ -1962,32 +1800,11 @@ func TestVerifiedFamilyEventDetail(t *testing.T) {
 			Input: "0 ANUL N\n",
 			Err:   ErrContext{"VerifiedFamilyEventDetail", "line_value", ErrInvalidValue{"Verified", "N"}},
 		},
-	} {
-		var s VerifiedFamilyEventDetail
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestFamilyEventDetail(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  FamilyEventDetail
-		Err     error
-	}{
+	test(t, []testData[FamilyEventDetail]{
 		{ // 1
 			Input: "0 EVEN\n",
 			Output: FamilyEventDetail{
@@ -2058,32 +1875,11 @@ func TestFamilyEventDetail(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s FamilyEventDetail
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestAgeStructure(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  AgeStructure
-		Err     error
-	}{
+	test(t, []testData[AgeStructure]{
 		{ // 1
 			Input: "0 HUSB\n1 AGE 20",
 			Output: AgeStructure{
@@ -2122,32 +1918,11 @@ func TestAgeStructure(t *testing.T) {
 				Age: "20",
 			},
 		},
-	} {
-		var s AgeStructure
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestIndividual(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  Individual
-		Err     error
-	}{
+	test(t, []testData[Individual]{
 		{ // 1
 			Input: "0 @A@ INDI\n",
 			Output: Individual{
@@ -3861,32 +3636,11 @@ func TestIndividual(t *testing.T) {
 				ID: "ID",
 			},
 		},
-	} {
-		var s Individual
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestVerifiedIndividualFamEventDetail(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  VerifiedIndividualFamEventDetail
-		Err     error
-	}{
+	test(t, []testData[VerifiedIndividualFamEventDetail]{
 		{ // 1
 			Input: "0 BIRT\n",
 			Output: VerifiedIndividualFamEventDetail{
@@ -3939,32 +3693,11 @@ func TestVerifiedIndividualFamEventDetail(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s VerifiedIndividualFamEventDetail
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestVerifiedEventDetail(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  VerifiedEventDetail
-		Err     error
-	}{
+	test(t, []testData[VerifiedEventDetail]{
 		{ // 1
 			Input: "0 DEAT\n",
 			Output: VerifiedEventDetail{
@@ -3982,32 +3715,11 @@ func TestVerifiedEventDetail(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s VerifiedEventDetail
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestAdoptionEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  AdoptionEvent
-		Err     error
-	}{
+	test(t, []testData[AdoptionEvent]{
 		{ // 1
 			Input: "0 ADOP\n",
 			Output: AdoptionEvent{
@@ -4056,32 +3768,11 @@ func TestAdoptionEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s AdoptionEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestAdoptionReference(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  AdoptionReference
-		Err     error
-	}{
+	test(t, []testData[AdoptionReference]{
 		{ // 1
 			Input: "0 @A@ FAMC\n",
 			Output: AdoptionReference{
@@ -4128,32 +3819,11 @@ func TestAdoptionReference(t *testing.T) {
 				ID: "A",
 			},
 		},
-	} {
-		var s AdoptionReference
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestCasteEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  CasteEvent
-		Err     error
-	}{
+	test(t, []testData[CasteEvent]{
 		{ // 1
 			Input: "0 CAST A\n",
 			Output: CasteEvent{
@@ -4177,32 +3847,11 @@ func TestCasteEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s CasteEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestDescriptionEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  DescriptionEvent
-		Err     error
-	}{
+	test(t, []testData[DescriptionEvent]{
 		{ // 1
 			Input: "0 DSCR A\n",
 			Output: DescriptionEvent{
@@ -4226,32 +3875,11 @@ func TestDescriptionEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s DescriptionEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestScholasticEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  ScholasticEvent
-		Err     error
-	}{
+	test(t, []testData[ScholasticEvent]{
 		{ // 1
 			Input: "0 EDUC A\n",
 			Output: ScholasticEvent{
@@ -4275,32 +3903,11 @@ func TestScholasticEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s ScholasticEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestNationalIDEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  NationalIDEvent
-		Err     error
-	}{
+	test(t, []testData[NationalIDEvent]{
 		{ // 1
 			Input: "0 IDNO A\n",
 			Output: NationalIDEvent{
@@ -4324,32 +3931,11 @@ func TestNationalIDEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s NationalIDEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestNationalOriginEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  NationalOriginEvent
-		Err     error
-	}{
+	test(t, []testData[NationalOriginEvent]{
 		{ // 1
 			Input: "0 NATI A\n",
 			Output: NationalOriginEvent{
@@ -4373,32 +3959,11 @@ func TestNationalOriginEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s NationalOriginEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestChildrenEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  ChildrenEvent
-		Err     error
-	}{
+	test(t, []testData[ChildrenEvent]{
 		{ // 1
 			Input: "0 NCHI 1\n",
 			Output: ChildrenEvent{
@@ -4422,32 +3987,11 @@ func TestChildrenEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s ChildrenEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestMarriagesEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  MarriagesEvent
-		Err     error
-	}{
+	test(t, []testData[MarriagesEvent]{
 		{ // 1
 			Input: "0 NMR 1\n",
 			Output: MarriagesEvent{
@@ -4471,32 +4015,11 @@ func TestMarriagesEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s MarriagesEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestOccupationEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  OccupationEvent
-		Err     error
-	}{
+	test(t, []testData[OccupationEvent]{
 		{ // 1
 			Input: "0 NMR A\n",
 			Output: OccupationEvent{
@@ -4520,32 +4043,11 @@ func TestOccupationEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s OccupationEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestPossessionEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  PossessionEvent
-		Err     error
-	}{
+	test(t, []testData[PossessionEvent]{
 		{ // 1
 			Input: "0 PROP A\n",
 			Output: PossessionEvent{
@@ -4569,32 +4071,11 @@ func TestPossessionEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s PossessionEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestReligiousEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  ReligiousEvent
-		Err     error
-	}{
+	test(t, []testData[ReligiousEvent]{
 		{ // 1
 			Input: "0 RELI A\n",
 			Output: ReligiousEvent{
@@ -4618,32 +4099,11 @@ func TestReligiousEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s ReligiousEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
 
 func TestSSNEvent(t *testing.T) {
-	for n, test := range [...]struct {
-		Input   string
-		Options []Option
-		Output  SSNEvent
-		Err     error
-	}{
+	test(t, []testData[SSNEvent]{
 		{ // 1
 			Input: "0 SSN AAAAAAAAA\n",
 			Output: SSNEvent{
@@ -4667,21 +4127,5 @@ func TestSSNEvent(t *testing.T) {
 				},
 			},
 		},
-	} {
-		var s SSNEvent
-
-		r := NewReader(strings.NewReader(test.Input), test.Options...)
-
-		if lines, err := readLines(r); err != nil {
-			t.Errorf("test %d: unexpected error: %s", n+1, err)
-		} else {
-			l := parseLines(lines)
-
-			if err = s.parse(&l, r.options); !errors.Is(err, test.Err) {
-				t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
-			} else if test.Err == nil && !reflect.DeepEqual(test.Output, s) {
-				t.Errorf("test %d: expecting %#v, got %#v", n+1, test.Output, s)
-			}
-		}
-	}
+	})
 }
