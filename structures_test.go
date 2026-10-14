@@ -4166,5 +4166,28 @@ func TestUserReferenceStructure(t *testing.T) {
 				UserReferenceNumber: "A",
 			},
 		},
+		{ // 2
+			Input: "0 REFN A\n1 TYPE B\n",
+			Output: UserReferenceStructure{
+				UserReferenceNumber: "A",
+				Type:                "B",
+			},
+		},
+		{ // 3
+			Input: "0 REFN A\n1 TYPE\n",
+			Err:   ErrContext{"UserReferenceStructure", cTYPE, ErrInvalidLength{"UserReferenceType", "", 1, 40}},
+		},
+		{ // 4
+			Input: "0 REFN A\n1 TYPE B\n1 TYPE C",
+			Err:   ErrContext{"UserReferenceStructure", cTYPE, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 REFN A\n1 TYPE B\n1 TYPE C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: UserReferenceStructure{
+				UserReferenceNumber: "A",
+				Type:                "B",
+			},
+		},
 	})
 }
