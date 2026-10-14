@@ -4189,5 +4189,22 @@ func TestUserReferenceStructure(t *testing.T) {
 				Type:                "B",
 			},
 		},
+		{ // 6
+			Input: "0 REFN A\n1 UNKNOWN\n",
+			Err:   ErrContext{"UserReferenceStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 7
+			Input: "0 REFN A\n1 _UNKNOWN\n",
+			Output: UserReferenceStructure{
+				UserReferenceNumber: "A",
+			},
+		},
+		{ // 8
+			Input:   "0 REFN A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: UserReferenceStructure{
+				UserReferenceNumber: "A",
+			},
+		},
 	})
 }
