@@ -4157,3 +4157,14 @@ func TestNobilityEvent(t *testing.T) {
 		},
 	})
 }
+
+func TestUserReferenceStructure(t *testing.T) {
+	test(t, []testData[UserReferenceStructure]{
+		{ // 1
+			Input: "0 REFN A\n",
+			Output: UserReferenceStructure{
+				UserReferenceNumber: "A",
+			},
+		},
+	})
+}
