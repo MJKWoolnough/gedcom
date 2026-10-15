@@ -4515,5 +4515,36 @@ func TestNoteRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 7
+			Input: "0 @A@ NOTE B\n1 REFN @C@\n",
+			Output: NoteRecord{
+				ID:            "A",
+				SubmitterText: "B",
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "C",
+					},
+				},
+			},
+		},
+		{ // 8
+			Input: "0 @A@ NOTE B\n1 REFN\n",
+			Err:   ErrContext{"NoteRecord", cREFN, ErrContext{"UserReferenceStructure", "line_value", ErrInvalidLength{"UserReferenceNumber", "", 1, 20}}},
+		},
+		{ // 9
+			Input: "0 @A@ NOTE B\n1 REFN @C@\n1 REFN @D@",
+			Output: NoteRecord{
+				ID:            "A",
+				SubmitterText: "B",
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "C",
+					},
+					{
+						UserReferenceNumber: "D",
+					},
+				},
+			},
+		},
 	})
 }
