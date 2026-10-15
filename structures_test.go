@@ -4439,18 +4439,18 @@ func TestMultimediaRecord(t *testing.T) {
 				},
 			},
 		},
-		{ // 6
+		{ // 33
 			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 UNKNOWN\n",
 			Err:   ErrContext{"MultimediaRecord", "UNKNOWN", ErrUnknownTag},
 		},
-		{ // 7
+		{ // 34
 			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 _UNKNOWN\n",
 			Output: MultimediaRecord{
 				ID:     "A",
 				Format: cbmp,
 			},
 		},
-		{ // 8
+		{ // 35
 			Input:   "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 UNKNOWN\n",
 			Options: []Option{AllowUnknownTags},
 			Output: MultimediaRecord{
@@ -4476,6 +4476,43 @@ func TestNoteRecord(t *testing.T) {
 			Output: NoteRecord{
 				ID:            "A",
 				SubmitterText: "B",
+			},
+		},
+		{ // 4
+			Input: "0 @A@ NOTE B\n1 @C@ SOUR\n",
+			Output: NoteRecord{
+				ID:            "A",
+				SubmitterText: "B",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "C",
+						},
+					},
+				},
+			},
+		},
+		{ // 5
+			Input: "0 @A@ NOTE B\n1 SOUR\n",
+			Err:   ErrContext{"NoteRecord", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
+		},
+		{ // 6
+			Input: "0 @A@ NOTE B\n1 @C@ SOUR\n1 @D@ SOUR\n",
+			Output: NoteRecord{
+				ID:            "A",
+				SubmitterText: "B",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "C",
+						},
+					},
+					{
+						Data: &SourceID{
+							ID: "D",
+						},
+					},
+				},
 			},
 		},
 	})
