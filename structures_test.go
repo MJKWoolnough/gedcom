@@ -4350,5 +4350,36 @@ func TestMultimediaRecord(t *testing.T) {
 				ContinuedObject: "B",
 			},
 		},
+		{ // 22
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 REFN @B@",
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "B",
+					},
+				},
+			},
+		},
+		{ // 23
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 REFN\n",
+			Err:   ErrContext{"MultimediaRecord", cREFN, ErrContext{"UserReferenceStructure", "line_value", ErrInvalidLength{"UserReferenceNumber", "", 1, 20}}},
+		},
+		{ // 24
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 REFN @B@\n1 REFN @C@",
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "B",
+					},
+					{
+						UserReferenceNumber: "C",
+					},
+				},
+			},
+		},
 	})
 }
