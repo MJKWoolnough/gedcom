@@ -4406,5 +4406,38 @@ func TestMultimediaRecord(t *testing.T) {
 				AutomatedRecordID: "B",
 			},
 		},
+		{ // 29
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 CHAN\n2 DATE 2006-05-04",
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
+		{ // 30
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 CHAN\n",
+			Err:   ErrContext{"MultimediaRecord", cCHAN, ErrContext{"ChangeDateStructure", cDATE, ErrRequiredMissing}},
+		},
+		{ // 31
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Err:   ErrContext{"MultimediaRecord", cCHAN, ErrSingleMultiple},
+		},
+		{ // 32
+			Input:   "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
 	})
 }
