@@ -4381,5 +4381,30 @@ func TestMultimediaRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 25
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 RIN B",
+			Output: MultimediaRecord{
+				ID:                "A",
+				Format:            cbmp,
+				AutomatedRecordID: "B",
+			},
+		},
+		{ // 26
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 RIN\n",
+			Err:   ErrContext{"MultimediaRecord", cRIN, ErrInvalidLength{"AutomatedRecordID", "", 1, 12}},
+		},
+		{ // 27
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 RIN B\n1 RIN C",
+			Err:   ErrContext{"MultimediaRecord", cRIN, ErrSingleMultiple},
+		},
+		{ // 28
+			Input:   "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 RIN B\n1 RIN C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: MultimediaRecord{
+				ID:                "A",
+				Format:            cbmp,
+				AutomatedRecordID: "B",
+			},
+		},
 	})
 }
