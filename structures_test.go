@@ -4460,3 +4460,23 @@ func TestMultimediaRecord(t *testing.T) {
 		},
 	})
 }
+
+func TestNoteRecord(t *testing.T) {
+	test(t, []testData[NoteRecord]{
+		{ // 1
+			Input: "0 NOTE\n",
+			Err:   ErrContext{"NoteRecord", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ NOTE\n",
+			Err:   ErrContext{"NoteRecord", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}},
+		},
+		{ // 3
+			Input: "0 @A@ NOTE B\n",
+			Output: NoteRecord{
+				ID:            "A",
+				SubmitterText: "B",
+			},
+		},
+	})
+}
