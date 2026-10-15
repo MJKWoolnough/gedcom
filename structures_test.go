@@ -4271,5 +4271,42 @@ func TestMultimediaRecord(t *testing.T) {
 				Title:  "B",
 			},
 		},
+		{ // 12
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 @B@ NOTE\n",
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
+		{ // 13
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 NOTE\n",
+			Err:   ErrContext{"MultimediaRecord", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 14
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 @C@ NOTE\n1 @D@ NOTE\n",
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "C",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "D",
+						},
+					},
+				},
+			},
+		},
 	})
 }
