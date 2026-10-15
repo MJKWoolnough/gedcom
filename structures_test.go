@@ -4308,5 +4308,22 @@ func TestMultimediaRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 15
+			Input: "0 @A@ OBJE\n1 BLOB " + strings.Repeat("A", 88) + "\n1 FORM BMP\n",
+			Err:   ErrContext{"MultimediaRecord", cBLOB, ErrInvalidLength{"EncodedMultimediaLine", strings.Repeat("A", 88), 0, 87}},
+		},
+		{ // 16
+			Input: "0 @A@ OBJE\n1 BLOB A\n1 FORM BMP\n1 BLOB B\n",
+			Err:   ErrContext{"MultimediaRecord", cBLOB, ErrSingleMultiple},
+		},
+		{ // 17
+			Input:   "0 @A@ OBJE\n1 BLOB B\n1 FORM BMP\n1 BLOB C\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: MultimediaRecord{
+				ID:     "A",
+				Blob:   "B",
+				Format: cbmp,
+			},
+		},
 	})
 }
