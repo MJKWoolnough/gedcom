@@ -4439,5 +4439,24 @@ func TestMultimediaRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 6
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 UNKNOWN\n",
+			Err:   ErrContext{"MultimediaRecord", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 7
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 _UNKNOWN\n",
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+			},
+		},
+		{ // 8
+			Input:   "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: MultimediaRecord{
+				ID:     "A",
+				Format: cbmp,
+			},
+		},
 	})
 }
