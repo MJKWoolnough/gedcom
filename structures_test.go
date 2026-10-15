@@ -4325,5 +4325,30 @@ func TestMultimediaRecord(t *testing.T) {
 				Format: cbmp,
 			},
 		},
+		{ // 18
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 OBJE @B@",
+			Output: MultimediaRecord{
+				ID:              "A",
+				Format:          cbmp,
+				ContinuedObject: "B",
+			},
+		},
+		{ // 19
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 OBJE\n",
+			Err:   ErrContext{"MultimediaRecord", cOBJE, ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 20
+			Input: "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 OBJE @B@\n1 OBJE @C@",
+			Err:   ErrContext{"MultimediaRecord", cOBJE, ErrSingleMultiple},
+		},
+		{ // 21
+			Input:   "0 @A@ OBJE\n1 BLOB\n1 FORM BMP\n1 OBJE @B@\n1 OBJE @C@",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: MultimediaRecord{
+				ID:              "A",
+				Format:          cbmp,
+				ContinuedObject: "B",
+			},
+		},
 	})
 }
