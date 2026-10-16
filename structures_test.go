@@ -4798,5 +4798,30 @@ func TestRepositoryRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 23
+			Input: "0 @A@ REPO\n1 RIN B",
+			Output: RepositoryRecord{
+				ID:                "A",
+				PhoneNumber:       make([]PhoneNumber, 0, 3),
+				AutomatedRecordID: "B",
+			},
+		},
+		{ // 24
+			Input: "0 @A@ REPO\n1 RIN\n",
+			Err:   ErrContext{"RepositoryRecord", cRIN, ErrInvalidLength{"AutomatedRecordID", "", 1, 12}},
+		},
+		{ // 25
+			Input: "0 @A@ REPO\n1 RIN B\n1 RIN C",
+			Err:   ErrContext{"RepositoryRecord", cRIN, ErrSingleMultiple},
+		},
+		{ // 26
+			Input:   "0 @A@ REPO\n1 RIN B\n1 RIN C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: RepositoryRecord{
+				ID:                "A",
+				PhoneNumber:       make([]PhoneNumber, 0, 3),
+				AutomatedRecordID: "B",
+			},
+		},
 	})
 }
