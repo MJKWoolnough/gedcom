@@ -4730,5 +4730,42 @@ func TestRepositoryRecord(t *testing.T) {
 				PhoneNumber: []PhoneNumber{"number 1", "number 2", "number 3"},
 			},
 		},
+		{ // 17
+			Input: "0 @A@ REPO\n1 @A@ NOTE\n",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 18
+			Input: "0 @A@ REPO\n1 NOTE\n",
+			Err:   ErrContext{"RepositoryRecord", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 19
+			Input: "0 @A@ REPO\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
