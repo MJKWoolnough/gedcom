@@ -4604,5 +4604,24 @@ func TestNoteRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 18
+			Input: "0 @A@ NOTE B\n1 UNKNOWN\n",
+			Err:   ErrContext{"NoteRecord", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 19
+			Input: "0 @A@ NOTE B\n1 _UNKNOWN\n",
+			Output: NoteRecord{
+				ID:            "A",
+				SubmitterText: "B",
+			},
+		},
+		{ // 20
+			Input:   "0 @A@ NOTE B\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: NoteRecord{
+				ID:            "A",
+				SubmitterText: "B",
+			},
+		},
 	})
 }
