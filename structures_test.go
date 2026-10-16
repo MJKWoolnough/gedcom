@@ -4546,5 +4546,30 @@ func TestNoteRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 10
+			Input: "0 @A@ NOTE B\n1 RIN B",
+			Output: NoteRecord{
+				ID:                "A",
+				SubmitterText:     "B",
+				AutomatedRecordID: "B",
+			},
+		},
+		{ // 11
+			Input: "0 @A@ NOTE B\n1 RIN\n",
+			Err:   ErrContext{"NoteRecord", cRIN, ErrInvalidLength{"AutomatedRecordID", "", 1, 12}},
+		},
+		{ // 12
+			Input: "0 @A@ NOTE B\n1 RIN B\n1 RIN C",
+			Err:   ErrContext{"NoteRecord", cRIN, ErrSingleMultiple},
+		},
+		{ // 13
+			Input:   "0 @A@ NOTE B\n1 RIN B\n1 RIN C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: NoteRecord{
+				ID:                "A",
+				SubmitterText:     "B",
+				AutomatedRecordID: "B",
+			},
+		},
 	})
 }
