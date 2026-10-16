@@ -4767,5 +4767,36 @@ func TestRepositoryRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 20
+			Input: "0 @A@ REPO\n1 REFN @C@\n",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "C",
+					},
+				},
+			},
+		},
+		{ // 21
+			Input: "0 @A@ REPO\n1 REFN\n",
+			Err:   ErrContext{"RepositoryRecord", cREFN, ErrContext{"UserReferenceStructure", "line_value", ErrInvalidLength{"UserReferenceNumber", "", 1, 20}}},
+		},
+		{ // 22
+			Input: "0 @A@ REPO\n1 REFN @C@\n1 REFN @D@",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "C",
+					},
+					{
+						UserReferenceNumber: "D",
+					},
+				},
+			},
+		},
 	})
 }
