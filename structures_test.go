@@ -4625,3 +4625,19 @@ func TestNoteRecord(t *testing.T) {
 		},
 	})
 }
+
+func TestRepositoryRecord(t *testing.T) {
+	test(t, []testData[RepositoryRecord]{
+		{ // 1
+			Input: "0 REPO\n",
+			Err:   ErrContext{"RepositoryRecord", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ REPO\n",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+			},
+		},
+	})
+}
