@@ -4664,5 +4664,34 @@ func TestRepositoryRecord(t *testing.T) {
 				NameOfRepository: "B",
 			},
 		},
+		{ // 7
+			Input: "0 @A@ REPO\n1 ADDR line 1",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Address: AddressStructure{
+					AddressLine: "line 1",
+				},
+			},
+		},
+		{ // 8
+			Input: "0 @A@ REPO\n1 ADDR\n",
+			Err:   ErrContext{"RepositoryRecord", cADDR, ErrContext{"AddressStructure", "line_value", ErrInvalidLength{"AddressLine", "", 1, 60}}},
+		},
+		{ // 9
+			Input: "0 @A@ REPO\n1 ADDR line_1\n1 ADDR line_2",
+			Err:   ErrContext{"RepositoryRecord", cADDR, ErrSingleMultiple},
+		},
+		{ // 10
+			Input:   "0 @A@ REPO\n1 ADDR line_1\n1 ADDR line_2",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Address: AddressStructure{
+					AddressLine: "line_1",
+				},
+			},
+		},
 	})
 }
