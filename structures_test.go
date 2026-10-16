@@ -4639,5 +4639,30 @@ func TestRepositoryRecord(t *testing.T) {
 				PhoneNumber: make([]PhoneNumber, 0, 3),
 			},
 		},
+		{ // 3
+			Input: "0 @A@ REPO\n1 NAME B",
+			Output: RepositoryRecord{
+				ID:               "A",
+				PhoneNumber:      make([]PhoneNumber, 0, 3),
+				NameOfRepository: "B",
+			},
+		},
+		{ // 4
+			Input: "0 @A@ REPO\n1 NAME\n",
+			Err:   ErrContext{"RepositoryRecord", cNAME, ErrInvalidLength{"NameOfRepository", "", 1, 90}},
+		},
+		{ // 5
+			Input: "0 @A@ REPO\n1 NAME B\n1 NAME C",
+			Err:   ErrContext{"RepositoryRecord", cNAME, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 @A@ REPO\n1 NAME B\n1 NAME C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: RepositoryRecord{
+				ID:               "A",
+				PhoneNumber:      make([]PhoneNumber, 0, 3),
+				NameOfRepository: "B",
+			},
+		},
 	})
 }
