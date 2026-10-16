@@ -4571,5 +4571,38 @@ func TestNoteRecord(t *testing.T) {
 				AutomatedRecordID: "B",
 			},
 		},
+		{ // 14
+			Input: "0 @A@ NOTE B\n1 CHAN\n2 DATE 2006-05-04",
+			Output: NoteRecord{
+				ID:            "A",
+				SubmitterText: "B",
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
+		{ // 15
+			Input: "0 @A@ NOTE B\n1 CHAN\n",
+			Err:   ErrContext{"NoteRecord", cCHAN, ErrContext{"ChangeDateStructure", cDATE, ErrRequiredMissing}},
+		},
+		{ // 16
+			Input: "0 @A@ NOTE B\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Err:   ErrContext{"NoteRecord", cCHAN, ErrSingleMultiple},
+		},
+		{ // 17
+			Input:   "0 @A@ NOTE B\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: NoteRecord{
+				ID:            "A",
+				SubmitterText: "B",
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
 	})
 }
