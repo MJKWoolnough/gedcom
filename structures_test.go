@@ -4693,5 +4693,42 @@ func TestRepositoryRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 11
+			Input: "0 @A@ REPO\n1 PHON number",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: []PhoneNumber{"number"},
+			},
+		},
+		{ // 12
+			Input: "0 @A@ REPO\n1 PHON\n",
+			Err:   ErrContext{"RepositoryRecord", cPHON, ErrInvalidLength{"PhoneNumber", "", 1, 25}},
+		},
+		{ // 13
+			Input: "0 @A@ REPO\n1 PHON number 1\n1 PHON number 2",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: []PhoneNumber{"number 1", "number 2"},
+			},
+		},
+		{ // 14
+			Input: "0 @A@ REPO\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: []PhoneNumber{"number 1", "number 2", "number 3"},
+			},
+		},
+		{ // 15
+			Input: "0 @A@ REPO\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3\n1 PHON number 4",
+			Err:   ErrContext{"RepositoryRecord", cPHON, ErrTooMany(3)},
+		},
+		{ // 16
+			Input:   "0 @A@ REPO\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3\n1 PHON number 4",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: []PhoneNumber{"number 1", "number 2", "number 3"},
+			},
+		},
 	})
 }
