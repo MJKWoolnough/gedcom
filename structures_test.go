@@ -4877,3 +4877,25 @@ func TestRepositoryRecord(t *testing.T) {
 		},
 	})
 }
+
+func TestSourceRecord(t *testing.T) {
+	test(t, []testData[SourceRecord]{
+		{ // 1
+			Input: "0 SOUR\n",
+			Err:   ErrContext{"SourceRecord", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ SOUR\n",
+			Err:   ErrContext{"SourceRecord", cREPO, ErrRequiredMissing},
+		},
+		{ // 3
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+			},
+		},
+	})
+}
