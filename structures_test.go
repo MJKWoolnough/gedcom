@@ -5017,5 +5017,34 @@ func TestSourceRecord(t *testing.T) {
 				FiledBy: "C",
 			},
 		},
+		{ // 20
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 PUBL C",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				PublicationFacts: "C",
+			},
+		},
+		{ // 21
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 PUBL\n",
+			Err:   ErrContext{"SourceRecord", cPUBL, ErrInvalidLength{"SourcePublicationFacts", "", 1, 248}},
+		},
+		{ // 22
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 PUBL C\n1 PUBL D",
+			Err:   ErrContext{"SourceRecord", cPUBL, ErrSingleMultiple},
+		},
+		{ // 23
+			Input:   "0 @A@ SOUR\n1 @B@ REPO\n1 PUBL C\n1 PUBL D",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				PublicationFacts: "C",
+			},
+		},
 	})
 }
