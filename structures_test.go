@@ -4988,5 +4988,34 @@ func TestSourceRecord(t *testing.T) {
 				Title: "C",
 			},
 		},
+		{ // 16
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 ABBR C",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				FiledBy: "C",
+			},
+		},
+		{ // 17
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 ABBR\n",
+			Err:   ErrContext{"SourceRecord", cABBR, ErrInvalidLength{"SourceFiledByEntry", "", 1, 60}},
+		},
+		{ // 18
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 ABBR C\n1 ABBR D",
+			Err:   ErrContext{"SourceRecord", cABBR, ErrSingleMultiple},
+		},
+		{ // 19
+			Input:   "0 @A@ SOUR\n1 @B@ REPO\n1 ABBR C\n1 ABBR D",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				FiledBy: "C",
+			},
+		},
 	})
 }
