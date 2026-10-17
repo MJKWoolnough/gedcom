@@ -5075,5 +5075,32 @@ func TestSourceRecord(t *testing.T) {
 				TextFromSource: "C",
 			},
 		},
+		{ // 28
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+			},
+		},
+		{ // 29
+			Input: "0 @A@ SOUR\n1 REPO\n",
+			Err:   ErrContext{"SourceRecord", cREPO, ErrContext{"SourceRepositoryCitation", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}}},
+		},
+		{ // 30
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 @C@ REPO\n",
+			Err:   ErrContext{"SourceRecord", cREPO, ErrSingleMultiple},
+		},
+		{ // 31
+			Input:   "0 @A@ SOUR\n1 @B@ REPO\n1 @C@ REPO\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+			},
+		},
 	})
 }
