@@ -4856,5 +4856,24 @@ func TestRepositoryRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 31
+			Input: "0 @A@ REPO\n1 UNKNOWN\n",
+			Err:   ErrContext{"RepositoryRecord", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 32
+			Input: "0 @A@ REPO\n1 _UNKNOWN\n",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+			},
+		},
+		{ // 33
+			Input:   "0 @A@ REPO\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+			},
+		},
 	})
 }
