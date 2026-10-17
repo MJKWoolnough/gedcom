@@ -4897,5 +4897,38 @@ func TestSourceRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 4
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 DATA\n2 AGNC C",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				Data: SourceRecordDataStructure{
+					ResponsibleAgency: "C",
+				},
+			},
+		},
+		{ // 5
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 DATA\n2 AGNC\n",
+			Err:   ErrContext{"SourceRecord", cDATA, ErrContext{"SourceRecordDataStructure", cAGNC, ErrInvalidLength{"ResponsibleAgency", "", 1, 120}}},
+		},
+		{ // 6
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 DATA\n2 AGNC C\n1 DATA\n2 AGNC D",
+			Err:   ErrContext{"SourceRecord", cDATA, ErrSingleMultiple},
+		},
+		{ // 7
+			Input:   "0 @A@ SOUR\n1 @B@ REPO\n1 DATA\n2 AGNC C\n1 DATA\n2 AGNC D",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				Data: SourceRecordDataStructure{
+					ResponsibleAgency: "C",
+				},
+			},
+		},
 	})
 }
