@@ -4823,5 +4823,38 @@ func TestRepositoryRecord(t *testing.T) {
 				AutomatedRecordID: "B",
 			},
 		},
+		{ // 27
+			Input: "0 @A@ REPO\n1 CHAN\n2 DATE 2006-05-04",
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
+		{ // 28
+			Input: "0 @A@ REPO\n1 CHAN\n",
+			Err:   ErrContext{"RepositoryRecord", cCHAN, ErrContext{"ChangeDateStructure", cDATE, ErrRequiredMissing}},
+		},
+		{ // 29
+			Input: "0 @A@ REPO\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Err:   ErrContext{"RepositoryRecord", cCHAN, ErrSingleMultiple},
+		},
+		{ // 30
+			Input:   "0 @A@ REPO\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: RepositoryRecord{
+				ID:          "A",
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
 	})
 }
