@@ -2636,19 +2636,19 @@ func (s *EventsRecordedStructure) parse(l *Line, o options) error {
 			if err := s.DatePeriod.parse(&sl, o); err != nil {
 				return ErrContext{"EventsRecordedStructure", cDATE, err}
 			}
-		case cPLACE:
+		case cPLAC:
 			if SourceJurisdictionPlaceSet {
 				if o.allowMoreThanAllowed {
 					continue
 				}
 
-				return ErrContext{"EventsRecordedStructure", cPLACE, ErrSingleMultiple}
+				return ErrContext{"EventsRecordedStructure", cPLAC, ErrSingleMultiple}
 			}
 
 			SourceJurisdictionPlaceSet = true
 
 			if err := s.SourceJurisdictionPlace.parse(&sl, o); err != nil {
-				return ErrContext{"EventsRecordedStructure", cPLACE, err}
+				return ErrContext{"EventsRecordedStructure", cPLAC, err}
 			}
 		default:
 			if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
