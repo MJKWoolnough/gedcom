@@ -5131,5 +5131,46 @@ func TestSourceRecord(t *testing.T) {
 				ContinuedObject: "C",
 			},
 		},
+		{ // 36
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 @A@ NOTE\n",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 37
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 NOTE\n",
+			Err:   ErrContext{"SourceRecord", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 38
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
