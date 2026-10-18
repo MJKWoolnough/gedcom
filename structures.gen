@@ -224,7 +224,7 @@ SourceRecordDataStructure
 	NOTE:NoteStructure:Notes:0:M
 EventsRecordedStructure
 	DATE:DatePeriod::0:1
-	PLACE:SourceJurisdictionPlace::0:1
+	PLAC:SourceJurisdictionPlace::0:1
 SubmissionRecord
 	@:ID
 	FAMF:NameOfFamilyFile::0:1
