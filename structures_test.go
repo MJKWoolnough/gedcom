@@ -5298,3 +5298,12 @@ func TestSourceRecord(t *testing.T) {
 		},
 	})
 }
+
+func TestSourceRecordDataStructure(t *testing.T) {
+	test(t, []testData[SourceRecordDataStructure]{
+		{ // 1
+			Input:  "0 DATA\n",
+			Output: SourceRecordDataStructure{},
+		},
+	})
+}
