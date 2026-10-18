@@ -5236,5 +5236,42 @@ func TestSourceRecord(t *testing.T) {
 				AutomatedRecordID: "B",
 			},
 		},
+		{ // 46
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 CHAN\n2 DATE 2006-05-04",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
+		{ // 47
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 CHAN\n",
+			Err:   ErrContext{"SourceRecord", cCHAN, ErrContext{"ChangeDateStructure", cDATE, ErrRequiredMissing}},
+		},
+		{ // 48
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Err:   ErrContext{"SourceRecord", cCHAN, ErrSingleMultiple},
+		},
+		{ // 49
+			Input:   "0 @A@ SOUR\n1 @B@ REPO\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
 	})
 }
