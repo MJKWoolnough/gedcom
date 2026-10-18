@@ -5273,5 +5273,28 @@ func TestSourceRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 50
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 UNKNOWN\n",
+			Err:   ErrContext{"SourceRecord", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 51
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 _UNKNOWN\n",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+			},
+		},
+		{ // 52
+			Input:   "0 @A@ SOUR\n1 @B@ REPO\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+			},
+		},
 	})
 }
