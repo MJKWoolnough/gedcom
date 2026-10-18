@@ -5172,5 +5172,40 @@ func TestSourceRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 39
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 REFN @C@\n",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "C",
+					},
+				},
+			},
+		},
+		{ // 40
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 REFN\n",
+			Err:   ErrContext{"SourceRecord", cREFN, ErrContext{"UserReferenceStructure", "line_value", ErrInvalidLength{"UserReferenceNumber", "", 1, 20}}},
+		},
+		{ // 41
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 REFN @C@\n1 REFN @D@",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				UserReferences: []UserReferenceStructure{
+					{
+						UserReferenceNumber: "C",
+					},
+					{
+						UserReferenceNumber: "D",
+					},
+				},
+			},
+		},
 	})
 }
