@@ -5207,5 +5207,34 @@ func TestSourceRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 42
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 RIN B",
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				AutomatedRecordID: "B",
+			},
+		},
+		{ // 43
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 RIN\n",
+			Err:   ErrContext{"SourceRecord", cRIN, ErrInvalidLength{"AutomatedRecordID", "", 1, 12}},
+		},
+		{ // 44
+			Input: "0 @A@ SOUR\n1 @B@ REPO\n1 RIN B\n1 RIN C",
+			Err:   ErrContext{"SourceRecord", cRIN, ErrSingleMultiple},
+		},
+		{ // 45
+			Input:   "0 @A@ SOUR\n1 @B@ REPO\n1 RIN B\n1 RIN C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceRecord{
+				ID: "A",
+				SourceRepositoryCitation: SourceRepositoryCitation{
+					ID: "B",
+				},
+				AutomatedRecordID: "B",
+			},
+		},
 	})
 }
