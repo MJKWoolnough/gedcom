@@ -5332,5 +5332,36 @@ func TestSourceRecordDataStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 5
+			Input: "0 DATA\n1 EVEN\n2 PLAC A\n1 AGNC B",
+			Output: SourceRecordDataStructure{
+				EventsRecorded: []EventsRecordedStructure{
+					{
+						SourceJurisdictionPlace: "A",
+					},
+				},
+				ResponsibleAgency: "B",
+			},
+		},
+		{ // 6
+			Input: "0 DATA\n1 EVEN\n2 PLAC A\n1 AGNC\n",
+			Err:   ErrContext{"SourceRecordDataStructure", cAGNC, ErrInvalidLength{"ResponsibleAgency", "", 1, 120}},
+		},
+		{ // 7
+			Input: "0 DATA\n1 EVEN\n2 PLAC A\n1 AGNC B\n1 AGNC C",
+			Err:   ErrContext{"SourceRecordDataStructure", cAGNC, ErrSingleMultiple},
+		},
+		{ // 8
+			Input:   "0 DATA\n1 EVEN\n2 PLAC A\n1 AGNC B\n1 AGNC C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceRecordDataStructure{
+				EventsRecorded: []EventsRecordedStructure{
+					{
+						SourceJurisdictionPlace: "A",
+					},
+				},
+				ResponsibleAgency: "B",
+			},
+		},
 	})
 }
