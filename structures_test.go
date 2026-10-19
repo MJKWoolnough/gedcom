@@ -5440,5 +5440,26 @@ func TestEventsRecordedStructure(t *testing.T) {
 			Input:  "0 EVEN\n",
 			Output: EventsRecordedStructure{},
 		},
+		{ // 2
+			Input: "0 EVEN\n1 DATE 2006-01-02",
+			Output: EventsRecordedStructure{
+				DatePeriod: "2006-01-02",
+			},
+		},
+		{ // 3
+			Input: "0 EVEN\n1 DATE\n",
+			Err:   ErrContext{"EventsRecordedStructure", cDATE, ErrInvalidLength{"DatePeriod", "", 7, 35}},
+		},
+		{ // 4
+			Input: "0 EVEN\n1 DATE 2006-01-02\n1 DATE 2012-12-25",
+			Err:   ErrContext{"EventsRecordedStructure", cDATE, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 EVEN\n1 DATE 2006-01-02\n1 DATE 2012-12-25",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: EventsRecordedStructure{
+				DatePeriod: "2006-01-02",
+			},
+		},
 	})
 }
