@@ -5406,5 +5406,30 @@ func TestSourceRecordDataStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 12
+			Input: "0 DATA\n1 EVEN\n2 PLAC A\n1 UNKNOWN\n",
+			Err:   ErrContext{"SourceRecordDataStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 13
+			Input: "0 DATA\n1 EVEN\n2 PLAC A\n1 _UNKNOWN\n",
+			Output: SourceRecordDataStructure{
+				EventsRecorded: []EventsRecordedStructure{
+					{
+						SourceJurisdictionPlace: "A",
+					},
+				},
+			},
+		},
+		{ // 14
+			Input:   "0 DATA\n1 EVEN\n2 PLAC A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SourceRecordDataStructure{
+				EventsRecorded: []EventsRecordedStructure{
+					{
+						SourceJurisdictionPlace: "A",
+					},
+				},
+			},
+		},
 	})
 }
