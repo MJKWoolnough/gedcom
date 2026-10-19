@@ -5433,3 +5433,12 @@ func TestSourceRecordDataStructure(t *testing.T) {
 		},
 	})
 }
+
+func TestEventsRecordedStructure(t *testing.T) {
+	test(t, []testData[EventsRecordedStructure]{
+		{ // 1
+			Input:  "0 EVEN\n",
+			Output: EventsRecordedStructure{},
+		},
+	})
+}
