@@ -5363,5 +5363,48 @@ func TestSourceRecordDataStructure(t *testing.T) {
 				ResponsibleAgency: "B",
 			},
 		},
+		{ // 9
+			Input: "0 DATA\n1 EVEN\n2 PLAC A\n1 @A@ NOTE\n",
+			Output: SourceRecordDataStructure{
+				EventsRecorded: []EventsRecordedStructure{
+					{
+						SourceJurisdictionPlace: "A",
+					},
+				},
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 10
+			Input: "0 DATA\n1 EVEN\n2 PLAC A\n1 NOTE\n",
+			Err:   ErrContext{"SourceRecordDataStructure", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 11
+			Input: "0 DATA\n1 EVEN\n2 PLAC A\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: SourceRecordDataStructure{
+				EventsRecorded: []EventsRecordedStructure{
+					{
+						SourceJurisdictionPlace: "A",
+					},
+				},
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
