@@ -5461,5 +5461,26 @@ func TestEventsRecordedStructure(t *testing.T) {
 				DatePeriod: "2006-01-02",
 			},
 		},
+		{ // 6
+			Input: "0 EVEN\n1 PLAC A",
+			Output: EventsRecordedStructure{
+				SourceJurisdictionPlace: "A",
+			},
+		},
+		{ // 7
+			Input: "0 EVEN\n1 PLAC\n",
+			Err:   ErrContext{"EventsRecordedStructure", cPLAC, ErrInvalidLength{"SourceJurisdictionPlace", "", 1, 120}},
+		},
+		{ // 8
+			Input: "0 EVEN\n1 PLAC A\n1 PLAC B",
+			Err:   ErrContext{"EventsRecordedStructure", cPLAC, ErrSingleMultiple},
+		},
+		{ // 9
+			Input:   "0 EVEN\n1 PLAC A\n1 PLAC B",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: EventsRecordedStructure{
+				SourceJurisdictionPlace: "A",
+			},
+		},
 	})
 }
