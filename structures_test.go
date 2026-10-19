@@ -5483,5 +5483,28 @@ func TestSubmissionRecord(t *testing.T) {
 				ID: "A",
 			},
 		},
+		{ // 3
+			Input: "0 @A@ SUBM\n1 FAMF B",
+			Output: SubmissionRecord{
+				ID:               "A",
+				NameOfFamilyFile: "B",
+			},
+		},
+		{ // 4
+			Input: "0 @A@ SUBM\n1 FAMF\n",
+			Err:   ErrContext{"SubmissionRecord", cFAMF, ErrInvalidLength{"NameOfFamilyFile", "", 1, 20}},
+		},
+		{ // 5
+			Input: "0 @A@ SUBM\n1 FAMF B\n1 FAMF C",
+			Err:   ErrContext{"SubmissionRecord", cFAMF, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 @A@ SUBM\n1 FAMF B\n1 FAMF C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmissionRecord{
+				ID:               "A",
+				NameOfFamilyFile: "B",
+			},
+		},
 	})
 }
