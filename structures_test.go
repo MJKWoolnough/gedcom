@@ -5470,3 +5470,18 @@ func TestEventsRecordedStructure(t *testing.T) {
 		},
 	})
 }
+
+func TestSubmissionRecord(t *testing.T) {
+	test(t, []testData[SubmissionRecord]{
+		{ // 1
+			Input: "0 SUBM\n",
+			Err:   ErrContext{"SubmissionRecord", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ SUBM\n",
+			Output: SubmissionRecord{
+				ID: "A",
+			},
+		},
+	})
+}
