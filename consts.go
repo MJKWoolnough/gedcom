@@ -156,7 +156,6 @@ const (
 	cPHON       = "PHON"
 	cphoto      = "photo"
 	cPLAC       = "PLAC"
-	cPLACE      = "PLACE"
 	cPLUV       = "PLUV"
 	cPOST       = "POST"
 	cPRAI       = "PRAI"
