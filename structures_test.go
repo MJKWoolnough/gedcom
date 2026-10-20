@@ -5598,5 +5598,28 @@ func TestSubmissionRecord(t *testing.T) {
 				OrdinanceProcessFlag: "yes",
 			},
 		},
+		{ // 23
+			Input: "0 @A@ SUBM\n1 RIN B",
+			Output: SubmissionRecord{
+				ID:                "A",
+				AutomatedRecordID: "B",
+			},
+		},
+		{ // 24
+			Input: "0 @A@ SUBM\n1 RIN\n",
+			Err:   ErrContext{"SubmissionRecord", cRIN, ErrInvalidLength{"AutomatedRecordID", "", 1, 12}},
+		},
+		{ // 25
+			Input: "0 @A@ SUBM\n1 RIN B\n1 RIN C",
+			Err:   ErrContext{"SubmissionRecord", cRIN, ErrSingleMultiple},
+		},
+		{ // 26
+			Input:   "0 @A@ SUBM\n1 RIN B\n1 RIN C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmissionRecord{
+				ID:                "A",
+				AutomatedRecordID: "B",
+			},
+		},
 	})
 }
