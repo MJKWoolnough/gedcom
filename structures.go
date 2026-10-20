@@ -2795,7 +2795,6 @@ func (s *SubmitterRecord) parse(l *Line, o options) error {
 	var SubmitterNameSet, AddressSet, SubmitterRegisteredRFNSet, AutomatedRecordIDSet, ChangeDateSet bool
 
 	s.PhoneNumber = make([]PhoneNumber, 0, 3)
-
 	s.LanguagePreference = make([]LanguagePreference, 0, 3)
 
 	for _, sl := range l.Sub {
