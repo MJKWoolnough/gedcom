@@ -5529,5 +5529,28 @@ func TestSubmissionRecord(t *testing.T) {
 				TempleCode: "BBBB",
 			},
 		},
+		{ // 11
+			Input: "0 @A@ SUBM\n1 ANCE 1",
+			Output: SubmissionRecord{
+				ID:                     "A",
+				GenerationsOfAncestors: 1,
+			},
+		},
+		{ // 12
+			Input: "0 @A@ SUBM\n1 ANCE\n",
+			Err:   ErrContext{"SubmissionRecord", cANCE, ErrInvalidLength{"GenerationsOfAncestors", "", 1, 4}},
+		},
+		{ // 13
+			Input: "0 @A@ SUBM\n1 ANCE 1\n1 ANCE 2",
+			Err:   ErrContext{"SubmissionRecord", cANCE, ErrSingleMultiple},
+		},
+		{ // 14
+			Input:   "0 @A@ SUBM\n1 ANCE 1\n1 ANCE 2",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmissionRecord{
+				ID:                     "A",
+				GenerationsOfAncestors: 1,
+			},
+		},
 	})
 }
