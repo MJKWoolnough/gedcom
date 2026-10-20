@@ -5621,5 +5621,22 @@ func TestSubmissionRecord(t *testing.T) {
 				AutomatedRecordID: "B",
 			},
 		},
+		{ // 27
+			Input: "0 @A@ SUBM\n1 UNKNOWN\n",
+			Err:   ErrContext{"SubmissionRecord", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 28
+			Input: "0 @A@ SUBM\n1 _UNKNOWN\n",
+			Output: SubmissionRecord{
+				ID: "A",
+			},
+		},
+		{ // 29
+			Input:   "0 @A@ SUBM\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SubmissionRecord{
+				ID: "A",
+			},
+		},
 	})
 }
