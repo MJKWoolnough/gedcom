@@ -5506,5 +5506,28 @@ func TestSubmissionRecord(t *testing.T) {
 				NameOfFamilyFile: "B",
 			},
 		},
+		{ // 7
+			Input: "0 @A@ SUBM\n1 TEMP BBBB",
+			Output: SubmissionRecord{
+				ID:         "A",
+				TempleCode: "BBBB",
+			},
+		},
+		{ // 8
+			Input: "0 @A@ SUBM\n1 TEMP\n",
+			Err:   ErrContext{"SubmissionRecord", cTEMP, ErrInvalidLength{"TempleCode", "", 4, 5}},
+		},
+		{ // 9
+			Input: "0 @A@ SUBM\n1 TEMP BBBB\n1 TEMP CCCC",
+			Err:   ErrContext{"SubmissionRecord", cTEMP, ErrSingleMultiple},
+		},
+		{ // 10
+			Input:   "0 @A@ SUBM\n1 TEMP BBBB\n1 TEMP CCCC",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmissionRecord{
+				ID:         "A",
+				TempleCode: "BBBB",
+			},
+		},
 	})
 }
