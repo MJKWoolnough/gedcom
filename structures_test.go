@@ -5552,5 +5552,28 @@ func TestSubmissionRecord(t *testing.T) {
 				GenerationsOfAncestors: 1,
 			},
 		},
+		{ // 15
+			Input: "0 @A@ SUBM\n1 DESC 1",
+			Output: SubmissionRecord{
+				ID:                       "A",
+				GenerationsOfDescendants: 1,
+			},
+		},
+		{ // 16
+			Input: "0 @A@ SUBM\n1 DESC\n",
+			Err:   ErrContext{"SubmissionRecord", cDESC, ErrInvalidLength{"GenerationsOfDescendants", "", 1, 4}},
+		},
+		{ // 17
+			Input: "0 @A@ SUBM\n1 DESC 1\n1 DESC 2",
+			Err:   ErrContext{"SubmissionRecord", cDESC, ErrSingleMultiple},
+		},
+		{ // 18
+			Input:   "0 @A@ SUBM\n1 DESC 1\n1 DESC 2",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmissionRecord{
+				ID:                       "A",
+				GenerationsOfDescendants: 1,
+			},
+		},
 	})
 }
