@@ -136,6 +136,8 @@ function processStructure() {
 
 		if [ $namedTags -gt 0 ]; then
 			if [ ${#maxes[@]} -gt 0 ]; then
+				declare nl=false;
+
 				for m in "${maxes[@]}"; do
 					pType="$(echo "$m" | cut -d':' -f1)";
 					pName="$(echo "$m" | cut -d':' -f2)";
@@ -143,9 +145,14 @@ function processStructure() {
 
 					if [ "$pMax" != "M" ]; then
 						echo "	s.$pName = make([]$pType, 0, $pMax)";
-						echo "";
+
+						nl=true;
 					fi;
 				done;
+
+				if $nl; then
+					echo;
+				fi;
 			fi;
 
 			if [ -z "$embedded" ]; then
