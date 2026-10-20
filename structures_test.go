@@ -5575,5 +5575,28 @@ func TestSubmissionRecord(t *testing.T) {
 				GenerationsOfDescendants: 1,
 			},
 		},
+		{ // 19
+			Input: "0 @A@ SUBM\n1 ORDI yes",
+			Output: SubmissionRecord{
+				ID:                   "A",
+				OrdinanceProcessFlag: "yes",
+			},
+		},
+		{ // 20
+			Input: "0 @A@ SUBM\n1 ORDI\n",
+			Err:   ErrContext{"SubmissionRecord", cORDI, ErrInvalidValue{"OrdinanceProcessFlag", ""}},
+		},
+		{ // 21
+			Input: "0 @A@ SUBM\n1 ORDI yes\n1 ORDI no",
+			Err:   ErrContext{"SubmissionRecord", cORDI, ErrSingleMultiple},
+		},
+		{ // 22
+			Input:   "0 @A@ SUBM\n1 ORDI yes\n1 ORDI no",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmissionRecord{
+				ID:                   "A",
+				OrdinanceProcessFlag: "yes",
+			},
+		},
 	})
 }
