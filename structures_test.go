@@ -5640,3 +5640,25 @@ func TestSubmissionRecord(t *testing.T) {
 		},
 	})
 }
+
+func TestSubmitterRecord(t *testing.T) {
+	test(t, []testData[SubmitterRecord]{
+		{ // 1
+			Input: "0 SUBN\n",
+			Err:   ErrContext{"SubmitterRecord", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ SUBN\n",
+			Err:   ErrContext{"SubmitterRecord", cNAME, ErrRequiredMissing},
+		},
+		{ // 3
+			Input: "0 @A@ SUBN\n1 NAME B",
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+			},
+		},
+	})
+}
