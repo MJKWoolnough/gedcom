@@ -5975,3 +5975,18 @@ func TestSubmitterRecord(t *testing.T) {
 		},
 	})
 }
+
+func TestAddressStructure(t *testing.T) {
+	test(t, []testData[AddressStructure]{
+		{ // 1
+			Input: "0 ADDR\n",
+			Err:   ErrContext{"AddressStructure", "line_value", ErrInvalidLength{"AddressLine", "", 1, 60}},
+		},
+		{ // 2
+			Input: "0 ADDR A",
+			Output: AddressStructure{
+				AddressLine: "A",
+			},
+		},
+	})
+}
