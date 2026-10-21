@@ -5756,5 +5756,46 @@ func TestSubmitterRecord(t *testing.T) {
 				LanguagePreference: make([]LanguagePreference, 0, 3),
 			},
 		},
+		{ // 17
+			Input: "0 @A@ SUBN\n1 NAME B\n1 @A@ OBJE\n",
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 18
+			Input: "0 @A@ SUBN\n1 NAME B\n1 OBJE\n",
+			Err:   ErrContext{"SubmitterRecord", cOBJE, ErrContext{"MultimediaLinkFile", cFORM, ErrRequiredMissing}},
+		},
+		{ // 19
+			Input: "0 @A@ SUBN\n1 NAME B\n1 @A@ OBJE\n1 @B@ OBJE\n",
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &MultimediaLinkID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
