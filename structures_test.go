@@ -5797,5 +5797,63 @@ func TestSubmitterRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 11
+			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG C",
+			Output: SubmitterRecord{
+				ID:            "A",
+				SubmitterName: "B",
+				PhoneNumber:   make([]PhoneNumber, 0, 3),
+				LanguagePreference: []LanguagePreference{
+					"C",
+				},
+			},
+		},
+		{ // 12
+			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG\n",
+			Err:   ErrContext{"SubmitterRecord", cLANG, ErrInvalidLength{"LanguagePreference", "", 1, 90}},
+		},
+		{ // 13
+			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG C\n1 LANG D",
+			Output: SubmitterRecord{
+				ID:            "A",
+				SubmitterName: "B",
+				PhoneNumber:   make([]PhoneNumber, 0, 3),
+				LanguagePreference: []LanguagePreference{
+					"C",
+					"D",
+				},
+			},
+		},
+		{ // 14
+			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG C\n1 LANG D\n1 LANG E",
+			Output: SubmitterRecord{
+				ID:            "A",
+				SubmitterName: "B",
+				PhoneNumber:   make([]PhoneNumber, 0, 3),
+				LanguagePreference: []LanguagePreference{
+					"C",
+					"D",
+					"E",
+				},
+			},
+		},
+		{ // 15
+			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG C\n1 LANG D\n1 LANG E\n1 LANG F",
+			Err:   ErrContext{"SubmitterRecord", cLANG, ErrTooMany(3)},
+		},
+		{ // 16
+			Input:   "0 @A@ SUBN\n1 NAME B\n1 LANG C\n1 LANG D\n1 LANG E\n1 LANG F",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmitterRecord{
+				ID:            "A",
+				SubmitterName: "B",
+				PhoneNumber:   make([]PhoneNumber, 0, 3),
+				LanguagePreference: []LanguagePreference{
+					"C",
+					"D",
+					"E",
+				},
+			},
+		},
 	})
 }
