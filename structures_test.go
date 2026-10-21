@@ -5950,5 +5950,28 @@ func TestSubmitterRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 38
+			Input: "0 @A@ SUBN\n1 NAME B\n1 UNKNOWN\n",
+			Err:   ErrContext{"SubmitterRecord", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 39
+			Input: "0 @A@ SUBN\n1 NAME B\n1 _UNKNOWN\n",
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+			},
+		},
+		{ // 40
+			Input:   "0 @A@ SUBN\n1 NAME B\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+			},
+		},
 	})
 }
