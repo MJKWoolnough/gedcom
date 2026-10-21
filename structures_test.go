@@ -5855,5 +5855,34 @@ func TestSubmitterRecord(t *testing.T) {
 				},
 			},
 		},
+		{ // 17
+			Input: "0 @A@ SUBN\n1 NAME B\n1 RFN C",
+			Output: SubmitterRecord{
+				ID:                     "A",
+				SubmitterName:          "B",
+				PhoneNumber:            make([]PhoneNumber, 0, 3),
+				LanguagePreference:     make([]LanguagePreference, 0, 3),
+				SubmitterRegisteredRFN: "C",
+			},
+		},
+		{ // 18
+			Input: "0 @A@ SUBN\n1 NAME B\n1 RFN\n",
+			Err:   ErrContext{"SubmitterRecord", cRFN, ErrInvalidLength{"SubmitterRegisteredRFN", "", 1, 30}},
+		},
+		{ // 19
+			Input: "0 @A@ SUBN\n1 NAME B\n1 RFN C\n1 RFN D",
+			Err:   ErrContext{"SubmitterRecord", cRFN, ErrSingleMultiple},
+		},
+		{ // 20
+			Input:   "0 @A@ SUBN\n1 NAME B\n1 RFN C\n1 RFN D",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmitterRecord{
+				ID:                     "A",
+				SubmitterName:          "B",
+				PhoneNumber:            make([]PhoneNumber, 0, 3),
+				LanguagePreference:     make([]LanguagePreference, 0, 3),
+				SubmitterRegisteredRFN: "C",
+			},
+		},
 	})
 }
