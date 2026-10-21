@@ -5913,5 +5913,42 @@ func TestSubmitterRecord(t *testing.T) {
 				AutomatedRecordID:  "C",
 			},
 		},
+		{ // 34
+			Input: "0 @A@ SUBN\n1 NAME B\n1 CHAN\n2 DATE 2006-05-04",
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
+		{ // 35
+			Input: "0 @A@ SUBN\n1 NAME B\n1 CHAN\n",
+			Err:   ErrContext{"SubmitterRecord", cCHAN, ErrContext{"ChangeDateStructure", cDATE, ErrRequiredMissing}},
+		},
+		{ // 36
+			Input: "0 @A@ SUBN\n1 NAME B\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Err:   ErrContext{"SubmitterRecord", cCHAN, ErrSingleMultiple},
+		},
+		{ // 37
+			Input:   "0 @A@ SUBN\n1 NAME B\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+				ChangeDate: ChangeDateStructure{
+					Date: ChangeDateTime{
+						ChangeDate: "2006-05-04",
+					},
+				},
+			},
+		},
 	})
 }
