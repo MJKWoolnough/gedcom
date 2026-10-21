@@ -5711,5 +5711,50 @@ func TestSubmitterRecord(t *testing.T) {
 				LanguagePreference: make([]LanguagePreference, 0, 3),
 			},
 		},
+		{ // 11
+			Input: "0 @A@ SUBN\n1 NAME B\n1 PHON number",
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        []PhoneNumber{"number"},
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+			},
+		},
+		{ // 12
+			Input: "0 @A@ SUBN\n1 NAME B\n1 PHON\n",
+			Err:   ErrContext{"SubmitterRecord", cPHON, ErrInvalidLength{"PhoneNumber", "", 1, 25}},
+		},
+		{ // 13
+			Input: "0 @A@ SUBN\n1 NAME B\n1 PHON number 1\n1 PHON number 2",
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        []PhoneNumber{"number 1", "number 2"},
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+			},
+		},
+		{ // 14
+			Input: "0 @A@ SUBN\n1 NAME B\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3",
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        []PhoneNumber{"number 1", "number 2", "number 3"},
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+			},
+		},
+		{ // 15
+			Input: "0 @A@ SUBN\n1 NAME B\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3\n1 PHON number 4",
+			Err:   ErrContext{"SubmitterRecord", cPHON, ErrTooMany(3)},
+		},
+		{ // 16
+			Input:   "0 @A@ SUBN\n1 NAME B\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3\n1 PHON number 4",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        []PhoneNumber{"number 1", "number 2", "number 3"},
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+			},
+		},
 	})
 }
