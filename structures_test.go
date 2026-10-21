@@ -5661,6 +5661,24 @@ func TestSubmitterRecord(t *testing.T) {
 			},
 		},
 		{ // 4
+			Input: "0 @A@ SUBN\n1 NAME\n",
+			Err:   ErrContext{"SubmitterRecord", cNAME, ErrInvalidLength{"SubmitterName", "", 1, 60}},
+		},
+		{ // 5
+			Input: "0 @A@ SUBN\n1 NAME B\n1 NAME C",
+			Err:   ErrContext{"SubmitterRecord", cNAME, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 @A@ SUBN\n1 NAME B\n1 NAME C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+			},
+		},
+		{ // 7
 			Input: "0 @A@ SUBN\n1 NAME B\n1 ADDR C",
 			Output: SubmitterRecord{
 				ID:            "A",
@@ -5672,15 +5690,15 @@ func TestSubmitterRecord(t *testing.T) {
 				LanguagePreference: make([]LanguagePreference, 0, 3),
 			},
 		},
-		{ // 5
+		{ // 8
 			Input: "0 @A@ SUBN\n1 NAME B\n1 ADDR\n",
 			Err:   ErrContext{"SubmitterRecord", cADDR, ErrContext{"AddressStructure", "line_value", ErrInvalidLength{"AddressLine", "", 1, 60}}},
 		},
-		{ // 6
+		{ // 9
 			Input: "0 @A@ SUBN\n1 NAME B\n1 ADDR C\n1 ADDR D",
 			Err:   ErrContext{"SubmitterRecord", cADDR, ErrSingleMultiple},
 		},
-		{ // 7
+		{ // 10
 			Input:   "0 @A@ SUBN\n1 NAME B\n1 ADDR C\n1 ADDR D",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: SubmitterRecord{
