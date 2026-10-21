@@ -5797,7 +5797,7 @@ func TestSubmitterRecord(t *testing.T) {
 				},
 			},
 		},
-		{ // 11
+		{ // 20
 			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG C",
 			Output: SubmitterRecord{
 				ID:            "A",
@@ -5808,11 +5808,11 @@ func TestSubmitterRecord(t *testing.T) {
 				},
 			},
 		},
-		{ // 12
+		{ // 21
 			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG\n",
 			Err:   ErrContext{"SubmitterRecord", cLANG, ErrInvalidLength{"LanguagePreference", "", 1, 90}},
 		},
-		{ // 13
+		{ // 22
 			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG C\n1 LANG D",
 			Output: SubmitterRecord{
 				ID:            "A",
@@ -5824,7 +5824,7 @@ func TestSubmitterRecord(t *testing.T) {
 				},
 			},
 		},
-		{ // 14
+		{ // 23
 			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG C\n1 LANG D\n1 LANG E",
 			Output: SubmitterRecord{
 				ID:            "A",
@@ -5837,11 +5837,11 @@ func TestSubmitterRecord(t *testing.T) {
 				},
 			},
 		},
-		{ // 15
+		{ // 24
 			Input: "0 @A@ SUBN\n1 NAME B\n1 LANG C\n1 LANG D\n1 LANG E\n1 LANG F",
 			Err:   ErrContext{"SubmitterRecord", cLANG, ErrTooMany(3)},
 		},
-		{ // 16
+		{ // 25
 			Input:   "0 @A@ SUBN\n1 NAME B\n1 LANG C\n1 LANG D\n1 LANG E\n1 LANG F",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: SubmitterRecord{
@@ -5855,7 +5855,7 @@ func TestSubmitterRecord(t *testing.T) {
 				},
 			},
 		},
-		{ // 17
+		{ // 26
 			Input: "0 @A@ SUBN\n1 NAME B\n1 RFN C",
 			Output: SubmitterRecord{
 				ID:                     "A",
@@ -5865,15 +5865,15 @@ func TestSubmitterRecord(t *testing.T) {
 				SubmitterRegisteredRFN: "C",
 			},
 		},
-		{ // 18
+		{ // 27
 			Input: "0 @A@ SUBN\n1 NAME B\n1 RFN\n",
 			Err:   ErrContext{"SubmitterRecord", cRFN, ErrInvalidLength{"SubmitterRegisteredRFN", "", 1, 30}},
 		},
-		{ // 19
+		{ // 28
 			Input: "0 @A@ SUBN\n1 NAME B\n1 RFN C\n1 RFN D",
 			Err:   ErrContext{"SubmitterRecord", cRFN, ErrSingleMultiple},
 		},
-		{ // 20
+		{ // 29
 			Input:   "0 @A@ SUBN\n1 NAME B\n1 RFN C\n1 RFN D",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: SubmitterRecord{
@@ -5882,6 +5882,35 @@ func TestSubmitterRecord(t *testing.T) {
 				PhoneNumber:            make([]PhoneNumber, 0, 3),
 				LanguagePreference:     make([]LanguagePreference, 0, 3),
 				SubmitterRegisteredRFN: "C",
+			},
+		},
+		{ // 30
+			Input: "0 @A@ SUBN\n1 NAME B\n1 RIN C",
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+				AutomatedRecordID:  "C",
+			},
+		},
+		{ // 31
+			Input: "0 @A@ SUBN\n1 NAME B\n1 RIN\n",
+			Err:   ErrContext{"SubmitterRecord", cRIN, ErrInvalidLength{"AutomatedRecordID", "", 1, 12}},
+		},
+		{ // 32
+			Input: "0 @A@ SUBM\n1 RIN B\n1 RIN C",
+			Err:   ErrContext{"SubmitterRecord", cRIN, ErrSingleMultiple},
+		},
+		{ // 33
+			Input:   "0 @A@ SUBN\n1 NAME B\n1 RIN C\n1 RIN D",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SubmitterRecord{
+				ID:                 "A",
+				SubmitterName:      "B",
+				PhoneNumber:        make([]PhoneNumber, 0, 3),
+				LanguagePreference: make([]LanguagePreference, 0, 3),
+				AutomatedRecordID:  "C",
 			},
 		},
 	})
