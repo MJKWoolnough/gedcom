@@ -6145,3 +6145,28 @@ func TestAddressStructure(t *testing.T) {
 		},
 	})
 }
+
+func TestAssociationStructure(t *testing.T) {
+	test(t, []testData[AssociationStructure]{
+		{ // 1
+			Input: "0 ASSO\n",
+			Err:   ErrContext{"AssociationStructure", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ ASSO\n",
+			Err:   ErrContext{"AssociationStructure", cRELA, ErrRequiredMissing},
+		},
+		{ // 3
+			Input: "0 @A@ ASSO\n1 RELA B\n",
+			Err:   ErrContext{"AssociationStructure", cTYPE, ErrRequiredMissing},
+		},
+		{ // 4
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM",
+			Output: AssociationStructure{
+				ID:         "A",
+				Relation:   "B",
+				RecordType: cFAM,
+			},
+		},
+	})
+}
