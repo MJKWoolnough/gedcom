@@ -6057,5 +6057,28 @@ func TestAddressStructure(t *testing.T) {
 				City:        "B",
 			},
 		},
+		{ // 15
+			Input: "0 ADDR A\n1 STAE B",
+			Output: AddressStructure{
+				AddressLine: "A",
+				State:       "B",
+			},
+		},
+		{ // 16
+			Input: "0 ADDR A\n1 STAE\n",
+			Err:   ErrContext{"AddressStructure", cSTAE, ErrInvalidLength{"AddressState", "", 1, 60}},
+		},
+		{ // 17
+			Input: "0 ADDR A\n1 STAE B\n1 STAE C",
+			Err:   ErrContext{"AddressStructure", cSTAE, ErrSingleMultiple},
+		},
+		{ // 18
+			Input:   "0 ADDR A\n1 STAE B\n1 STAE C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: AddressStructure{
+				AddressLine: "A",
+				State:       "B",
+			},
+		},
 	})
 }
