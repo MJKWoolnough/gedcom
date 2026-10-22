@@ -6185,5 +6185,22 @@ func TestAssociationStructure(t *testing.T) {
 				RecordType: cFAM,
 			},
 		},
+		{ // 8
+			Input: "0 @A@ ASSO\n1 RELA\n1 TYPE FAM\n",
+			Err:   ErrContext{"AssociationStructure", cRELA, ErrInvalidLength{"RelationIsDescriptor", "", 1, 25}},
+		},
+		{ // 9
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 RELA C",
+			Err:   ErrContext{"AssociationStructure", cRELA, ErrSingleMultiple},
+		},
+		{ // 10
+			Input:   "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 RELA C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: AssociationStructure{
+				ID:         "A",
+				Relation:   "B",
+				RecordType: cFAM,
+			},
+		},
 	})
 }
