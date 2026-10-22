@@ -6103,5 +6103,28 @@ func TestAddressStructure(t *testing.T) {
 				PostalCode:  "B",
 			},
 		},
+		{ // 23
+			Input: "0 ADDR A\n1 CTRY B",
+			Output: AddressStructure{
+				AddressLine: "A",
+				Country:     "B",
+			},
+		},
+		{ // 24
+			Input: "0 ADDR A\n1 CTRY\n",
+			Err:   ErrContext{"AddressStructure", cCTRY, ErrInvalidLength{"AddressCountry", "", 1, 60}},
+		},
+		{ // 25
+			Input: "0 ADDR A\n1 CTRY B\n1 CTRY C",
+			Err:   ErrContext{"AddressStructure", cCTRY, ErrSingleMultiple},
+		},
+		{ // 26
+			Input:   "0 ADDR A\n1 CTRY B\n1 CTRY C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: AddressStructure{
+				AddressLine: "A",
+				Country:     "B",
+			},
+		},
 	})
 }
