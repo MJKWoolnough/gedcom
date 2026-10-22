@@ -6168,5 +6168,22 @@ func TestAssociationStructure(t *testing.T) {
 				RecordType: cFAM,
 			},
 		},
+		{ // 5
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE\n",
+			Err:   ErrContext{"AssociationStructure", cTYPE, ErrInvalidValue{"RecordType", ""}},
+		},
+		{ // 6
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 TYPE INDI\n",
+			Err:   ErrContext{"AssociationStructure", cTYPE, ErrSingleMultiple},
+		},
+		{ // 7
+			Input:   "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 TYPE INDI\n",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: AssociationStructure{
+				ID:         "A",
+				Relation:   "B",
+				RecordType: cFAM,
+			},
+		},
 	})
 }
