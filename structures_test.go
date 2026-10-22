@@ -6080,5 +6080,28 @@ func TestAddressStructure(t *testing.T) {
 				State:       "B",
 			},
 		},
+		{ // 19
+			Input: "0 ADDR A\n1 POST B",
+			Output: AddressStructure{
+				AddressLine: "A",
+				PostalCode:  "B",
+			},
+		},
+		{ // 20
+			Input: "0 ADDR A\n1 POST\n",
+			Err:   ErrContext{"AddressStructure", cPOST, ErrInvalidLength{"AddressPostalCode", "", 1, 10}},
+		},
+		{ // 21
+			Input: "0 ADDR A\n1 POST B\n1 POST C",
+			Err:   ErrContext{"AddressStructure", cPOST, ErrSingleMultiple},
+		},
+		{ // 22
+			Input:   "0 ADDR A\n1 POST B\n1 POST C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: AddressStructure{
+				AddressLine: "A",
+				PostalCode:  "B",
+			},
+		},
 	})
 }
