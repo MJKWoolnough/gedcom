@@ -6034,5 +6034,28 @@ func TestAddressStructure(t *testing.T) {
 				AddressLine2: "B",
 			},
 		},
+		{ // 11
+			Input: "0 ADDR A\n1 CITY B",
+			Output: AddressStructure{
+				AddressLine: "A",
+				City:        "B",
+			},
+		},
+		{ // 12
+			Input: "0 ADDR A\n1 CITY\n",
+			Err:   ErrContext{"AddressStructure", cCITY, ErrInvalidLength{"AddressCity", "", 1, 60}},
+		},
+		{ // 13
+			Input: "0 ADDR A\n1 CITY B\n1 CITY C",
+			Err:   ErrContext{"AddressStructure", cCITY, ErrSingleMultiple},
+		},
+		{ // 14
+			Input:   "0 ADDR A\n1 CITY B\n1 CITY C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: AddressStructure{
+				AddressLine: "A",
+				City:        "B",
+			},
+		},
 	})
 }
