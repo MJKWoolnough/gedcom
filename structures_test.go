@@ -5406,6 +5406,17 @@ func TestSourceRecordDataStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 12
+			Input: "0 DATA\n1 UNKNOWN\n",
+			Err:   ErrContext{"SourceRecordDataStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 13
+			Input: "0 DATA\n1 _UNKNOWN\n",
+		},
+		{ // 14
+			Input:   "0 DATA\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+		},
 	})
 }
 
