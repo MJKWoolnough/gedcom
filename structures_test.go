@@ -6126,5 +6126,22 @@ func TestAddressStructure(t *testing.T) {
 				Country:     "B",
 			},
 		},
+		{ // 27
+			Input: "0 ADDR A\n1 UNKNOWN\n",
+			Err:   ErrContext{"AddressStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 28
+			Input: "0 ADDR A\n1 _UNKNOWN\n",
+			Output: AddressStructure{
+				AddressLine: "A",
+			},
+		},
+		{ // 29
+			Input:   "0 ADDR A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: AddressStructure{
+				AddressLine: "A",
+			},
+		},
 	})
 }
