@@ -6011,5 +6011,28 @@ func TestAddressStructure(t *testing.T) {
 				AddressLine1: "B",
 			},
 		},
+		{ // 7
+			Input: "0 ADDR A\n1 ADR2 B",
+			Output: AddressStructure{
+				AddressLine:  "A",
+				AddressLine2: "B",
+			},
+		},
+		{ // 8
+			Input: "0 ADDR A\n1 ADR2\n",
+			Err:   ErrContext{"AddressStructure", cADR2, ErrInvalidLength{"AddressLine2", "", 1, 60}},
+		},
+		{ // 9
+			Input: "0 ADDR A\n1 ADR2 B\n1 ADR2 C",
+			Err:   ErrContext{"AddressStructure", cADR2, ErrSingleMultiple},
+		},
+		{ // 10
+			Input:   "0 ADDR A\n1 ADR2 B\n1 ADR2 C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: AddressStructure{
+				AddressLine:  "A",
+				AddressLine2: "B",
+			},
+		},
 	})
 }
