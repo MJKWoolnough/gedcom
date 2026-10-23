@@ -6389,5 +6389,22 @@ func TestChangeDateStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 3
+			Input: "0 CHAN\n1 DATE\n",
+			Err:   ErrContext{"ChangeDateStructure", cDATE, ErrContext{"ChangeDateTime", "line_value", ErrInvalidLength{"ChangeDate", "", 10, 11}}},
+		},
+		{ // 4
+			Input: "0 CHAN\n1 DATE 2006-05-01\n1 DATE 2007-06-02",
+			Err:   ErrContext{"ChangeDateStructure", cDATE, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 CHAN\n1 DATE 2006-05-01\n1 DATE 2007-06-02",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: ChangeDateStructure{
+				Date: ChangeDateTime{
+					ChangeDate: "2006-05-01",
+				},
+			},
+		},
 	})
 }
