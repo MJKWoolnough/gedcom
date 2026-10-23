@@ -6314,3 +6314,20 @@ func TestAssociationStructure(t *testing.T) {
 		},
 	})
 }
+
+func TestChangeDateStructure(t *testing.T) {
+	test(t, []testData[ChangeDateStructure]{
+		{ // 1
+			Input: "0 CHAN\n",
+			Err:   ErrContext{"ChangeDateStructure", cDATE, ErrRequiredMissing},
+		},
+		{ // 2
+			Input: "0 CHAN\n1 DATE 2006-05-01",
+			Output: ChangeDateStructure{
+				Date: ChangeDateTime{
+					ChangeDate: "2006-05-01",
+				},
+			},
+		},
+	})
+}
