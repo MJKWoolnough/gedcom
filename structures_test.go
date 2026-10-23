@@ -3290,6 +3290,35 @@ func TestIndividual(t *testing.T) {
 			},
 		},
 		{ // 147
+			Input: "0 @A@ INDI\n1 FAMS @B@\n",
+			Output: Individual{
+				ID: "A",
+				SpouseOf: []SpouseToFamilyLink{
+					{
+						ID: "B",
+					},
+				},
+			},
+		},
+		{ // 148
+			Input: "0 @A@ INDI\n1 FAMS\n",
+			Err:   ErrContext{"Individual", cFAMS, ErrContext{"SpouseToFamilyLink", "line_value", ErrInvalidLength{"Xref", "", 1, 22}}},
+		},
+		{ // 149
+			Input: "0 @A@ INDI\n1 FAMS @B@\n1 FAMS @C@",
+			Output: Individual{
+				ID: "A",
+				SpouseOf: []SpouseToFamilyLink{
+					{
+						ID: "B",
+					},
+					{
+						ID: "C",
+					},
+				},
+			},
+		},
+		{ // 150
 			Input: "0 @A@ INDI\n1 @B@ ASSO\n2 TYPE FAM\n2 RELA C",
 			Output: Individual{
 				ID: "A",
@@ -3302,11 +3331,11 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 148
+		{ // 151
 			Input: "0 @A@ INDI\n1 ASSO\n",
 			Err:   ErrContext{"Individual", cASSO, ErrContext{"AssociationStructure", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}}},
 		},
-		{ // 149
+		{ // 152
 			Input: "0 @A@ INDI\n1 @B@ ASSO\n2 TYPE FAM\n2 RELA C\n1 @C@ ASSO\n2 TYPE FAM\n2 RELA D",
 			Output: Individual{
 				ID: "A",
@@ -3324,7 +3353,7 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 150
+		{ // 153
 			Input: "0 @A@ INDI\n1 ALIA @B@\n",
 			Output: Individual{
 				ID: "A",
@@ -3333,11 +3362,11 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 151
+		{ // 154
 			Input: "0 @A@ INDI\n1 ALIA\n",
 			Err:   ErrContext{"Individual", cALIA, ErrInvalidLength{"Xref", "", 1, 22}},
 		},
-		{ // 152
+		{ // 155
 			Input: "0 @A@ INDI\n1 ALIA @B@\n1 ALIA @C@",
 			Output: Individual{
 				ID: "A",
@@ -3347,7 +3376,7 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 153
+		{ // 156
 			Input: "0 @A@ INDI\n1 ANCI @B@\n",
 			Output: Individual{
 				ID: "A",
@@ -3356,11 +3385,11 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 154
+		{ // 157
 			Input: "0 @A@ INDI\n1 ANCI\n",
 			Err:   ErrContext{"Individual", cANCI, ErrInvalidLength{"Xref", "", 1, 22}},
 		},
-		{ // 155
+		{ // 158
 			Input: "0 @A@ INDI\n1 ANCI @B@\n1 ANCI @C@",
 			Output: Individual{
 				ID: "A",
@@ -3370,7 +3399,7 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 156
+		{ // 159
 			Input: "0 @A@ INDI\n1 DESI @B@\n",
 			Output: Individual{
 				ID: "A",
@@ -3379,11 +3408,11 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 157
+		{ // 160
 			Input: "0 @A@ INDI\n1 DESI\n",
 			Err:   ErrContext{"Individual", cDESI, ErrInvalidLength{"Xref", "", 1, 22}},
 		},
-		{ // 158
+		{ // 161
 			Input: "0 @A@ INDI\n1 DESI @B@\n1 DESI @C@",
 			Output: Individual{
 				ID: "A",
@@ -3393,7 +3422,7 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 159
+		{ // 162
 			Input: "0 @ID@ INDI\n1 @A@ SOUR\n",
 			Output: Individual{
 				ID: "ID",
@@ -3406,11 +3435,11 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 160
+		{ // 163
 			Input: "0 @ID@ INDI\n1 SOUR\n",
 			Err:   ErrContext{"Individual", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
 		},
-		{ // 161
+		{ // 164
 			Input: "0 @ID@ INDI\n1 @A@ SOUR\n1 @B@ SOUR\n",
 			Output: Individual{
 				ID: "ID",
@@ -3428,7 +3457,7 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 162
+		{ // 165
 			Input: "0 @ID@ INDI\n1 @A@ OBJE\n",
 			Output: Individual{
 				ID: "ID",
@@ -3441,11 +3470,11 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 163
+		{ // 166
 			Input: "0 @ID@ INDI\n1 OBJE\n",
 			Err:   ErrContext{"Individual", cOBJE, ErrContext{"MultimediaLinkFile", cFORM, ErrRequiredMissing}},
 		},
-		{ // 164
+		{ // 167
 			Input: "0 @ID@ INDI\n1 @A@ OBJE\n1 @B@ OBJE\n",
 			Output: Individual{
 				ID: "ID",
@@ -3463,7 +3492,7 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 165
+		{ // 168
 			Input: "0 @ID@ INDI\n1 @A@ NOTE\n",
 			Output: Individual{
 				ID: "ID",
@@ -3476,11 +3505,11 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 166
+		{ // 169
 			Input: "0 @ID@ INDI\n1 NOTE\n",
 			Err:   ErrContext{"Individual", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
 		},
-		{ // 167
+		{ // 170
 			Input: "0 @ID@ INDI\n1 @A@ NOTE\n1 @B@ NOTE\n",
 			Output: Individual{
 				ID: "ID",
@@ -3498,22 +3527,22 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 168
+		{ // 171
 			Input: "0 @ID@ INDI\n1 RFN A\n",
 			Output: Individual{
 				ID:              "ID",
 				PermanentRecord: "A",
 			},
 		},
-		{ // 169
+		{ // 172
 			Input: "0 @ID@ INDI\n1 RFN\n",
 			Err:   ErrContext{"Individual", cRFN, ErrInvalidLength{"PermanentRecordFileNumber", "", 1, 90}},
 		},
-		{ // 170
+		{ // 173
 			Input: "0 @ID@ INDI\n1 RFN A\n1 RFN B",
 			Err:   ErrContext{"Individual", cRFN, ErrSingleMultiple},
 		},
-		{ // 171
+		{ // 174
 			Input:   "0 @ID@ INDI\n1 RFN A\n1 RFN B",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Individual{
@@ -3521,22 +3550,22 @@ func TestIndividual(t *testing.T) {
 				PermanentRecord: "A",
 			},
 		},
-		{ // 172
+		{ // 175
 			Input: "0 @ID@ INDI\n1 AFN A\n",
 			Output: Individual{
 				ID:                  "ID",
 				AncestralFileNumber: "A",
 			},
 		},
-		{ // 173
+		{ // 176
 			Input: "0 @ID@ INDI\n1 AFN\n",
 			Err:   ErrContext{"Individual", cAFN, ErrInvalidLength{"AncestralFileNumber", "", 1, 12}},
 		},
-		{ // 174
+		{ // 177
 			Input: "0 @ID@ INDI\n1 AFN A\n1 AFN B",
 			Err:   ErrContext{"Individual", cAFN, ErrSingleMultiple},
 		},
-		{ // 175
+		{ // 178
 			Input:   "0 @ID@ INDI\n1 AFN A\n1 AFN B",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Individual{
@@ -3544,7 +3573,7 @@ func TestIndividual(t *testing.T) {
 				AncestralFileNumber: "A",
 			},
 		},
-		{ // 176
+		{ // 179
 			Input: "0 @ID@ INDI\n1 REFN A\n",
 			Output: Individual{
 				ID: "ID",
@@ -3555,11 +3584,11 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 177
+		{ // 180
 			Input: "0 @ID@ INDI\n1 REFN\n",
 			Err:   ErrContext{"Individual", cREFN, ErrContext{"UserReferenceStructure", "line_value", ErrInvalidLength{"UserReferenceNumber", "", 1, 20}}},
 		},
-		{ // 178
+		{ // 181
 			Input: "0 @ID@ INDI\n1 REFN A\n1 REFN B\n",
 			Output: Individual{
 				ID: "ID",
@@ -3573,22 +3602,22 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 179
+		{ // 182
 			Input: "0 @ID@ INDI\n1 RIN A\n",
 			Output: Individual{
 				ID:                "ID",
 				AutomatedRecordID: "A",
 			},
 		},
-		{ // 180
+		{ // 183
 			Input: "0 @ID@ INDI\n1 RIN\n",
 			Err:   ErrContext{"Individual", cRIN, ErrInvalidLength{"AutomatedRecordID", "", 1, 12}},
 		},
-		{ // 181
+		{ // 184
 			Input: "0 @ID@ INDI\n1 RIN A\n1 RIN B",
 			Err:   ErrContext{"Individual", cRIN, ErrSingleMultiple},
 		},
-		{ // 182
+		{ // 185
 			Input:   "0 @ID@ INDI\n1 RIN A\n1 RIN B",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Individual{
@@ -3596,7 +3625,7 @@ func TestIndividual(t *testing.T) {
 				AutomatedRecordID: "A",
 			},
 		},
-		{ // 183
+		{ // 186
 			Input: "0 @ID@ INDI\n1 CHAN\n2 DATE 2006-05-04",
 			Output: Individual{
 				ID: "ID",
@@ -3607,15 +3636,15 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 184
+		{ // 187
 			Input: "0 @ID@ INDI\n1 CHAN\n",
 			Err:   ErrContext{"Individual", cCHAN, ErrContext{"ChangeDateStructure", cDATE, ErrRequiredMissing}},
 		},
-		{ // 185
+		{ // 188
 			Input: "0 @ID@ INDI\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
 			Err:   ErrContext{"Individual", cCHAN, ErrSingleMultiple},
 		},
-		{ // 186
+		{ // 189
 			Input:   "0 @ID@ INDI\n1 CHAN\n2 DATE 2006-05-04\n1 CHAN\n2 DATE 2000-01-01",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Individual{
@@ -3627,17 +3656,17 @@ func TestIndividual(t *testing.T) {
 				},
 			},
 		},
-		{ // 187
+		{ // 190
 			Input: "0 @ID@ INDI\n1 UNKNOWN\n",
 			Err:   ErrContext{"Individual", "UNKNOWN", ErrUnknownTag},
 		},
-		{ // 188
+		{ // 191
 			Input: "0 @ID@ INDI\n1 _UNKNOWN\n",
 			Output: Individual{
 				ID: "ID",
 			},
 		},
-		{ // 189
+		{ // 192
 			Input:   "0 @ID@ INDI\n1 UNKNOWN\n",
 			Options: []Option{AllowUnknownTags},
 			Output: Individual{
