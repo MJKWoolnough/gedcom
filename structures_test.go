@@ -6406,5 +6406,44 @@ func TestChangeDateStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 6
+			Input: "0 CHAN\n1 DATE 2006-05-01\n1 @A@ NOTE\n",
+			Output: ChangeDateStructure{
+				Date: ChangeDateTime{
+					ChangeDate: "2006-05-01",
+				},
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 7
+			Input: "0 CHAN\n1 DATE 2006-05-01\n1 NOTE\n",
+			Err:   ErrContext{"ChangeDateStructure", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 8
+			Input: "0 CHAN\n1 DATE 2006-05-01\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: ChangeDateStructure{
+				Date: ChangeDateTime{
+					ChangeDate: "2006-05-01",
+				},
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
