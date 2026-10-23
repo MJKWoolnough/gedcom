@@ -6213,5 +6213,44 @@ func TestAssociationStructure(t *testing.T) {
 				RecordType: cFAM,
 			},
 		},
+		{ // 11
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 @A@ NOTE\n",
+			Output: AssociationStructure{
+				ID:         "A",
+				Relation:   "B",
+				RecordType: cFAM,
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 12
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 NOTE\n",
+			Err:   ErrContext{"AssociationStructure", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 13
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: AssociationStructure{
+				ID:         "A",
+				Relation:   "B",
+				RecordType: cFAM,
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
