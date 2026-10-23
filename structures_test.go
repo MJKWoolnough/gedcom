@@ -50,18 +50,22 @@ func TestHeader(t *testing.T) {
 			Options: []Option{AllowMissingRequired},
 		},
 		{ // 3
-			Input: "0 HEADER\n1 SOUR id",
+			Input: "0 HEADER\n",
 			Err:   ErrContext{"Header", cSUBM, ErrRequiredMissing},
 		},
 		{ // 4
-			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter",
+			Input: "0 HEADER\n1 SUBM submitter",
 			Err:   ErrContext{"Header", cGEDC, ErrRequiredMissing},
 		},
 		{ // 5
-			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED",
+			Input: "0 HEADER\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED",
 			Err:   ErrContext{"Header", cCHAR, ErrRequiredMissing},
 		},
 		{ // 6
+			Input: "0 HEADER\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
+			Err:   ErrContext{"Header", cSOUR, ErrRequiredMissing},
+		},
+		{ // 7
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -77,15 +81,15 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{ // 7
+		{ // 8
 			Input: "0 HEADER\n1 SOUR\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cSOUR, ErrContext{"HeaderSource", "line_value", ErrInvalidLength{"ApprovedSystemID", "", 1, 20}}},
 		},
-		{ // 8
+		{ // 9
 			Input: "0 HEADER\n1 SOUR id\n1 SOUR other\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cSOUR, ErrSingleMultiple},
 		},
-		{ // 9
+		{ // 10
 			Input:   "0 HEADER\n1 SOUR id\n1 SOUR other\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -102,7 +106,7 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{ // 10
+		{ // 11
 			Input: "0 HEADER\n1 SOUR id\n1 DEST destination\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -119,15 +123,15 @@ func TestHeader(t *testing.T) {
 				ReceivingSystemName: "destination",
 			},
 		},
-		{ // 11
+		{ // 12
 			Input: "0 HEADER\n1 SOUR id\n1 DEST\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cDEST, ErrInvalidLength{"ReceivingSystemName", "", 1, 20}},
 		},
-		{ // 12
+		{ // 13
 			Input: "0 HEADER\n1 SOUR id\n1 DEST destination\n1 DEST destination2\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cDEST, ErrSingleMultiple},
 		},
-		{ // 13
+		{ // 14
 			Input:   "0 HEADER\n1 SOUR id\n1 DEST destination\n1 DEST destination2\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -145,7 +149,7 @@ func TestHeader(t *testing.T) {
 				ReceivingSystemName: "destination",
 			},
 		},
-		{ // 14
+		{ // 15
 			Input: "0 HEADER\n1 SOUR id\n1 DATE 2006-05-04\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -164,15 +168,15 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{ // 15
+		{ // 16
 			Input: "0 HEADER\n1 SOUR id\n1 DATE\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cDATE, ErrContext{"TransmissionDateTime", "line_value", ErrInvalidLength{"TransmissionDate", "", 10, 11}}},
 		},
-		{ // 16
+		{ // 17
 			Input: "0 HEADER\n1 SOUR id\n1 DATE 2006-05-04\n1 DATE 2007-06-05\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cDATE, ErrSingleMultiple},
 		},
-		{ // 17
+		{ // 18
 			Input:   "0 HEADER\n1 SOUR id\n1 DATE 2006-05-04\n1 DATE 2007-06-05\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -192,15 +196,15 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{ // 18
+		{ // 19
 			Input: "0 HEADER\n1 SOUR id\n1 DEST destination\n1 SUBM\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cSUBM, ErrInvalidLength{"Xref", "", 1, 22}},
 		},
-		{ // 19
+		{ // 20
 			Input: "0 HEADER\n1 SOUR id\n1 DEST destination\n1 SUBM submitter\n1 SUBM submitter2\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cSUBM, ErrSingleMultiple},
 		},
-		{ // 20
+		{ // 21
 			Input:   "0 HEADER\n1 SOUR id\n1 DEST destination\n1 SUBM submitter\n1 SUBM submitter2\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -218,7 +222,7 @@ func TestHeader(t *testing.T) {
 				ReceivingSystemName: "destination",
 			},
 		},
-		{ // 21
+		{ // 22
 			Input: "0 HEADER\n1 SUMB xid\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -235,15 +239,15 @@ func TestHeader(t *testing.T) {
 				Submission: "xid",
 			},
 		},
-		{ // 22
+		{ // 23
 			Input: "0 HEADER\n1 SUMB\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cSUMB, ErrInvalidLength{"Xref", "", 1, 22}},
 		},
-		{ // 23
+		{ // 24
 			Input: "0 HEADER\n1 SUMB xid1\n1 SUMB xid2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cSUMB, ErrSingleMultiple},
 		},
-		{ // 24
+		{ // 25
 			Input:   "0 HEADER\n1 SUMB xid1\n1 SUMB xid2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -261,7 +265,7 @@ func TestHeader(t *testing.T) {
 				Submission: "xid1",
 			},
 		},
-		{ // 25
+		{ // 26
 			Input: "0 HEADER\n1 FILE filename\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -278,15 +282,15 @@ func TestHeader(t *testing.T) {
 				FileName: "filename",
 			},
 		},
-		{ // 26
+		{ // 27
 			Input: "0 HEADER\n1 FILE\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cFILE, ErrInvalidLength{"FileName", "", 1, 90}},
 		},
-		{ // 27
+		{ // 28
 			Input: "0 HEADER\n1 FILE filename1\n1 FILE filename2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cFILE, ErrSingleMultiple},
 		},
-		{ // 28
+		{ // 29
 			Input:   "0 HEADER\n1 FILE filename1\n1 FILE filename2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -304,7 +308,7 @@ func TestHeader(t *testing.T) {
 				FileName: "filename1",
 			},
 		},
-		{ // 29
+		{ // 30
 			Input: "0 HEADER\n1 COPR copyright\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -321,15 +325,15 @@ func TestHeader(t *testing.T) {
 				Copyright: "copyright",
 			},
 		},
-		{ // 30
+		{ // 31
 			Input: "0 HEADER\n1 COPR\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cCOPR, ErrInvalidLength{"CopyrightGedcomFile", "", 1, 90}},
 		},
-		{ // 31
+		{ // 32
 			Input: "0 HEADER\n1 COPR copyright1\n1 COPR copyright2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cCOPR, ErrSingleMultiple},
 		},
-		{ // 32
+		{ // 33
 			Input:   "0 HEADER\n1 COPR copyright1\n1 COPR copyright2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -347,15 +351,15 @@ func TestHeader(t *testing.T) {
 				Copyright: "copyright1",
 			},
 		},
-		{ // 33
+		{ // 34
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cGEDC, ErrContext{"Version", cVERS, ErrRequiredMissing}},
 		},
-		{ // 34
+		{ // 35
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 GEDC\n2 VERS 5.6\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cGEDC, ErrSingleMultiple},
 		},
-		{ // 35
+		{ // 36
 			Input:   "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 GEDC\n2 VERS 5.6\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -372,15 +376,15 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{ // 36
+		{ // 37
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR utf-8",
 			Err:   ErrContext{"Header", cCHAR, ErrContext{"CharacterSetStructure", "line_value", ErrInvalidValue{"CharacterSet", "utf-8"}}},
 		},
-		{ // 37
+		{ // 38
 			Input: "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL\n1 CHAR ASCII",
 			Err:   ErrContext{"Header", cCHAR, ErrSingleMultiple},
 		},
-		{ // 38
+		{ // 39
 			Input:   "0 HEADER\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ASCII\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -397,7 +401,7 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{ // 39
+		{ // 40
 			Input: "0 HEADER\n1 LANG eng\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -414,15 +418,15 @@ func TestHeader(t *testing.T) {
 				Language: "eng",
 			},
 		},
-		{ // 40
+		{ // 41
 			Input: "0 HEADER\n1 LANG\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cLANG, ErrInvalidLength{"LanguageOfText", "", 1, 15}},
 		},
-		{ // 41
+		{ // 42
 			Input: "0 HEADER\n1 LANG eng\n1 LANG fre\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cLANG, ErrSingleMultiple},
 		},
-		{ // 42
+		{ // 43
 			Input:   "0 HEADER\n1 LANG eng\n1 LANG fre\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -440,7 +444,7 @@ func TestHeader(t *testing.T) {
 				Language: "eng",
 			},
 		},
-		{ // 43
+		{ // 44
 			Input: "0 HEADER\n1 PLAC\n2 FORM place\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -459,15 +463,15 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{ // 44
+		{ // 45
 			Input: "0 HEADER\n1 PLAC\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cPLAC, ErrContext{"HeaderPlace", cFORM, ErrRequiredMissing}},
 		},
-		{ // 45
+		{ // 46
 			Input: "0 HEADER\n1 PLAC\n2 FORM place1\n1 PLAC\n2 FORM place2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cPLAC, ErrSingleMultiple},
 		},
-		{ // 46
+		{ // 47
 			Input:   "0 HEADER\n1 PLAC\n2 FORM place1\n1 PLAC\n2 FORM place2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -487,7 +491,7 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{ // 47
+		{ // 48
 			Input: "0 HEADER\n1 NOTE note\n2 FORM place\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -504,15 +508,15 @@ func TestHeader(t *testing.T) {
 				ContentDescription: "note",
 			},
 		},
-		{ // 48
+		{ // 49
 			Input: "0 HEADER\n1 NOTE\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cNOTE, ErrInvalidLength{"ContentDescription", "", 1, 248}},
 		},
-		{ // 49
+		{ // 50
 			Input: "0 HEADER\n1 NOTE note1\n1 NOTE note2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", cNOTE, ErrSingleMultiple},
 		},
-		{ // 50
+		{ // 51
 			Input:   "0 HEADER\n1 NOTE note1\n1 NOTE note2\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: Header{
@@ -530,11 +534,11 @@ func TestHeader(t *testing.T) {
 				ContentDescription: "note1",
 			},
 		},
-		{ // 51
+		{ // 52
 			Input: "0 HEADER\n1 UNKNOWN\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Err:   ErrContext{"Header", "UNKNOWN", ErrUnknownTag},
 		},
-		{ // 52
+		{ // 53
 			Input: "0 HEADER\n1 _UNKNOWN\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Output: Header{
 				Source: HeaderSource{
@@ -550,7 +554,7 @@ func TestHeader(t *testing.T) {
 				},
 			},
 		},
-		{ // 53
+		{ // 54
 			Input:   "0 HEADER\n1 UNKNOWN\n1 SOUR id\n1 SUBM submitter\n1 GEDC\n2 VERS 5.5\n2 FORM LINEAGE-LINKED\n1 CHAR ANSEL",
 			Options: []Option{AllowUnknownTags},
 			Output: Header{
