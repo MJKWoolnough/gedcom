@@ -6252,5 +6252,44 @@ func TestAssociationStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 14
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 @C@ SOUR\n",
+			Output: AssociationStructure{
+				ID:         "A",
+				Relation:   "B",
+				RecordType: cFAM,
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "C",
+						},
+					},
+				},
+			},
+		},
+		{ // 15
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 SOUR\n",
+			Err:   ErrContext{"AssociationStructure", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
+		},
+		{ // 16
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 @C@ SOUR\n1 @D@ SOUR\n",
+			Output: AssociationStructure{
+				ID:         "A",
+				Relation:   "B",
+				RecordType: cFAM,
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "C",
+						},
+					},
+					{
+						Data: &SourceID{
+							ID: "D",
+						},
+					},
+				},
+			},
+		},
 	})
 }
