@@ -1895,27 +1895,31 @@ func TestAgeStructure(t *testing.T) {
 			Err:   ErrContext{"AgeStructure", cAGE, ErrRequiredMissing},
 		},
 		{ // 3
+			Input: "0 HUSB\n1 AGE\n",
+			Err:   ErrContext{"AgeStructure", cAGE, ErrInvalidLength{"AgeAtEvent", "", 1, 12}},
+		},
+		{ // 4
 			Input: "0 HUSB\n1 AGE 20\n1 AGE 21",
 			Err:   ErrContext{"AgeStructure", cAGE, ErrSingleMultiple},
 		},
-		{ // 4
+		{ // 5
 			Input:   "0 HUSB\n1 AGE 20\n1 AGE 21",
 			Options: []Option{AllowMoreThanAllowed},
 			Output: AgeStructure{
 				Age: "20",
 			},
 		},
-		{ // 5
+		{ // 6
 			Input: "0 HUSB\n1 AGE 20\n1 UNKNOWN\n",
 			Err:   ErrContext{"AgeStructure", "UNKNOWN", ErrUnknownTag},
 		},
-		{ // 6
+		{ // 7
 			Input: "0 HUSB\n1 AGE 20\n1 _UNKNOWN\n",
 			Output: AgeStructure{
 				Age: "20",
 			},
 		},
-		{ // 7
+		{ // 8
 			Input:   "0 HUSB\n1 AGE 20\n1 UNKNOWN\n",
 			Options: []Option{AllowUnknownTags},
 			Output: AgeStructure{
