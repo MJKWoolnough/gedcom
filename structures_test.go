@@ -6291,5 +6291,26 @@ func TestAssociationStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 17
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 UNKNOWN\n",
+			Err:   ErrContext{"AssociationStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 18
+			Input: "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 _UNKNOWN\n",
+			Output: AssociationStructure{
+				ID:         "A",
+				Relation:   "B",
+				RecordType: cFAM,
+			},
+		},
+		{ // 19
+			Input:   "0 @A@ ASSO\n1 RELA B\n1 TYPE FAM\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: AssociationStructure{
+				ID:         "A",
+				Relation:   "B",
+				RecordType: cFAM,
+			},
+		},
 	})
 }
