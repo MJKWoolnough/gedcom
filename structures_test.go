@@ -6481,5 +6481,28 @@ func TestChangeDateTime(t *testing.T) {
 				ChangeDate: "2006-05-01",
 			},
 		},
+		{ // 3
+			Input: "0 DATE 2006-05-01\n1 TIME 12:00",
+			Output: ChangeDateTime{
+				ChangeDate: "2006-05-01",
+				Time:       "12:00",
+			},
+		},
+		{ // 4
+			Input: "0 DATE 2006-05-01\n1 TIME\n",
+			Err:   ErrContext{"ChangeDateTime", cTIME, ErrInvalidLength{"TimeValue", "", 1, 12}},
+		},
+		{ // 5
+			Input: "0 DATE 2006-05-01\n1 TIME 12:00\n1 TIME 13:00",
+			Err:   ErrContext{"ChangeDateTime", cTIME, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 DATE 2006-05-01\n1 TIME 12:00\n1 TIME 13:00",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: ChangeDateTime{
+				ChangeDate: "2006-05-01",
+				Time:       "12:00",
+			},
+		},
 	})
 }
