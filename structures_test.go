@@ -6597,5 +6597,22 @@ func TestChildToFamilyLink(t *testing.T) {
 				},
 			},
 		},
+		{ // 9
+			Input: "0 DATE @A@\n1 UNKNOWN\n",
+			Err:   ErrContext{"ChildToFamilyLink", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 10
+			Input: "0 DATE @A@\n1 _UNKNOWN\n",
+			Output: ChildToFamilyLink{
+				ID: "A",
+			},
+		},
+		{ // 11
+			Input:   "0 DATE @A@\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: ChildToFamilyLink{
+				ID: "A",
+			},
+		},
 	})
 }
