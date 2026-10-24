@@ -6616,3 +6616,14 @@ func TestChildToFamilyLink(t *testing.T) {
 		},
 	})
 }
+
+func TestEventDetail(t *testing.T) {
+	test(t, []testData[EventDetail]{
+		{ // 1
+			Input: "0 EVEN\n",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+			},
+		},
+	})
+}
