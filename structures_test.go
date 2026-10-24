@@ -6468,3 +6468,18 @@ func TestChangeDateStructure(t *testing.T) {
 		},
 	})
 }
+
+func TestChangeDateTime(t *testing.T) {
+	test(t, []testData[ChangeDateTime]{
+		{ // 1
+			Input: "0 DATE\n",
+			Err:   ErrContext{"ChangeDateTime", "line_value", ErrInvalidLength{"ChangeDate", "", 10, 11}},
+		},
+		{ // 2
+			Input: "0 DATE 2006-05-01",
+			Output: ChangeDateTime{
+				ChangeDate: "2006-05-01",
+			},
+		},
+	})
+}
