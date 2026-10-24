@@ -6445,5 +6445,26 @@ func TestChangeDateStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 9
+			Input: "0 CHAN\n1 DATE 2006-05-01\n1 UNKNOWN\n",
+			Err:   ErrContext{"ChangeDateStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 10
+			Input: "0 CHAN\n1 DATE 2006-05-01\n1 _UNKNOWN\n",
+			Output: ChangeDateStructure{
+				Date: ChangeDateTime{
+					ChangeDate: "2006-05-01",
+				},
+			},
+		},
+		{ // 11
+			Input:   "0 CHAN\n1 DATE 2006-05-01\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: ChangeDateStructure{
+				Date: ChangeDateTime{
+					ChangeDate: "2006-05-01",
+				},
+			},
+		},
 	})
 }
