@@ -6504,5 +6504,25 @@ func TestChangeDateTime(t *testing.T) {
 				Time:       "12:00",
 			},
 		},
+		{ // 7
+			Input: "0 DATE 2006-05-01\n1 UNKNOWN\n",
+			Err:   ErrContext{"ChangeDateTime", "UNKNOWN", ErrUnknownTag},
+			Output: ChangeDateTime{
+				ChangeDate: "2006-05-01",
+			},
+		},
+		{ // 8
+			Input: "0 DATE 2006-05-01\n1 _UNKNOWN\n",
+			Output: ChangeDateTime{
+				ChangeDate: "2006-05-01",
+			},
+		},
+		{ // 9
+			Input:   "0 DATE 2006-05-01\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: ChangeDateTime{
+				ChangeDate: "2006-05-01",
+			},
+		},
 	})
 }
