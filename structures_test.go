@@ -6562,5 +6562,40 @@ func TestChildToFamilyLink(t *testing.T) {
 				},
 			},
 		},
+		{ // 6
+			Input: "0 DATE @A@\n1 @A@ NOTE\n",
+			Output: ChildToFamilyLink{
+				ID: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 7
+			Input: "0 DATE @A@\n1 NOTE\n",
+			Err:   ErrContext{"ChildToFamilyLink", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 8
+			Input: "0 DATE @A@\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: ChildToFamilyLink{
+				ID: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
