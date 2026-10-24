@@ -6526,3 +6526,18 @@ func TestChangeDateTime(t *testing.T) {
 		},
 	})
 }
+
+func TestChildToFamilyLink(t *testing.T) {
+	test(t, []testData[ChildToFamilyLink]{
+		{ // 1
+			Input: "0 FAMC\n",
+			Err:   ErrContext{"ChildToFamilyLink", "line_value", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 DATE @A@",
+			Output: ChildToFamilyLink{
+				ID: "A",
+			},
+		},
+	})
+}
