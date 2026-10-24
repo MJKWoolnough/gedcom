@@ -6539,5 +6539,28 @@ func TestChildToFamilyLink(t *testing.T) {
 				ID: "A",
 			},
 		},
+		{ // 3
+			Input: "0 DATE @A@\n1 PEDI BIRTH",
+			Output: ChildToFamilyLink{
+				ID: "A",
+				PedigreeLinkageType: []PedigreeLinkageType{
+					cbirth,
+				},
+			},
+		},
+		{ // 4
+			Input: "0 DATE @A@\n1 PEDI\n",
+			Err:   ErrContext{"ChildToFamilyLink", cPEDI, ErrInvalidValue{"PedigreeLinkageType", ""}},
+		},
+		{ // 5
+			Input: "0 DATE @A@\n1 PEDI BIRTH\n1 PEDI FOSTER\n",
+			Output: ChildToFamilyLink{
+				ID: "A",
+				PedigreeLinkageType: []PedigreeLinkageType{
+					cbirth,
+					cfoster,
+				},
+			},
+		},
 	})
 }
