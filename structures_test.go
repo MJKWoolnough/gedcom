@@ -6702,5 +6702,34 @@ func TestEventDetail(t *testing.T) {
 				},
 			},
 		},
+		{ // 14
+			Input: "0 EVEN\n1 TYPE A\n1 ADDR B",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Address: AddressStructure{
+					AddressLine: "B",
+				},
+			},
+		},
+		{ // 15
+			Input: "0 EVEN\n1 TYPE A\n1 ADDR\n",
+			Err:   ErrContext{"EventDetail", cADDR, ErrContext{"AddressStructure", "line_value", ErrInvalidLength{"AddressLine", "", 1, 60}}},
+		},
+		{ // 16
+			Input: "0 EVEN\n1 TYPE A\n1 ADDR B\n1 ADDR C",
+			Err:   ErrContext{"EventDetail", cADDR, ErrSingleMultiple},
+		},
+		{ // 17
+			Input:   "0 EVEN\n1 TYPE A\n1 ADDR B\n1 ADDR C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Address: AddressStructure{
+					AddressLine: "B",
+				},
+			},
+		},
 	})
 }
