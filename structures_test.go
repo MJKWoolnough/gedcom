@@ -6793,5 +6793,30 @@ func TestEventDetail(t *testing.T) {
 				Age:         "B",
 			},
 		},
+		{ // 28
+			Input: "0 EVEN\n1 TYPE A\n1 AGNC B",
+			Output: EventDetail{
+				PhoneNumber:       make([]PhoneNumber, 0, 3),
+				Type:              "A",
+				ResponsibleAgency: "B",
+			},
+		},
+		{ // 29
+			Input: "0 EVEN\n1 TYPE A\n1 AGNC\n",
+			Err:   ErrContext{"EventDetail", cAGNC, ErrInvalidLength{"ResponsibleAgency", "", 1, 120}},
+		},
+		{ // 30
+			Input: "0 EVEN\n1 TYPE A\n1 AGNC B\n1 AGNC C",
+			Err:   ErrContext{"EventDetail", cAGNC, ErrSingleMultiple},
+		},
+		{ // 31
+			Input:   "0 EVEN\n1 TYPE A\n1 AGNC B\n1 AGNC C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: EventDetail{
+				PhoneNumber:       make([]PhoneNumber, 0, 3),
+				Type:              "A",
+				ResponsibleAgency: "B",
+			},
+		},
 	})
 }
