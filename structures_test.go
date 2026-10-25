@@ -6731,5 +6731,42 @@ func TestEventDetail(t *testing.T) {
 				},
 			},
 		},
+		{ // 18
+			Input: "0 EVEN\n1 TYPE A\n1 PHON number",
+			Output: EventDetail{
+				Type:        "A",
+				PhoneNumber: []PhoneNumber{"number"},
+			},
+		},
+		{ // 19
+			Input: "0 EVEN\n1 TYPE A\n1 PHON\n",
+			Err:   ErrContext{"EventDetail", cPHON, ErrInvalidLength{"PhoneNumber", "", 1, 25}},
+		},
+		{ // 20
+			Input: "0 EVEN\n1 TYPE A\n1 PHON number 1\n1 PHON number 2",
+			Output: EventDetail{
+				Type:        "A",
+				PhoneNumber: []PhoneNumber{"number 1", "number 2"},
+			},
+		},
+		{ // 21
+			Input: "0 EVEN\n1 TYPE A\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3",
+			Output: EventDetail{
+				Type:        "A",
+				PhoneNumber: []PhoneNumber{"number 1", "number 2", "number 3"},
+			},
+		},
+		{ // 22
+			Input: "0 EVEN\n1 TYPE A\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3\n1 PHON number 4",
+			Err:   ErrContext{"EventDetail", cPHON, ErrTooMany(3)},
+		},
+		{ // 23
+			Input:   "0 EVEN\n1 TYPE A\n1 PHON number 1\n1 PHON number 2\n1 PHON number 3\n1 PHON number 4",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: EventDetail{
+				Type:        "A",
+				PhoneNumber: []PhoneNumber{"number 1", "number 2", "number 3"},
+			},
+		},
 	})
 }
