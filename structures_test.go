@@ -6917,5 +6917,42 @@ func TestEventDetail(t *testing.T) {
 				},
 			},
 		},
+		{ // 42
+			Input: "0 EVEN\n1 TYPE A\n1 @B@ NOTE\n",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
+		{ // 43
+			Input: "0 EVEN\n1 TYPE A\n1 NOTE\n",
+			Err:   ErrContext{"EventDetail", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 44
+			Input: "0 EVEN\n1 TYPE A\n1 @B@ NOTE\n1 @C@ NOTE\n",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "C",
+						},
+					},
+				},
+			},
+		},
 	})
 }
