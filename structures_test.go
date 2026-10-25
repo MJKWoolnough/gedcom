@@ -6880,5 +6880,42 @@ func TestEventDetail(t *testing.T) {
 				},
 			},
 		},
+		{ // 39
+			Input: "0 EVEN\n1 TYPE A\n1 @A@ OBJE\n",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 40
+			Input: "0 EVEN\n1 TYPE A\n1 OBJE\n",
+			Err:   ErrContext{"EventDetail", cOBJE, ErrContext{"MultimediaLinkFile", cFORM, ErrRequiredMissing}},
+		},
+		{ // 41
+			Input: "0 EVEN\n1 TYPE A\n1 @A@ OBJE\n1 @B@ OBJE\n",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &MultimediaLinkID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
