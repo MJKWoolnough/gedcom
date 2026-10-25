@@ -6818,5 +6818,30 @@ func TestEventDetail(t *testing.T) {
 				ResponsibleAgency: "B",
 			},
 		},
+		{ // 32
+			Input: "0 EVEN\n1 TYPE A\n1 CAUS B",
+			Output: EventDetail{
+				PhoneNumber:  make([]PhoneNumber, 0, 3),
+				Type:         "A",
+				CauseOfEvent: "B",
+			},
+		},
+		{ // 33
+			Input: "0 EVEN\n1 TYPE A\n1 CAUS\n",
+			Err:   ErrContext{"EventDetail", cCAUS, ErrInvalidLength{"CauseOfEvent", "", 1, 90}},
+		},
+		{ // 34
+			Input: "0 EVEN\n1 TYPE A\n1 CAUS B\n1 CAUS C",
+			Err:   ErrContext{"EventDetail", cCAUS, ErrSingleMultiple},
+		},
+		{ // 35
+			Input:   "0 EVEN\n1 TYPE A\n1 CAUS B\n1 CAUS C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: EventDetail{
+				PhoneNumber:  make([]PhoneNumber, 0, 3),
+				Type:         "A",
+				CauseOfEvent: "B",
+			},
+		},
 	})
 }
