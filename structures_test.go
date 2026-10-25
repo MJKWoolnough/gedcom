@@ -6843,5 +6843,42 @@ func TestEventDetail(t *testing.T) {
 				CauseOfEvent: "B",
 			},
 		},
+		{ // 36
+			Input: "0 EVEN\n1 TYPE A\n1 @B@ SOUR\n",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
+		{ // 37
+			Input: "0 EVEN\n1 TYPE A\n1 SOUR\n",
+			Err:   ErrContext{"EventDetail", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
+		},
+		{ // 38
+			Input: "0 EVEN\n1 TYPE A\n1 @B@ SOUR\n1 @C@ SOUR\n",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "B",
+						},
+					},
+					{
+						Data: &SourceID{
+							ID: "C",
+						},
+					},
+				},
+			},
+		},
 	})
 }
