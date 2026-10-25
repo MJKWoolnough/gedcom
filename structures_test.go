@@ -6673,5 +6673,34 @@ func TestEventDetail(t *testing.T) {
 				Date:        "B",
 			},
 		},
+		{ // 10
+			Input: "0 EVEN\n1 TYPE A\n1 PLAC B",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Place: PlaceStructure{
+					Place: "B",
+				},
+			},
+		},
+		{ // 11
+			Input: "0 EVEN\n1 TYPE A\n1 PLAC\n",
+			Err:   ErrContext{"EventDetail", cPLAC, ErrContext{"PlaceStructure", "line_value", ErrInvalidLength{"PlaceValue", "", 1, 120}}},
+		},
+		{ // 12
+			Input: "0 EVEN\n1 TYPE A\n1 PLAC B\n1 PLAC C",
+			Err:   ErrContext{"EventDetail", cPLAC, ErrSingleMultiple},
+		},
+		{ // 13
+			Input:   "0 EVEN\n1 TYPE A\n1 PLAC B\n1 PLAC C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+				Place: PlaceStructure{
+					Place: "B",
+				},
+			},
+		},
 	})
 }
