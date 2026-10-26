@@ -7132,5 +7132,18 @@ func TestLDSSpouseSealing(t *testing.T) {
 				},
 			},
 		},
+		{ // 24
+			Input: "0 SLGS\n1 UNKNOWN\n",
+			Err:   ErrContext{"LDSSpouseSealing", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 25
+			Input:  "0 SLGS\n1 _UNKNOWN\n",
+			Output: LDSSpouseSealing{},
+		},
+		{ // 26
+			Input:   "0 SLGS\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output:  LDSSpouseSealing{},
+		},
 	})
 }
