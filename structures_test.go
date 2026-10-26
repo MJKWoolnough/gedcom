@@ -7045,5 +7045,26 @@ func TestLDSSpouseSealing(t *testing.T) {
 				TempleCode: "AAAA",
 			},
 		},
+		{ // 14
+			Input: "0 SLGS\n1 PLAC A",
+			Output: LDSSpouseSealing{
+				Place: "A",
+			},
+		},
+		{ // 15
+			Input: "0 SLGS\n1 PLAC\n",
+			Err:   ErrContext{"LDSSpouseSealing", cPLAC, ErrInvalidLength{"PlaceLivingOrdinance", "", 1, 120}},
+		},
+		{ // 16
+			Input: "0 SLGS\n1 PLAC A\n1 PLAC B",
+			Err:   ErrContext{"LDSSpouseSealing", cPLAC, ErrSingleMultiple},
+		},
+		{ // 17
+			Input:   "0 SLGS\n1 PLAC A\n1 PLAC B",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: LDSSpouseSealing{
+				Place: "A",
+			},
+		},
 	})
 }
