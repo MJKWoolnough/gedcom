@@ -6975,3 +6975,12 @@ func TestEventDetail(t *testing.T) {
 		},
 	})
 }
+
+func TestLDSSpouseSealing(t *testing.T) {
+	test(t, []testData[LDSSpouseSealing]{
+		{ // 1
+			Input:  "0 SLGS\n",
+			Output: LDSSpouseSealing{},
+		},
+	})
+}
