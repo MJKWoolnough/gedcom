@@ -7099,5 +7099,38 @@ func TestLDSSpouseSealing(t *testing.T) {
 				},
 			},
 		},
+		{ // 21
+			Input: "0 SLGS\n1 @A@ NOTE\n",
+			Output: LDSSpouseSealing{
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 22
+			Input: "0 SLGS\n1 NOTE\n",
+			Err:   ErrContext{"LDSSpouseSealing", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 23
+			Input: "0 SLGS\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: LDSSpouseSealing{
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
