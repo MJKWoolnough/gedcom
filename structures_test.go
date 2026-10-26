@@ -6954,5 +6954,24 @@ func TestEventDetail(t *testing.T) {
 				},
 			},
 		},
+		{ // 45
+			Input: "0 EVEN\n1 TYPE A\n1 UNKNOWN\n",
+			Err:   ErrContext{"EventDetail", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 46
+			Input: "0 EVEN\n1 TYPE A\n1 _UNKNOWN\n",
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+			},
+		},
+		{ // 47
+			Input:   "0 EVEN\n1 TYPE A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: EventDetail{
+				PhoneNumber: make([]PhoneNumber, 0, 3),
+				Type:        "A",
+			},
+		},
 	})
 }
