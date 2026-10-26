@@ -7024,5 +7024,26 @@ func TestLDSSpouseSealing(t *testing.T) {
 				Date: "AAAA",
 			},
 		},
+		{ // 10
+			Input: "0 SLGS\n1 TEMP AAAA",
+			Output: LDSSpouseSealing{
+				TempleCode: "AAAA",
+			},
+		},
+		{ // 11
+			Input: "0 SLGS\n1 TEMP\n",
+			Err:   ErrContext{"LDSSpouseSealing", cTEMP, ErrInvalidLength{"TempleCode", "", 4, 5}},
+		},
+		{ // 12
+			Input: "0 SLGS\n1 TEMP AAAA\n1 TEMP BBBB",
+			Err:   ErrContext{"LDSSpouseSealing", cTEMP, ErrSingleMultiple},
+		},
+		{ // 13
+			Input:   "0 SLGS\n1 TEMP AAAA\n1 TEMP BBBB",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: LDSSpouseSealing{
+				TempleCode: "AAAA",
+			},
+		},
 	})
 }
