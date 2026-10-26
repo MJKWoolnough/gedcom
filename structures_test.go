@@ -7066,5 +7066,38 @@ func TestLDSSpouseSealing(t *testing.T) {
 				Place: "A",
 			},
 		},
+		{ // 18
+			Input: "0 SLGS\n1 @A@ SOUR\n",
+			Output: LDSSpouseSealing{
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 19
+			Input: "0 SLGS\n1 SOUR\n",
+			Err:   ErrContext{"LDSSpouseSealing", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
+		},
+		{ // 20
+			Input: "0 SLGS\n1 @A@ SOUR\n1 @B@ SOUR\n",
+			Output: LDSSpouseSealing{
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &SourceID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
