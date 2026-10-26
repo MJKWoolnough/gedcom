@@ -6982,5 +6982,26 @@ func TestLDSSpouseSealing(t *testing.T) {
 			Input:  "0 SLGS\n",
 			Output: LDSSpouseSealing{},
 		},
+		{ // 2
+			Input: "0 SLGS\n1 STAT DNS",
+			Output: LDSSpouseSealing{
+				LDSSpouseSealingDateStatus: cDNS,
+			},
+		},
+		{ // 3
+			Input: "0 SLGS\n1 STAT\n",
+			Err:   ErrContext{"LDSSpouseSealing", cSTAT, ErrInvalidValue{"LDSSpouseSealingDateStatus", ""}},
+		},
+		{ // 4
+			Input: "0 SLGS\n1 STAT DNS\n1 STAT CLEARED",
+			Err:   ErrContext{"LDSSpouseSealing", cSTAT, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 SLGS\n1 STAT DNS\n1 STAT CLEARED",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: LDSSpouseSealing{
+				LDSSpouseSealingDateStatus: cDNS,
+			},
+		},
 	})
 }
