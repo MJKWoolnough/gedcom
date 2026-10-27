@@ -3562,19 +3562,19 @@ func (s *MultimediaLinkFile) parse(l *Line, o options) error {
 			if err := s.Format.parse(&sl, o); err != nil {
 				return ErrContext{"MultimediaLinkFile", cFORM, err}
 			}
-		case cTITLE:
+		case cTITL:
 			if TitleSet {
 				if o.allowMoreThanAllowed {
 					continue
 				}
 
-				return ErrContext{"MultimediaLinkFile", cTITLE, ErrSingleMultiple}
+				return ErrContext{"MultimediaLinkFile", cTITL, ErrSingleMultiple}
 			}
 
 			TitleSet = true
 
 			if err := s.Title.parse(&sl, o); err != nil {
-				return ErrContext{"MultimediaLinkFile", cTITLE, err}
+				return ErrContext{"MultimediaLinkFile", cTITL, err}
 			}
 		case cFILE:
 			if FileSet {
