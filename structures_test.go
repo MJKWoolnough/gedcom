@@ -7288,5 +7288,22 @@ func TestMultimediaLinkFile(t *testing.T) {
 				},
 			},
 		},
+		{ // 17
+			Input: "0 OBJE\n1 FORM bmp\n1 UNKNOWN\n",
+			Err:   ErrContext{"MultimediaLinkFile", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 18
+			Input: "0 OBJE\n1 FORM bmp\n1 _UNKNOWN\n",
+			Output: MultimediaLinkFile{
+				Format: cbmp,
+			},
+		},
+		{ // 19
+			Input:   "0 OBJE\n1 FORM bmp\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: MultimediaLinkFile{
+				Format: cbmp,
+			},
+		},
 	})
 }
