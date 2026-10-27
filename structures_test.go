@@ -7253,5 +7253,40 @@ func TestMultimediaLinkFile(t *testing.T) {
 				File:   "a",
 			},
 		},
+		{ // 14
+			Input: "0 OBJE\n1 FORM bmp\n1 @A@ NOTE\n",
+			Output: MultimediaLinkFile{
+				Format: cbmp,
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 15
+			Input: "0 OBJE\n1 FORM bmp\n1 NOTE\n",
+			Err:   ErrContext{"MultimediaLinkFile", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 16
+			Input: "0 OBJE\n1 FORM bmp\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: MultimediaLinkFile{
+				Format: cbmp,
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
