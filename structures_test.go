@@ -7207,5 +7207,28 @@ func TestMultimediaLinkFile(t *testing.T) {
 				Format: cbmp,
 			},
 		},
+		{ // 6
+			Input: "0 OBJE\n1 FORM bmp\n1 TITL a",
+			Output: MultimediaLinkFile{
+				Format: cbmp,
+				Title:  "a",
+			},
+		},
+		{ // 7
+			Input: "0 OBJE\n1 FORM bmp\n1 TITL\n",
+			Err:   ErrContext{"MultimediaLinkFile", cTITL, ErrInvalidLength{"DescriptiveTitle", "", 1, 248}},
+		},
+		{ // 8
+			Input: "0 OBJE\n1 FORM bmp\n1 TITL a\n1 TITL b",
+			Err:   ErrContext{"MultimediaLinkFile", cTITL, ErrSingleMultiple},
+		},
+		{ // 9
+			Input:   "0 OBJE\n1 FORM bmp\n1 TITL a\n1 TITL b",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: MultimediaLinkFile{
+				Format: cbmp,
+				Title:  "a",
+			},
+		},
 	})
 }
