@@ -7192,5 +7192,20 @@ func TestMultimediaLinkFile(t *testing.T) {
 				Format: cbmp,
 			},
 		},
+		{ // 3
+			Input: "0 OBJE\n1 FORM\n",
+			Err:   ErrContext{"MultimediaLinkFile", cFORM, ErrInvalidValue{"MultimediaFormat", ""}},
+		},
+		{ // 4
+			Input: "0 OBJE\n1 FORM bmp\n1 FORM gif",
+			Err:   ErrContext{"MultimediaLinkFile", cFORM, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 OBJE\n1 FORM bmp\n1 FORM gif",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: MultimediaLinkFile{
+				Format: cbmp,
+			},
+		},
 	})
 }
