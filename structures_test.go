@@ -7179,3 +7179,18 @@ func TestMultimediaLinkID(t *testing.T) {
 		},
 	})
 }
+
+func TestMultimediaLinkFile(t *testing.T) {
+	test(t, []testData[MultimediaLinkFile]{
+		{ // 1
+			Input: "0 OBJE\n",
+			Err:   ErrContext{"MultimediaLinkFile", cFORM, ErrRequiredMissing},
+		},
+		{ // 2
+			Input: "0 OBJE\n1 FORM bmp",
+			Output: MultimediaLinkFile{
+				Format: cbmp,
+			},
+		},
+	})
+}
