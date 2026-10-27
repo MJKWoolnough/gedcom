@@ -7147,3 +7147,35 @@ func TestLDSSpouseSealing(t *testing.T) {
 		},
 	})
 }
+
+func TestMultimediaLinkID(t *testing.T) {
+	test(t, []testData[MultimediaLinkID]{
+		{ // 1
+			Input: "0 OBJE\n",
+			Err:   ErrContext{"MultimediaLinkID", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ OBJE\n",
+			Output: MultimediaLinkID{
+				ID: "A",
+			},
+		},
+		{ // 3
+			Input: "0 @A@ OBJE\n1 UNKNOWN\n",
+			Err:   ErrContext{"MultimediaLinkID", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 4
+			Input: "0 @A@ OBJE\n1 _UNKNOWN\n",
+			Output: MultimediaLinkID{
+				ID: "A",
+			},
+		},
+		{ // 5
+			Input:   "0 @A@ OBJE\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: MultimediaLinkID{
+				ID: "A",
+			},
+		},
+	})
+}
