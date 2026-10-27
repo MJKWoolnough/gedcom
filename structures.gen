@@ -290,7 +290,7 @@ MultimediaLinkID
 	@:ID
 MultimediaLinkFile
 	FORM:MultimediaFormat:Format:1:1
-	TITLE:DescriptiveTitle:Title:0:1
+	TITL:DescriptiveTitle:Title:0:1
 	FILE:MultimediaFileReference:File:0:1
 	NOTE:NoteStructure:Notes:0:M
 NoteID
