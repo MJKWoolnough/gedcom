@@ -3527,7 +3527,7 @@ func (s *MultimediaLinkID) parse(l *Line, o options) error {
 	}
 
 	for _, sl := range l.Sub {
-		if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+		if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 			return ErrContext{"MultimediaLinkID", sl.tag, ErrUnknownTag}
 		}
 		// possibly store in a Other field
@@ -3625,7 +3625,7 @@ func (s *NoteID) parse(l *Line, o options) error {
 	}
 
 	for _, sl := range l.Sub {
-		if !o.allowMissingRequired && (len(sl.tag) < 1 || sl.tag[0] != '_') {
+		if !o.allowUnknownTags && (len(sl.tag) < 1 || sl.tag[0] != '_') {
 			return ErrContext{"NoteID", sl.tag, ErrUnknownTag}
 		}
 		// possibly store in a Other field
