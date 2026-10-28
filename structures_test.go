@@ -7387,5 +7387,22 @@ func TestNoteText(t *testing.T) {
 				},
 			},
 		},
+		{ // 6
+			Input: "0 NOTE A\n1 UNKNOWN\n",
+			Err:   ErrContext{"NoteText", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 7
+			Input: "0 NOTE A\n1 _UNKNOWN\n",
+			Output: NoteText{
+				SubmitterText: "A",
+			},
+		},
+		{ // 8
+			Input:   "0 NOTE A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: NoteText{
+				SubmitterText: "A",
+			},
+		},
 	})
 }
