@@ -7352,5 +7352,40 @@ func TestNoteText(t *testing.T) {
 				SubmitterText: "A",
 			},
 		},
+		{ // 3
+			Input: "0 NOTE A\n1 @A@ SOUR\n",
+			Output: NoteText{
+				SubmitterText: "A",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 4
+			Input: "0 NOTE A\n1 SOUR\n",
+			Err:   ErrContext{"NoteText", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
+		},
+		{ // 5
+			Input: "0 NOTE A\n1 @A@ SOUR\n1 @B@ SOUR\n",
+			Output: NoteText{
+				SubmitterText: "A",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &SourceID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
