@@ -7307,3 +7307,35 @@ func TestMultimediaLinkFile(t *testing.T) {
 		},
 	})
 }
+
+func TestNoteID(t *testing.T) {
+	test(t, []testData[NoteID]{
+		{ // 1
+			Input: "0 NOTE\n",
+			Err:   ErrContext{"NoteID", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ NOTE\n",
+			Output: NoteID{
+				ID: "A",
+			},
+		},
+		{ // 3
+			Input: "0 @A@ OBJE\n1 UNKNOWN\n",
+			Err:   ErrContext{"NoteID", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 4
+			Input: "0 @A@ NOTE\n1 _UNKNOWN\n",
+			Output: NoteID{
+				ID: "A",
+			},
+		},
+		{ // 5
+			Input:   "0 @A@ NOTE\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: NoteID{
+				ID: "A",
+			},
+		},
+	})
+}
