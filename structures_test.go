@@ -7488,5 +7488,28 @@ func TestPersonalNameStructure(t *testing.T) {
 				Nickname:     "B",
 			},
 		},
+		{ // 15
+			Input: "0 NAME A\n1 SPFX B",
+			Output: PersonalNameStructure{
+				NamePersonal:  "A",
+				SurnamePrefix: "B",
+			},
+		},
+		{ // 16
+			Input: "0 NAME A\n1 SPFX\n",
+			Err:   ErrContext{"PersonalNameStructure", cSPFX, ErrInvalidLength{"NamePieceSurnamePrefix", "", 1, 30}},
+		},
+		{ // 17
+			Input: "0 NAME A\n1 SPFX B\n1 SPFX C",
+			Err:   ErrContext{"PersonalNameStructure", cSPFX, ErrSingleMultiple},
+		},
+		{ // 18
+			Input:   "0 NAME A\n1 SPFX B\n1 SPFX C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: PersonalNameStructure{
+				NamePersonal:  "A",
+				SurnamePrefix: "B",
+			},
+		},
 	})
 }
