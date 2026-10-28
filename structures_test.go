@@ -7406,3 +7406,18 @@ func TestNoteText(t *testing.T) {
 		},
 	})
 }
+
+func TestPersonalNameStructure(t *testing.T) {
+	test(t, []testData[PersonalNameStructure]{
+		{ // 1
+			Input: "0 NAME\n",
+			Err:   ErrContext{"PersonalNameStructure", "line_value", ErrInvalidLength{"NamePersonal", "", 1, 120}},
+		},
+		{ // 2
+			Input: "0 NAME A\n",
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+			},
+		},
+	})
+}
