@@ -7339,3 +7339,18 @@ func TestNoteID(t *testing.T) {
 		},
 	})
 }
+
+func TestNoteText(t *testing.T) {
+	test(t, []testData[NoteText]{
+		{ // 1
+			Input: "0 NOTE\n",
+			Err:   ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}},
+		},
+		{ // 2
+			Input: "0 NOTE A\n",
+			Output: NoteText{
+				SubmitterText: "A",
+			},
+		},
+	})
+}
