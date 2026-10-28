@@ -7511,5 +7511,28 @@ func TestPersonalNameStructure(t *testing.T) {
 				SurnamePrefix: "B",
 			},
 		},
+		{ // 19
+			Input: "0 NAME A\n1 SURN B",
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+				Surname:      "B",
+			},
+		},
+		{ // 20
+			Input: "0 NAME A\n1 SURN\n",
+			Err:   ErrContext{"PersonalNameStructure", cSURN, ErrInvalidLength{"NamePieceSurname", "", 1, 120}},
+		},
+		{ // 21
+			Input: "0 NAME A\n1 SURN B\n1 SURN C",
+			Err:   ErrContext{"PersonalNameStructure", cSURN, ErrSingleMultiple},
+		},
+		{ // 22
+			Input:   "0 NAME A\n1 SURN B\n1 SURN C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+				Surname:      "B",
+			},
+		},
 	})
 }
