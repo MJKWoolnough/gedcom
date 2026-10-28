@@ -7442,5 +7442,28 @@ func TestPersonalNameStructure(t *testing.T) {
 				Prefix:       "B",
 			},
 		},
+		{ // 7
+			Input: "0 NAME A\n1 GIVN B",
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+				Given:        "B",
+			},
+		},
+		{ // 8
+			Input: "0 NAME A\n1 GIVN\n",
+			Err:   ErrContext{"PersonalNameStructure", cGIVN, ErrInvalidLength{"NamePieceGiven", "", 1, 120}},
+		},
+		{ // 9
+			Input: "0 NAME A\n1 GIVN B\n1 GIVN C",
+			Err:   ErrContext{"PersonalNameStructure", cGIVN, ErrSingleMultiple},
+		},
+		{ // 10
+			Input:   "0 NAME A\n1 GIVN B\n1 GIVN C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+				Given:        "B",
+			},
+		},
 	})
 }
