@@ -7627,5 +7627,22 @@ func TestPersonalNameStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 33
+			Input: "0 NAME A\n1 UNKNOWN\n",
+			Err:   ErrContext{"PersonalNameStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 34
+			Input: "0 NAME A\n1 _UNKNOWN\n",
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+			},
+		},
+		{ // 35
+			Input:   "0 NAME A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+			},
+		},
 	})
 }
