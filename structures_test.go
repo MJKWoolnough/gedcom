@@ -7682,5 +7682,40 @@ func TestPlaceStructure(t *testing.T) {
 				PlaceHierarchy: "B",
 			},
 		},
+		{ // 7
+			Input: "0 PLAC A\n1 @A@ SOUR\n",
+			Output: PlaceStructure{
+				Place: "A",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 8
+			Input: "0 PLAC A\n1 SOUR\n",
+			Err:   ErrContext{"PlaceStructure", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
+		},
+		{ // 9
+			Input: "0 PLAC A\n1 @A@ SOUR\n1 @B@ SOUR\n",
+			Output: PlaceStructure{
+				Place: "A",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &SourceID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
