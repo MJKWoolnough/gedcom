@@ -7592,5 +7592,40 @@ func TestPersonalNameStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 30
+			Input: "0 NAME A\n1 @A@ NOTE\n",
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 31
+			Input: "0 NAME A\n1 NOTE\n",
+			Err:   ErrContext{"PersonalNameStructure", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 32
+			Input: "0 NAME A\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
