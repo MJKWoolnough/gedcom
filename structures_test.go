@@ -7659,5 +7659,28 @@ func TestPlaceStructure(t *testing.T) {
 				Place: "A",
 			},
 		},
+		{ // 3
+			Input: "0 PLAC A\n1 FORM B",
+			Output: PlaceStructure{
+				Place:          "A",
+				PlaceHierarchy: "B",
+			},
+		},
+		{ // 4
+			Input: "0 PLAC A\n1 FORM\n",
+			Err:   ErrContext{"PlaceStructure", cFORM, ErrInvalidLength{"PlaceHierarchy", "", 1, 120}},
+		},
+		{ // 5
+			Input: "0 PLAC A\n1 FORM B\n1 FORM C",
+			Err:   ErrContext{"PlaceStructure", cFORM, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 PLAC A\n1 FORM B\n1 FORM C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: PlaceStructure{
+				Place:          "A",
+				PlaceHierarchy: "B",
+			},
+		},
 	})
 }
