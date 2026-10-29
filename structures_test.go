@@ -7771,3 +7771,18 @@ func TestPlaceStructure(t *testing.T) {
 		},
 	})
 }
+
+func TestSourceID(t *testing.T) {
+	test(t, []testData[SourceID]{
+		{ // 1
+			Input: "0 SOUR\n",
+			Err:   ErrContext{"SourceID", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ SOUR\n",
+			Output: SourceID{
+				ID: "A",
+			},
+		},
+	})
+}
