@@ -7717,5 +7717,40 @@ func TestPlaceStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 10
+			Input: "0 PLAC A\n1 @A@ NOTE\n",
+			Output: PlaceStructure{
+				Place: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 11
+			Input: "0 PLAC A\n1 NOTE\n",
+			Err:   ErrContext{"PlaceStructure", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 12
+			Input: "0 PLAC A\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: PlaceStructure{
+				Place: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
