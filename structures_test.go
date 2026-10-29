@@ -7557,5 +7557,40 @@ func TestPersonalNameStructure(t *testing.T) {
 				Suffix:       "B",
 			},
 		},
+		{ // 27
+			Input: "0 NAME A\n1 @A@ SOUR\n",
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 28
+			Input: "0 NAME A\n1 SOUR\n",
+			Err:   ErrContext{"PersonalNameStructure", cSOUR, ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}}},
+		},
+		{ // 29
+			Input: "0 NAME A\n1 @A@ SOUR\n1 @B@ SOUR\n",
+			Output: PersonalNameStructure{
+				NamePersonal: "A",
+				Sources: []SourceCitation{
+					{
+						Data: &SourceID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &SourceID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
