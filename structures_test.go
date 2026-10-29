@@ -7646,3 +7646,18 @@ func TestPersonalNameStructure(t *testing.T) {
 		},
 	})
 }
+
+func TestPlaceStructure(t *testing.T) {
+	test(t, []testData[PlaceStructure]{
+		{ // 1
+			Input: "0 PLAC\n",
+			Err:   ErrContext{"PlaceStructure", "line_value", ErrInvalidLength{"PlaceValue", "", 1, 120}},
+		},
+		{ // 2
+			Input: "0 PLAC A\n",
+			Output: PlaceStructure{
+				Place: "A",
+			},
+		},
+	})
+}
