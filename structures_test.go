@@ -7752,5 +7752,22 @@ func TestPlaceStructure(t *testing.T) {
 				},
 			},
 		},
+		{ // 13
+			Input: "0 PLAC A\n1 UNKNOWN\n",
+			Err:   ErrContext{"PlaceStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 14
+			Input: "0 NAME A\n1 _UNKNOWN\n",
+			Output: PlaceStructure{
+				Place: "A",
+			},
+		},
+		{ // 15
+			Input:   "0 NAME A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: PlaceStructure{
+				Place: "A",
+			},
+		},
 	})
 }
