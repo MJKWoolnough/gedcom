@@ -7954,5 +7954,22 @@ func TestSourceID(t *testing.T) {
 				},
 			},
 		},
+		{ // 25
+			Input: "0 @A@ SOUR\n1 UNKNOWN\n",
+			Err:   ErrContext{"SourceID", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 26
+			Input: "0 @A@ SOUR\n1 _UNKNOWN\n",
+			Output: SourceID{
+				ID: "A",
+			},
+		},
+		{ // 27
+			Input:   "0 @A@ SOUR\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SourceID{
+				ID: "A",
+			},
+		},
 	})
 }
