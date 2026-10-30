@@ -7321,7 +7321,7 @@ func TestNoteID(t *testing.T) {
 			},
 		},
 		{ // 3
-			Input: "0 @A@ OBJE\n1 UNKNOWN\n",
+			Input: "0 @A@ NOTE\n1 UNKNOWN\n",
 			Err:   ErrContext{"NoteID", "UNKNOWN", ErrUnknownTag},
 		},
 		{ // 4
