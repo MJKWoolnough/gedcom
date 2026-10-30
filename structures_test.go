@@ -7986,5 +7986,28 @@ func TestSourceCitationEvent(t *testing.T) {
 				EventTypeCitedFrom: "A",
 			},
 		},
+		{ // 3
+			Input: "0 EVEN A\n1 ROLE B",
+			Output: SourceCitationEvent{
+				EventTypeCitedFrom: "A",
+				Role:               "B",
+			},
+		},
+		{ // 4
+			Input: "0 EVEN A\n1 ROLE\n",
+			Err:   ErrContext{"SourceCitationEvent", cROLE, ErrInvalidLength{"RoleInEvent", "", 1, 15}},
+		},
+		{ // 5
+			Input: "0 EVEN A\n1 ROLE B\n1 ROLE C",
+			Err:   ErrContext{"SourceCitationEvent", cROLE, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 EVEN A\n1 ROLE B\n1 ROLE C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceCitationEvent{
+				EventTypeCitedFrom: "A",
+				Role:               "B",
+			},
+		},
 	})
 }
