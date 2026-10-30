@@ -7807,5 +7807,32 @@ func TestSourceID(t *testing.T) {
 				WhereWithinSource: "B",
 			},
 		},
+		{ // 7
+			Input: "0 @A@ SOUR\n1 EVEN B",
+			Output: SourceID{
+				ID: "A",
+				SourceCitationEvent: SourceCitationEvent{
+					EventTypeCitedFrom: "B",
+				},
+			},
+		},
+		{ // 8
+			Input: "0 @A@ SOUR\n1 EVEN\n",
+			Err:   ErrContext{"SourceID", cEVEN, ErrContext{"SourceCitationEvent", "line_value", ErrInvalidLength{"EventTypeCitedFrom", "", 1, 15}}},
+		},
+		{ // 9
+			Input: "0 @A@ SOUR\n1 EVEN B\n1 EVEN C",
+			Err:   ErrContext{"SourceID", cEVEN, ErrSingleMultiple},
+		},
+		{ // 10
+			Input:   "0 @A@ SOUR\n1 EVEN B\n1 EVEN C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceID{
+				ID: "A",
+				SourceCitationEvent: SourceCitationEvent{
+					EventTypeCitedFrom: "B",
+				},
+			},
+		},
 	})
 }
