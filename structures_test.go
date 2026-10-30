@@ -7861,5 +7861,28 @@ func TestSourceID(t *testing.T) {
 				},
 			},
 		},
+		{ // 15
+			Input: "0 @A@ SOUR\n1 QUAY 1",
+			Output: SourceID{
+				ID:        "A",
+				Certainty: 1,
+			},
+		},
+		{ // 16
+			Input: "0 @A@ SOUR\n1 QUAY\n",
+			Err:   ErrContext{"SourceID", cQUAY, ErrInvalidValue{"CertaintyAssessment", ""}},
+		},
+		{ // 17
+			Input: "0 @A@ SOUR\n1 QUAY 1\n1 QUAY 2",
+			Err:   ErrContext{"SourceID", cQUAY, ErrSingleMultiple},
+		},
+		{ // 18
+			Input:   "0 @A@ SOUR\n1 QUAY 1\n1 QUAY 2",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceID{
+				ID:        "A",
+				Certainty: 1,
+			},
+		},
 	})
 }
