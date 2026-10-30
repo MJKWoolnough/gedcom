@@ -7973,3 +7973,18 @@ func TestSourceID(t *testing.T) {
 		},
 	})
 }
+
+func TestSourceCitationEvent(t *testing.T) {
+	test(t, []testData[SourceCitationEvent]{
+		{ // 1
+			Input: "0 EVEN\n",
+			Err:   ErrContext{"SourceCitationEvent", "line_value", ErrInvalidLength{"EventTypeCitedFrom", "", 1, 15}},
+		},
+		{ // 2
+			Input: "0 EVEN A\n",
+			Output: SourceCitationEvent{
+				EventTypeCitedFrom: "A",
+			},
+		},
+	})
+}
