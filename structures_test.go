@@ -7834,5 +7834,32 @@ func TestSourceID(t *testing.T) {
 				},
 			},
 		},
+		{ // 11
+			Input: "0 @A@ SOUR\n1 DATA\n2 DATE B",
+			Output: SourceID{
+				ID: "A",
+				Data: SourceData{
+					Date: "B",
+				},
+			},
+		},
+		{ // 12
+			Input: "0 @A@ SOUR\n1 DATA\n2 DATE\n",
+			Err:   ErrContext{"SourceID", cDATA, ErrContext{"SourceData", cDATE, ErrInvalidLength{"EntryRecordingDate", "", 1, 90}}},
+		},
+		{ // 13
+			Input: "0 @A@ SOUR\n1 DATA\n2 DATE B\n1 DATA\n2 DATE C",
+			Err:   ErrContext{"SourceID", cDATA, ErrSingleMultiple},
+		},
+		{ // 14
+			Input:   "0 @A@ SOUR\n1 DATA\n2 DATE B\n1 DATA\n2 DATE C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceID{
+				ID: "A",
+				Data: SourceData{
+					Date: "B",
+				},
+			},
+		},
 	})
 }
