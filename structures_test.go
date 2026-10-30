@@ -7784,5 +7784,28 @@ func TestSourceID(t *testing.T) {
 				ID: "A",
 			},
 		},
+		{ // 3
+			Input: "0 @A@ SOUR\n1 PAGE B",
+			Output: SourceID{
+				ID:                "A",
+				WhereWithinSource: "B",
+			},
+		},
+		{ // 4
+			Input: "0 @A@ SOUR\n1 PAGE\n",
+			Err:   ErrContext{"SourceID", cPAGE, ErrInvalidLength{"WhereWithinSource", "", 1, 248}},
+		},
+		{ // 5
+			Input: "0 @A@ SOUR\n1 PAGE B\n1 PAGE C",
+			Err:   ErrContext{"SourceID", cPAGE, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 @A@ SOUR\n1 PAGE B\n1 PAGE C",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceID{
+				ID:                "A",
+				WhereWithinSource: "B",
+			},
+		},
 	})
 }
