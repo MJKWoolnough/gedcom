@@ -7884,5 +7884,40 @@ func TestSourceID(t *testing.T) {
 				Certainty: 1,
 			},
 		},
+		{ // 19
+			Input: "0 @A@ SOUR\n1 @B@ OBJE\n",
+			Output: SourceID{
+				ID: "A",
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
+		{ // 20
+			Input: "0 @A@ SOUR\n1 OBJE\n",
+			Err:   ErrContext{"SourceID", cOBJE, ErrContext{"MultimediaLinkFile", cFORM, ErrRequiredMissing}},
+		},
+		{ // 21
+			Input: "0 @A@ SOUR\n1 @B@ OBJE\n1 @C@ OBJE\n",
+			Output: SourceID{
+				ID: "A",
+				Multimedia: []MultimediaLink{
+					{
+						Data: &MultimediaLinkID{
+							ID: "B",
+						},
+					},
+					{
+						Data: &MultimediaLinkID{
+							ID: "C",
+						},
+					},
+				},
+			},
+		},
 	})
 }
