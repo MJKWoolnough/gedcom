@@ -7919,5 +7919,40 @@ func TestSourceID(t *testing.T) {
 				},
 			},
 		},
+		{ // 22
+			Input: "0 @A@ SOUR\n1 @A@ NOTE\n",
+			Output: SourceID{
+				ID: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+				},
+			},
+		},
+		{ // 23
+			Input: "0 @A@ SOUR\n1 NOTE\n",
+			Err:   ErrContext{"SourceID", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 24
+			Input: "0 @A@ SOUR\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: SourceID{
+				ID: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
