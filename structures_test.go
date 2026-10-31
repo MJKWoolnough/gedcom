@@ -8105,5 +8105,28 @@ func TestSourceText(t *testing.T) {
 				Description: "A",
 			},
 		},
+		{ // 3
+			Input: "0 SOUR A\n1 TEXT B",
+			Output: SourceText{
+				Description: "A",
+				Texts: []TextFromSource{
+					"B",
+				},
+			},
+		},
+		{ // 4
+			Input: "0 SOUR A\n1 TEXT\n",
+			Err:   ErrContext{"SourceText", cTEXT, ErrInvalidLength{"TextFromSource", "", 1, 248}},
+		},
+		{ // 5
+			Input: "0 SOUR A\n1 TEXT B\n1 TEXT C",
+			Output: SourceText{
+				Description: "A",
+				Texts: []TextFromSource{
+					"B",
+					"C",
+				},
+			},
+		},
 	})
 }
