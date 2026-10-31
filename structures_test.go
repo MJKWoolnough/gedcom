@@ -8056,5 +8056,26 @@ func TestSourceData(t *testing.T) {
 				Date: "A",
 			},
 		},
+		{ // 6
+			Input: "0 DATA\n1 TEXT A",
+			Output: SourceData{
+				Text: []TextFromSource{
+					"A",
+				},
+			},
+		},
+		{ // 7
+			Input: "0 DATA\n1 TEXT\n",
+			Err:   ErrContext{"SourceData", cTEXT, ErrInvalidLength{"TextFromSource", "", 1, 248}},
+		},
+		{ // 8
+			Input: "0 DATA\n1 TEXT A\n1 TEXT B",
+			Output: SourceData{
+				Text: []TextFromSource{
+					"A",
+					"B",
+				},
+			},
+		},
 	})
 }
