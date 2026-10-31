@@ -8028,3 +8028,12 @@ func TestSourceCitationEvent(t *testing.T) {
 		},
 	})
 }
+
+func TestSourceData(t *testing.T) {
+	test(t, []testData[SourceData]{
+		{ // 1
+			Input:  "0 DATA\n",
+			Output: SourceData{},
+		},
+	})
+}
