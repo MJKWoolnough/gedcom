@@ -8182,3 +8182,18 @@ func TestSourceText(t *testing.T) {
 		},
 	})
 }
+
+func TestSourceRepositoryCitation(t *testing.T) {
+	test(t, []testData[SourceRepositoryCitation]{
+		{ // 1
+			Input: "0 REPO\n",
+			Err:   ErrContext{"SourceRepositoryCitation", "xrefID", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 @A@ REPO\n",
+			Output: SourceRepositoryCitation{
+				ID: "A",
+			},
+		},
+	})
+}
