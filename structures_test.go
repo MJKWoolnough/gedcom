@@ -8163,5 +8163,22 @@ func TestSourceText(t *testing.T) {
 				},
 			},
 		},
+		{ // 9
+			Input: "0 SOUR A\n1 UNKNOWN\n",
+			Err:   ErrContext{"SourceText", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 10
+			Input: "0 SOUR A\n1 _UNKNOWN\n",
+			Output: SourceText{
+				Description: "A",
+			},
+		},
+		{ // 11
+			Input:   "0 SOUR A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SourceText{
+				Description: "A",
+			},
+		},
 	})
 }
