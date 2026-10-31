@@ -8035,5 +8035,26 @@ func TestSourceData(t *testing.T) {
 			Input:  "0 DATA\n",
 			Output: SourceData{},
 		},
+		{ // 2
+			Input: "0 DATA\n1 DATE A",
+			Output: SourceData{
+				Date: "A",
+			},
+		},
+		{ // 3
+			Input: "0 DATA\n1 DATE\n",
+			Err:   ErrContext{"SourceData", cDATE, ErrInvalidLength{"EntryRecordingDate", "", 1, 90}},
+		},
+		{ // 4
+			Input: "0 DATA\n1 DATE A\n1 DATE B",
+			Err:   ErrContext{"SourceData", cDATE, ErrSingleMultiple},
+		},
+		{ // 5
+			Input:   "0 DATA\n1 DATE A\n1 DATE B",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceData{
+				Date: "A",
+			},
+		},
 	})
 }
