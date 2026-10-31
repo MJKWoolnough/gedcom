@@ -8009,5 +8009,22 @@ func TestSourceCitationEvent(t *testing.T) {
 				Role:               "B",
 			},
 		},
+		{ // 7
+			Input: "0 EVEN A\n1 UNKNOWN\n",
+			Err:   ErrContext{"SourceCitationEvent", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 8
+			Input: "0 EVEN A\n1 _UNKNOWN\n",
+			Output: SourceCitationEvent{
+				EventTypeCitedFrom: "A",
+			},
+		},
+		{ // 9
+			Input:   "0 EVEN A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SourceCitationEvent{
+				EventTypeCitedFrom: "A",
+			},
+		},
 	})
 }
