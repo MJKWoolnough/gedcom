@@ -8092,3 +8092,18 @@ func TestSourceData(t *testing.T) {
 		},
 	})
 }
+
+func TestSourceText(t *testing.T) {
+	test(t, []testData[SourceText]{
+		{ // 1
+			Input: "0 SOUR\n",
+			Err:   ErrContext{"SourceText", "line_value", ErrInvalidLength{"SourceDescription", "", 1, 248}},
+		},
+		{ // 2
+			Input: "0 SOUR A\n",
+			Output: SourceText{
+				Description: "A",
+			},
+		},
+	})
+}
