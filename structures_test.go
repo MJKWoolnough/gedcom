@@ -8077,5 +8077,18 @@ func TestSourceData(t *testing.T) {
 				},
 			},
 		},
+		{ // 9
+			Input: "0 DATA\n1 UNKNOWN\n",
+			Err:   ErrContext{"SourceData", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 10
+			Input:  "0 DATA\n1 _UNKNOWN\n",
+			Output: SourceData{},
+		},
+		{ // 11
+			Input:   "0 DATA\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output:  SourceData{},
+		},
 	})
 }
