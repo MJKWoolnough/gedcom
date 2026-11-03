@@ -8256,5 +8256,28 @@ func TestSourceCallStructure(t *testing.T) {
 				SourceCallNumber: "A",
 			},
 		},
+		{ // 3
+			Input: "0 CALN A\n1 MEDI audio",
+			Output: SourceCallStructure{
+				SourceCallNumber: "A",
+				Type:             caudio,
+			},
+		},
+		{ // 4
+			Input: "0 CALN A\n1 MEDI\n",
+			Err:   ErrContext{"SourceCallStructure", cMEDI, ErrInvalidValue{"SourceMediaType", ""}},
+		},
+		{ // 5
+			Input: "0 CALN A\n1 MEDI audio\n1 MEDI book",
+			Err:   ErrContext{"SourceCallStructure", cMEDI, ErrSingleMultiple},
+		},
+		{ // 6
+			Input:   "0 CALN A\n1 MEDI audio\n1 MEDI book",
+			Options: []Option{AllowMoreThanAllowed},
+			Output: SourceCallStructure{
+				SourceCallNumber: "A",
+				Type:             caudio,
+			},
+		},
 	})
 }
