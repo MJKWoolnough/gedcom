@@ -8195,5 +8195,34 @@ func TestSourceRepositoryCitation(t *testing.T) {
 				ID: "A",
 			},
 		},
+		{ // 3
+			Input: "0 @A@ REPO\n1 CALN B",
+			Output: SourceRepositoryCitation{
+				ID: "A",
+				Numbers: []SourceCallStructure{
+					{
+						SourceCallNumber: "B",
+					},
+				},
+			},
+		},
+		{ // 4
+			Input: "0 @A@ REPO\n1 CALN\n",
+			Err:   ErrContext{"SourceRepositoryCitation", cCALN, ErrContext{"SourceCallStructure", "line_value", ErrInvalidLength{"SourceCallNumber", "", 1, 120}}},
+		},
+		{ // 5
+			Input: "0 @A@ REPO\n1 CALN B\n1 CALN C",
+			Output: SourceRepositoryCitation{
+				ID: "A",
+				Numbers: []SourceCallStructure{
+					{
+						SourceCallNumber: "B",
+					},
+					{
+						SourceCallNumber: "C",
+					},
+				},
+			},
+		},
 	})
 }
