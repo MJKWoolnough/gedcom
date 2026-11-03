@@ -8243,3 +8243,18 @@ func TestSourceRepositoryCitation(t *testing.T) {
 		},
 	})
 }
+
+func TestSourceCallStructure(t *testing.T) {
+	test(t, []testData[SourceCallStructure]{
+		{ // 1
+			Input: "0 CALN\n",
+			Err:   ErrContext{"SourceCallStructure", "line_value", ErrInvalidLength{"SourceCallNumber", "", 1, 120}},
+		},
+		{ // 2
+			Input: "0 CALN A\n",
+			Output: SourceCallStructure{
+				SourceCallNumber: "A",
+			},
+		},
+	})
+}
