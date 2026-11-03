@@ -8298,3 +8298,18 @@ func TestSourceCallStructure(t *testing.T) {
 		},
 	})
 }
+
+func TestSpouseToFamilyLink(t *testing.T) {
+	test(t, []testData[SpouseToFamilyLink]{
+		{ // 1
+			Input: "0 FAMS\n",
+			Err:   ErrContext{"SpouseToFamilyLink", "line_value", ErrInvalidLength{"Xref", "", 1, 22}},
+		},
+		{ // 2
+			Input: "0 FAMS A\n",
+			Output: SpouseToFamilyLink{
+				ID: "A",
+			},
+		},
+	})
+}
