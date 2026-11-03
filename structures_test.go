@@ -8279,5 +8279,22 @@ func TestSourceCallStructure(t *testing.T) {
 				Type:             caudio,
 			},
 		},
+		{ // 7
+			Input: "0 CALN A\n1 UNKNOWN\n",
+			Err:   ErrContext{"SourceCallStructure", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 8
+			Input: "0 CALN A\n1 _UNKNOWN\n",
+			Output: SourceCallStructure{
+				SourceCallNumber: "A",
+			},
+		},
+		{ // 9
+			Input:   "0 CALN A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SourceCallStructure{
+				SourceCallNumber: "A",
+			},
+		},
 	})
 }
