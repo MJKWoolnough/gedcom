@@ -8311,5 +8311,40 @@ func TestSpouseToFamilyLink(t *testing.T) {
 				ID: "A",
 			},
 		},
+		{ // 3
+			Input: "0 FAMS A\n1 @B@ NOTE\n",
+			Output: SpouseToFamilyLink{
+				ID: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
+		{ // 4
+			Input: "0 FAMS A\n1 NOTE\n",
+			Err:   ErrContext{"SpouseToFamilyLink", cNOTE, ErrContext{"NoteText", "line_value", ErrInvalidLength{"SubmitterText", "", 1, 248}}},
+		},
+		{ // 5
+			Input: "0 FAMS A\n1 @A@ NOTE\n1 @B@ NOTE\n",
+			Output: SpouseToFamilyLink{
+				ID: "A",
+				Notes: []NoteStructure{
+					{
+						Data: &NoteID{
+							ID: "A",
+						},
+					},
+					{
+						Data: &NoteID{
+							ID: "B",
+						},
+					},
+				},
+			},
+		},
 	})
 }
