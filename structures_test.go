@@ -8346,5 +8346,22 @@ func TestSpouseToFamilyLink(t *testing.T) {
 				},
 			},
 		},
+		{ // 6
+			Input: "0 FAMS A\n1 UNKNOWN\n",
+			Err:   ErrContext{"SpouseToFamilyLink", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 7
+			Input: "0 FAMS A\n1 _UNKNOWN\n",
+			Output: SpouseToFamilyLink{
+				ID: "A",
+			},
+		},
+		{ // 8
+			Input:   "0 FAMS A\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SpouseToFamilyLink{
+				ID: "A",
+			},
+		},
 	})
 }
