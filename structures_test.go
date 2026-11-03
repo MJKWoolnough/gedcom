@@ -8224,5 +8224,22 @@ func TestSourceRepositoryCitation(t *testing.T) {
 				},
 			},
 		},
+		{ // 6
+			Input: "0 @A@ REPO\n1 UNKNOWN\n",
+			Err:   ErrContext{"SourceRepositoryCitation", "UNKNOWN", ErrUnknownTag},
+		},
+		{ // 7
+			Input: "0 @A@ REPO\n1 _UNKNOWN\n",
+			Output: SourceRepositoryCitation{
+				ID: "A",
+			},
+		},
+		{ // 8
+			Input:   "0 @A@ REPO\n1 UNKNOWN\n",
+			Options: []Option{AllowUnknownTags},
+			Output: SourceRepositoryCitation{
+				ID: "A",
+			},
+		},
 	})
 }
